@@ -4702,11 +4702,6 @@ neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-ngmap@^1.18.4:
-  version "1.18.5"
-  resolved "https://registry.yarnpkg.com/ngmap/-/ngmap-1.18.5.tgz#574f0227f4ebcfa688c9d8afcd606162266c120e"
-  integrity sha512-wm+ue9cn2COpEDSfoio/9d4Y3TuZaMmH+VtLjQmKDWNEZg3Tqrd9aGc6uK3CzH4p+GLZfOngcnxOmrUbnpMFQQ==
-
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"

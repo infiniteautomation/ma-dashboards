@@ -1563,10 +1563,10 @@ export default [
         menuTr: 'ui.app.eventsTable'
     },
     {
-        name: 'ui.examples.utilities.googleMaps',
-        templatePromise: examplesTemplate('googleMaps.html'),
-        url: '/google-maps',
-        menuTr: 'ui.dox.googleMaps'
+        name: 'ui.examples.utilities.maps',
+        templatePromise: examplesTemplate('maps.html'),
+        url: '/maps',
+        menuTr: 'ui.dox.maps'
     },
     {
         name: 'ui.examples.svg',

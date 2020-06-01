@@ -104,7 +104,6 @@ import permissionsMenu from './components/permissionsMenu/permissionsMenu';
 import configExport from './components/configExport/configExport';
 import configImport from './components/configImport/configImport';
 import configImportDialog from './components/configImportDialog/configImportDialog';
-import maMap from './components/maMap/maMap';
 import button from './components/button/button';
 import fileStoreBrowser from './components/fileStoreBrowser/fileStoreBrowser';
 import maSlider from './components/maSlider/maSlider';
@@ -191,7 +190,6 @@ import logFileView from './components/logFileView/logFileView';
 import mailingListEmail from './components/mailingListEmail/mailingListEmail';
 import themePreview from './components/themePreview/themePreview';
 
-import 'ngmap';
 import slideUp from './animations/slideUp';
 import angular from 'angular';
 
@@ -208,7 +206,7 @@ import './ngMango.css';
  *
  *
 **/
-const ngMango = angular.module('ngMango', ['ngMangoServices', 'ngMap']);
+const ngMango = angular.module('ngMango', ['ngMangoServices']);
 
 ngMango.directive('maFilteringPointList', filteringPointList);
 ngMango.directive('maPointList', pointList);
@@ -317,7 +315,6 @@ ngMango.component('maPermissionsMenu', permissionsMenu);
 ngMango.component('maConfigExport', configExport);
 ngMango.component('maConfigImport', configImport);
 ngMango.component('maConfigImportDialog', configImportDialog);
-ngMango.component('maMap', maMap);
 ngMango.component('maButton', button);
 ngMango.component('maFileStoreBrowser', fileStoreBrowser);
 ngMango.component('maSlider', maSlider);

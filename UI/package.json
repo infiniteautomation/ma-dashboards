@@ -43,7 +43,6 @@
     "md-pickers": "^1.1.1",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.17",
-    "ngmap": "^1.18.4",
     "papaparse": "^4.5.0",
     "pdfmake": "^0.1.36",
     "requirejs": "^2.3.5",

@@ -39,7 +39,6 @@ const exposedVendorModules = {
     'jquery-ui-touch-punch': () => import(/* webpackMode: "eager" */ 'jquery-ui-touch-punch-c'),
     'mdPickers': () => import(/* webpackMode: "eager" */ 'md-pickers'),
     'angular-material-data-table': () => import(/* webpackMode: "eager" */ 'angular-material-data-table'),
-    'ng-map': () => import(/* webpackMode: "eager" */ 'ngmap'),
     'amcharts/amcharts': () => import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/amcharts'),
     'amcharts/funnel': () => import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/funnel'),
     'amcharts/gantt': () => import(/* webpackMode: "lazy", webpackChunkName: "amcharts" */ 'amcharts/gantt'),

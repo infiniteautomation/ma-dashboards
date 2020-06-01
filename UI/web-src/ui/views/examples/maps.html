@@ -1,0 +1,66 @@
+<h1>Maps</h1>
+
+<p>
+    Maps can be added to your custom pages using the <code>&lt;ma-tile-map&gt;</code> component.
+    The example shown here demonstrates how you can use markers to toggle popup windows that contain other components, change
+    marker icons, set marker and map locations (using latitude/longitude), and make markers draggable.
+</p>
+
+<h2>Notes</h2>
+<ul>
+    <li>
+    The <code>&lt;ma-tile-map&gt;</code> component uses map tiles from the <a href="https://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> community by default.
+    <a href="https://www.mapbox.com/" target="_blank">Mapbox</a> provides an alternate source of high quality imagery (including satellite).
+    Mapbox is a paid service but includes a free tier.
+    If you enter your Mapbox access token on the <a ui-sref="ui.settings.uiSettings">UI Settings</a> page you will be
+    able to use tiles from the Mapbox API automatically.
+    </li>
+    <li>
+        Please read the <a ui-sref="ui.docs.ngMango.maTileMap">API documentation</a> for <code>&lt;ma-tile-map&gt;</code>
+    </li>
+</ul>
+
+<ma-ui-dual-pane-editor>
+
+<ma-get-point-value point-xid="Demo 01-fan" point="myPoint1"></ma-get-point-value> 
+<ma-get-point-value point-xid="Demo 01-setpoint" point="myPoint2"></ma-get-point-value> 
+<ma-get-point-value point-xid="Demo 01-Temp" point="myPoint3"></ma-get-point-value>
+<ma-point-values point="myPoint3" values="chart1Vals" latest="50"></ma-point-values> 
+
+<ul>
+    <li><strong>First Marker:</strong> Clicking toggles an info window which sets a binary point's value to "{{myPoint1.value}}" and uses its value to switch its icon.</li>
+    <li><strong>Green Marker:</strong> Clicking toggles an info window which sets a numeric point's value to {{myPoint2.value}}.</li>
+    <li><strong>Red Marker:</strong> Clicking toggles an info window which displays a small chart of latest 50 values.</li>
+    <li><strong>Yellow Marker:</strong> Sets output-data variable to "{{myOutputData}}".</li>
+</ul>
+
+<br>
+
+<ma-map lat="-12.95" long="-38.45" zoom="12" map-type="roadmap" info-window-theme="dark" desktop-height="600px" mobile-height="450px"
+ng-init="myMarkers={
+        true: 'img/map-markers/purple-dot.png',
+        false: 'img/map-markers/orange-dot.png'}" output-data="myOutputData">
+    
+    <marker id="marker1" position="-12.90, -38.41" icon="{url: '{{myMarkers[myPoint1.value]}}'}" on-click="$parent.$ctrl.toggleInfoWindow('setPoint1', 'marker1')"></marker>
+    <marker id="marker2" position="-12.95, -38.43" draggable="true" icon="{url: 'img/map-markers/green-dot.png'}" on-click="$parent.$ctrl.toggleInfoWindow('setPoint2', 'marker2')"></marker>
+    <marker id="marker3" position="-12.99, -38.47" draggable="true" on-click="$parent.$ctrl.toggleInfoWindow('chart1', 'marker3')"></marker>
+    <marker id="marker4" position="-12.92, -38.42" draggable="true" icon="{url: 'img/map-markers/yellow-dot.png'}" on-click="$parent.$ctrl.setOutputData('Demo 01-amps')"></marker>
+    
+    <info-window id="setPoint2">    
+        <div>
+            <ma-set-point-value point="myPoint2"></ma-set-point-value>
+        </div>
+    </info-window>
+    <info-window id="setPoint1">
+        <div>
+            <ma-set-point-value point="myPoint1"></ma-set-point-value>
+        </div>
+    </info-window>
+    <info-window id="chart1">
+        <div layout="row" layout-padding>
+            <ma-serial-chart style="height: 150px; width: 250px" series-1-point="myPoint3" series-1-values="chart1Vals"></ma-serial-chart>
+        </div>
+    </info-window>
+</ma-map>
+
+</ma-ui-dual-pane-editor>
