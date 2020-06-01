@@ -1,0 +1,7 @@
+<p ma-tr="ui.app.permissionsPageHeader"></p>
+
+<div layout layout-wrap layout-align="space-between start" class="ma-inputs-container" ng-form="$ctrl.form">
+    <ma-permission-editor ng-repeat="permission in $ctrl.permissions track by permission.name" flex="100" flex-gt-md="50" description="{{permission.description}}"
+        name="{{permission.name}}" ng-model="permission.permission" ng-change="$ctrl.savePermission(permission)">
+    </ma-permission-editor>
+</div>

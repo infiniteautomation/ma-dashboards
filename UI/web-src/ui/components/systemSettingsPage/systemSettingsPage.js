@@ -85,26 +85,8 @@ class SystemSettingsPageController {
                 }
             }
         });
-        
-        this.maSystemPermission.buildQuery()
-        .sort('moduleName', 'name')
-        .query().then((permissions) => {
-            this.permissions = permissions;
-        });
     }
-    
-    savePermission(permission, modelCtrl) {
-        permission.save().then(() => {
-            modelCtrl.$setValidity('validationMessage', true);
-            delete modelCtrl.validationMessage;
-        }, error => {
-            if (error.status === 422) {
-                modelCtrl.$setValidity('validationMessage', false);
-                modelCtrl.validationMessage = error.mangoStatusText;
-            }
-        });
-    }
-    
+
     get actions() {
         return actions;
     }

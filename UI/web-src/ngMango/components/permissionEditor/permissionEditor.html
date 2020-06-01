@@ -1,0 +1,10 @@
+<md-input-container flex>
+    <label ng-bind="$ctrl.description"></label>
+    <input ng-model="$ctrl.permission" ma-form-exclude ma-permission-expression ng-change="$ctrl.permissionChanged()" ng-model-options="::{debounce: 1000}">
+
+    <ma-permissions-menu ng-model="$ctrl.permission" ma-form-exclude ng-change="$ctrl.permissionChanged()"></ma-permissions-menu>
+</md-input-container>
+
+<div ng-messages="$ctrl.ngModelCtrl.$error">
+    <div ng-message="validationMessage" ng-bind="$ctrl.ngModelCtrl.validationMessage"></div>
+</div>

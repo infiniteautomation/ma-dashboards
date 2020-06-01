@@ -918,14 +918,24 @@ export default [
         menuTr: 'systemSettings.H2DatabaseBackupSettings'
     },
     {
-        name: 'ui.settings.system.permissions',
+        name: 'ui.settings.permissions',
         params: {
             helpPage: 'ui.help.permissions'
         },
-        templatePromise: systemSettingsTemplate('permissions.html'),
+        template: '<ma-ui-permissions-page></ma-ui-permissions-page>',
         url: '/permissions',
         menuTr: 'systemSettings.systemPermissions',
-        menuHidden: true
+        menuIcon: 'supervised_user_circle',
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/permissionsPage/permissionsPage').then(permissionsPage => {
+                    angular.module('maUiPermissionsPage', [])
+                        .component('maUiPermissionsPage', permissionsPage.default);
+                    $injector.loadNewModules(['maUiPermissionsPage']);
+                });
+            }]
+        }
     },
     {
         url: '/permissions',

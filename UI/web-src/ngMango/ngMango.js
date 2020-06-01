@@ -189,6 +189,7 @@ import logFileTable from './components/logFileTable/logFileTable';
 import logFileView from './components/logFileView/logFileView';
 import mailingListEmail from './components/mailingListEmail/mailingListEmail';
 import themePreview from './components/themePreview/themePreview';
+import permissionEditor from './components/permissionEditor/permissionEditor';
 
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -392,6 +393,7 @@ ngMango.component('maLogFileTable', logFileTable);
 ngMango.component('maLogFileView', logFileView);
 ngMango.component('maMailingListEmail', mailingListEmail);
 ngMango.component('maThemePreview', themePreview);
+ngMango.component('maPermissionEditor', permissionEditor);
 
 ngMango.animation('.ma-slide-up', slideUp);
 
