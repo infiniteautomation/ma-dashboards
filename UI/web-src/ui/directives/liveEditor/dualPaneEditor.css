@@ -1,0 +1,11 @@
+ma-ui-dual-pane-editor {
+	margin: 16px 0;
+}
+
+ma-ui-dual-pane-editor ma-ace-editor {
+	width: 100%;
+}
+
+ma-ui-dual-pane-editor .ma-copy-button {
+	margin-top: 8px;
+}

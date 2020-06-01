@@ -4,6 +4,7 @@
  */
 
 import dualPaneEditorTemplate from './dualPaneEditor.html';
+import './dualPaneEditor.css';
 
 const dualPaneEditor = function() {
     return {

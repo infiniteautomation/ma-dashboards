@@ -1,8 +1,3 @@
-<ul>
-  <li><a ui-sref="ui.examples.playArea({markup: text})" ma-tr="ui.app.copyToPlayArea"></a></li>
-  <li><a ui-sref="ui.settings.editPages({markup: text})" ma-tr="ui.app.copyToNewPage"></a></li>
-</ul>
-
 <div layout="column" layout-gt-md="row">
     <div flex="100" layout="column" style="min-width: 50%;">
         <md-card flex layout="column">
@@ -11,8 +6,9 @@
                 <span class="md-headline" ma-tr="ui.dox.markup"></span>
               </md-card-title-text>
             </md-card-title>
-            <md-card-content flex layout="column">
+            <md-card-content flex layout="column" layout-align="start center">
                 <ma-ace-editor flex style="height:450px" ng-model="text" ng-model-options="{debounce: 1000}"></ma-ace-editor>
+				<md-button class="md-raised ma-copy-button" ui-sref="ui.settings.editPages({markup: text})"><span ma-tr="ui.app.copyToNewPage"></span></md-button>
             </md-card-content>
         </md-card>
     </div>
