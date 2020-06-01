@@ -6,6 +6,8 @@
 import permissionsPageTemplate from './permissionsPage.html';
 import './permissionsPage.css';
 
+const filterSearchKeys = ['moduleName', 'moduleDescription', 'description', 'name'];
+
 class PermissionsPageController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['maSystemPermission']; }
@@ -15,11 +17,32 @@ class PermissionsPageController {
     }
     
     $onInit() {
+        this.getPermissions();
+    }
+    
+    getPermissions() {
+        
         this.maSystemPermission.buildQuery()
-            .sort('moduleName', 'name')
-            .query().then((permissions) => {
-                this.permissions = permissions;
-            });
+        .sort('moduleName', 'name')
+        .query().then((permissions) => {
+            this.allPermissions = permissions;
+            this.filterPermissions();
+        });
+    }
+    
+    filterPermissions() {
+        this.permissions = {};
+        const filter = this.filter && this.filter.toLowerCase();
+        
+        this.allPermissions.filter(permission => {
+            if (!filter) return true;
+            return filterSearchKeys.some(k => permission[k].toLowerCase().includes(filter));
+        }).forEach(permission => {
+            if (!this.permissions[permission.moduleName]) {
+                this.permissions[permission.moduleName] = [];
+            }
+            this.permissions[permission.moduleName].push(permission);
+        });
     }
     
     savePermission(permission) {

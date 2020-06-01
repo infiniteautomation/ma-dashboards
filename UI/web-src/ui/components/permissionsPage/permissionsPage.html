@@ -1,7 +1,31 @@
 <p ma-tr="ui.app.permissionsPageHeader"></p>
 
-<div layout layout-wrap layout-align="space-between start" class="ma-inputs-container" ng-form="$ctrl.form">
-    <ma-permission-editor ng-repeat="permission in $ctrl.permissions track by permission.name" flex="100" flex-gt-md="50" description="{{permission.description}}"
-        name="{{permission.name}}" ng-model="permission.permission" ng-change="$ctrl.savePermission(permission)">
-    </ma-permission-editor>
+<div layout>
+    <md-input-container md-no-float="true" flex>
+        <input ng-model="$ctrl.filter" ng-model-options="{debounce: 500}" ng-change="$ctrl.filterPermissions()" ma-tr="ui.app.filter">
+        <md-button class="ma-input-button md-icon-button" ng-show="!!$ctrl.filter" ng-click="$ctrl.filter = null; $ctrl.filterPermissions()">
+            <md-icon>clear</md-icon>
+        </md-button>
+    </md-input-container>
+</div>
+
+<div ma-accordion="accordion" ma-accordion-single>
+    <md-card class="ma-accordion" ng-repeat="(moduleName, permissions) in $ctrl.permissions">
+        <md-card-title class="ma-small-padding" ng-click="accordion.toggle(moduleName)">
+            <md-card-title-text>
+                <div class="md-headline" ng-class="{'ma-accordion-expanded': accordion.section[moduleName]}" layout layout-align="start center">
+                    <span flex ng-bind="moduleName"></span><md-icon>keyboard_arrow_down</md-icon>
+                </div>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <ma-accordion-section section-id="{{moduleName}}">
+                <div layout layout-wrap layout-align="space-between start" class="ma-small-padding ma-inputs-container">
+                    <ma-permission-editor ng-repeat="permission in permissions track by permission.name" flex="100" flex-gt-md="50" description="{{permission.description}}"
+                        name="{{permission.name}}" ng-model="permission.permission" ng-change="$ctrl.savePermission(permission)">
+                    </ma-permission-editor>
+                </div>
+            </ma-accordion-section>
+        </md-card-content>
+    </md-card>
 </div>

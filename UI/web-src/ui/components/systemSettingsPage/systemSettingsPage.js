@@ -42,10 +42,10 @@ const actions = {
 class SystemSettingsPageController {
     static get $$ngIsClass() { return true };
     static get $inject() { return ['maSystemSettings', 'maLocales', 'maUser', '$state', 'maUiMenu', '$mdMedia',
-        '$scope', '$timeout', 'maSystemActions', 'maDialogHelper', 'maServer', 'maUiServerInfo', 'maSystemPermission']; }
+        '$scope', '$timeout', 'maSystemActions', 'maDialogHelper', 'maServer', 'maUiServerInfo']; }
     
     constructor(SystemSettings, maLocales, User, $state, maUiMenu, $mdMedia,
-            $scope, $timeout, maSystemActions, maDialogHelper, maServer, maUiServerInfo, maSystemPermission) {
+            $scope, $timeout, maSystemActions, maDialogHelper, maServer, maUiServerInfo) {
         this.SystemSettings = SystemSettings;
         this.User = User;
         this.$state = $state;
@@ -57,7 +57,6 @@ class SystemSettingsPageController {
         this.maDialogHelper = maDialogHelper;
         this.maServer = maServer;
         this.maUiServerInfo = maUiServerInfo;
-        this.maSystemPermission = maSystemPermission;
         
         maLocales.get().then((locales) => {
             locales.forEach((locale) => {
