@@ -14,7 +14,7 @@ function accordionSection() {
         },
         template: '<div class="ma-slide-up" ng-if="accordionController.section[id]" ng-transclude></div>',
         link: function ($scope, $element, $attrs, accordionController) {
-            const id = $attrs.id;
+            const id = $attrs.sectionId || $attrs.id;
 
             $scope.accordionController = accordionController;
             $scope.id = id;
@@ -30,5 +30,3 @@ function accordionSection() {
 }
 
 export default accordionSection;
-
-
