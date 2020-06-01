@@ -3,7 +3,7 @@
 <p>
     Maps can be added to your custom pages using the <code>&lt;ma-tile-map&gt;</code> component.
     The example shown here demonstrates how you can use markers to toggle popup windows that contain other components, change
-    marker icons, set marker and map locations (using latitude/longitude), and make markers draggable.
+    marker icons, make markers draggable, and add additional tile layers.
 </p>
 
 <h2>Notes</h2>
@@ -21,46 +21,27 @@
 </ul>
 
 <ma-ui-dual-pane-editor>
+<p ng-init="marker = [-12.90, -38.41]">The blue marker is at {{marker[0]}}, {{marker[1]}}</p>
 
-<ma-get-point-value point-xid="Demo 01-fan" point="myPoint1"></ma-get-point-value> 
-<ma-get-point-value point-xid="Demo 01-setpoint" point="myPoint2"></ma-get-point-value> 
-<ma-get-point-value point-xid="Demo 01-Temp" point="myPoint3"></ma-get-point-value>
-<ma-point-values point="myPoint3" values="chart1Vals" latest="50"></ma-point-values> 
+<ma-tile-map center="{lat: -12.95, lng: -38.45}" zoom="12">
+    <!-- This tile layer is included by default -->
+    <ma-tile-map-tile-layer tile-layer-id="openstreetmap" name="OpenStreetMap"></ma-tile-map-tile-layer>
+    <!-- You need a Mapbox access token to use this layer -->
+    <ma-tile-map-tile-layer tile-layer-id="mapbox.satellite" name="Mapbox Satellite"></ma-tile-map-tile-layer>
+    <!-- Add a layer from ArcGIS using a URL -->
+    <ma-tile-map-tile-layer name="NatGeo" url="https://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}"></ma-tile-map-tile-layer>
 
-<ul>
-    <li><strong>First Marker:</strong> Clicking toggles an info window which sets a binary point's value to "{{myPoint1.value}}" and uses its value to switch its icon.</li>
-    <li><strong>Green Marker:</strong> Clicking toggles an info window which sets a numeric point's value to {{myPoint2.value}}.</li>
-    <li><strong>Red Marker:</strong> Clicking toggles an info window which displays a small chart of latest 50 values.</li>
-    <li><strong>Yellow Marker:</strong> Sets output-data variable to "{{myOutputData}}".</li>
-</ul>
+    <ma-tile-map-marker coordinates="marker" tooltip="This is the tooltip" on-drag="marker[0] = $coordinates.lat; marker[1] = $coordinates.lng" options="{draggable: true}">
+        <!-- This is the popup contents -->
+        <div>The map center is {{$map.getCenter()}}</div>
+        <div>The zoom level is {{$map.getZoom()}}</div>
+        <div><a ng-click="$marker.closePopup()">Close popup</a></div>
+    </ma-tile-map-marker>
 
-<br>
+    <!-- Use the leaflet object to define some icons, note the divs are not rendered anywhere -->
+    <div ng-init="onIcon = $leaflet.icon({iconUrl: '/ui/img/ligthbulb_on.png', iconSize: [48,48], iconAnchor: [24,48], popupAnchor: [0,-48]})"></div>
+    <div ng-init="offIcon = $leaflet.icon({iconUrl: '/ui/img/ligthbulb_off.png', iconSize: [48,48], iconAnchor: [24,48], popupAnchor: [0,-48]})"></div>
 
-<ma-map lat="-12.95" long="-38.45" zoom="12" map-type="roadmap" info-window-theme="dark" desktop-height="600px" mobile-height="450px"
-ng-init="myMarkers={
-        true: 'img/map-markers/purple-dot.png',
-        false: 'img/map-markers/orange-dot.png'}" output-data="myOutputData">
-    
-    <marker id="marker1" position="-12.90, -38.41" icon="{url: '{{myMarkers[myPoint1.value]}}'}" on-click="$parent.$ctrl.toggleInfoWindow('setPoint1', 'marker1')"></marker>
-    <marker id="marker2" position="-12.95, -38.43" draggable="true" icon="{url: 'img/map-markers/green-dot.png'}" on-click="$parent.$ctrl.toggleInfoWindow('setPoint2', 'marker2')"></marker>
-    <marker id="marker3" position="-12.99, -38.47" draggable="true" on-click="$parent.$ctrl.toggleInfoWindow('chart1', 'marker3')"></marker>
-    <marker id="marker4" position="-12.92, -38.42" draggable="true" icon="{url: 'img/map-markers/yellow-dot.png'}" on-click="$parent.$ctrl.setOutputData('Demo 01-amps')"></marker>
-    
-    <info-window id="setPoint2">    
-        <div>
-            <ma-set-point-value point="myPoint2"></ma-set-point-value>
-        </div>
-    </info-window>
-    <info-window id="setPoint1">
-        <div>
-            <ma-set-point-value point="myPoint1"></ma-set-point-value>
-        </div>
-    </info-window>
-    <info-window id="chart1">
-        <div layout="row" layout-padding>
-            <ma-serial-chart style="height: 150px; width: 250px" series-1-point="myPoint3" series-1-values="chart1Vals"></ma-serial-chart>
-        </div>
-    </info-window>
-</ma-map>
-
+    <ma-tile-map-marker coordinates="[-12.90, -38.52]" on-click="lightOn = !lightOn" icon="lightOn ? onIcon : offIcon"></ma-tile-map-marker>
+</ma-tile-map>
 </ma-ui-dual-pane-editor>
