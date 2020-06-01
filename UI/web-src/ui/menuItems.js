@@ -1245,26 +1245,6 @@ export default [
         weight: 2001
     },
     {
-        url: '/play-area',
-        name: 'ui.examples.playArea',
-        templatePromise: examplesTemplate('playArea.html'),
-        menuTr: 'ui.dox.playArea',
-        menuIcon: 'fa-magic',
-        params: {
-            markup: null
-        },
-        weight: 990
-    },
-    {
-        name: 'ui.examples.playAreaBig',
-        templatePromise: examplesTemplate('playAreaBig.html'),
-        url: '/play-area-big',
-        menuTr: 'ui.dox.playAreaBig',
-        menuHidden: true,
-        menuIcon: 'fa-magic',
-        weight: 990
-    },
-    {
         name: 'ui.examples.basics',
         url: '/basics',
         menuTr: 'ui.dox.basics',
