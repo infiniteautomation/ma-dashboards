@@ -21,12 +21,18 @@ class PermissionsPageController {
     }
     
     getPermissions() {
-        this.maSystemPermission.buildQuery()
+        const queryPromise = this.maSystemPermission.buildQuery()
         .sort('moduleName', 'name')
         .query().then((permissions) => {
             this.permissions = permissions;
             this.filterPermissions();
+        }).finally(() => {
+            if (this.permissionQuery === queryPromise) {
+                delete this.permissionQuery
+            }
         });
+        
+        return (this.permissionQuery = queryPromise);
     }
     
     filterPermissions() {

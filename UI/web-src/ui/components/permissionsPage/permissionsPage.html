@@ -23,6 +23,7 @@
             </md-input-container>
         </md-card-content>
     
+        <md-progress-linear ng-if="$ctrl.permissionQuery"></md-progress-linear>
         <md-card-content flex class="ma-no-padding ma-scroll-parent" hide show-gt-md>
             <md-list class="ma-scroll-child ma-no-padding ma-no-text-overflow">
                 <md-list-item class="md-2-line" ng-repeat="module in $ctrl.modules track by module.name" ng-click="$ctrl.selectedModule = module" ng-class="{'ma-list-selected': $ctrl.selectedModule === module}">
