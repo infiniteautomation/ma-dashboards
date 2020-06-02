@@ -60,7 +60,7 @@ class PermissionsPageController {
         if (current) {
             this.selectedModule = current;
         } else {
-            this.selectedModule = this.modules[0];
+            this.selectedModule = this.modules.find(m => m.name === 'core') || this.modules[0];
         }
     }
     
