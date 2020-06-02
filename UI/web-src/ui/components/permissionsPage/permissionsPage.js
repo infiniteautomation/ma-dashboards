@@ -10,10 +10,11 @@ const filterSearchKeys = ['moduleName', 'moduleDescription', 'description', 'nam
 
 class PermissionsPageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maSystemPermission']; }
+    static get $inject() { return ['maSystemPermission', '$q']; }
     
-    constructor(maSystemPermission) {
+    constructor(maSystemPermission, $q) {
         this.maSystemPermission = maSystemPermission;
+        this.$q = $q;
     }
     
     $onInit() {
@@ -67,7 +68,7 @@ class PermissionsPageController {
     savePermission(permission) {
         const ngModelCtrl = this.form && this.form[permission.name];
         
-        permission.save().then(() => {
+        permission.promise = permission.save().then(() => {
             if (ngModelCtrl) {
                 modelCtrl.$setValidity('validationMessage', true);
                 delete modelCtrl.validationMessage;
@@ -79,6 +80,7 @@ class PermissionsPageController {
             } else {
                 // TODO notify
             }
+            return this.$q.reject(error);
         });
     }
 }
