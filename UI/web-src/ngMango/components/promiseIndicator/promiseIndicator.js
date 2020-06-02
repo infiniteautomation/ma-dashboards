@@ -14,11 +14,14 @@ const Status = Object.freeze({
 
 class PromiseIndicatorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$element', '$scope', '$timeout']; }
+    static get $inject() { return ['$element', '$scope', '$timeout', '$transclude']; }
     
-    constructor($element, $scope, $timeout) {
+    constructor($element, $scope, $timeout, $transclude) {
         this.$element = $element;
+        this.$scope = $scope;
         this.$timeout = $timeout;
+        this.$transclude = $transclude;
+        
         this.resetDelay = 5000;
         $scope.Status = Status;
     }
@@ -27,6 +30,18 @@ class PromiseIndicatorController {
         if (changes.promise) {
             this.promiseChanged(this.promise);
         }
+    }
+    
+    $onInit() {
+        this.$transclude((tClone, tScope) => {
+            tScope.$indicator = this;
+            tScope.Status = Status;
+            
+            this.hasTranscludeContent = Array.from(tClone).some(node => node.nodeType !== 3 || !!node.nodeValue.trim());
+            if (this.hasTranscludeContent) {
+                this.$element.append(tClone);
+            }
+        });
     }
     
     promiseChanged(promise) {
@@ -84,6 +99,7 @@ export default {
         promise: '<',
         resetDelay: '<?'
     },
+    transclude: true,
     controller: PromiseIndicatorController,
     template: promiseIndicatorTemplate
 };
