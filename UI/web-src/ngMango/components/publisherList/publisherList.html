@@ -2,7 +2,7 @@
 
 <md-list class="ma-no-padding ma-no-text-overflow">
     <md-list-item ng-if="$ctrl.showNew && !$ctrl.filter" class="md-2-line" ng-click="$ctrl.newPublisher($event)"
-            md-colors="{'background': $ctrl.selected.isNew() ? 'accent-hue-1' : 'background-hue-1'}">
+            ng-class="{'ma-list-selected': $ctrl.selected.isNew()}">
         <div class="md-list-item-text">
             <h3 ma-tr="ui.app.new"></h3>
             <p ma-tr="ui.publisher.create"></p>
@@ -13,8 +13,7 @@
     </md-list-item>
     
     <md-list-item ng-repeat="item in $ctrl.items | orderBy:'name' track by item.xid" ng-click="$ctrl.selectPublisher(item)" class="md-2-line"
-            ng-class="{'ma-list-selected': $ctrl.selected.xid === item.xid}"
-            md-colors="{'background': $ctrl.selected.xid === item.xid ? 'accent-hue-1' : 'background-hue-1'}">
+            ng-class="{'ma-list-selected': $ctrl.selected.xid === item.xid}">
         <div class="md-list-item-text">
             <h3 ng-bind="item.name"></h3>
             <p><span ng-bind="item.description"></span><span ng-if="item.connectionDescription"> &mdash; <span ng-bind="item.connectionDescription"></span></span></p>

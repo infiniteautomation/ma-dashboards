@@ -11,7 +11,6 @@
   <md-list-item class="md-2-line"
       ng-repeat="item in $ctrl.watchLists track by item.xid"
       ng-class="{'ma-list-selected': $ctrl.watchList.xid === item.xid}"
-      md-colors="{'background': $ctrl.watchList.xid === item.xid ? 'accent-hue-1' : 'background-hue-1'}"
       ng-click="$ctrl.setViewValue(item)">
     <div class="md-list-item-text">
       <h3 ng-bind="item.name"></h3>

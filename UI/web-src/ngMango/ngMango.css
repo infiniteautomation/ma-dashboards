@@ -307,12 +307,6 @@ ma-query-builder .query-sort-property .md-icon-button {
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
 }
 
-/* Watch list list */
-
-md-list-item.ma-list-selected .md-list-item-text h3 {
-  color: inherit !important;
-}
-
 /* Badges */
 ma-badge {
     display: block;
@@ -1309,9 +1303,21 @@ md-list.ma-no-text-overflow md-list-item .md-list-item-inner .md-list-item-text 
     white-space: nowrap;
 }
 
-md-list.ma-no-text-overflow md-list-item.ma-list-selected {
+/* Selectable items in lists */
+
+md-list md-list-item.ma-list-selected {
     background-color: var(--ma-accent-hue-1);
     color: var(--ma-accent-hue-1-contrast);
+}
+
+md-list md-list-item.ma-list-selected .md-list-item-inner .md-list-item-text h3,
+md-list md-list-item.ma-list-selected .md-list-item-inner .md-list-item-text p,
+md-list md-list-item.ma-list-selected .md-secondary-container .md-secondary.md-button > md-icon {
+  color: inherit;
+}
+
+md-list md-list-item.ma-list-selected .md-list-item-inner .md-list-item-text p {
+    opacity: 0.7;
 }
 
 /* Class for setting md-table cells to not text wrap */
