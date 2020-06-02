@@ -718,6 +718,14 @@ md-menu-item > .md-button.ma-no-padding-left {
 	margin: 0;
 }
 
+.ma-margin {
+    margin: 8px;
+}
+
+.ma-margin-large {
+    margin: 16px;
+}
+
 .ma-margin-top {
 	margin-top: 8px;
 }
@@ -1301,7 +1309,10 @@ md-list.ma-no-text-overflow md-list-item .md-list-item-inner .md-list-item-text 
     white-space: nowrap;
 }
 
-md-list-item._md-button-wrap > div.md-button:first-child .md-list-item-inner
+md-list.ma-no-text-overflow md-list-item.ma-list-selected {
+    background-color: var(--ma-accent-hue-1);
+    color: var(--ma-accent-hue-1-contrast);
+}
 
 /* Class for setting md-table cells to not text wrap */
 table.md-table.ma-no-wrap thead tr th,

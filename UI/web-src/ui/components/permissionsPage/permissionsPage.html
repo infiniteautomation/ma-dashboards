@@ -1,31 +1,54 @@
-<p ma-tr="ui.app.permissionsPageHeader"></p>
+<div flex="noshrink" layout="column" layout-gt-md="row">
+    <md-card flex-gt-md="20" layout-gt-md="column">
+        <md-toolbar class="md-hue-3">
+            <div class="md-toolbar-tools">
+                <span ma-tr="ui.permissions.selectModule"></span>
+            </div>
+        </md-toolbar>
+        
+        <md-input-container class="ma-filter" md-no-float>
+            <input ng-model="$ctrl.filter" ng-model-options="{debounce: 500}" ng-change="$ctrl.filterPermissions()" ma-tr="ui.permissions.filterPermissions">
+            <md-button ng-show="$ctrl.filter" class="ma-input-button md-icon-button" ng-click="$ctrl.filter = null; $ctrl.filterPermissions()">
+                <md-icon>clear</md-icon>
+            </md-button>
+        </md-input-container>
 
-<div layout>
-    <md-input-container md-no-float="true" flex>
-        <input ng-model="$ctrl.filter" ng-model-options="{debounce: 500}" ng-change="$ctrl.filterPermissions()" ma-tr="ui.app.filter">
-        <md-button class="ma-input-button md-icon-button" ng-show="!!$ctrl.filter" ng-click="$ctrl.filter = null; $ctrl.filterPermissions()">
-            <md-icon>clear</md-icon>
-        </md-button>
-    </md-input-container>
-</div>
-
-<div ma-accordion="accordion" ma-accordion-single>
-    <md-card class="ma-accordion" ng-repeat="(moduleName, permissions) in $ctrl.permissions">
-        <md-card-title class="ma-small-padding" ng-click="accordion.toggle(moduleName)">
-            <md-card-title-text>
-                <div class="md-headline" ng-class="{'ma-accordion-expanded': accordion.section[moduleName]}" layout layout-align="start center">
-                    <span flex ng-bind="moduleName"></span><md-icon>keyboard_arrow_down</md-icon>
+        <md-card-content hide-gt-md layout class="ma-small-padding">
+            <md-input-container flex md-no-float class="ma-no-margin-top">
+                <md-select ng-model="$ctrl.selectedModule" ng-model-options="{trackBy: '$value.name'}">
+                    <md-option ng-repeat="module in $ctrl.modules track by module.name" ng-value="module">
+                        <span ng-bind="module.name"></span> &mdash; <span ng-bind="module.description"></span>
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </md-card-content>
+    
+        <md-card-content flex class="ma-no-padding ma-scroll-parent" hide show-gt-md>
+            <md-list class="ma-scroll-child ma-no-padding ma-no-text-overflow">
+                <md-list-item class="md-2-line" ng-repeat="module in $ctrl.modules track by module.name" ng-click="$ctrl.selectedModule = module" ng-class="{'ma-list-selected': $ctrl.selectedModule === module}">
+                    <div class="md-list-item-text">
+                        <h3 ng-bind="module.name"></h3>
+                        <p ng-bind="module.description"></p>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-card-content>
+    </md-card>
+    
+    <div flex-gt-md>
+        <md-card>
+            <md-toolbar class="md-hue-3">
+                <div class="md-toolbar-tools">
+                    <span ma-tr="ui.permissions.permissionsForModule" ma-tr-args="[$ctrl.selectedModule.name]"></span>
                 </div>
-            </md-card-title-text>
-        </md-card-title>
-        <md-card-content>
-            <ma-accordion-section section-id="{{moduleName}}">
-                <div layout layout-wrap layout-align="space-between start" class="ma-small-padding ma-inputs-container">
-                    <ma-permission-editor ng-repeat="permission in permissions track by permission.name" flex="100" flex-gt-md="50" description="{{permission.description}}"
+            </md-toolbar>
+            <md-card-content>
+                <div layout layout-wrap layout-align="space-between start" class="ma-inputs-container">
+                    <ma-permission-editor ng-repeat="permission in $ctrl.selectedModule.permissions track by permission.name" flex="100" flex-gt-md="50" description="{{permission.description}}"
                         name="{{permission.name}}" ng-model="permission.permission" ng-change="$ctrl.savePermission(permission)">
                     </ma-permission-editor>
                 </div>
-            </ma-accordion-section>
-        </md-card-content>
-    </md-card>
+            </md-card-content>
+        </md-card>
+    </div>
 </div>

@@ -21,28 +21,41 @@ class PermissionsPageController {
     }
     
     getPermissions() {
-        
         this.maSystemPermission.buildQuery()
         .sort('moduleName', 'name')
         .query().then((permissions) => {
-            this.allPermissions = permissions;
+            this.permissions = permissions;
             this.filterPermissions();
         });
     }
     
     filterPermissions() {
-        this.permissions = {};
+        const modules = {};
         const filter = this.filter && this.filter.toLowerCase();
         
-        this.allPermissions.filter(permission => {
+        this.permissions.filter(permission => {
             if (!filter) return true;
             return filterSearchKeys.some(k => permission[k].toLowerCase().includes(filter));
         }).forEach(permission => {
-            if (!this.permissions[permission.moduleName]) {
-                this.permissions[permission.moduleName] = [];
+            let module = modules[permission.moduleName];
+            if (!module) {
+                module = modules[permission.moduleName] = {
+                    name: permission.moduleName,
+                    description: permission.moduleDescription,
+                    permissions: []
+                };
             }
-            this.permissions[permission.moduleName].push(permission);
+            module.permissions.push(permission);
         });
+        
+        this.modules = Object.values(modules);
+        
+        const current = this.selectedModule && this.modules.find(m => m.name === this.selectedModule.name);
+        if (current) {
+            this.selectedModule = current;
+        } else {
+            this.selectedModule = this.modules[0];
+        }
     }
     
     savePermission(permission) {

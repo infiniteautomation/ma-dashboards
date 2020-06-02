@@ -922,7 +922,7 @@ export default [
         params: {
             helpPage: 'ui.help.permissions'
         },
-        template: '<ma-ui-permissions-page></ma-ui-permissions-page>',
+        template: '<ma-ui-permissions-page flex="noshrink" layout="column"></ma-ui-permissions-page>',
         url: '/permissions',
         menuTr: 'systemSettings.systemPermissions',
         menuIcon: 'supervised_user_circle',
