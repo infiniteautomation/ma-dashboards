@@ -1,0 +1,8 @@
+ma-promise-indicator {
+    display: flex;
+}
+
+ma-promise-indicator.ma-promise-error,
+ma-promise-indicator.ma-promise-error md-icon.material-icons {
+    color: var(--ma-warn-A700);
+}
