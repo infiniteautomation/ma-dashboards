@@ -44,7 +44,7 @@
                 </div>
             </md-toolbar>
             <md-card-content>
-                <div layout layout-wrap layout-align="space-between start" class="ma-inputs-container">
+                <div layout layout-wrap layout-align="space-between start" class="ma-inputs-container" ng-form="$ctrl.form">
                     <div flex="100" flex-gt-md="50" layout ng-repeat="permission in $ctrl.selectedModule.permissions | orderBy:'description' track by permission.name">
                         <ma-permission-editor flex description="{{permission.description}}"
                             name="{{permission.name}}" ng-model="permission.permission" ng-change="$ctrl.savePermission(permission)">

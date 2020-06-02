@@ -70,8 +70,8 @@ class PermissionsPageController {
         
         permission.promise = permission.save().then(() => {
             if (ngModelCtrl) {
-                modelCtrl.$setValidity('validationMessage', true);
-                delete modelCtrl.validationMessage;
+                ngModelCtrl.$setValidity('validationMessage', true);
+                delete ngModelCtrl.validationMessage;
             }
         }, error => {
             if (error.status === 422 && ngModelCtrl) {
