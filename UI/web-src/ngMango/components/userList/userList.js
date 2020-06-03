@@ -49,8 +49,7 @@ class UserListController {
                 .up();
         }
 
-        this.usersPromise = queryBuilder
-            .limit(1000)
+        this.usersPromise = queryBuilder // TODO this is a unbounded query
             .query()
             .then(users => this.users = users);
         

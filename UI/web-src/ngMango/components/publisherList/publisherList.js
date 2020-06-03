@@ -47,8 +47,7 @@ class PublisherListController {
     }
     
     doQuery() {
-        const queryPromise = this.maPublisher.buildQuery()
-            .limit(10000)
+        const queryPromise = this.maPublisher.buildQuery() // TODO this is a unbounded query
             .query()
             .then(items => {
                 this.preFilterItems = items;

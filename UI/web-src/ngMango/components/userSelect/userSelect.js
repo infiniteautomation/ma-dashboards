@@ -40,7 +40,8 @@ class UserSelectController {
     }
     
     getUsers() {
-        this.usersPromise = this.User.buildQuery().limit(10000).query().then(users => {
+        // TODO this is a unbounded query
+        this.usersPromise = this.User.buildQuery().query().then(users => {
             this.users = users;
             return users;
         });

@@ -40,8 +40,7 @@ class EventHandlerCheckListController {
     }
     
     doQuery() {
-        const queryBuilder = this.maEventHandler.buildQuery();
-        queryBuilder.limit(10000);
+        const queryBuilder = this.maEventHandler.buildQuery(); // TODO this is a unbounded query
         this.queryPromise = queryBuilder.query().then(eventHandlers => {
             return (this.eventHandlers = eventHandlers);
         }).finally(() => {

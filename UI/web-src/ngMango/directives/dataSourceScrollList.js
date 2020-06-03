@@ -89,8 +89,8 @@ function dataSourceScrollList($injector) {
         }
         
         doFilterQuery() {
+            // TODO this is a unbounded query
             const queryPromise = this.DataSource.buildQuery()
-                .limit(1000)
                 .query()
                 .then(items => {
                     this.preFilterItems = items;

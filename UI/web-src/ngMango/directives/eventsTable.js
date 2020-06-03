@@ -176,8 +176,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             });
 
             // TODO update with websocket
+            // TODO this is a unbounded query
             EventHandler.buildQuery()
-            .limit(10000)
             .query().then(handlers => {
                 this.handlers = handlers;
                 this.rebuildHandlersMap();

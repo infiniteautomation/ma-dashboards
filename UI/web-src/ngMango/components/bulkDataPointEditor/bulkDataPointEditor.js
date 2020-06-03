@@ -216,8 +216,7 @@ class BulkDataPointEditorController {
             this.queryObj = this.query;
             if (this.dataSource) {
                 this.queryObj = this.maPoint.buildQuery()
-                    .eq('dataSourceXid', this.dataSource.xid)
-                    .limit(100000); // TODO
+                    .eq('dataSourceXid', this.dataSource.xid); // TODO this is a unbounded query
             }
             p = this.pointsPromiseQuery = this.queryObj.query();
         }

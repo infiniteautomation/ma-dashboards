@@ -139,8 +139,7 @@ class PointBrowserController {
         const query = new this.maRqlBuilder()
             .eq('deviceName', this.deviceName)
             .sort('name')
-            .limit(10000)
-            .toString();
+            .toString(); // TODO this is a unbounded query
 
         this.selected = new this.maWatchList({
             type: 'query',
@@ -154,8 +153,7 @@ class PointBrowserController {
         const query = new this.maRqlBuilder()
             .eq('dataSourceXid', this.dataSource.xid)
             .sort('name')
-            .limit(10000)
-            .toString();
+            .toString(); // TODO this is a unbounded query
 
         this.selected = new this.maWatchList({
             type: 'query',

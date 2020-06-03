@@ -40,8 +40,7 @@ class PublisherSelectController {
     }
     
     doQuery() {
-        const queryBuilder = this.maPublisher.buildQuery();
-        queryBuilder.limit(10000);
+        const queryBuilder = this.maPublisher.buildQuery(); // TODO this is a unbounded query
         return queryBuilder.query().then(publishers => {
             return (this.publishers = publishers);
         });

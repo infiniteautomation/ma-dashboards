@@ -114,7 +114,7 @@ function WatchListFactory($resource, maUtil, $http, Point, $q,
                 if (this.data && this.data.limit != null) {
                     builder.limit(this.data.limit, this.data.offset);
                 } else {
-                    builder.limit(10000);
+                    // TODO this is a unbounded query
                 }
             }
             

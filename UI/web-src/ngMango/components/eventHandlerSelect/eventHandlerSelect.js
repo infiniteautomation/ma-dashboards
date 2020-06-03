@@ -43,8 +43,7 @@ class EventHandlerSelectController {
     }
     
     doQuery() {
-        const queryBuilder = this.maEventHandler.buildQuery();
-        queryBuilder.limit(10000);
+        const queryBuilder = this.maEventHandler.buildQuery(); // TODO this is a unbounded query
         return queryBuilder.query().then(eventHandlers => {
             if (this.eventType) {
                 const eventTypeId = this.eventType.typeId;
