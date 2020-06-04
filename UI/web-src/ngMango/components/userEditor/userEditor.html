@@ -94,9 +94,17 @@
             <div class="ma-hint" ma-tr="ui.app.userRoleNotice"></div>
         </md-input-container>
         
-        <ma-role-selector flex="100" flex-gt-md="50" ng-if="!$ctrl.registerMode" name="permissions" ng-model="$ctrl.user.permissions"
-            ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')"></ma-role-selector>
-        
+        <div flex="100" flex-gt-md="50" layout class="ma-user-editor-role-selector-container">
+            <md-icon>group</md-icon>
+            <ma-drop-down-button flex>
+                <span ng-bind="$ctrl.user.permissions.join(', ')"></span>
+                <ma-drop-down create-on-init="false" class="ma-slide-down ma-user-editor-role-selector">
+                    <ma-role-selector class="ma-small-padding" ng-if="!$ctrl.registerMode" name="permissions" ng-model="$ctrl.user.permissions"
+                        ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')"></ma-role-selector>
+                </ma-drop-down>
+            </ma-drop-down-button>
+        </div>
+
         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.registerMode">
             <md-icon>alarm</md-icon>
             <label ma-tr="users.receiveAlarmEmails"></label>

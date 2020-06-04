@@ -10,3 +10,17 @@ ma-user-editor .ma-user-checkboxes > md-checkbox {
 ma-user-editor .ma-action-buttons {
 	margin-top: 16px;
 }
+
+ma-user-editor .ma-user-editor-role-selector-container > md-icon {
+    margin-left: 2px;
+    margin-right: 11px;
+    color: var(--ma-foreground-1);
+}
+
+ma-user-editor .ma-user-editor-role-selector-container > ma-drop-down-button {
+    margin: 16px 0;
+}
+
+.ma-user-editor-role-selector {
+    overflow-y: auto;
+}
