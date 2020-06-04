@@ -20,3 +20,8 @@ ma-user-editor .ma-user-editor-role-selector-container > md-icon {
 ma-user-editor .ma-user-editor-role-selector-container > ma-drop-down-button {
     margin: 16px 0;
 }
+
+ma-drop-down.ma-user-editor-role-selector  {
+    background-color: var(--ma-background-hue-2);
+    color: var(--ma-background-hue-2-contrast);
+}

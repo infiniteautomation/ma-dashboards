@@ -23,11 +23,10 @@
 import angular from 'angular';
 import './dropDown.css';
 
-dropDown.$inject = ['$parse', '$document', '$injector', '$animate', '$window'];
-function dropDown($parse, $document, $injector, $animate, $window) {
+dropDown.$inject = ['$document', '$animate', '$window'];
+function dropDown($document, $animate, $window) {
     
     const $body = $document.maFind('body');
-    const $mdColors = $injector.has('$mdColors') && $injector.get('$mdColors');
 
     class DropDownController {
         static get $$ngIsClass() { return true; }
@@ -88,10 +87,6 @@ function dropDown($parse, $document, $injector, $animate, $window) {
                 tScope.$dropDown = this;
                 this.transcludeScope = tScope;
             }, $body);
-            
-            if ($mdColors && !this.$attrs.hasOwnProperty('mdColors')) {
-                $mdColors.applyThemeColors(this.$dropDown, {background: 'background-hue-1'});
-            }
         }
         
         destroyElement() {
