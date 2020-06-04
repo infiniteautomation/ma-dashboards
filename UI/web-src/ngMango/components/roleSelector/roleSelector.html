@@ -1,3 +1,10 @@
+<md-input-container class="ma-filter" md-no-float>
+    <input ng-model="$ctrl.filter" ng-model-options="{debounce: 500}" ng-change="$ctrl.filterRoles()" ma-tr="roles.filter">
+    <md-button ng-show="$ctrl.filter" class="ma-input-button md-icon-button" ng-click="$ctrl.filter = null; $ctrl.filterRoles()">
+        <md-icon>clear</md-icon>
+    </md-button>
+</md-input-container>
+
 <ma-tree-view items="$ctrl.rolesPromise" item-id="$item.xid" item-children="$ctrl.loadInherited($item)" item-has-children="$item.inherited.length"><!-- no space
  --><md-checkbox ng-click="$event.stopPropagation()"
         ng-init="model = $ctrl.createModel($item.xid)" ng-model="model.value" ma-form-exclude>

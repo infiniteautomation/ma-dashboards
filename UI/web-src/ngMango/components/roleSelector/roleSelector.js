@@ -18,10 +18,7 @@ class RoleSelectorController {
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        this.rolesPromise = this.maRole.buildQuery()
-            .eq('inheritedBy', null)
-            .sort('name')
-            .query();
+        this.filterRoles();
     }
 
     render() {
@@ -54,6 +51,19 @@ class RoleSelectorController {
                 this.setViewValue();
             }
         });
+    }
+    
+    filterRoles() {
+        const builder = this.maRole.buildQuery();
+        
+        if (this.filter) {
+            builder.match('name', `*${this.filter}*`);
+        } else {
+            builder.eq('inheritedBy', null);
+        }
+        
+        this.rolesPromise = builder.sort('name')
+            .query();
     }
 }
 

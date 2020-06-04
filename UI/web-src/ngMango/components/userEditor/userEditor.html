@@ -99,7 +99,7 @@
             <ma-drop-down-button flex>
                 <span ng-bind="$ctrl.user.permissions.join(', ')"></span>
                 <ma-drop-down create-on-init="false" class="ma-slide-down ma-user-editor-role-selector">
-                    <ma-role-selector class="ma-small-padding" ng-if="!$ctrl.registerMode" name="permissions" ng-model="$ctrl.user.permissions"
+                    <ma-role-selector ng-if="!$ctrl.registerMode" name="permissions" ng-model="$ctrl.user.permissions"
                         ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')"></ma-role-selector>
                 </ma-drop-down>
             </ma-drop-down-button>
