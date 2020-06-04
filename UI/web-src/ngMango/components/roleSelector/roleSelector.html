@@ -1,0 +1,8 @@
+<ma-tree-view items="$ctrl.rolesPromise" item-id="$item.xid" item-children="$ctrl.loadInherited($item)" item-has-children="$item.inherited.length"><!-- no space
+ --><md-checkbox ng-click="$event.stopPropagation()"
+        ng-init="model = $ctrl.createModel($item.xid)" ng-model="model.value" ma-form-exclude>
+    </md-checkbox>
+    <span>
+        <span ng-bind="$item.name"></span>
+    </span>
+</ma-tree-view>

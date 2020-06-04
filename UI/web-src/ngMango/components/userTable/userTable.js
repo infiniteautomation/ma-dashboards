@@ -14,7 +14,7 @@ const defaultColumns = [
     {name: 'phone', label: 'users.phone'},
     {name: 'organization', label: 'users.organization'},
     {name: 'organizationalRole', label: 'users.organizationalRole'},
-    {name: 'permissions', label: 'users.permissions', sortable: false, type: 'array'},
+    {name: 'permissions', label: 'users.roles', sortable: false, type: 'array'},
     {name: 'disabled', label: 'common.disabled', type: 'boolean'},
     {name: 'muted', label: 'users.muted', type: 'boolean'},
     {name: 'created', label: 'ui.app.userCreated', type: 'date'},

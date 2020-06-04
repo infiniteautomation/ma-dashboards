@@ -17,6 +17,7 @@ ma-tree-view md-checkbox {
 
 ma-tree-view .ma-tree-view-open-icon {
 	transition: transform 0.3s ease-in-out;
+    user-select: none;
 }
 
 ma-tree-view li.ma-tree-view-open > span > .ma-tree-view-open-icon {

@@ -3,8 +3,8 @@
  * @author Jared Wiltshire
  */
 
-roleFactory.$inject = ['maRestResource'];
-function roleFactory(RestResource) {
+roleFactory.$inject = ['maRestResource', 'maRqlBuilder'];
+function roleFactory(RestResource, RqlBuilder) {
     
     const baseUrl = '/rest/v2/roles';
 
@@ -16,9 +16,18 @@ function roleFactory(RestResource) {
         static queryRootRoles() {
             const builder = new RqlBuilder();
             builder.queryFunction = (query, opts) => {
-                return this.query(query, Object.assign({
-                    url: baseUrl + '/root'
-                }, opts))
+                return this.http({
+                    url: baseUrl + '/root',
+                    params: {
+                        rqlQuery: query && query.toString()
+                    }
+                }, opts).then(response => {
+                    const items = response.data.items.map(item => {
+                        return new this(item);
+                    });
+                    items.$total = response.data.total;
+                    return items;
+                });
             };
             return builder;
         }
@@ -26,11 +35,24 @@ function roleFactory(RestResource) {
         static queryInheritedRoles(xid) {
             const builder = new RqlBuilder();
             builder.queryFunction = (query, opts) => {
-                return this.query(query, Object.assign({
-                    url: baseUrl + '/inherited/' + encodeURIComponent(xid)
-                }, opts))
+                return this.http({
+                    url: baseUrl + '/inherited/' + this.encodeUriSegment(xid),
+                    params: {
+                        rqlQuery: query && query.toString()
+                    }
+                }, opts).then(response => {
+                    const items = response.data.items.map(item => {
+                        return new this(item);
+                    });
+                    items.$total = response.data.total;
+                    return items;
+                });
             };
             return builder;
+        }
+        
+        queryInheritedRoles() {
+            return this.constructor.queryInheritedRoles(this.xid);
         }
     }
     
