@@ -18,7 +18,10 @@ class RoleSelectorController {
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        this.rolesPromise = this.maRole.queryRootRoles().sort('name').query();
+        this.rolesPromise = this.maRole.buildQuery()
+            .eq('inheritedBy', null)
+            .sort('name')
+            .query();
     }
 
     render() {
@@ -33,7 +36,10 @@ class RoleSelectorController {
     }
 
     loadInherited(role) {
-        return role.queryInheritedRoles().sort('name').query();
+        return this.maRole.buildQuery()
+            .eq('inheritedBy', role.xid)
+            .sort('name')
+            .query();
     }
     
     createModel(xid) {
