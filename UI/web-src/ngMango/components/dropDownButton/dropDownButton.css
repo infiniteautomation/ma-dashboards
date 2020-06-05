@@ -1,36 +1,42 @@
 ma-drop-down-button {
-	display: flex;
-	padding-bottom: 1px;
-	border-bottom: 1px solid currentColor;
-	margin: 8px 0;
-	color: var(--ma-foreground-3);
-	border-bottom-color: var(--ma-foreground-4);
+    display: flex;
+    padding-bottom: 1px;
+    border-bottom: 1px solid currentColor;
+    margin: 8px 0;
+    color: var(--ma-foreground-3);
+    border-bottom-color: var(--ma-foreground-4);
+    cursor: default;
 }
 
 ma-drop-down-button:active,
 ma-drop-down-button:focus {
-	outline: none;
+    outline: none;
 }
 
 ma-drop-down-button[disabled] {
-	border-bottom-style: dashed;
+    border-bottom-color: transparent;
+    background-image: linear-gradient(90deg, var(--ma-foreground-3) 0, var(--ma-foreground-3) 33%, transparent 0);
+    background-position: 0 bottom;
+    background-size: 4px 1px;
+    background-repeat: repeat-x;
 }
 
 ma-drop-down-button:focus:not([disabled]),
 ma-drop-down-button:active:not([disabled]),
 ma-drop-down-button.ma-drop-down-open:not([disabled]) {
-	padding-bottom: 0;
-	border-bottom-width: 2px;
-	color: var(--ma-primary);
-	border-bottom-color: var(--ma-primary);
+    padding-bottom: 0;
+    border-bottom-width: 2px;
+    color: var(--ma-primary);
+    border-bottom-color: var(--ma-primary);
 }
 
 ma-drop-down-button > div {
-	flex-grow: 1;
+    flex-grow: 1;
 }
 
 ma-drop-down-button > md-icon {
     user-select: none;
+    cursor: default;
 }
 
 ma-drop-down-button:not([disabled]) > md-icon.material-icons {
@@ -39,18 +45,18 @@ ma-drop-down-button:not([disabled]) > md-icon.material-icons {
 
 ma-drop-down-button:not([disabled]),
 ma-drop-down-button:not([disabled]) > md-icon {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 ma-drop-down-button:not([disabled]) > div {
-	color: var(--ma-foreground-1);
+    color: var(--ma-foreground-1);
 }
 
 ma-drop-down-button > md-icon.material-icons {
-	transition: transform 0.3s ease-in-out;
-	color: inherit;
+    transition: transform 0.3s ease-in-out;
+    color: inherit;
 }
 
 ma-drop-down-button.ma-drop-down-open > md-icon {
-	transform: rotate(-180deg);
+    transform: rotate(-180deg);
 }
