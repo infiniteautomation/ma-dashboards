@@ -94,16 +94,15 @@
             <div class="ma-hint" ma-tr="ui.app.userRoleNotice"></div>
         </md-input-container>
         
-        <div flex="100" flex-gt-md="50" layout class="ma-user-editor-role-selector-container">
+        <ma-drop-down-button flex="100" flex-gt-md="50" ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')" ng-if="!$ctrl.registerMode">
             <md-icon>group</md-icon>
-            <ma-drop-down-button flex>
-                <span ng-bind="$ctrl.user.permissions.join(', ')"></span>
-                <ma-drop-down create-on-init="false" class="ma-slide-down ma-user-editor-role-selector">
-                    <ma-role-selector ng-if="!$ctrl.registerMode" name="permissions" ng-model="$ctrl.user.permissions"
-                        ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')"></ma-role-selector>
-                </ma-drop-down>
-            </ma-drop-down-button>
-        </div>
+            <span ng-bind="$ctrl.user.permissions.join(', ')"></span>
+            <ma-drop-down create-on-init="false" class="ma-slide-down ma-user-editor-role-selector">
+                <ma-role-selector name="permissions" ng-model="$ctrl.user.permissions"></ma-role-selector>
+            </ma-drop-down>
+        </ma-drop-down-button>
+
+        <md-checkbox ng-model="$ctrl.disabled"></md-checkbox>
 
         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.registerMode">
             <md-icon>alarm</md-icon>
@@ -144,6 +143,7 @@
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.locale.validationMessage"></div>
             </div>
         </md-input-container>
+
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>access_time</md-icon>
             <label ma-tr="users.timezone"></label>

@@ -22,6 +22,7 @@ class DropDownButtonController {
         });
         
         $element.attr('tabindex', 0);
+        $element.attr('role', 'button');
     }
     
     $doCheck() {

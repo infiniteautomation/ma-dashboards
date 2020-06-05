@@ -35,11 +35,10 @@ ma-drop-down-button > div {
 }
 
 ma-drop-down-button > md-icon {
-    user-select: none;
     cursor: default;
 }
 
-ma-drop-down-button:not([disabled]) > md-icon.material-icons {
+ma-drop-down-button:not([disabled]) > md-icon.ma-drop-down-icon {
     color: var(--ma-foreground-2);
 }
 
@@ -52,7 +51,7 @@ ma-drop-down-button:not([disabled]) > div {
     color: var(--ma-foreground-1);
 }
 
-ma-drop-down-button > md-icon.material-icons {
+ma-drop-down-button > md-icon.ma-drop-down-icon {
     transition: transform 0.3s ease-in-out;
     color: inherit;
 }
