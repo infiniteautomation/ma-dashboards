@@ -3,6 +3,7 @@
  * @author Jared Wiltshire
  */
 
+import angular from 'angular';
 import dropDownButtonTemplate from './dropDownButton.html';
 import './dropDownButton.css';
 
@@ -81,6 +82,8 @@ class DropDownButtonController {
         }
         // TODO should we do this?
         $container.addClass('md-input-has-value');
+
+        $element.after(angular.element('<div class="md-errors-spacer">'));
         
         containerCtrl.input = $element;
         if (!$element.attr('id')) {

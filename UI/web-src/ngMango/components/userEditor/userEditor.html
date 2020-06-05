@@ -85,25 +85,17 @@
         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.registerMode" class="ma-has-hint">
             <md-icon>group</md-icon>
             <label ma-tr="users.roles"></label>
-            <input name="permissions" ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')" ng-model="$ctrl.user.permissions"
-                pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
+            <ma-drop-down-button ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')">
+                <span ng-bind="$ctrl.user.permissions.join(', ')"></span>
+                <ma-drop-down class="ma-slide-down ma-user-editor-role-selector">
+                    <ma-role-selector name="permissions" ng-model="$ctrl.user.permissions"></ma-role-selector>
+                </ma-drop-down>
+            </ma-drop-down-button>
             <div ng-messages="$ctrl.userForm.permissions.$error">
-                <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.permissions.validationMessage"></div>
             </div>
             <div class="ma-hint" ma-tr="ui.app.userRoleNotice"></div>
         </md-input-container>
-        
-        <ma-drop-down-button flex="100" flex-gt-md="50" ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')" ng-if="!$ctrl.registerMode">
-            <md-icon>group</md-icon>
-            <span ng-bind="$ctrl.user.permissions.join(', ')"></span>
-            <ma-drop-down create-on-init="false" class="ma-slide-down ma-user-editor-role-selector">
-                <ma-role-selector name="permissions" ng-model="$ctrl.user.permissions"></ma-role-selector>
-            </ma-drop-down>
-        </ma-drop-down-button>
-
-        <md-checkbox ng-model="$ctrl.disabled"></md-checkbox>
-
         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.registerMode">
             <md-icon>alarm</md-icon>
             <label ma-tr="users.receiveAlarmEmails"></label>
