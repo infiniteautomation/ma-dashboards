@@ -287,7 +287,7 @@ function dropDown($document, $animate, $window) {
             onClosed: '&'
         },
         require: {
-            dropDownButton: '?^maDropDownButton'
+            dropDownButton: '?^^maDropDownButton'
         }
     };
 }
