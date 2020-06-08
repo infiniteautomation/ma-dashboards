@@ -40,6 +40,7 @@ function dropDown($document, $animate, $window) {
             
             this.createOnInit = true;
             this.destroyOnClose = false;
+            this.keydownListener = this.keydownListener.bind(this);
             this.scrollListener = this.scrollListener.bind(this);
             this.focusListener = this.focusListener.bind(this);
             this.resizeListener = this.resizeListener.bind(this);
@@ -87,6 +88,7 @@ function dropDown($document, $animate, $window) {
                 tScope.$dropDown = this;
                 this.transcludeScope = tScope;
             }, $body);
+            this.$dropDown.on('keydown', this.keydownListener);
         }
         
         destroyElement() {
@@ -154,6 +156,11 @@ function dropDown($document, $animate, $window) {
                 this.onClose({$dropDown: this});
                 this.transcludeScope.$broadcast('maDropDownClose');
 
+                // transfer focus back to the target element that opened the drop down (usually a ma-drop-down-button)
+                if (this.hasFocus() && this.targetElement) {
+                    this.targetElement.focus();
+                }
+                
                 // cant use $animate.leave as it removes the element (instead of detach), destroying its event handlers
                 this.closeAnimation = $animate.removeClass(this.$dropDown, 'ma-open');
                 
@@ -266,6 +273,15 @@ function dropDown($document, $animate, $window) {
             if (sorted.length) {
                 sorted[0].focus();
                 return;
+            }
+        }
+        
+        keydownListener(event) {
+            if (event.key === 'Escape' && this.isOpen()) {
+                event.stopPropagation();
+                this.$scope.$apply(() => {
+                    this.close();
+                });
             }
         }
     }
