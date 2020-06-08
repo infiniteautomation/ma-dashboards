@@ -96,7 +96,9 @@ class UserEditorController {
     
             this.maDialogHelper.toast(['ui.components.userSaved', user.username]);
             
-            this.onSave({$user: this.originalUser, $previous: previous});
+            if (typeof this.onSave === 'function') {
+                this.onSave({$user: this.originalUser, $previous: previous});
+            }
             this.render();
         }, error => {
             if (error.status === 422 && error.data && error.data.result && error.data.result.messages) {
@@ -128,7 +130,10 @@ class UserEditorController {
                 this.user = null;
                 this.originalUser = null;
                 this.resetForm();
-                this.onDelete({$user: user});
+                
+                if (typeof this.onDelete === 'function') {
+                    this.onDelete({$user: user});
+                }
     
                 this.maDialogHelper.toast(['ui.components.userDeleted', username]);
             }, error => {
