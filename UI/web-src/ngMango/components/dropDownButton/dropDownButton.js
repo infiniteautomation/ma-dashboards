@@ -15,8 +15,8 @@ class DropDownButtonController {
         this.$element = $element;
         this.maUtil = maUtil;
 
-        $element.on('click keypress', event => {
-            if (event.type === 'click' || [13, 32].includes(event.which)) {
+        $element.on('click keydown', event => {
+            if (event.type === 'click' || (event.type === 'keydown' && ['Enter', ' '].includes(event.key))) {
                 $scope.$apply(() => {
                     this.buttonClicked(event);
                 });
