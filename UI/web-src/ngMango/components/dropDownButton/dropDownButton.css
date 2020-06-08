@@ -66,3 +66,7 @@ md-input-container > ma-drop-down-button[disabled] {
     background-size: 4px 1px;
     background-repeat: repeat-x;
 }
+
+md-input-container:not(.md-input-invalid).md-input-focused > ma-drop-down-button > md-icon.ma-drop-down-icon {
+    color: var(--ma-foreground-2);
+}
