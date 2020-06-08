@@ -17,3 +17,8 @@ ma-publisher-editor .ma-virtual-repeat-table .ma-buttons-column {
 	display: flex;
 	justify-content: center;
 }
+
+ma-publisher-editor .ma-publisher-points-selector {
+    display: block;
+    margin-top: 0;
+}

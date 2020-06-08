@@ -1,11 +1,13 @@
-<ma-drop-down-button flex="100">
-    <div><span ma-tr="ui.app.scriptContext"></span> (<span ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.contextPoints.length]"></span>)</div>
-    <ma-drop-down create-on-init="false" class="ma-slide-down">
-        <ma-data-point-selector select-multiple="::true" ng-model="$ctrl.contextPoints" ng-change="$ctrl.setViewValue()"
-            ma-format-value="$ctrl.contextPointsToPoints($value)" ma-parse-value="$ctrl.pointsToContextPoints($value)">
-        </ma-data-point-selector>
-    </ma-drop-down>
-</ma-drop-down-button>
+<md-input-container>
+    <ma-drop-down-button>
+        <div><span ma-tr="ui.app.scriptContext"></span> (<span ma-tr="ui.app.xPointsSelectedLong" ma-tr-args="[$ctrl.contextPoints.length]"></span>)</div>
+        <ma-drop-down create-on-init="false" class="ma-slide-down">
+            <ma-data-point-selector select-multiple="::true" ng-model="$ctrl.contextPoints" ng-change="$ctrl.setViewValue()"
+                ma-format-value="$ctrl.contextPointsToPoints($value)" ma-parse-value="$ctrl.pointsToContextPoints($value)">
+            </ma-data-point-selector>
+        </ma-drop-down>
+    </ma-drop-down-button>
+</md-input-container>
 
 <md-table-container flex="100" ng-if="$ctrl.contextPoints.length > 0">
     <table md-table>

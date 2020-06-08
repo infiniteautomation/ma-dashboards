@@ -1,0 +1,7 @@
+ma-script-context {
+    display: block;
+}
+
+ma-script-context > md-input-container {
+    display: block;
+}

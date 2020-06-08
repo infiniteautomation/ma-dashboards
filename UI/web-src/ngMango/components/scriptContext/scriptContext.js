@@ -5,6 +5,7 @@
  */
 
 import componentTemplate from './scriptContext.html';
+import './scriptContext.css';
 
 class scriptContextController {
 
