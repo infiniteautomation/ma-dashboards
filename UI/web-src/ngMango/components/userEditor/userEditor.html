@@ -1,4 +1,4 @@
-<div ng-form="$ctrl.userForm" ma-form-name="{{$ctrl.formName}}" ma-validation-messages="$ctrl.validationMessages" ma-enter="$ctrl.save($event)" novalidate>
+<div ng-form="$ctrl.userForm" ma-form-name="{{$ctrl.formName}}" ma-validation-messages="$ctrl.validationMessages" novalidate>
     <div layout layout-align="space-between start" layout-wrap class="ma-inputs-container">
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>label</md-icon>
@@ -135,7 +135,7 @@
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.locale.validationMessage"></div>
             </div>
         </md-input-container>
-
+        
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>access_time</md-icon>
             <label ma-tr="users.timezone"></label>
@@ -147,6 +147,45 @@
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.timezone.validationMessage"></div>
             </div>
         </md-input-container>
+
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>access_time</md-icon>
+            <label ma-tr="users.timezone"></label>
+            <ma-drop-down-button ng-disabled="$ctrl.disabled">
+                
+                <span ng-if="$ctrl.user.timezone != null" ng-bind="$ctrl.user.timezone"></span>
+                <em ng-if="$ctrl.user.timezone == null" ma-tr="users.timezone.def"></em>
+                <ma-drop-down create-on-init="false" class="ma-slide-down ma-timezone-select">
+                    <md-input-container class="ma-filter" md-no-float>
+                        <input name="timezoneFilter" ma-form-exclude ng-model="$ctrl.timezoneFilter" ng-model-options="{debounce: 500}" ma-tr="ui.app.filter">
+                        <md-button ng-show="$ctrl.timezoneFilter" class="ma-input-button md-icon-button" ng-click="$ctrl.timezoneFilter = ''; $event.target.parentNode.querySelector('[name=timezoneFilter]').focus()">
+                            <md-icon>clear</md-icon>
+                        </md-button>
+                    </md-input-container>
+                    <div class="ma-drop-down-select">
+                        <div role="option" tabindex="0" md-ink-ripple ng-if="!$ctrl.timezoneFilter"
+                                ng-click="$ctrl.user.timezone = null; $ctrl.form.$setDirty(); $dropDown.close()"
+                                ng-class="{'ma-selected': $ctrl.user.timezone == null}"
+                                ng-attr-autofocus="{{$ctrl.user.timezone == null || undefined}}">
+                            <em ma-tr="users.timezone.def"></em>
+                        </div>
+                        <div role="option" tabindex="0" md-ink-ripple ng-repeat="zone in $ctrl.timezones | filter:$ctrl.timezoneFilter"
+                                ng-click="$ctrl.user.timezone = zone; $ctrl.form.$setDirty(); $dropDown.close()"
+                                ng-class="{'ma-selected': $ctrl.user.timezone === zone}"
+                                ng-attr-autofocus="{{$ctrl.user.timezone === zone || undefined}}">
+                            <span ng-bind="zone"></span>
+                        </div>
+                        <div role="option" tabindex="0" ng-if="$ctrl.timezoneFilter && !($ctrl.timezones | filter:$ctrl.timezoneFilter).length">
+                            <em ma-tr="ui.components.noItemsToList"></em>
+                        </div>
+                    </div>
+                </ma-drop-down>
+            </ma-drop-down-button>
+            <div ng-messages="$ctrl.userForm.timezone.$error">
+                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.timezone.validationMessage"></div>
+            </div>
+        </md-input-container>
+        
         <ma-duration-editor ng-if="$ctrl.User.current.hasAnyRole('superadmin') && $ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled"
                 flex="100" flex-gt-md="50" name="sessionExpirationPeriod" ng-model="$ctrl.user.sessionExpirationPeriod"
                 allowed-types="::['MINUTES', 'HOURS', 'DAYS', 'MONTHS', 'YEARS']" required>
