@@ -33,5 +33,6 @@ ma-option-list > .ma-option-list-container > [role=option].ma-selected {
 ma-option-list > .ma-option-list-no-items {
     padding: 8px;
     font-style: italic;
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }

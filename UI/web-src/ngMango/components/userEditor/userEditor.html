@@ -124,6 +124,7 @@
                 <div ng-message="validationMessage" ng-bind="$ctrl.userForm.homeUrl.validationMessage"></div>
             </div>
         </md-input-container>
+        
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>language</md-icon>
             <label ma-tr="users.locale"></label>
@@ -136,6 +137,21 @@
             </div>
         </md-input-container>
         
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>language</md-icon>
+            <label ma-tr="users.locale"></label>
+            <ma-drop-down-button ng-disabled="$ctrl.disabled">
+                <span ng-if="$ctrl.user.locale != null" ng-bind="$ctrl.user.locale"></span>
+                <em ng-if="$ctrl.user.locale == null" ma-tr="users.useServerLocale"></em>
+                <ma-drop-down class="ma-slide-down ma-locale-select" auto-focus="::false">
+                    <ma-option-list ng-model="$ctrl.user.locale" items="$ctrl.getLocales($filter)"></ma-option-list>
+                </ma-drop-down>
+            </ma-drop-down-button>
+            <div ng-messages="$ctrl.userForm.locale.$error">
+                <div ng-message="validationMessage" ng-bind="$ctrl.userForm.locale.validationMessage"></div>
+            </div>
+        </md-input-container>
+
         <md-input-container flex="100" flex-gt-md="50">
             <md-icon>access_time</md-icon>
             <label ma-tr="users.timezone"></label>
@@ -152,33 +168,10 @@
             <md-icon>access_time</md-icon>
             <label ma-tr="users.timezone"></label>
             <ma-drop-down-button ng-disabled="$ctrl.disabled">
-                
                 <span ng-if="$ctrl.user.timezone != null" ng-bind="$ctrl.user.timezone"></span>
                 <em ng-if="$ctrl.user.timezone == null" ma-tr="users.timezone.def"></em>
-                <ma-drop-down create-on-init="false" class="ma-slide-down ma-timezone-select">
-                    <md-input-container class="ma-filter" md-no-float>
-                        <input name="timezoneFilter" ma-form-exclude ng-model="$ctrl.timezoneFilter" ng-model-options="{debounce: 500}" ma-tr="ui.app.filter">
-                        <md-button ng-show="$ctrl.timezoneFilter" class="ma-input-button md-icon-button" ng-click="$ctrl.timezoneFilter = ''; $event.target.parentNode.querySelector('[name=timezoneFilter]').focus()">
-                            <md-icon>clear</md-icon>
-                        </md-button>
-                    </md-input-container>
-                    <div class="ma-drop-down-select">
-                        <div role="option" tabindex="0" md-ink-ripple ng-if="!$ctrl.timezoneFilter"
-                                ng-click="$ctrl.user.timezone = null; $ctrl.form.$setDirty(); $dropDown.close()"
-                                ng-class="{'ma-selected': $ctrl.user.timezone == null}"
-                                ng-attr-autofocus="{{$ctrl.user.timezone == null || undefined}}">
-                            <em ma-tr="users.timezone.def"></em>
-                        </div>
-                        <div role="option" tabindex="0" md-ink-ripple ng-repeat="zone in $ctrl.timezones | filter:$ctrl.timezoneFilter"
-                                ng-click="$ctrl.user.timezone = zone; $ctrl.form.$setDirty(); $dropDown.close()"
-                                ng-class="{'ma-selected': $ctrl.user.timezone === zone}"
-                                ng-attr-autofocus="{{$ctrl.user.timezone === zone || undefined}}">
-                            <span ng-bind="zone"></span>
-                        </div>
-                        <div role="option" tabindex="0" ng-if="$ctrl.timezoneFilter && !($ctrl.timezones | filter:$ctrl.timezoneFilter).length">
-                            <em ma-tr="ui.components.noItemsToList"></em>
-                        </div>
-                    </div>
+                <ma-drop-down class="ma-slide-down ma-timezone-select">
+                    <ma-option-list ng-model="$ctrl.user.timezone" items="$ctrl.timezones | maFilter:$filter"></ma-option-list>
                 </ma-drop-down>
             </ma-drop-down-button>
             <div ng-messages="$ctrl.userForm.timezone.$error">

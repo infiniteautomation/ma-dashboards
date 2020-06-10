@@ -91,11 +91,11 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
     jQuery.fn.maFocus = function maFocus(options = {}) {
         const selectText = !!options.selectText;
         const sort = !!options.sort;
+        const scrollIntoView = !!options.scrollIntoView;
         
         const focusable = Array.from(this).filter(e => {
-            // focusable elements have tabIndex property
             // offsetParent is null if element is not visible
-            return e instanceof Element && e.tabIndex >= 0 && e.offsetParent != null && !e.disabled;
+            return e instanceof Element && e.offsetParent != null && !e.disabled;
         });
         
         if (sort) {
@@ -109,6 +109,9 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
         
         focusable.find(first => {
             first.focus();
+            if (scrollIntoView) {
+                first.scrollIntoView();
+            }
             if (selectText && typeof first.setSelectionRange === 'function') {
                 first.setSelectionRange(0, first.value.length);
             }

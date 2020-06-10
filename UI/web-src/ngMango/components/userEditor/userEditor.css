@@ -15,29 +15,3 @@ ma-drop-down.ma-user-editor-role-selector  {
     background-color: var(--ma-background-hue-2);
     color: var(--ma-background-hue-2-contrast);
 }
-
-ma-drop-down.ma-timezone-select > .ma-drop-down-select {
-    overflow-y: auto;
-}
-
-ma-drop-down.ma-timezone-select > .ma-drop-down-select > [role=option] {
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: 48px;
-    padding: 0 16px;
-    color: var(--ma-foreground-1);
-}
-
-ma-drop-down.ma-timezone-select > .ma-drop-down-select > [role=option]:focus {
-    outline: none;
-}
-
-ma-drop-down.ma-timezone-select > .ma-drop-down-select > [role=option]:focus,
-ma-drop-down.ma-timezone-select > .ma-drop-down-select > [role=option]:hover {
-    background-color: rgba(var(--ma-background-500-value), 0.18);
-}
-
-ma-drop-down.ma-timezone-select > .ma-drop-down-select > [role=option].ma-selected {
-    color: var(--ma-primary);
-}

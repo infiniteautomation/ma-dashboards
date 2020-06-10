@@ -24,7 +24,16 @@ class OptionListController {
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        this.query();
+        if (this.dropDownCtrl) {
+            this.$scope.$on('maDropDownOpen', (event, dropDown) => {
+                delete this.filter;
+                this.query().then(() => {
+                    this.$timeout(() => dropDown.focus());
+                });
+            });
+        } else {
+            this.query();
+        }
     }
     
     $onChanges(changes) {
@@ -62,7 +71,7 @@ class OptionListController {
     }
     
     clearFilter() {
-        this.filter = undefined;
+        delete this.filter;
         this.$element[0].querySelector('[name=filter]').focus();
         this.query();
     }
@@ -79,6 +88,8 @@ class OptionListController {
                 delete this.queryPromise;
             }
         });
+        
+        return promise;
     }
     
     keyDown(event) {

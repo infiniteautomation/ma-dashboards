@@ -10,25 +10,25 @@ import moment from 'moment-timezone';
 
 class UserEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$http', '$mdDialog', 'maTranslate', 'maLocales', '$window', '$injector', 'maDialogHelper', '$scope']; }
+    static get $inject() { return ['maUser', '$http', '$mdDialog', 'maTranslate', 'maLocales', '$window', '$injector', 'maDialogHelper', '$scope', '$filter']; }
     
-    constructor(User, $http, $mdDialog, Translate, maLocales, $window, $injector, maDialogHelper, $scope) {
+    constructor(User, $http, $mdDialog, Translate, maLocales, $window, $injector, maDialogHelper, $scope, $filter) {
         this.User = User;
         this.$http = $http;
         this.timezones = moment.tz.names();
+        this.timezones.unshift(null);
+        
         this.$mdDialog = $mdDialog;
         this.Translate = Translate;
+        this.maLocales = maLocales;
         this.$window = $window;
         this.$state = $injector.has('$state') && $injector.get('$state');
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
+        this.maFilter = $filter('maFilter');
 
         this.formName = '';
         this.showStatus = true;
-        
-        maLocales.get().then(locales => {
-            this.locales = locales;
-        });
 
         /* Cannot get this to work effectively until we have some sort of version / updated property
         if (this.User.current) {
@@ -152,6 +152,16 @@ class UserEditorController {
         } else {
             delete this.user.password;
         }
+    }
+    
+    getLocales(filter) {
+        return this.maLocales.get().then(locales => {
+            locales = this.maFilter(locales, filter, ['name', 'native', 'common']);
+            if (!filter) {
+                locales.unshift({id: null, name: 'default'});
+            }
+            return locales;
+        });
     }
 }
 
