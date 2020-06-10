@@ -191,6 +191,7 @@ import themePreview from './components/themePreview/themePreview';
 import permissionEditor from './components/permissionEditor/permissionEditor';
 import promiseIndicator from './components/promiseIndicator/promiseIndicator';
 import roleSelector from './components/roleSelector/roleSelector';
+import optionList from './components/optionList/optionList';
 
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -396,6 +397,7 @@ ngMango.component('maThemePreview', themePreview);
 ngMango.component('maPermissionEditor', permissionEditor);
 ngMango.component('maPromiseIndicator', promiseIndicator);
 ngMango.component('maRoleSelector', roleSelector);
+ngMango.component('maOptionList', optionList);
 
 ngMango.animation('.ma-slide-up', slideUp);
 

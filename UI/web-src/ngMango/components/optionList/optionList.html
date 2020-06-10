@@ -1,0 +1,21 @@
+<md-input-container ng-if="$ctrl.showFilter" class="ma-filter" md-no-float>
+    <input name="filter" ma-form-exclude ng-model="$ctrl.filter" ng-change="$ctrl.query()" ng-model-options="{debounce: 500}" ma-tr="ui.app.filter">
+    <md-button ng-show="$ctrl.filter" class="ma-input-button md-icon-button" ng-click="$ctrl.clearFilter()">
+        <md-icon>clear</md-icon>
+    </md-button>
+</md-input-container>
+<div class="ma-option-list-container" role="listbox">
+    <div role="option" md-ink-ripple ng-show="!$ctrl.filter"
+            ng-click="$ctrl.select(null)"
+            ng-class="{'ma-selected': $ctrl.isSelected(null)}"
+            ng-attr-autofocus="{{$ctrl.isSelected(null) || undefined}}">
+        <em ma-tr="users.timezone.def"></em>
+    </div>
+    <div role="option" md-ink-ripple ng-repeat="item in $ctrl.items track by $ctrl.itemId(item)"
+            ng-click="$ctrl.select(item)"
+            ng-class="{'ma-selected': $ctrl.isSelected(item)}"
+            ng-attr-autofocus="{{$ctrl.isSelected(item) || undefined}}">
+        <span ng-bind="item"></span>
+    </div>
+</div>
+<div ng-if="!$ctrl.items.length && !$ctrl.queryPromise" class="ma-option-list-no-items" ma-tr="ui.components.noItemsToList"></div>

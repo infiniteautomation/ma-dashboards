@@ -1,0 +1,37 @@
+ma-option-list {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+ma-option-list > .ma-option-list-container {
+    overflow-y: auto;
+}
+
+ma-option-list > .ma-option-list-container > [role=option] {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 16px;
+    color: var(--ma-foreground-1);
+}
+
+ma-option-list > .ma-option-list-container > [role=option]:focus {
+    outline: none;
+}
+
+ma-option-list > .ma-option-list-container > [role=option]:focus,
+ma-option-list > .ma-option-list-container > [role=option]:hover {
+    background-color: rgba(var(--ma-background-500-value), 0.18);
+}
+
+ma-option-list > .ma-option-list-container > [role=option].ma-selected {
+    color: var(--ma-primary);
+}
+
+ma-option-list > .ma-option-list-no-items {
+    padding: 8px;
+    font-style: italic;
+    text-align: center;
+}
