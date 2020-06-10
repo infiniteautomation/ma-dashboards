@@ -45,6 +45,10 @@ function discardCheckFactory($rootScope, $window, maTranslate) {
             }
         }
         
+        canDiscard() {
+            return !this.isDirty() || this.confirmDiscard();
+        }
+        
         confirmDiscard() {
             return $window.confirm(this.confirmDiscardMessage());
         }
