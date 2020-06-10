@@ -11,3 +11,7 @@ pre.ma-script-response-text {
     background-color: var(--ma-background);
     color: var(--ma-background-contrast);
 }
+
+ma-file-store-browser tr.md-row:focus {
+    outline: none;
+}
