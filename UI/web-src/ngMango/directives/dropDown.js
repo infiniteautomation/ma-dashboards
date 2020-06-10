@@ -257,23 +257,8 @@ function dropDown($document, $animate, $window) {
         }
 
         focus() {
-            const focusable = this.$dropDown.maFind('[autofocus], button, [href], input, select, textarea, [tabindex]');
-            const sorted = Array.from(focusable).filter(e => {
-                // offsetParent is null if element is not visible
-                return e.tabIndex >= 0 && e.offsetParent != null;
-            }).sort((e1, e2) => {
-                if (e1.autofocus && !e2.autofocus) return -1;
-                if (!e1.autofocus && e2.autofocus) return 1;
-                return e1.tabIndex - e2.tabIndex;
-            });
-            if (sorted.length) {
-                const first = sorted[0];
-                first.focus();
-                if (typeof first.setSelectionRange === 'function') {
-                    first.setSelectionRange(0, first.value.length);
-                }
-                return;
-            }
+            this.$dropDown.maFind('[autofocus], button, [href], input, select, textarea, [tabindex]')
+                .maFocus({sort: true});
         }
         
         keydownListener(event) {

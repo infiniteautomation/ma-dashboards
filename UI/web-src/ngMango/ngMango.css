@@ -1371,6 +1371,10 @@ md-input-container.ma-filter {
 	margin: 8px;
 }
 
+md-input-container.ma-filter > .ma-input-button > md-icon.material-icons {
+    color: inherit;
+}
+
 /* Virtual repeat table */
 
 .ma-virtual-repeat-table {

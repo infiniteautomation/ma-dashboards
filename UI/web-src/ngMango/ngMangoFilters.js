@@ -170,10 +170,6 @@ ngMangoFilters.filter('maProperty', ['maUtil', function(Util) {
     };
 }]);
 
-ngMangoFilters.filter('maFilter', ['maUtil', '$filter', function(Util, $filter) {
-    return Util.memoize($filter('filter'));
-}]);
-
 ngMangoFilters.filter('maNoNaN', function () {
     return function (input, suffix) {
           if (isNaN(input)) { return '\u2014'; }
@@ -281,6 +277,28 @@ ngMangoFilters.filter('maDisplayNull', ['maTranslate', function (maTranslate) {
     };
 }]);
 
+/**
+ * Filters an array by checking if any of a set of properties contain the specified filter string.
+ * @returns
+ */
+ngMangoFilters.filter('maFilter', function () {
+    return function(input, filter, keys) {
+        if (!Array.isArray(input) || !filter) return input;
+        filter = filter.toLowerCase();
+        return input.filter(item => {
+            if (typeof item === 'string') {
+                return item.toLowerCase().includes(filter);
+            } else if (typeof item === 'object' && item != null) {
+                if (!keys) keys = Object.keys(item);
+                return keys.some(k => {
+                    const value = String(item[k]).toLowerCase();
+                    return value.includes(filter);
+                });
+            } else {
+                return false;
+            }
+        });
+    };
+});
+
 export default ngMangoFilters;
-
-

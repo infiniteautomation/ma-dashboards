@@ -88,6 +88,54 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
         return this;
     };
     
+    jQuery.fn.maFocus = function maFocus(options = {}) {
+        const selectText = !!options.selectText;
+        const sort = !!options.sort;
+        
+        const focusable = Array.from(this).filter(e => {
+            // focusable elements have tabIndex property
+            // offsetParent is null if element is not visible
+            return e instanceof Element && e.tabIndex >= 0 && e.offsetParent != null && !e.disabled;
+        });
+        
+        if (sort) {
+            focusable.sort((e1, e2) => {
+                // prioritize element with autofocus attribute
+                if (e1.autofocus && !e2.autofocus) return -1;
+                if (!e1.autofocus && e2.autofocus) return 1;
+                return e1.tabIndex - e2.tabIndex;
+            });
+        }
+        
+        focusable.find(first => {
+            first.focus();
+            if (selectText && typeof first.setSelectionRange === 'function') {
+                first.setSelectionRange(0, first.value.length);
+            }
+            return true;
+        });
+        return this;
+    };
+
+    const firstMatch = function(accessor) {
+        return function(selector) {
+            const selection = [];
+            for (let e of this) {
+                while ((e = e[accessor]) != null) {
+                    if (e instanceof Element && e.matches(selector)) {
+                        selection.push(e);
+                        break;
+                    }
+                }
+            }
+            return this.constructor(selection);
+        }
+    };
+
+    jQuery.fn.maParent = firstMatch('parentNode');
+    jQuery.fn.maNext = firstMatch('nextSibling');
+    jQuery.fn.maPrev = firstMatch('previousSibling');
+
     const util = {
 
         /**
@@ -1151,5 +1199,3 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
 }
 
 export default UtilFactory;
-
-
