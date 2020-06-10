@@ -9,15 +9,14 @@ import './optionList.css';
 
 class OptionListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$element', '$scope', '$q', '$timeout']; }
+    static get $inject() { return ['$element', '$scope', '$q']; }
     
-    constructor($element, $scope, $q, $timeout) {
+    constructor($element, $scope, $q) {
         this.$element = $element;
         this.$scope = $scope;
         this.$q = $q;
         this.showFilter = true;
         this.idCache = new WeakMap();
-        this.$timeout = $timeout;
         
         this.$element[0].addEventListener('keydown', event => this.keyDown(event));
     }
@@ -27,8 +26,11 @@ class OptionListController {
         if (this.dropDownCtrl) {
             this.$scope.$on('maDropDownOpen', (event, dropDown) => {
                 delete this.filter;
-                this.query().then(() => {
-                    this.$timeout(() => dropDown.focus());
+                this.query();
+            });
+            this.$scope.$on('maDropDownOpened', (event, dropDown) => {
+                this.$q.when(this.queryPromise).then(() => {
+                    dropDown.focus();
                 });
             });
         } else {
