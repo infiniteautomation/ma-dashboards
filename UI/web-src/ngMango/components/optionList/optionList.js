@@ -19,6 +19,7 @@ class OptionListController {
         this.idCache = new WeakMap();
         
         this.$element[0].addEventListener('keydown', event => this.keyDown(event));
+        this.$element.attr('tabindex', '0');
     }
     
     $onInit() {
@@ -27,11 +28,6 @@ class OptionListController {
             this.$scope.$on('maDropDownOpen', (event, dropDown) => {
                 delete this.filter;
                 this.query();
-            });
-            this.$scope.$on('maDropDownOpened', (event, dropDown) => {
-                this.$q.when(this.queryPromise).then(() => {
-                    dropDown.focus();
-                });
             });
         } else {
             this.query();
