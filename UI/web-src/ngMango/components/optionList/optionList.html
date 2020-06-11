@@ -4,15 +4,7 @@
         <md-icon>clear</md-icon>
     </md-button>
 </md-input-container>
-<div class="ma-option-list-container" role="listbox">
-    <div role="option" md-ink-ripple ng-repeat="item in $ctrl.items track by $ctrl.itemId(item)"
-            ng-click="$ctrl.select(item)"
-            ng-class="{'ma-selected': $ctrl.isSelected(item)}"
-            ng-attr-autofocus="{{$ctrl.isSelected(item) || undefined}}"
-            tabindex="-1">
-        <span ng-bind="item"></span>
-    </div>
-</div>
+<div class="ma-option-list-container" role="listbox"></div>
 <div ng-if="!$ctrl.items.length" class="ma-option-list-no-items">
     <span ng-if="!$ctrl.queryPromise" ma-tr="ui.components.noItemsToList"></span>
     <span ng-if="$ctrl.queryPromise" ma-tr="ui.components.loadingItems"></span>

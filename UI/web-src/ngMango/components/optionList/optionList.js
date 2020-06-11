@@ -9,29 +9,41 @@ import './optionList.css';
 
 class OptionListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$element', '$scope', '$q']; }
+    static get $inject() { return ['$element', '$scope', '$q', '$transclude']; }
     
-    constructor($element, $scope, $q) {
+    constructor($element, $scope, $q, $transclude) {
         this.$element = $element;
         this.$scope = $scope;
         this.$q = $q;
-        this.showFilter = true;
-        this.idCache = new WeakMap();
+        this.$transclude = $transclude;
         
+        this.showFilter = true;
         this.$element[0].addEventListener('keydown', event => this.keyDown(event));
-        this.$element.attr('tabindex', '0');
     }
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
         if (this.dropDownCtrl) {
-            this.$scope.$on('maDropDownOpen', (event, dropDown) => {
+            this.$scope.$on('maDropDownOpen', (event, dropDown, openedPromise) => {
                 delete this.filter;
-                this.query();
+
+                this.$q.all([this.query(), openedPromise]).then(() => {
+                    this.focusOnOption();
+                });
             });
         } else {
             this.query();
         }
+        
+        const $parent = this.$element.maFind('.ma-option-list-container');
+        this.$transclude((clone, scope) => {
+            scope.$optionList = this;
+            Object.defineProperties(scope, {
+                $filter: {get: () => this.filter},
+                $items: {get: () => this.items}
+            });
+            $parent.append(clone);
+        }, $parent[0]);
     }
     
     $onChanges(changes) {
@@ -60,17 +72,12 @@ class OptionListController {
         if (item == null || typeof item !== 'object') {
             return item;
         }
-        if (this.idCache.has(item)) {
-            return this.idCache.get(item);
-        }
-        const id = typeof this.userItemId === 'function' ? this.userItemId({$item: item}) : (item.xid || item.id);
-        this.idCache.set(item, id);
-        return id;
+        return typeof this.userItemId === 'function' ? this.userItemId({$item: item}) : (item.xid || item.id);
     }
     
     clearFilter() {
         delete this.filter;
-        this.$element[0].querySelector('[name=filter]').focus();
+        this.$element.maFind('[name=filter]').maFocus();
         this.query();
     }
     
@@ -122,6 +129,14 @@ class OptionListController {
             }
         }
     }
+    
+    focusOnOption() {
+        const option = this.$element[0].querySelector('[role=option].ma-selected') || this.$element[0].querySelector('[role=option]:not([disabled])');
+        if (option) {
+            option.focus();
+            //option.scrollIntoView({block: 'center'});
+        }
+    }
 }
 
 export default {
@@ -136,5 +151,6 @@ export default {
     require: {
         ngModelCtrl: 'ngModel',
         dropDownCtrl: '?^^maDropDown'
-    }
+    },
+    transclude: true
 };
