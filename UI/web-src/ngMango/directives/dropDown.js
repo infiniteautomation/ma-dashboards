@@ -89,7 +89,7 @@ function dropDown($document, $animate, $window) {
                 tScope.$dropDown = this;
                 this.transcludeScope = tScope;
             }, $body);
-            this.$dropDown.on('keydown', this.keydownListener);
+            this.$dropDown[0].addEventListener('keydown', this.keydownListener);
         }
         
         destroyElement() {
@@ -138,7 +138,7 @@ function dropDown($document, $animate, $window) {
 
                 this.openAnimation = $animate.addClass(this.$dropDown, 'ma-open');
                 this.onOpen({$dropDown: this});
-                this.transcludeScope.$broadcast('maDropDownOpen', this);
+                this.transcludeScope.$broadcast('maDropDownOpen', this, this.openAnimation);
                 
                 this.openAnimation.then(() => {
                     if (this.autoFocus) {
@@ -159,7 +159,7 @@ function dropDown($document, $animate, $window) {
                 // cant use $animate.leave as it removes the element (instead of detach), destroying its event handlers
                 this.closeAnimation = $animate.removeClass(this.$dropDown, 'ma-open');
                 this.onClose({$dropDown: this});
-                this.transcludeScope.$broadcast('maDropDownClose', this);
+                this.transcludeScope.$broadcast('maDropDownClose', this, this.closeAnimation);
 
                 // transfer focus back to the target element that opened the drop down (usually a ma-drop-down-button)
                 if (this.hasFocus() && this.targetElement) {
