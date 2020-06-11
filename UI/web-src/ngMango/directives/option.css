@@ -1,0 +1,22 @@
+ma-option,
+[ma-option] {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 16px;
+    color: var(--ma-foreground-1);
+}
+
+ma-option:focus,
+[ma-option]:focus,
+ma-option:hover,
+[ma-option]:hover {
+    outline: none;
+    background-color: rgba(var(--ma-background-500-value), 0.18);
+}
+
+ma-option.ma-selected,
+[ma-option].ma-selected {
+    color: var(--ma-primary);
+}
