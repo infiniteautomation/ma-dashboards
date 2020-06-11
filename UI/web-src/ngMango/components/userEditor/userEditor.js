@@ -16,8 +16,6 @@ class UserEditorController {
         this.User = User;
         this.$http = $http;
         this.timezones = moment.tz.names();
-        this.timezones.unshift(null);
-        
         this.$mdDialog = $mdDialog;
         this.Translate = Translate;
         this.maLocales = maLocales;
@@ -25,8 +23,8 @@ class UserEditorController {
         this.$state = $injector.has('$state') && $injector.get('$state');
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
+        
         this.maFilter = $filter('maFilter');
-
         this.formName = '';
         this.showStatus = true;
 
@@ -156,11 +154,7 @@ class UserEditorController {
     
     getLocales(filter) {
         return this.maLocales.get().then(locales => {
-            locales = this.maFilter(locales, filter, ['name', 'native', 'common']);
-            if (!filter) {
-                locales.unshift({id: null, name: 'default'});
-            }
-            return locales;
+            return this.maFilter(locales, filter, ['name', 'native', 'common']);
         });
     }
 }
