@@ -15,13 +15,16 @@ class DropDownButtonController {
         this.$element = $element;
         this.maUtil = maUtil;
 
-        $element.on('click keydown', event => {
+        const listener = event => {
             if (event.type === 'click' || (event.type === 'keydown' && ['Enter', ' '].includes(event.key))) {
+                event.preventDefault();
                 $scope.$apply(() => {
                     this.buttonClicked(event);
                 });
             }
-        });
+        };
+        $element[0].addEventListener('click', listener);
+        $element[0].addEventListener('keydown', listener);
 
         $element.attr('role', 'button');
         $element.attr('tabindex', '0');
@@ -89,8 +92,9 @@ class DropDownButtonController {
         if (!$element.attr('id')) {
             $element.attr('id', 'input_' + this.maUtil.uuid());
         }
-        
-        $element.on('focus blur', () => this.setFocused());
+
+        $element[0].addEventListener('focus', event => this.setFocused());
+        $element[0].addEventListener('blur', event => this.setFocused());
     }
     
     setFocused() {
