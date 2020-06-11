@@ -863,7 +863,8 @@ ma-config-import-dialog {
 /* clickable elements */
 
 [ng-click]:not([disabled]),
-[role=button]:not([disabled]) {
+[role=button]:not([disabled]),
+[role=option]:not([disabled]) {
   cursor: pointer;
 }
 
