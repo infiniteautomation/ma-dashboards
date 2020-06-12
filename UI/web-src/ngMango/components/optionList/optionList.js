@@ -20,6 +20,7 @@ class OptionListController {
         this.showFilter = true;
         this.$element[0].addEventListener('keydown', event => this.keyDown(event));
         this.options = [];
+        this.selected = new Map();
     }
     
     $onInit() {
@@ -45,6 +46,8 @@ class OptionListController {
             });
             $parent.append(clone);
         }, $parent[0]);
+        
+        this.multiple = this.$element[0].hasAttribute('multiple');
     }
     
     $onChanges(changes) {
@@ -54,29 +57,55 @@ class OptionListController {
     }
 
     render() {
-        this.selected = this.ngModelCtrl.$viewValue;
-
-        for (let optionCtrl of this.options) {
+        this.selected.clear();
+        
+        const viewValue = this.ngModelCtrl.$viewValue;
+        if (this.multiple && Array.isArray(viewValue)) {
+            for (const item of viewValue) {
+                this.selected.set(this.itemId(item), item);
+            }
+        } else if (!this.multiple && viewValue !== undefined) {
+            this.selected.set(this.itemId(viewValue), viewValue);
+        }
+        
+        for (const optionCtrl of this.options) {
             optionCtrl.updateSelected();
         }
         this.setTabIndex();
     }
     
     select(item) {
-        this.selected = item;
-        this.ngModelCtrl.$setViewValue(this.selected);
+        const id = this.itemId(item);
+        
+        if (!this.multiple) {
+            this.selected.clear();
+        }
+        
+        if (this.selected.has(id)) {
+            this.selected.delete(id);
+        } else {
+            this.selected.set(id, item);
+        }
+
+        if (this.multiple) {
+            this.ngModelCtrl.$setViewValue(Array.from(this.selected.values()));
+        } else if (this.selected.size) {
+            const [first] = this.selected.values();
+            this.ngModelCtrl.$setViewValue(first);
+        }
+
         if (this.dropDownCtrl) {
             this.dropDownCtrl.close();
         }
         
-        for (let optionCtrl of this.options) {
+        for (const optionCtrl of this.options) {
             optionCtrl.updateSelected();
         }
         this.setTabIndex();
     }
     
     isSelected(item) {
-        return this.itemId(this.selected) === this.itemId(item);
+        return this.selected.has(this.itemId(item));
     }
     
     itemId(item) {
