@@ -1,11 +1,11 @@
 <md-input-container ng-if="$ctrl.showFilter" class="ma-filter" md-no-float>
-    <input name="filter" ma-form-exclude ng-model="$ctrl.filter" ng-change="$ctrl.query()" ng-model-options="{debounce: 500}" ma-tr="ui.app.filter" tabindex="-1">
-    <md-button ng-show="$ctrl.filter" class="ma-input-button md-icon-button" ng-click="$ctrl.clearFilter()" tabindex="-1">
+    <input name="filter" ma-form-exclude ng-model="$ctrl.filter" ng-change="$ctrl.query()" ng-model-options="{debounce: 500}" ma-tr="ui.app.filter">
+    <md-button ng-show="$ctrl.filter" class="ma-input-button md-icon-button" ng-click="$ctrl.clearFilter()">
         <md-icon>clear</md-icon>
     </md-button>
 </md-input-container>
 <div class="ma-option-list-container" role="listbox"></div>
-<div ng-if="!$ctrl.items.length" class="ma-option-list-no-items">
+<div ng-if="!$ctrl.options.length" class="ma-option-list-no-items">
     <span ng-if="!$ctrl.queryPromise" ma-tr="ui.components.noItemsToList"></span>
     <span ng-if="$ctrl.queryPromise" ma-tr="ui.components.loadingItems"></span>
 </div>

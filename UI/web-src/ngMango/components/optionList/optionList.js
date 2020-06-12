@@ -19,6 +19,7 @@ class OptionListController {
         
         this.showFilter = true;
         this.$element[0].addEventListener('keydown', event => this.keyDown(event));
+        this.options = [];
     }
     
     $onInit() {
@@ -82,6 +83,8 @@ class OptionListController {
     }
     
     query() {
+        if (typeof this.getItems !== 'function') return;
+        
         const items = this.getItems({$filter: this.filter});
 
         const promise = this.queryPromise = this.$q.when(items).then(items => {
@@ -130,11 +133,38 @@ class OptionListController {
         }
     }
     
+    firstOption() {
+        // prefer the first selected option
+        return this.$element[0].querySelector('[role=option].ma-selected') || this.$element[0].querySelector('[role=option]:not([disabled])');
+    }
+    
     focusOnOption() {
-        const option = this.$element[0].querySelector('[role=option].ma-selected') || this.$element[0].querySelector('[role=option]:not([disabled])');
+        const option = this.firstOption();
         if (option) {
             option.focus();
             //option.scrollIntoView({block: 'center'});
+        }
+    }
+    
+    addOption(optionCtrl) {
+        this.options.push(optionCtrl);
+        this.setTabIndex();
+    }
+    
+    removeOption(optionCtrl) {
+        this.options.splice(this.options.indexOf(optionCtrl), 1);
+        this.setTabIndex();
+    }
+    
+    setTabIndex() {
+        // ensure that you can always tab to an option (but only one)
+        const tabOption = this.firstOption();
+        if (tabOption && tabOption !== this.tabOption) {
+            if (this.tabOption) {
+                this.tabOption.setAttribute('tabindex', '-1');
+            }
+            this.tabOption = tabOption;
+            this.tabOption.setAttribute('tabindex', '0');
         }
     }
 }
@@ -143,7 +173,7 @@ export default {
     template: optionListTemplate,
     controller: OptionListController,
     bindings: {
-        getItems: '&items',
+        getItems: '&?items',
         reloadItems: '<?',
         userItemId: '&?itemId',
         showFilter: '<?'

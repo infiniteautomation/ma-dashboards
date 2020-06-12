@@ -16,8 +16,6 @@ function optionDirective($injector) {
             this.$scope = $scope;
             this.$element = $element;
             this.$attrs = $attrs;
-
-            this.selected = false;
         }
         
         $onInit() {
@@ -36,23 +34,27 @@ function optionDirective($injector) {
                 this.value = this.$attrs.value;
             }
             
-            if (this.listCtrl) {
-                const listener = event => {
-                    if (event.type === 'click' || (event.type === 'keydown' && ['Enter', ' '].includes(event.key))) {
-                        event.preventDefault();
-                        this.$scope.$apply(() => {
-                            this.listCtrl.select(this.value);
-                        });
-                    }
-                };
-                
-                this.$element[0].addEventListener('click', listener);
-                this.$element[0].addEventListener('keydown', listener);
-            }
+            const listener = event => {
+                if (event.type === 'click' || (event.type === 'keydown' && ['Enter', ' '].includes(event.key))) {
+                    event.preventDefault();
+                    this.$scope.$apply(() => {
+                        this.listCtrl.select(this.value);
+                    });
+                }
+            };
+            
+            this.$element[0].addEventListener('click', listener);
+            this.$element[0].addEventListener('keydown', listener);
+            
+            this.listCtrl.addOption(this);
+        }
+        
+        $onDestroy() {
+            this.listCtrl.removeOption(this);
         }
         
         $doCheck() {
-            this.selected = !!(this.listCtrl && this.listCtrl.isSelected(this.value));
+            this.selected = this.listCtrl.isSelected(this.value);
             if (this.prevSelected !== this.selected) {
                 this.selectedChanged();
                 this.prevSelected = this.selected;
@@ -63,12 +65,13 @@ function optionDirective($injector) {
             this.$element.attr('aria-selected', String(this.selected));
             //this.$element.attr('autofocus', this.selected ? '' : null);
             this.$element.toggleClass('ma-selected', this.selected);
+            this.listCtrl.setTabIndex();
         }
     }
 
     return {
         require: {
-            listCtrl: '?^^maOptionList'
+            listCtrl: '^^maOptionList'
         },
         controller: OptionController,
         bindToController: true,
