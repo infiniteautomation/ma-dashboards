@@ -868,6 +868,10 @@ ma-config-import-dialog {
   cursor: pointer;
 }
 
+[role=option][disabled] {
+  cursor: default;
+}
+
 /* file store browser */
 ma-file-store-browser {
 	display: flex;
