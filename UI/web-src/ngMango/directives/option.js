@@ -42,10 +42,12 @@ function optionDirective($injector) {
             
             const listener = event => {
                 if (event.type === 'click' || (event.type === 'keydown' && ['Enter', ' '].includes(event.key))) {
-                    event.preventDefault();
-                    this.$scope.$apply(() => {
-                        this.listCtrl.select(this.value);
-                    });
+                    if (!event.target.hasAttribute('disabled')) {
+                        event.preventDefault();
+                        this.$scope.$apply(() => {
+                            this.listCtrl.select(this.value);
+                        });
+                    }
                 }
             };
             

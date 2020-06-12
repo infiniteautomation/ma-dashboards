@@ -9,16 +9,25 @@ ma-option,
 }
 
 ma-option:focus,
-[ma-option]:focus,
-ma-option:hover,
-[ma-option]:hover {
+[ma-option]:focus {
     outline: none;
+}
+
+ma-option:not([disabled]):focus,
+[ma-option]:not([disabled]):focus,
+ma-option:not([disabled]):hover,
+[ma-option]:not([disabled]):hover {
     background-color: rgba(var(--ma-background-500-value), 0.18);
 }
 
 ma-option.ma-selected,
 [ma-option].ma-selected {
     color: var(--ma-primary);
+}
+
+ma-option[disabled],
+[ma-option][disabled] {
+    color: var(--ma-foreground-3);
 }
 
 ma-option > md-icon.material-icons,
