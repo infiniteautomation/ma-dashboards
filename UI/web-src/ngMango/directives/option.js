@@ -16,6 +16,8 @@ function optionDirective($injector) {
             this.$scope = $scope;
             this.$element = $element;
             this.$attrs = $attrs;
+            
+            Object.defineProperty($scope, '$selected', {get: () => this.selected});
         }
         
         $onInit() {
@@ -66,6 +68,7 @@ function optionDirective($injector) {
     }
 
     return {
+        scope: true,
         require: {
             listCtrl: '^^maOptionList'
         },

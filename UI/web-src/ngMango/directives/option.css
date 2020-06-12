@@ -20,3 +20,26 @@ ma-option.ma-selected,
 [ma-option].ma-selected {
     color: var(--ma-primary);
 }
+
+ma-option > md-icon.material-icons,
+[ma-option] > md-icon.material-icons {
+    color: inherit;
+    margin: 8px;
+}
+
+ma-option > md-icon:first-child,
+[ma-option] > md-icon:first-child {
+    margin-left: 0;
+}
+
+ma-option.ma-selected .ma-selected-hide,
+ma-option:not(.ma-selected) .ma-selected-show,
+[ma-option].ma-selected .ma-selected-hide,
+[ma-option]:not(.ma-selected) .ma-selected-show {
+    visibility: hidden;
+}
+
+ma-option > md-checkbox,
+[ma-option] > md-checkbox {
+    margin: 0;
+}
