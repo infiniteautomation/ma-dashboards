@@ -55,14 +55,24 @@ class OptionListController {
 
     render() {
         this.selected = this.ngModelCtrl.$viewValue;
+
+        for (let optionCtrl of this.options) {
+            optionCtrl.updateSelected();
+        }
+        this.setTabIndex();
     }
     
     select(item) {
         this.selected = item;
-        this.ngModelCtrl.$setViewValue(this.itemId(this.selected));
+        this.ngModelCtrl.$setViewValue(this.selected);
         if (this.dropDownCtrl) {
             this.dropDownCtrl.close();
         }
+        
+        for (let optionCtrl of this.options) {
+            optionCtrl.updateSelected();
+        }
+        this.setTabIndex();
     }
     
     isSelected(item) {
@@ -148,7 +158,9 @@ class OptionListController {
     
     addOption(optionCtrl) {
         this.options.push(optionCtrl);
-        this.setTabIndex();
+        
+        // this is done whenever the value changes inside the option
+        //this.setTabIndex();
     }
     
     removeOption(optionCtrl) {

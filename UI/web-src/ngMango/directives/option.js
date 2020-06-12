@@ -27,11 +27,15 @@ function optionDirective($injector) {
             }
 
             if (this.$attrs.hasOwnProperty('ngValue')) {
-                this.$scope.$watch(this.$attrs.ngValue, currentValue => {
+                this.$scope.$watch(this.$attrs.ngValue, (currentValue, previousValue) => {
                     this.value = currentValue;
+                    this.updateSelected();
+                    this.listCtrl.setTabIndex();
                 });
             } else if (this.$attrs.hasOwnProperty('value')) {
                 this.value = this.$attrs.value;
+                this.updateSelected();
+                this.listCtrl.setTabIndex();
             }
             
             const listener = event => {
@@ -52,20 +56,12 @@ function optionDirective($injector) {
         $onDestroy() {
             this.listCtrl.removeOption(this);
         }
-        
-        $doCheck() {
+
+        updateSelected() {
             this.selected = this.listCtrl.isSelected(this.value);
-            if (this.prevSelected !== this.selected) {
-                this.selectedChanged();
-                this.prevSelected = this.selected;
-            }
-        }
-        
-        selectedChanged() {
             this.$element.attr('aria-selected', String(this.selected));
             //this.$element.attr('autofocus', this.selected ? '' : null);
             this.$element.toggleClass('ma-selected', this.selected);
-            this.listCtrl.setTabIndex();
         }
     }
 
