@@ -1686,3 +1686,9 @@ md-switch.ma-text-left .md-container {
 .ma-hide {
     visibility: hidden;
 }
+
+.ma-ellipsis {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
