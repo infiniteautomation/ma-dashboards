@@ -18,11 +18,20 @@ function optionDirective($injector) {
             this.$attrs = $attrs;
             
             Object.defineProperty($scope, '$selected', {get: () => this.selected});
+            this.disabled = false;
         }
         
         $onInit() {
             this.$element.attr('role', 'option');
             this.$element.attr('tabindex', '-1');
+
+            this.$attrs.$observe('disabled', (value) => {
+                const disabled = typeof value === 'string' || !!value;
+                if (this.disabled !== disabled) {
+                    this.disabled = disabled;
+                    this.listCtrl.setTabIndex();
+                }
+            });
 
             if ($injector.has('$mdButtonInkRipple')) {
                 $injector.get('$mdButtonInkRipple').attach(this.$scope, this.$element);
@@ -42,7 +51,7 @@ function optionDirective($injector) {
             
             const listener = event => {
                 if (event.type === 'click' || (event.type === 'keydown' && ['Enter', ' '].includes(event.key))) {
-                    if (!event.currentTarget.hasAttribute('disabled')) {
+                    if (!this.disabled) {
                         event.preventDefault();
                         this.$scope.$apply(() => {
                             this.listCtrl.select(this.value);
