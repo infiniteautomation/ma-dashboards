@@ -9,11 +9,12 @@ import './dropDownButton.css';
 
 class DropDownButtonController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$element', 'maUtil', '$attrs']; }
+    static get $inject() { return ['$scope', '$element', '$attrs', 'maUtil', '$injector']; }
     
-    constructor($scope, $element, maUtil, $attrs) {
+    constructor($scope, $element, $attrs, maUtil, $injector) {
         this.$element = $element;
         this.maUtil = maUtil;
+        this.$injector = $injector;
 
         const listener = event => {
             if (event.type === 'click' || (event.type === 'keydown' && ['Enter', ' '].includes(event.key))) {
@@ -28,17 +29,24 @@ class DropDownButtonController {
 
         $element.attr('role', 'button');
         $element.attr('tabindex', '0');
+
         this.disabled = false;
-        
-        $attrs.$observe('disabled', disabled => {
-            this.disabled = disabled;
-            $element.attr('tabindex', disabled ? '-1' : '0');
+        $attrs.$observe('disabled', (value) => {
+            const disabled = typeof value === 'string' || !!value;
+            if (this.disabled !== !!disabled) {
+                this.disabled = !!disabled;
+                $element.attr('tabindex', this.disabled ? '-1' : '0');
+            }
         });
     }
     
     $onInit() {
         if (this.containerCtrl) {
             this.configureInputContainer();
+        }
+        
+        if (!this.containerCtrl && $injector.has('$mdButtonInkRipple')) {
+            $injector.get('$mdButtonInkRipple').attach(this.$scope, this.$element);
         }
     }
 
