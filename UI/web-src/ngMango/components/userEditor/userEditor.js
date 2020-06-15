@@ -38,6 +38,13 @@ class UserEditorController {
             }, this.$scope);
         }
         */
+        
+        this.locales = {};
+        this.maLocales.get().then(locales => {
+            for (const locale of locales) {
+                this.locales[locale.id] = locale;
+            }
+        });
     }
     
     $onChanges(changes) {
