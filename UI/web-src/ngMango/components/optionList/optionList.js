@@ -45,7 +45,7 @@ class OptionListController {
                 $items: {get: () => this.items}
             });
             $parent.append(clone);
-        }, $parent[0]);
+        }, $parent);
         
         this.multiple = this.$element[0].hasAttribute('multiple');
     }
