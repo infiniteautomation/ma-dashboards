@@ -88,7 +88,14 @@ function dropDown($document, $animate, $window) {
             this.$dropDown = this.$transclude((tClone, tScope) => {
                 tScope.$dropDown = this;
                 this.transcludeScope = tScope;
+                
+                // we could allow the drop down contents to find controllers from the parents
+                //this.$element.after(tClone);
             }, $body);
+            
+            // detach the drop down contents
+            //this.$dropDown.detach();
+            
             this.$dropDown[0].addEventListener('keydown', this.keydownListener);
         }
         
@@ -291,7 +298,12 @@ function dropDown($document, $animate, $window) {
             autoFocus: '<?'
         },
         require: {
-            dropDownButton: '?^^maDropDownButton'
+            dropDownButton: '?^^maDropDownButton',
+            
+            // allow access to input container and form from inside the drop down
+            // (for those components which are aware of the drop down, e.g. ma-option-list)
+            containerCtrl: '?^^mdInputContainer',
+            formCtrl: '?^^form'
         }
     };
 }

@@ -24,6 +24,8 @@ class OptionListController {
     }
     
     $onInit() {
+        this.configureInputContainer();
+        
         this.ngModelCtrl.$render = () => this.render();
         if (this.dropDownCtrl) {
             this.$scope.$on('maDropDownOpen', (event, dropDown, openedPromise) => {
@@ -49,7 +51,7 @@ class OptionListController {
         
         this.multiple = this.$element[0].hasAttribute('multiple');
     }
-    
+
     $onChanges(changes) {
         if (changes.reloadItems && !changes.reloadItems.isFirstChange()) {
             this.query();
@@ -208,6 +210,28 @@ class OptionListController {
             this.tabOption.setAttribute('tabindex', '0');
         }
     }
+    
+    configureInputContainer() {
+        const ngModelCtrl = this.ngModelCtrl;
+        if (this.dropDownCtrl) {
+            const form = this.dropDownCtrl.formCtrl;
+            if (form) {
+                form.$addControl(ngModelCtrl);
+            }
+        }
+        const parentForm = ngModelCtrl.$$parentForm;
+        
+        const containerCtrl = this.containerCtrl || this.dropDownCtrl && this.dropDownCtrl.containerCtrl;
+        if (containerCtrl) {
+            const isErrorGetter = () => ngModelCtrl.$invalid && (ngModelCtrl.$touched || (parentForm && parentForm.$submitted));
+            this.$scope.$watch(isErrorGetter, containerCtrl.setInvalid);
+            
+            if (!this.dropDownCtrl) {
+                $element[0].addEventListener('focus', event => containerCtrl.setFocused(true));
+                $element[0].addEventListener('blur', event => containerCtrl.setFocused(false));
+            }
+        }
+    }
 }
 
 export default {
@@ -221,7 +245,8 @@ export default {
     },
     require: {
         ngModelCtrl: 'ngModel',
-        dropDownCtrl: '?^^maDropDown'
+        dropDownCtrl: '?^^maDropDown',
+        containerCtrl: '?^^mdInputContainer'
     },
     transclude: true
 };

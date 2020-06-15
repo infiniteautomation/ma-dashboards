@@ -84,7 +84,7 @@ class DropDownButtonController {
     configureInputContainer() {
         const containerCtrl = this.containerCtrl;
         const $element = this.$element;
-        const $container = this.$element.parent();
+        const $container = containerCtrl.element;
         
         if ($container.maFind(':scope > ma-drop-down-button ~ md-icon').length) {
             $container.addClass('md-icon-right');
