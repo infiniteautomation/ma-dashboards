@@ -80,8 +80,14 @@ function configureInputContainerDirective(maUtil) {
 
                 if (!this.dropDownCtrl) {
                     // tell the container when we are focused
-                    $element[0].addEventListener('focus', () => containerCtrl.setFocused(true));
-                    $element[0].addEventListener('blur', () => containerCtrl.setFocused(false));
+                    this.$element[0].addEventListener('focus', () => containerCtrl.setFocused(true), true);
+                    this.$element[0].addEventListener('blur', () => {
+                        containerCtrl.setFocused(false);
+                        // let the model know the input was touched
+                        if (!ngModelCtrl.$touched) {
+                            ngModelCtrl.$setTouched();
+                        }
+                    }, true);
                 }
 
                 const $container = containerCtrl.element;
