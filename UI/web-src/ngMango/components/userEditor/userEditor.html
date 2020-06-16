@@ -135,7 +135,7 @@
                 <em ng-if="$ctrl.user.locale == null" ma-tr="users.useServerLocale"></em>
                 
                 <ma-drop-down class="ma-slide-down ma-locale-select" auto-focus="::false">
-                    <ma-option-list ng-model="$ctrl.user.locale" items="$ctrl.getLocales($filter)" required ng-disabled="$ctrl.disabled">
+                    <ma-option-list name="locale" ng-model="$ctrl.user.locale" ng-disabled="$ctrl.disabled" items="$ctrl.getLocales($filter)">
                         <ma-option ng-if="!$filter" ng-value="null"><em ma-tr="users.useServerLocale"></em></ma-option>
                         <ma-option ng-repeat="locale in $items track by locale.id" ng-value="locale.id">
                             <span ng-bind="locale.name"></span>&nbsp;&mdash;&nbsp;<span ng-bind="locale.native"></span>
@@ -155,7 +155,7 @@
                 <span ng-if="$ctrl.user.timezone != null" ng-bind="$ctrl.user.timezone"></span>
                 <em ng-if="$ctrl.user.timezone == null" ma-tr="users.timezone.def"></em>
                 <ma-drop-down class="ma-slide-down ma-timezone-select" auto-focus="::false">
-                    <ma-option-list ng-model="$ctrl.user.timezone" items="$ctrl.timezones | maFilter:$filter">
+                    <ma-option-list name="timezone" ng-model="$ctrl.user.timezone" ng-disabled="$ctrl.disabled" items="$ctrl.timezones | maFilter:$filter">
                         <ma-option ng-if="!$filter" ng-value="null"><em ma-tr="users.timezone.def"></em></ma-option>
                         <ma-option ng-repeat="zone in $items" ng-value="zone" ng-bind="zone"></ma-option>
                     </ma-option-list>
