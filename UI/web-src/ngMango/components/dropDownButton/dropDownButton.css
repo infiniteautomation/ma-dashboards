@@ -48,7 +48,7 @@ md-input-container > ma-drop-down-button {
     padding-bottom: 1px;
     border-width: 0;
     border-bottom: 1px solid currentColor;
-    border-bottom-color: var(--ma-foreground-4);
+    border-color: var(--ma-foreground-4);
 }
 
 md-input-container > ma-drop-down-button:focus:not([disabled]),
@@ -56,11 +56,15 @@ md-input-container > ma-drop-down-button:active:not([disabled]),
 md-input-container > ma-drop-down-button.ma-drop-down-open:not([disabled]) {
     padding-bottom: 0;
     border-bottom-width: 2px;
-    border-bottom-color: var(--ma-primary);
+    border-color: var(--ma-primary);
+}
+
+md-input-container.md-input-invalid > ma-drop-down-button:not([disabled]) {
+    border-color: var(--ma-warn-A700);
 }
 
 md-input-container > ma-drop-down-button[disabled] {
-    border-bottom-color: transparent;
+    border-color: transparent;
     background-image: linear-gradient(90deg, var(--ma-foreground-3) 0, var(--ma-foreground-3) 33%, transparent 0);
     background-position: 0 bottom;
     background-size: 4px 1px;

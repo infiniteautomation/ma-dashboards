@@ -33,8 +33,8 @@ class DropDownButtonController {
         this.disabled = false;
         $attrs.$observe('disabled', (value) => {
             const disabled = typeof value === 'string' || !!value;
-            if (this.disabled !== !!disabled) {
-                this.disabled = !!disabled;
+            if (this.disabled !== disabled) {
+                this.disabled = disabled;
                 $element.attr('tabindex', this.disabled ? '-1' : '0');
             }
         });
@@ -92,7 +92,7 @@ class DropDownButtonController {
             $container.addClass('md-icon-left');
         }
         // TODO should we do this?
-        $container.addClass('md-input-has-value');
+        //$container.addClass('md-input-has-value');
 
         $element.after(angular.element('<div class="md-errors-spacer">'));
         
