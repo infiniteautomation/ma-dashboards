@@ -1,5 +1,4 @@
-ma-option,
-[ma-option] {
+ma-option {
     position: relative;
     display: flex;
     align-items: center;
@@ -10,47 +9,48 @@ ma-option,
     white-space: nowrap;
 }
 
-ma-option:focus,
-[ma-option]:focus {
+ma-option:focus {
     outline: none;
 }
 
 ma-option:not([disabled]):focus,
-[ma-option]:not([disabled]):focus,
-ma-option:not([disabled]):hover,
-[ma-option]:not([disabled]):hover {
+ma-option:not([disabled]):hover {
     background-color: rgba(var(--ma-background-500-value), 0.18);
 }
 
-ma-option.ma-selected,
-[ma-option].ma-selected {
+ma-option.ma-selected {
     color: var(--ma-primary);
 }
 
 ma-option[disabled],
-[ma-option][disabled] {
+ma-option-list[disabled] ma-option {
     color: var(--ma-foreground-3);
 }
 
-ma-option > md-icon.material-icons,
-[ma-option] > md-icon.material-icons {
+ma-option-list[disabled] ma-option,
+ma-option-list[disabled] ma-option:not([disabled]) {
+    cursor: default;
+}
+
+ma-option-list[disabled] ma-option:focus,
+ma-option-list[disabled] ma-option:hover {
+    background-color: unset;
+}
+
+ma-option > md-icon.material-icons {
     color: inherit;
     margin: 8px;
 }
 
-ma-option > md-icon:first-child,
-[ma-option] > md-icon:first-child {
+ma-option > md-icon:first-child {
     margin-left: 0;
 }
 
 ma-option.ma-selected .ma-selected-hide,
-ma-option:not(.ma-selected) .ma-selected-show,
-[ma-option].ma-selected .ma-selected-hide,
-[ma-option]:not(.ma-selected) .ma-selected-show {
+ma-option:not(.ma-selected) .ma-selected-show {
     visibility: hidden;
 }
 
-ma-option > md-checkbox,
-[ma-option] > md-checkbox {
+ma-option > md-checkbox {
     margin: 0;
 }

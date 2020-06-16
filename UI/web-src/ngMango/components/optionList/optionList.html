@@ -1,5 +1,6 @@
 <md-input-container ng-if="$ctrl.showFilter" class="ma-filter" md-no-float>
-    <input name="filter" ma-form-exclude ng-model="$ctrl.filter" ng-change="$ctrl.query()" ng-model-options="{debounce: 500}" ma-tr="ui.app.filter">
+    <input name="filter" ma-form-exclude ng-model="$ctrl.filter" ng-change="$ctrl.query()" ng-model-options="{debounce: 500}"
+        ng-disabled="$ctrl.disabled" ma-tr="ui.app.filter">
     <md-button ng-show="$ctrl.filter" class="ma-input-button md-icon-button" ng-click="$ctrl.clearFilter()">
         <md-icon>clear</md-icon>
     </md-button>

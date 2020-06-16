@@ -9,11 +9,12 @@ import './optionList.css';
 
 class OptionListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$element', '$scope', '$q', '$transclude']; }
+    static get $inject() { return ['$element', '$scope', '$attrs', '$q', '$transclude']; }
     
-    constructor($element, $scope, $q, $transclude) {
+    constructor($element, $scope, $attrs, $q, $transclude) {
         this.$element = $element;
         this.$scope = $scope;
+        this.$attrs = $attrs;
         this.$q = $q;
         this.$transclude = $transclude;
         
@@ -24,9 +25,24 @@ class OptionListController {
     }
     
     $onInit() {
-        this.configureInputContainer();
-        
         this.ngModelCtrl.$render = () => this.render();
+        
+        // cannot change multiple after init
+        this.multiple = this.$element[0].hasAttribute('multiple');
+
+        this.disabled = false;
+        this.$attrs.$observe('disabled', (value) => {
+            const disabled = typeof value === 'string' || !!value;
+            if (this.disabled !== disabled) {
+                this.disabled = disabled;
+                this.setTabIndex();
+            }
+        });
+
+        this.configureInputContainer();
+
+        // always query on init and also when the drop down is opened
+        this.query();
         if (this.dropDownCtrl) {
             this.$scope.$on('maDropDownOpen', (event, dropDown, openedPromise) => {
                 delete this.filter;
@@ -35,10 +51,8 @@ class OptionListController {
                     this.focusOnOption();
                 });
             });
-        } else {
-            this.query();
         }
-        
+
         const $parent = this.$element.maFind('.ma-option-list-container');
         this.$transclude((clone, scope) => {
             scope.$optionList = this;
@@ -48,8 +62,6 @@ class OptionListController {
             });
             $parent.append(clone);
         }, $parent);
-        
-        this.multiple = this.$element[0].hasAttribute('multiple');
     }
 
     $onChanges(changes) {
@@ -176,7 +188,7 @@ class OptionListController {
     
     firstOption() {
         // prefer the first selected option
-        return this.$element[0].querySelector('[role=option].ma-selected') || this.$element[0].querySelector('[role=option]:not([disabled])');
+        return this.$element[0].querySelector('[role=option]:not([disabled]).ma-selected') || this.$element[0].querySelector('[role=option]:not([disabled])');
     }
     
     focusOnOption() {
@@ -200,12 +212,15 @@ class OptionListController {
     }
     
     setTabIndex() {
+        // clear the current tab option
+        if (this.tabOption) {
+            this.tabOption.setAttribute('tabindex', '-1');
+            delete this.tabOption;
+        }
+
         // ensure that you can always tab to an option (but only one)
-        const tabOption = this.firstOption();
-        if (tabOption && tabOption !== this.tabOption) {
-            if (this.tabOption) {
-                this.tabOption.setAttribute('tabindex', '-1');
-            }
+        const tabOption = !this.disabled && this.firstOption();
+        if (tabOption) {
             this.tabOption = tabOption;
             this.tabOption.setAttribute('tabindex', '0');
         }
@@ -219,13 +234,32 @@ class OptionListController {
                 form.$addControl(ngModelCtrl);
             }
         }
-        const parentForm = ngModelCtrl.$$parentForm;
         
         const containerCtrl = this.containerCtrl || this.dropDownCtrl && this.dropDownCtrl.containerCtrl;
         if (containerCtrl) {
+            const parentForm = ngModelCtrl.$$parentForm;
             const isErrorGetter = () => ngModelCtrl.$invalid && (ngModelCtrl.$touched || (parentForm && parentForm.$submitted));
             this.$scope.$watch(isErrorGetter, containerCtrl.setInvalid);
-            
+
+            if (containerCtrl.label) {
+                this.required = false;
+                this.$attrs.$observe('required', value => {
+                    const required = typeof value === 'string' || !!value;
+                    if (this.required !== required) {
+                        this.required = required;
+                        const mdNoAsterisk = this.$attrs.mdNoAsterisk === '' || this.$scope.$eval(this.$attrs.mdNoAsterisk);
+                        containerCtrl.label.toggleClass('md-required', required && !mdNoAsterisk);
+                    }
+                });
+            }
+
+            const setHasValue = value => {
+                containerCtrl.setHasValue(this.multiple ? Array.isArray(value) && value.length : value !== undefined);
+                return value;
+            };
+            ngModelCtrl.$parsers.push(setHasValue);
+            ngModelCtrl.$formatters.push(setHasValue);
+
             if (!this.dropDownCtrl) {
                 $element[0].addEventListener('focus', event => containerCtrl.setFocused(true));
                 $element[0].addEventListener('blur', event => containerCtrl.setFocused(false));
