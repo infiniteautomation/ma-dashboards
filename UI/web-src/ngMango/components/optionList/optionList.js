@@ -254,7 +254,13 @@ class OptionListController {
             }
 
             const setHasValue = value => {
-                containerCtrl.setHasValue(this.multiple ? Array.isArray(value) && value.length : value !== undefined);
+                let hasValue;
+                if (typeof this.hasValue === 'function') {
+                    hasValue = this.hasValue({$value: value});
+                } else {
+                    hasValue = this.multiple ? Array.isArray(value) && value.length : value !== undefined;
+                }
+                containerCtrl.setHasValue(!!hasValue);
                 return value;
             };
             ngModelCtrl.$parsers.push(setHasValue);
@@ -275,7 +281,8 @@ export default {
         getItems: '&?items',
         reloadItems: '<?',
         userItemId: '&?itemId',
-        showFilter: '<?'
+        showFilter: '<?',
+        hasValue: '&?'
     },
     require: {
         ngModelCtrl: 'ngModel',
