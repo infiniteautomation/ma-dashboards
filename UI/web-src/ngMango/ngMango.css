@@ -1203,8 +1203,13 @@ md-toolbar .md-button.md-icon-button md-icon {
 }
 
 /* affects main UI top toolbar quick date picker */
-md-toolbar md-select:not([disabled]):focus.md-no-underline md-select-value.md-select-value {
-	color: var(--ma-accent);
+/* affects the drop down button under the main logo (user profile, logout menu) */
+md-toolbar md-select:not([disabled]):focus.md-no-underline md-select-value.md-select-value,
+md-toolbar .md-button:not([disabled]).md-ink-ripple.md-focused,
+md-toolbar .md-button:not([disabled]).md-ink-ripple:hover,
+md-toolbar md-menu > [role=button]:focus {
+    outline: none;
+    background-color: rgba(var(--ma-background-300-value), 0.2);
 }
 
 /* affects main UI top toolbar quick date picker */
@@ -1225,12 +1230,6 @@ md-toolbar md-checkbox:not(.md-checked) .md-icon {
 /* affects data point detail "Number of values" input */
 md-toolbar md-input-container > input.md-input {
 	color: inherit !important;
-}
-
-/* affects the drop down button under the main logo (user profile, logout menu) */
-md-menu > [role=button]:focus {
-	outline: none;
-	color: var(--ma-accent);
 }
 
 /* affects bacnet local devices drop down */
