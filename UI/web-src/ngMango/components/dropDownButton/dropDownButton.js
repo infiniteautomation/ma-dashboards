@@ -3,17 +3,15 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import dropDownButtonTemplate from './dropDownButton.html';
 import './dropDownButton.css';
 
 class DropDownButtonController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', '$element', '$attrs', 'maUtil', '$injector']; }
+    static get $inject() { return ['$scope', '$element', '$attrs', '$injector']; }
     
-    constructor($scope, $element, $attrs, maUtil, $injector) {
+    constructor($scope, $element, $attrs, $injector) {
         this.$element = $element;
-        this.maUtil = maUtil;
         this.$injector = $injector;
 
         const listener = event => {
@@ -60,7 +58,7 @@ class DropDownButtonController {
             }
             this.isOpen = isOpen;
             if (this.containerCtrl) {
-                this.setFocused();
+                this.setContainerFocusedState();
             }
         }
     }
@@ -82,30 +80,12 @@ class DropDownButtonController {
     }
     
     configureInputContainer() {
-        const containerCtrl = this.containerCtrl;
-        const $element = this.$element;
-        const $container = containerCtrl.element;
-        
-        if ($container.maFind(':scope > ma-drop-down-button ~ md-icon').length) {
-            $container.addClass('md-icon-right');
-        } else if ($container.maFind(':scope > md-icon ~ ma-drop-down-button').length) {
-            $container.addClass('md-icon-left');
-        }
-        // TODO should we do this?
-        //$container.addClass('md-input-has-value');
-
-        $element.after(angular.element('<div class="md-errors-spacer">'));
-        
-        containerCtrl.input = $element;
-        if (!$element.attr('id')) {
-            $element.attr('id', 'input_' + this.maUtil.uuid());
-        }
-
-        $element[0].addEventListener('focus', event => this.setFocused());
-        $element[0].addEventListener('blur', event => this.setFocused());
+        const setContainerFocusedState = () => this.setContainerFocusedState();
+        this.$element[0].addEventListener('focus', setContainerFocusedState);
+        this.$element[0].addEventListener('blur', setContainerFocusedState);
     }
     
-    setFocused() {
+    setContainerFocusedState() {
         this.containerCtrl.setFocused(!this.disabled && (this.isOpen || this.$element.maHasFocus()));
     }
 }

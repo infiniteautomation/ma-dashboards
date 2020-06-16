@@ -88,7 +88,7 @@
             <ma-drop-down-button ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')">
                 <span ng-bind="$ctrl.user.permissions.join(', ')"></span>
                 <ma-drop-down class="ma-slide-down ma-user-editor-role-selector">
-                    <ma-role-selector name="permissions" ng-model="$ctrl.user.permissions"></ma-role-selector>
+                    <ma-role-selector name="permissions" ng-model="$ctrl.user.permissions" ma-configure-input-container></ma-role-selector>
                 </ma-drop-down>
             </ma-drop-down-button>
             <div ng-messages="$ctrl.userForm.permissions.$error">
@@ -132,10 +132,10 @@
                 <span ng-if="$ctrl.user.locale != null">
                     <span ng-bind="$ctrl.locales[$ctrl.user.locale].name"></span>&nbsp;&mdash;&nbsp;<span ng-bind="$ctrl.locales[$ctrl.user.locale].native"></span>
                 </span>
-                <em ng-if="$ctrl.user.locale == null" ma-tr="users.useServerLocale"></em>
+                <em ng-if="$ctrl.user.locale === null" ma-tr="users.useServerLocale"></em>
                 
                 <ma-drop-down class="ma-slide-down ma-locale-select" auto-focus="::false">
-                    <ma-option-list name="locale" ng-model="$ctrl.user.locale" ng-disabled="$ctrl.disabled" items="$ctrl.getLocales($filter)">
+                    <ma-option-list name="locale" ng-model="$ctrl.user.locale" ng-disabled="$ctrl.disabled" items="$ctrl.getLocales($filter)" ma-configure-input-container>
                         <ma-option ng-if="!$filter" ng-value="null"><em ma-tr="users.useServerLocale"></em></ma-option>
                         <ma-option ng-repeat="locale in $items track by locale.id" ng-value="locale.id">
                             <span ng-bind="locale.name"></span>&nbsp;&mdash;&nbsp;<span ng-bind="locale.native"></span>
@@ -153,9 +153,9 @@
             <label ma-tr="users.timezone"></label>
             <ma-drop-down-button ng-disabled="$ctrl.disabled">
                 <span ng-if="$ctrl.user.timezone != null" ng-bind="$ctrl.user.timezone"></span>
-                <em ng-if="$ctrl.user.timezone == null" ma-tr="users.timezone.def"></em>
+                <em ng-if="$ctrl.user.timezone === null" ma-tr="users.timezone.def"></em>
                 <ma-drop-down class="ma-slide-down ma-timezone-select" auto-focus="::false">
-                    <ma-option-list name="timezone" ng-model="$ctrl.user.timezone" ng-disabled="$ctrl.disabled" items="$ctrl.timezones | maFilter:$filter">
+                    <ma-option-list name="timezone" ng-model="$ctrl.user.timezone" ng-disabled="$ctrl.disabled" items="$ctrl.timezones | maFilter:$filter" ma-configure-input-container>
                         <ma-option ng-if="!$filter" ng-value="null"><em ma-tr="users.timezone.def"></em></ma-option>
                         <ma-option ng-repeat="zone in $items" ng-value="zone" ng-bind="zone"></ma-option>
                     </ma-option-list>

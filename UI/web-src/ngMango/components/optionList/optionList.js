@@ -39,8 +39,6 @@ class OptionListController {
             }
         });
 
-        this.configureInputContainer();
-
         // always query on init and also when the drop down is opened
         this.query();
         if (this.dropDownCtrl) {
@@ -225,53 +223,6 @@ class OptionListController {
             this.tabOption.setAttribute('tabindex', '0');
         }
     }
-    
-    configureInputContainer() {
-        const ngModelCtrl = this.ngModelCtrl;
-        if (this.dropDownCtrl) {
-            const form = this.dropDownCtrl.formCtrl;
-            if (form) {
-                form.$addControl(ngModelCtrl);
-            }
-        }
-        
-        const containerCtrl = this.containerCtrl || this.dropDownCtrl && this.dropDownCtrl.containerCtrl;
-        if (containerCtrl) {
-            const parentForm = ngModelCtrl.$$parentForm;
-            const isErrorGetter = () => ngModelCtrl.$invalid && (ngModelCtrl.$touched || (parentForm && parentForm.$submitted));
-            this.$scope.$watch(isErrorGetter, containerCtrl.setInvalid);
-
-            if (containerCtrl.label) {
-                this.required = false;
-                this.$attrs.$observe('required', value => {
-                    const required = typeof value === 'string' || !!value;
-                    if (this.required !== required) {
-                        this.required = required;
-                        const mdNoAsterisk = this.$attrs.mdNoAsterisk === '' || this.$scope.$eval(this.$attrs.mdNoAsterisk);
-                        containerCtrl.label.toggleClass('md-required', required && !mdNoAsterisk);
-                    }
-                });
-            }
-
-            const setHasValue = value => {
-                let hasValue;
-                if (typeof this.hasValue === 'function') {
-                    hasValue = this.hasValue({$value: value});
-                } else {
-                    hasValue = this.multiple ? Array.isArray(value) && value.length : value !== undefined;
-                }
-                containerCtrl.setHasValue(!!hasValue);
-                return value;
-            };
-            ngModelCtrl.$parsers.push(setHasValue);
-            ngModelCtrl.$formatters.push(setHasValue);
-
-            if (!this.dropDownCtrl) {
-                $element[0].addEventListener('focus', event => containerCtrl.setFocused(true));
-                $element[0].addEventListener('blur', event => containerCtrl.setFocused(false));
-            }
-        }
-    }
 }
 
 export default {
@@ -281,13 +232,11 @@ export default {
         getItems: '&?items',
         reloadItems: '<?',
         userItemId: '&?itemId',
-        showFilter: '<?',
-        hasValue: '&?'
+        showFilter: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel',
-        dropDownCtrl: '?^^maDropDown',
-        containerCtrl: '?^^mdInputContainer'
+        dropDownCtrl: '?^^maDropDown'
     },
     transclude: true
 };
