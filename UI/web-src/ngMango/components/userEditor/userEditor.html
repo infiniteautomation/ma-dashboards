@@ -87,7 +87,7 @@
             <label ma-tr="users.roles"></label>
             <ma-drop-down-button ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')">
                 <span ng-bind="$ctrl.user.permissions.join(', ')"></span>
-                <ma-drop-down class="ma-slide-down ma-user-editor-role-selector">
+                <ma-drop-down class="ma-user-editor-role-selector">
                     <ma-role-selector name="permissions" ng-model="$ctrl.user.permissions" ma-configure-input-container></ma-role-selector>
                 </ma-drop-down>
             </ma-drop-down-button>
@@ -133,11 +133,12 @@
                     <span ng-bind="$ctrl.locales[$ctrl.user.locale].name"></span>&nbsp;&mdash;&nbsp;<span ng-bind="$ctrl.locales[$ctrl.user.locale].native"></span>
                 </span>
                 <em ng-if="$ctrl.user.locale === null" ma-tr="users.useServerLocale"></em>
-                
-                <ma-drop-down class="ma-slide-down ma-locale-select" auto-focus="::false">
+                <ma-drop-down class="ma-locale-select" auto-focus="::false">
                     <ma-option-list name="locale" ng-model="$ctrl.user.locale" ng-disabled="$ctrl.disabled" items="$ctrl.getLocales($filter)" ma-configure-input-container>
                         <ma-option ng-if="!$filter" ng-value="null"><em ma-tr="users.useServerLocale"></em></ma-option>
-                        <ma-option ng-repeat="locale in $items track by locale.id" ng-value="locale.id" md-highlight-text="$filter" md-highlight-flags="ig">{{locale.name}} &mdash; {{locale.native}}</ma-option>
+                        <ma-option ng-repeat="locale in $items track by locale.id" ng-value="locale.id">
+                            <span md-highlight-text="$filter" md-highlight-flags="ig">{{locale.name}} &mdash; {{locale.native}}</span>
+                        </ma-option>
                     </ma-option-list>
                 </ma-drop-down>
             </ma-drop-down-button>
@@ -152,10 +153,12 @@
             <ma-drop-down-button ng-disabled="$ctrl.disabled">
                 <span ng-if="$ctrl.user.timezone != null" ng-bind="$ctrl.user.timezone"></span>
                 <em ng-if="$ctrl.user.timezone === null" ma-tr="users.timezone.def"></em>
-                <ma-drop-down class="ma-slide-down ma-timezone-select" auto-focus="::false">
+                <ma-drop-down class="ma-timezone-select" auto-focus="::false">
                     <ma-option-list name="timezone" ng-model="$ctrl.user.timezone" ng-disabled="$ctrl.disabled" items="$ctrl.timezones | maFilter:$filter" ma-configure-input-container>
                         <ma-option ng-if="!$filter" ng-value="null"><em ma-tr="users.timezone.def"></em></ma-option>
-                        <ma-option ng-repeat="zone in $items" ng-value="zone" md-highlight-text="$filter" md-highlight-flags="ig">{{zone}}</ma-option>
+                        <ma-option ng-repeat="zone in $items" ng-value="zone">
+                            <span md-highlight-text="$filter" md-highlight-flags="ig">{{zone}}</span>
+                        </ma-option>
                     </ma-option-list>
                 </ma-drop-down>
             </ma-drop-down-button>
@@ -172,7 +175,7 @@
         </ma-duration-editor>
     </div>
 
-    <div layout="row" layout-align="start start" class="ma-user-checkboxes" ng-if="!$ctrl.registerMode">
+    <div layout="column" layout-gt-md="row" layout-align="start start" class="ma-user-checkboxes" ng-if="!$ctrl.registerMode">
         <md-checkbox name="muted" ng-model="$ctrl.user.muted" ng-disabled="$ctrl.disabled">
             <span ma-tr="users.muted"></span>
         </md-checkbox>
