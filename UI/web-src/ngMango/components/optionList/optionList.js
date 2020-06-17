@@ -201,7 +201,7 @@ class OptionListController {
         this.clearSearchText = this.$timeout(() => delete this.searchText, 500);
         
         const options = this.$element[0].querySelectorAll('[role=option]:not([disabled])');
-        const match = Array.from(options).find(o => o.textContent.toLowerCase().startsWith(this.searchText));
+        const match = Array.from(options).find(o => o.textContent.trim().toLowerCase().startsWith(this.searchText));
         if (match) {
             match.focus();
         }
