@@ -9,7 +9,7 @@ ma-option {
     white-space: pre;
 }
 
-ma-option > span.highlight {
+ma-option span.highlight {
     color: var(--ma-accent-hue-1);
 }
 
