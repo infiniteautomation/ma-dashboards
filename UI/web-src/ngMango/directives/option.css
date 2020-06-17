@@ -6,7 +6,7 @@ ma-option {
     padding: 0 16px;
     color: var(--ma-foreground-1);
     overflow: hidden;
-    white-space: nowrap;
+    white-space: pre;
 }
 
 ma-option > span.highlight {
