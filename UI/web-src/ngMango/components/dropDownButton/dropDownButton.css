@@ -5,6 +5,12 @@ ma-drop-down-button {
     color: var(--ma-foreground-3);
 }
 
+ma-drop-down-button > div {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 ma-drop-down-button[disabled] {
     pointer-events: none;
 }
