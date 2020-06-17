@@ -75,6 +75,7 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 // watch for changes to the user's preferred color scheme
                 if (typeof $window.matchMedia === 'function') {
                     const match = $window.matchMedia('(prefers-color-scheme: light), (prefers-color-scheme: no-preference)');
+                    // addEventListener not supported in Safari
                     const fnName = typeof match.addEventListener === 'function' ? 'addEventListener' : 'addListener';
                     match[fnName]('change', event => {
                         $rootScope.$apply(() => {
