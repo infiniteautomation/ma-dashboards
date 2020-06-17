@@ -13,6 +13,13 @@ ma-option span.highlight {
     color: var(--ma-accent-hue-1);
 }
 
+ma-option > span,
+ma-option > em {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 ma-option:focus {
     outline: none;
 }
