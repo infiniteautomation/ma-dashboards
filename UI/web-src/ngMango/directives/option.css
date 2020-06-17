@@ -9,6 +9,10 @@ ma-option {
     white-space: nowrap;
 }
 
+ma-option > span.highlight {
+    color: var(--ma-accent-hue-1);
+}
+
 ma-option:focus {
     outline: none;
 }
