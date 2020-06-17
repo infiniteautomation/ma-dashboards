@@ -190,7 +190,8 @@ class OptionListController {
      * Jumps to a spot in the list by searching the text content of the options.
      */
     onKeyPress(event) {
-        if (event.key.length > 1 || event.getModifierState('Control') || event.getModifierState('Alt') || event.getModifierState('Meta') || event.getModifierState('OS')) {
+        if (event.key.length > 1 || event.target.matches('input[name=filter]') ||
+                event.getModifierState('Control') || event.getModifierState('Alt') || event.getModifierState('Meta') || event.getModifierState('OS')) {
             return;
         }
         event.preventDefault();
