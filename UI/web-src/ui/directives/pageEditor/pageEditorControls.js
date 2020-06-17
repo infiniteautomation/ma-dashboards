@@ -20,11 +20,11 @@ class PageEditorControlsController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['$scope', 'maUiPages', 'MA_UI_PAGES_XID', 'maUiMenuEditor', '$state',
         'localStorageService', '$mdDialog', '$mdToast', 'maTranslate', 'maUiMenu', '$window', 'maUser', '$q',
-        '$templateRequest', 'maDialogHelper', 'maRevisionHistoryDialog', 'maJsonStore']; }
+        '$templateRequest', 'maDialogHelper', 'maRevisionHistoryDialog', 'maJsonStore', 'maUtil']; }
     
     constructor($scope, maUiPages, MA_UI_PAGES_XID, maUiMenuEditor, $state,
             localStorageService, $mdDialog, $mdToast, Translate, Menu, $window, User, $q,
-            $templateRequest, maDialogHelper, maRevisionHistoryDialog, maJsonStore) {
+            $templateRequest, maDialogHelper, maRevisionHistoryDialog, maJsonStore, maUtil) {
         this.$scope = $scope;
         this.maUiPages = maUiPages;
         this.MA_UI_PAGES_XID = MA_UI_PAGES_XID;
@@ -43,6 +43,7 @@ class PageEditorControlsController {
         this.maDialogHelper = maDialogHelper;
         this.maRevisionHistoryDialog = maRevisionHistoryDialog;
         this.maJsonStore = maJsonStore;
+        this.maUtil = maUtil;
         
         this.showInputs = false;
     }
@@ -129,13 +130,14 @@ class PageEditorControlsController {
             return 0;
         });
     }
-    
-    searchPages() {
+
+    searchPages(filter) {
         const pages = this.pageList || [];
-        if (!this.search) {
+        if (!filter) {
             return pages;
         }
-        return pages.filter(p => (new RegExp(this.search, 'gi')).test(p.name));
+        const escaped = this.maUtil.escapeRegExp(filter);
+        return pages.filter(p => (new RegExp(escaped, 'gi')).test(p.name));
     }
     
     createNewPage(markup) {
