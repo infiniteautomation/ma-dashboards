@@ -46,7 +46,7 @@ function dropDown($document, $animate, $window) {
             this.focusListener = this.focusListener.bind(this);
             this.resizeListener = this.resizeListener.bind(this);
             
-            this.fullscreenMedia = '(max-width: 959px)';
+            this.fullscreenMedia = '(max-width: 599px)';
         }
         
         $onChanges(changes) {
