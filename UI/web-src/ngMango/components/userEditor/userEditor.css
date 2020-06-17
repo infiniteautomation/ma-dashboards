@@ -10,8 +10,3 @@ ma-user-editor .ma-user-checkboxes > md-checkbox {
 ma-user-editor .ma-action-buttons {
 	margin-top: 16px;
 }
-
-ma-drop-down.ma-user-editor-role-selector  {
-    background-color: var(--ma-background-hue-2);
-    color: var(--ma-background-hue-2-contrast);
-}
