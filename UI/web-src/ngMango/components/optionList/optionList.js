@@ -108,7 +108,7 @@ class OptionListController {
             this.ngModelCtrl.$setViewValue(first);
         }
 
-        if (this.dropDownCtrl) {
+        if (!this.multiple && this.dropDownCtrl) {
             this.dropDownCtrl.close();
         }
         
