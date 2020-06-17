@@ -45,6 +45,8 @@ function dropDown($document, $animate, $window) {
             this.scrollListener = this.scrollListener.bind(this);
             this.focusListener = this.focusListener.bind(this);
             this.resizeListener = this.resizeListener.bind(this);
+            
+            this.fullscreenMedia = '(max-width: 959px)';
         }
         
         $onChanges(changes) {
@@ -209,10 +211,24 @@ function dropDown($document, $animate, $window) {
         
         resizeDropDown() {
             if (!this.targetElement || !this.$dropDown) return;
+
+            const dropDownEl = this.$dropDown[0];
+            
+            this.fullscreen = $window.matchMedia(this.fullscreenMedia).matches;
+            if (this.fullscreen) {
+                Object.assign(dropDownEl.style, {
+                    width: 'calc(100% - 16px)',
+                    maxHeight: 'calc(100% - 16px)',
+                    left: '8px',
+                    right: '8px',
+                    top: '8px',
+                    bottom: '8px',
+                    transformOrigin: '0 0'
+                });
+                return;
+            }
             
             const rect = this.targetElement.getBoundingClientRect();
-            const dropDownEl = this.$dropDown[0];
-
             dropDownEl.style.left = `${rect.left}px`;
             dropDownEl.style.width = `${rect.width}px`;
             
@@ -258,10 +274,7 @@ function dropDown($document, $animate, $window) {
         
         scrollListener(event) {
             if (this.isOpen() && !this.$dropDown[0].contains(event.target)) {
-                //this.resizeDropDown();
-                this.$scope.$apply(() => {
-                    this.close();
-                });
+                this.resizeDropDown();
             }
         }
 
@@ -295,7 +308,8 @@ function dropDown($document, $animate, $window) {
             onOpened: '&',
             onClose: '&',
             onClosed: '&',
-            autoFocus: '<?'
+            autoFocus: '<?',
+            fullscreenMedia: '@?fullscreen'
         },
         require: {
             dropDownButton: '?^^maDropDownButton',
