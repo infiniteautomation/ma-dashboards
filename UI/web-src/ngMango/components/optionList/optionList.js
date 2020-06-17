@@ -9,17 +9,19 @@ import './optionList.css';
 
 class OptionListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$element', '$scope', '$attrs', '$q', '$transclude']; }
+    static get $inject() { return ['$element', '$scope', '$attrs', '$q', '$transclude', '$timeout']; }
     
-    constructor($element, $scope, $attrs, $q, $transclude) {
+    constructor($element, $scope, $attrs, $q, $transclude, $timeout) {
         this.$element = $element;
         this.$scope = $scope;
         this.$attrs = $attrs;
         this.$q = $q;
         this.$transclude = $transclude;
+        this.$timeout = $timeout;
         
         this.showFilter = true;
-        this.$element[0].addEventListener('keydown', event => this.keyDown(event));
+        this.$element[0].addEventListener('keydown', event => this.onKeyDown(event));
+        this.$element[0].addEventListener('keypress', event => this.onKeyPress(event));
         this.options = [];
         this.selected = new Map();
     }
@@ -151,7 +153,7 @@ class OptionListController {
         return promise;
     }
     
-    keyDown(event) {
+    onKeyDown(event) {
         const $target = angular.element(event.target);
         if (this.showFilter && event.getModifierState('Control') && event.key === 'f') {
             // focus on the filter input on Ctrl-F
@@ -181,6 +183,26 @@ class OptionListController {
                     this.dropDownCtrl.close();
                 });
             }
+        }
+    }
+    
+    /**
+     * Jumps to a spot in the list by searching the text content of the options.
+     */
+    onKeyPress(event) {
+        if (event.key.length > 1 || event.getModifierState('Control') || event.getModifierState('Alt') || event.getModifierState('Meta') || event.getModifierState('OS')) {
+            return;
+        }
+        event.preventDefault();
+        
+        this.searchText = (this.searchText || '') + event.key.toLowerCase();
+        this.$timeout.cancel(this.clearSearchText);
+        this.clearSearchText = this.$timeout(() => delete this.searchText, 500);
+        
+        const options = this.$element[0].querySelectorAll('[role=option]:not([disabled])');
+        const match = Array.from(options).find(o => o.textContent.toLowerCase().startsWith(this.searchText));
+        if (match) {
+            match.focus();
         }
     }
     
