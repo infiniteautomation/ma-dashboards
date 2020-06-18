@@ -48,8 +48,8 @@
         </md-input-container>
       </div>
       <div ng-if="param.type === 'select'" layout="column" layout-align="start end" ng-model="param.options.options" ui-sortable="{handle: '.move-handle'}">
-        <md-checkbox ng-model="param.options.multiple" ng-disabled="param.options.filtering"><span ma-tr="ui.app.selectMultiple"></span></md-checkbox>
-        <md-checkbox ng-model="param.options.filtering" ng-change="param.options.multiple = undefined"><span ma-tr="ui.app.filteringSelect"></span></md-checkbox>
+        <md-checkbox ng-model="param.options.multiple"><span ma-tr="ui.app.selectMultiple"></span></md-checkbox>
+        <md-checkbox ng-model="param.options.filtering"><span ma-tr="ui.app.filteringSelect"></span></md-checkbox>
         <div ng-repeat="option in param.options.options" layout="row" layout-align="end center">
           <md-button class="md-icon-button" ng-click="param.options.options.splice($index, 1)"><md-icon>clear</md-icon></md-button>
           <md-input-container>
@@ -58,7 +58,7 @@
           </md-input-container>
           <md-input-container>
             <label ma-tr="ui.app.value"></label>
-            <input ng-model="option.value">
+            <input ng-model="option.value" required>
           </md-input-container>
           <md-icon class="move-handle">reorder</md-icon>
         </div>
