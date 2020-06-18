@@ -28,14 +28,9 @@ class OptionListController {
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        
-        // cannot change multiple after init
+
         this.multiple = this.$element[0].hasAttribute('multiple') || !!this.ngMultiple;
-        if (this.multiple) {
-            this.$element[0].setAttribute('multiple', 'multiple');
-        } else {
-            this.$element[0].removeAttribute('multiple');
-        }
+        this.updateMultipleAttribute();
 
         this.disabled = false;
         this.$attrs.$observe('disabled', (value) => {
@@ -72,6 +67,11 @@ class OptionListController {
     $onChanges(changes) {
         if (changes.reloadItems && !changes.reloadItems.isFirstChange()) {
             this.query();
+        }
+        if (changes.ngMultiple && !changes.ngMultiple.isFirstChange()) {
+            this.multiple = !!this.ngMultiple;
+            this.updateMultipleAttribute();
+            this.render();
         }
     }
 
@@ -249,6 +249,14 @@ class OptionListController {
         if (tabOption) {
             this.tabOption = tabOption;
             this.tabOption.setAttribute('tabindex', '0');
+        }
+    }
+    
+    updateMultipleAttribute() {
+        if (this.multiple) {
+            this.$element[0].setAttribute('multiple', 'multiple');
+        } else {
+            this.$element[0].removeAttribute('multiple');
         }
     }
 }
