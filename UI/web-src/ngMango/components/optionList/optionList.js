@@ -30,7 +30,12 @@ class OptionListController {
         this.ngModelCtrl.$render = () => this.render();
         
         // cannot change multiple after init
-        this.multiple = this.$element[0].hasAttribute('multiple');
+        this.multiple = this.$element[0].hasAttribute('multiple') || !!this.ngMultiple;
+        if (this.multiple) {
+            this.$element[0].setAttribute('multiple', 'multiple');
+        } else {
+            this.$element[0].removeAttribute('multiple');
+        }
 
         this.disabled = false;
         this.$attrs.$observe('disabled', (value) => {
@@ -255,7 +260,8 @@ export default {
         getItems: '&?items',
         reloadItems: '<?',
         userItemId: '&?itemId',
-        showFilter: '<?'
+        showFilter: '<?',
+        ngMultiple: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel',

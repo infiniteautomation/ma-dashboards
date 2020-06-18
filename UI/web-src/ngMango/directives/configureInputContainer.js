@@ -17,8 +17,6 @@ function configureInputContainerDirective(maUtil) {
         }
         
         $onInit() {
-            // cannot change multiple after init
-            this.multiple = this.$element[0].hasAttribute('multiple');
             this.configureInputContainer();
         }
         
@@ -70,7 +68,7 @@ function configureInputContainerDirective(maUtil) {
                     if (this.$attrs.hasOwnProperty('hasValue')) {
                         hasValue = this.$scope.$eval(this.$attrs.hasValue, {$value: value});
                     } else {
-                        hasValue = this.multiple ? Array.isArray(value) && value.length : value !== undefined;
+                        hasValue = this.$element[0].hasAttribute('multiple') ? Array.isArray(value) && value.length : value !== undefined;
                     }
                     containerCtrl.setHasValue(!!hasValue);
                     return value;
