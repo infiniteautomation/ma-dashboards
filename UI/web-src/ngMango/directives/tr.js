@@ -84,7 +84,7 @@ function maTr(Translate) {
                         return;
                     }
 
-                    const firstChild = $elem.contents().length && $elem.contents().get(0);
+                    const firstChild = $elem[0].childNodes[0];
                     // if first child is a text node set the text value
                     if (firstChild && firstChild.nodeType === Node.TEXT_NODE) {
                         firstChild.nodeValue = text;

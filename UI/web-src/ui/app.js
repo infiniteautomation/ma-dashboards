@@ -17,7 +17,6 @@ import iframeView from './directives/iframeView/iframeView';
 import menuItems from './menuItems';
 import 'moment-timezone';
 import 'angular-ui-router';
-import 'angular-ui-sortable';
 import 'angular-loading-bar';
 import '../docs/ngMango/js/docs-setup';
 import 'md-color-picker';
@@ -31,7 +30,6 @@ import './styles/help.css';
 
 const uiApp = angular.module('maUiApp', [
     'ui.router',
-    'ui.sortable',
     'angular-loading-bar',
     'ngMangoMaterial',
     'ngMessages',

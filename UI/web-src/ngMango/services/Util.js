@@ -32,112 +32,145 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
 
     const ENCODED_STATE_PARAM_NULL = 'null';
     
-    /* Extend jQuery lite / angular.element with some handy functions */
-    const jQuery = angular.element;
-    
-    if (jQuery.event && typeof jQuery.event.addProp === 'function') {
-        jQuery.event.addProp('deltaX', function(event) {
-            return event.deltaX;
-        });
-        jQuery.event.addProp('deltaY', function(event) {
-            return event.deltaY;
-        });
-    }
-    
-    jQuery.fn.maMatch = function maMatch(selector) {
-        const elements = [];
-        for (let e of this) {
-            if (e instanceof Element && e.matches(selector)) {
-                elements.push(e);
-            }
-        }
-        return this.constructor(elements);
-    };
-
-    jQuery.fn.maFind = function maFind(selector) {
-        const elements = Array.from(this.maMatch(selector));
-        for (let e of this) {
-            if (e instanceof Element || e instanceof Document) {
-                const matches = e.querySelectorAll(selector); 
-                elements.push(...matches);
-            }
-        }
-        return this.constructor(elements);
-    };
-
-    jQuery.fn.maHasFocus = function maHasFocus() {
-        const activeElement = $document[0].activeElement;
-        if (!activeElement) return false;
-
-        for (let e of this) {
-            if (e === activeElement || e.contains(activeElement)) {
-                return true;
-            }
-        }
-        
-        return false;
-    };
-
-    jQuery.fn.maClick = function maClick() {
-        for (let e of this) {
-            if (e instanceof Element) {
-                e.click();
-                break;
-            }
-        }
-        return this;
-    };
-    
-    jQuery.fn.maFocus = function maFocus(options = {}) {
-        const selectText = !!options.selectText;
-        const sort = !!options.sort;
-        const scrollIntoView = !!options.scrollIntoView;
-        
-        const focusable = Array.from(this).filter(e => {
-            // offsetParent is null if element is not visible
-            return e instanceof Element && e.offsetParent != null && !e.disabled;
-        });
-        
-        if (sort) {
-            focusable.sort((e1, e2) => {
-                // prioritize element with autofocus attribute
-                if (e1.autofocus && !e2.autofocus) return -1;
-                if (!e1.autofocus && e2.autofocus) return 1;
-                return e1.tabIndex - e2.tabIndex;
-            });
-        }
-        
-        focusable.find(first => {
-            first.focus();
-            if (scrollIntoView) {
-                first.scrollIntoView();
-            }
-            if (selectText && typeof first.setSelectionRange === 'function') {
-                first.setSelectionRange(0, first.value.length);
-            }
-            return true;
-        });
-        return this;
-    };
+    /* Extend JQLite / angular.element with some handy functions */
+    const JQLite = angular.element;
 
     const firstMatch = function(accessor) {
         return function(selector) {
             const selection = [];
-            for (let e of this) {
+            Array.prototype.forEach.call(this, e => {
                 while ((e = e[accessor]) != null) {
                     if (e instanceof Element && e.matches(selector)) {
                         selection.push(e);
                         break;
                     }
                 }
-            }
-            return this.constructor(selection);
+            });
+            return JQLite(selection);
         }
     };
 
-    jQuery.fn.maParent = firstMatch('parentNode');
-    jQuery.fn.maNext = firstMatch('nextSibling');
-    jQuery.fn.maPrev = firstMatch('previousSibling');
+    Object.assign(JQLite.prototype, {
+        maMatch(selector) {
+            const elements = Array.prototype.filter.call(this, e => {
+                return e instanceof Element && e.matches(selector);
+            });
+            return JQLite(elements);
+        },
+
+        maMatches(selector) {
+            return Array.prototype.some.call(this, e => {
+                return e instanceof Element && e.matches(selector);
+            });
+        },
+
+        maFind(selector) {
+            const elements = Array.from(this.maMatch(selector));
+            Array.prototype.forEach.call(this, e => {
+                if (e instanceof Element || e instanceof Document) {
+                    const matches = e.querySelectorAll(selector);
+                    elements.push(...matches);
+                }
+            });
+            return JQLite(elements);
+        },
+
+        maHasFocus() {
+            const activeElement = $document[0].activeElement;
+            if (!activeElement) return false;
+
+            return Array.prototype.some.call(this, e => {
+                if (e === activeElement || e.contains(activeElement)) {
+                    return true;
+                }
+            });
+        },
+
+        maClick() {
+            Array.prototype.some.call(this, e => {
+                if (e instanceof Element) {
+                    e.click();
+                    return true;
+                }
+            });
+            return this;
+        },
+
+        maFocus(options = {}) {
+            const selectText = !!options.selectText;
+            const sort = !!options.sort;
+            const scrollIntoView = !!options.scrollIntoView;
+
+            const focusable = Array.prototype.filter.call(this, e => {
+                // offsetParent is null if element is not visible
+                return e instanceof Element && e.offsetParent != null && !e.disabled;
+            });
+
+            if (sort) {
+                focusable.sort((e1, e2) => {
+                    // prioritize element with autofocus attribute
+                    if (e1.autofocus && !e2.autofocus) return -1;
+                    if (!e1.autofocus && e2.autofocus) return 1;
+                    return e1.tabIndex - e2.tabIndex;
+                });
+            }
+
+            focusable.find(first => {
+                first.focus();
+                if (scrollIntoView) {
+                    first.scrollIntoView();
+                }
+                if (selectText && typeof first.setSelectionRange === 'function') {
+                    first.setSelectionRange(0, first.value.length);
+                }
+                return true;
+            });
+            return this;
+        },
+
+        maParent: firstMatch('parentNode'),
+        maNext: firstMatch('nextSibling'),
+        maPrev: firstMatch('previousSibling'),
+
+        maForEach() {
+            Array.prototype.forEach.apply(this, arguments);
+            return this;
+        },
+
+        maPush() {
+            Array.prototype.push.apply(this, arguments);
+            return this;
+        },
+
+        maFilter() {
+            return JQLite(Array.prototype.filter.apply(this, arguments));
+        },
+
+        maMap() {
+            return JQLite(Array.prototype.map.apply(this, arguments));
+        },
+
+        maAdd() {
+            const args = Array.from(arguments).map(arg => arg instanceof JQLite ? Array.from(arg) : arg);
+            return JQLite(Array.prototype.concat.apply(Array.from(this), args));
+        },
+
+        maIncludes($other) {
+            return Array.prototype.some.call(this, e => {
+                return Array.prototype.includes.call($other, e);
+            });
+        },
+
+        maNot($other) {
+            return JQLite(Array.prototype.filter.call(this, e => {
+                return !Array.prototype.includes.call($other, e);
+            }));
+        },
+
+        maFirst() {
+            return this.length ? JQLite(this[0]) : JQLite();
+        }
+    });
 
     const util = {
 

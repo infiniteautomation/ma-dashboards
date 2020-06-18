@@ -201,10 +201,6 @@ module.exports = readPom().then(pom => {
                     use: ['exports-loader?require,define']
                 },
                 {
-                    test: /angular\.js$/,
-                    use: ['imports-loader?windowTemp=>window,windowTemp.jQuery=jquery']
-                },
-                {
                     test: /angular-.+?\.js$/,
                     exclude: /angular-locale.+?\.js$/,
                     use: ['imports-loader?angular']
@@ -214,28 +210,9 @@ module.exports = readPom().then(pom => {
                     use: ['imports-loader?localeCacheModule=angularLocaleCache,angular=>localeCacheModule.default']
                 },
                 {
-                    test: /angular-ui-sortable/,
-                    include: /\.js$/,
-                    use: [{loader:'imports-loader', options: {
-                        jqueryUiTouchPunch: 'jquery-ui-touch-punch-c',
-                        jqueryUiSortable: 'jquery-ui/ui/widgets/sortable',
-                        jqueryUiDraggable: 'jquery-ui/ui/widgets/draggable'
-                    }}]
-                },
-                {
                     test: /ace-builds/,
                     include: /\.js$/,
                     use: ['imports-loader?requirejs=>window.requirejs,require=>window.require,define=>window.define']
-                },
-                {
-                    test: /jquery-ui/,
-                    include: /\.js$/,
-                    use: ['imports-loader?jquery']
-                },
-                {
-                    test: /jquery-ui-touch-punch/,
-                    include: /\.js$/,
-                    use: [{loader:'imports-loader', options: {jqueryUi: 'jquery-ui/ui/widgets/mouse'}}]
                 },
                 {
                     test: /mdPickers/,
