@@ -4,42 +4,21 @@
     <input ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{debounce: 1000}"
         pattern="{{param.options.pattern}}">
   </md-input-container>
-  <md-input-container ng-if="param.type === 'select' && !param.options.filtering" flex>
-    <label ng-bind="param.label"></label>
-    <md-select ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-if="!param.options.multiple">
-      <md-option ng-repeat="option in param.options.options" ng-value="option.value || option.label">
-        <span ng-bind="option.label || option.value"></span>
-      </md-option>
-    </md-select>
-    <md-select ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-if="param.options.multiple" multiple>
-      <md-option ng-repeat="option in param.options.options" ng-value="option.value || option.label">
-        <span ng-bind="option.label || option.value"></span>
-      </md-option>
-    </md-select>
-  </md-input-container>
-  <div ng-if="param.type === 'select' && param.options.filtering" flex>
-    <md-autocomplete
-      md-selected-item-change="$ctrl.inputChanged()"
-      md-selected-item="$ctrl.parameters[param.name]"
-      md-search-text="searchText"
-      md-items="option in param.options.options | filter:{'$': searchText}"
-      md-item-text="option.label || option.value"
-      md-no-cache="true"
-      md-min-length="0"
-      md-floating-label="{{param.label}}"
-      md-select-on-focus="true"
-      md-escape-options="none"
-      md-clear-button="true"
-      ng-form="form"
-      ma-form-exclude>
-        <md-item-template>
-          <span md-highlight-text="searchText" md-highlight-flags="gi">{{option.label || option.value}}</span>
-        </md-item-template>
-        <md-not-found>
-          <span ma-tr="ui.app.notFound"></span>
-        </md-not-found>
-    </md-autocomplete>
-  </div>
+    <md-input-container flex ng-if="param.type === 'select'">
+        <label ng-bind="param.label"></label>
+        <ma-drop-down-button>
+            <span ng-bind="$ctrl.optionLabel(param)"></span>
+            <ma-drop-down auto-focus="::false">
+                <ma-option-list ma-form-exclude ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-multiple="param.options.multiple"
+                        items="$ctrl.filterOptions(param, $filter)" item-id="$item.value"
+                        show-filter="param.options.filtering" ma-configure-input-container>
+                    <ma-option ng-repeat="item in $items track by item.value" ng-value="item.value">
+                        <span md-highlight-text="$filter" md-highlight-flags="ig">{{item.label || item.value}}</span>
+                    </ma-option>
+                </ma-option-list>
+            </ma-drop-down>
+        </ma-drop-down-button>
+    </md-input-container>
   <md-input-container ng-if="param.type === 'number'" flex>
     <label ng-bind="param.label"></label>
     <input ng-model="$ctrl.parameters[param.name]" type="number" ng-change="$ctrl.inputChanged()" ng-model-options="{debounce: 1000}"
