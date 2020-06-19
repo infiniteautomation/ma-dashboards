@@ -90,17 +90,17 @@ function svg($document, $templateCache) {
                 
                 // parse the markup and create a dom tree
                 // the ngInclude directive will insert this into $element in its link function
-                ngIncludeCtrl.template = angular.element(ngIncludeCtrl.template);
+                const template = angular.element(ngIncludeCtrl.template);
                 
                 // create a parent node for querying
-                const rootElement = $document[0].createElement('div');
-                Array.prototype.forEach.call(ngIncludeCtrl.template, function(node) {
-                    rootElement.appendChild(node);
+                const parent = $document[0].createElement('div');
+                Array.prototype.forEach.call(template, function(node) {
+                    parent.appendChild(node);
                 });
 
-                // iterate over our selectors, find matching elements in the dom tree and add attribtues to them
+                // iterate over our selectors, find matching elements in the dom tree and add attributes to them
                 Object.keys(attributesBySelector).forEach(function(selector) {
-                    const matchingElements = angular.element(rootElement.querySelectorAll(selector));
+                    const matchingElements = angular.element(parent.querySelectorAll(selector));
                     if (matchingElements.length) {
                         const attributes = attributesBySelector[selector];
                         Object.keys(attributes).forEach(function(attrName) {
@@ -108,6 +108,9 @@ function svg($document, $templateCache) {
                         });
                     }
                 });
+
+                // convert our template back to text
+                ngIncludeCtrl.template = parent.innerHTML;
             };
         }
     };
