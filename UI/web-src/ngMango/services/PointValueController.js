@@ -118,7 +118,8 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
             return '';
         }
         
-        websocketHandler(event, payload) {
+        websocketHandler(event) {
+            const payload = event.payload;
             if (!this.point) {
                 console.error('No point but got websocket msg', payload);
                 return;

@@ -57,7 +57,8 @@ function getPointValue(pointEventManager, Point, Util) {
         },
         link: function ($scope, $element, attrs) {
 
-            function websocketHandler(event, payload) {
+            function websocketHandler(event) {
+                const payload = event.payload;
                 $scope.$applyAsync(function() {
                     const points = $scope.points || [$scope.point];
                     for (let i = 0; i < points.length; i++) {

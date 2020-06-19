@@ -107,6 +107,35 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
         return true;
     }
 
+    let EventTarget = $window.EventTarget;
+    try {
+        // have to actually try constructing it, may exist but not be instantiable
+        new EventTarget();
+    } catch (e) {
+        // polyfill for Safari
+        EventTarget = class EventTarget {
+            constructor() {
+                this.delegate = $window.document.createTextNode('');
+            }
+            addEventListener() {
+                return this.delegate.addEventListener.apply(this.delegate, arguments);
+            }
+            removeEventListener() {
+                return this.delegate.removeEventListener.apply(this.delegate, arguments);
+            }
+            dispatchEvent() {
+                return this.delegate.dispatchEvent.apply(this.delegate, arguments);
+            }
+        }
+    }
+
+    class PayloadEvent extends CustomEvent {
+        constructor(type, payload) {
+            super(type);
+            this.payload = payload;
+        }
+    }
+
     class EventManager {
         constructor(options) {
              // keys are xid, value is object where key is event type and value is the number of subscriptions
@@ -243,7 +272,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
                 const xidSubscriptions = this.subscriptionsByXid[xid];
                 if (xidSubscriptions) {
                     xidSubscriptions.lastPayload = payload;
-                    angular.element(xidSubscriptions.eventEmitter).triggerHandler(eventType, payload);
+                    xidSubscriptions.eventEmitter.dispatchEvent(new PayloadEvent(eventType, payload));
                 }
                 angular.element(this).triggerHandler(eventType, payload);
             }
@@ -257,7 +286,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
             let xidSubscriptions;
             if (xid) {
                 if (!this.subscriptionsByXid[xid])
-                    this.subscriptionsByXid[xid] = {eventEmitter: {}};
+                    this.subscriptionsByXid[xid] = {eventEmitter: new EventTarget()};
                 xidSubscriptions = this.subscriptionsByXid[xid];
             }
 
@@ -272,7 +301,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
 
                 if (xidSubscriptions) {
                     if (typeof eventHandler === 'function') {
-                        angular.element(xidSubscriptions.eventEmitter).on(eventType, eventHandler);
+                        xidSubscriptions.eventEmitter.addEventListener(eventType, eventHandler);
                     }
 
                     if (!xidSubscriptions[eventType]) {
@@ -311,7 +340,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
 
                 if (xidSubscriptions) {
                     if (typeof eventHandler === 'function') {
-                        angular.element(xidSubscriptions.eventEmitter).off(eventType, eventHandler);
+                        xidSubscriptions.eventEmitter.removeEventListener(eventType, eventHandler);
                     }
 
                     if (xidSubscriptions[eventType] > 0) {
