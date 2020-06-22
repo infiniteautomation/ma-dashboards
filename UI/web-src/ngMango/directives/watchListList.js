@@ -42,6 +42,22 @@ import watchListListMdTemplate from './watchListList-md.html';
 
 watchListListFactory.$inject = ['$injector'];
 function watchListListFactory($injector) {
+
+    class WatchListListController extends WatchListSelectController {
+        static get $$ngIsClass() {
+            return true;
+        }
+
+        static get $inject() {
+            return WatchListSelectController.$inject.concat('maUser');
+        }
+
+        constructor() {
+            super(...arguments);
+            this.User = arguments[arguments.length - 1];
+        }
+    }
+
     return {
         restrict: 'E',
         template: function() {
@@ -83,15 +99,4 @@ function watchListListFactory($injector) {
     };
 }
 
-WatchListListController.$inject = WatchListSelectController.$inject.concat('maUser');
-function WatchListListController(User) {
-    WatchListSelectController.apply(this, arguments);
-    this.User = User;
-}
-
-WatchListListController.prototype = Object.create(WatchListSelectController.prototype);
-WatchListListController.prototype.constructor = WatchListListController;
-
 export default watchListListFactory;
-
-

@@ -35,8 +35,23 @@ import WatchListSelectController from './WatchListSelectController';
 import watchListSelectTemplate from './watchListSelect.html';
 import watchListSelectMdTemplate from './watchListSelect-md.html';
 
-watchListSelectFactory.$inject = ['$injector'];
-function watchListSelectFactory($injector) {
+watchListSelectDirective.$inject = ['$injector'];
+function watchListSelectDirective($injector) {
+
+    class WatchListSelectDirectiveController extends WatchListSelectController {
+        static get $$ngIsClass() {
+            return true;
+        }
+
+        static get $inject() {
+            return WatchListSelectController.$inject;
+        }
+
+        onOpen() {
+            return this.queryPromise;
+        }
+    }
+
     return {
         restrict: 'E',
         template: function() {
@@ -77,18 +92,4 @@ function watchListSelectFactory($injector) {
     };
 }
 
-WatchListSelectDirectiveController.$inject = WatchListSelectController.$inject;
-function WatchListSelectDirectiveController() {
-    WatchListSelectController.apply(this, arguments);
-}
-
-WatchListSelectDirectiveController.prototype = Object.create(WatchListSelectController.prototype);
-WatchListSelectDirectiveController.prototype.constructor = WatchListSelectDirectiveController;
-
-WatchListSelectDirectiveController.prototype.onOpen = function() {
-    return this.queryPromise;
-};
-
-export default watchListSelectFactory;
-
-
+export default watchListSelectDirective;

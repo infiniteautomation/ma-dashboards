@@ -23,8 +23,49 @@
 
 import WatchListSelectController from './WatchListSelectController';
 
-watchListGetFactory.$inject = [];
-function watchListGetFactory() {
+watchListGetDirective.$inject = [];
+function watchListGetDirective() {
+
+    class WatchListGetController extends  WatchListSelectController {
+        static get $$ngIsClass() {
+            return true;
+        }
+
+        static get $inject() {
+            return WatchListSelectController.$inject;
+        }
+
+        $onInit() {
+            this.ngModelCtrl.$render = this.render.bind(this);
+        }
+
+        render() {
+            super.render(...arguments);
+
+            const prevUnsubscribe = this.unsubscribe;
+            this.subscribe();
+            if (prevUnsubscribe) {
+                prevUnsubscribe();
+            }
+        }
+
+        subscribe() {
+            if (this.watchList) {
+                this.unsubscribe = this.WatchList.notificationManager.subscribe({
+                    scope: this.$scope,
+                    handler: this.updateHandler.bind(this),
+                    xids: [this.watchList.xid]
+                });
+            }
+        }
+
+        updateHandler(event, update) {
+            if (event.name === 'update' && this.watchList && item.xid === this.watchList.xid) {
+                this.setViewValue(item);
+            }
+        }
+    }
+
     return {
         restrict: 'E',
         scope: {},
@@ -48,42 +89,4 @@ function watchListGetFactory() {
     };
 }
 
-WatchListGetController.$inject = WatchListSelectController.$inject;
-function WatchListGetController() {
-    WatchListSelectController.apply(this, arguments);
-}
-
-WatchListGetController.prototype = Object.create(WatchListSelectController.prototype);
-WatchListGetController.prototype.constructor = WatchListGetController;
-
-WatchListGetController.prototype.$onInit = function() {
-    this.ngModelCtrl.$render = this.render.bind(this);
-};
-
-WatchListGetController.prototype.render = function() {
-    WatchListSelectController.prototype.render.apply(this, arguments);
-
-    const prevUnsubscribe = this.unsubscribe;
-    this.subscribe();
-    if (prevUnsubscribe) {
-        prevUnsubscribe();
-    }
-};
-
-WatchListGetController.prototype.subscribe = function() {
-    if (this.watchList) {
-        this.unsubscribe = this.WatchList.notificationManager.subscribe({
-            scope: this.$scope,
-            handler: this.updateHandler.bind(this),
-            xids: [this.watchList.xid]
-        });
-    }
-};
-
-WatchListGetController.prototype.updateHandler = function updateHandler(event, update) {
-    if (event.name === 'update' && this.watchList && item.xid === this.watchList.xid) {
-        this.setViewValue(item);
-    }
-};
-
-export default watchListGetFactory;
+export default watchListGetDirective;
