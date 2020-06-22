@@ -38,7 +38,13 @@ class EventDetectorListController {
                     this.eventDetectors.splice(index, 1);
                 }
             } else if (event.name === 'update' || event.name === 'create') {
-                this.eventDetectors.push(item);
+                if (this.dataPoint) {
+                    if (item.sourceTypeName === 'DATA_POINT' && item.sourceId === this.dataPoint.id) {
+                        this.eventDetectors.push(item);
+                    }
+                } else {
+                    this.eventDetectors.push(item);
+                }
             }
 
         }, this.$scope, ['create', 'update', 'delete']);
