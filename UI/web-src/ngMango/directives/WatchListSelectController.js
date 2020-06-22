@@ -27,13 +27,13 @@ class WatchListSelectController {
     $onInit() {
         this.ngModelCtrl.$render = this.render.bind(this);
 
-        this.doQuery().then(function (items) {
+        this.doQuery().then((items) => {
             if (!this.watchList && this.selectFirst && items.length) {
                 this.setViewValue(items[0]);
             }
 
             this.subscribe();
-        }.bind(this));
+        });
     }
 
     $onChanges(changes) {
@@ -109,14 +109,14 @@ class WatchListSelectController {
 
     setWatchListByXid(xid) {
         if (xid) {
-            this.WatchList.get({xid: xid}).$promise.then(null, angular.noop).then(function (item) {
+            this.WatchList.get({xid: xid}).$promise.then(null, angular.noop).then((item) => {
                 if (item) {
                     // we want to output watchlists without a points property and supply these points as a separate callback
                     // via onPointsChange() after calling doGetPoints()
                     delete item.points;
                 }
                 this.setViewValue(item || null);
-            }.bind(this));
+            });
         } else {
             this.setViewValue(null);
         }
@@ -128,9 +128,9 @@ class WatchListSelectController {
             start: this.start,
             limit: this.limit,
             sort: this.sort || DEFAULT_SORT
-        }).$promise.then(function (items) {
+        }).$promise.then((items) => {
             return (this.watchLists = items);
-        }.bind(this));
+        });
 
         if (this.onQuery) {
             this.onQuery({$promise: this.queryPromise});
@@ -160,14 +160,14 @@ class WatchListSelectController {
             if (this.wlPointsPromise && this.wlPointsPromise.cancel) {
                 this.wlPointsPromise.cancel();
             }
-            this.wlPointsPromise = this.watchList.getPoints(this.parameters).then(null, angular.noop).then(function (points) {
+            this.wlPointsPromise = this.watchList.getPoints(this.parameters).then(null, angular.noop).then((points) => {
                 this.points = points || null;
                 this.onPointsChange({$points: this.points});
-            }.bind(this));
+            });
 
-            this.wlPointsPromise['finally'](function () {
+            this.wlPointsPromise['finally'](() => {
                 delete this.wlPointsPromise;
-            }.bind(this));
+            });
         }
     }
 
