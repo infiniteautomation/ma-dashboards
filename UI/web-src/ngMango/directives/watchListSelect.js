@@ -34,6 +34,7 @@
 import WatchListSelectController from './WatchListSelectController';
 import watchListSelectTemplate from './watchListSelect.html';
 import watchListSelectMdTemplate from './watchListSelect-md.html';
+import './watchListSelect.css';
 
 watchListSelectDirective.$inject = ['$injector'];
 function watchListSelectDirective($injector) {
@@ -44,11 +45,19 @@ function watchListSelectDirective($injector) {
         }
 
         static get $inject() {
-            return WatchListSelectController.$inject;
+            return WatchListSelectController.$inject.concat('$filter');
         }
 
-        onOpen() {
-            return this.queryPromise;
+        constructor() {
+            super(...arguments);
+            const $filter = arguments[arguments.length - 1];
+            this.maFilter = $filter('maFilter');
+        }
+
+        filterWatchLists(filter) {
+            return this.queryPromise.then(items => {
+                return this.maFilter(items, filter, ['name']);
+            });
         }
     }
 

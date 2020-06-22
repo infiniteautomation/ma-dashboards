@@ -1,7 +1,15 @@
 <md-input-container flex>
-  <label ma-tr="ui.app.chooseWatchList"></label>
-  <md-select md-on-open="$ctrl.onOpen()" ng-model="$ctrl.watchList" ng-model-options="{trackBy: '$value.xid'}" ng-change="$ctrl.setViewValue($ctrl.watchList)" ng-disabled="$ctrl.ngDisabled">
-    <md-option ng-value="null" md-option-empty><em ma-tr="ui.app.clear"></em></md-option>
-    <md-option ng-value="wl" ng-repeat="wl in $ctrl.watchLists track by wl.xid" ng-bind="wl.name"></md-option>
-  </md-select>
+    <label ma-tr="ui.app.chooseWatchList"></label>
+    <ma-drop-down-button ng-disabled="$ctrl.ngDisabled">
+        <span ng-bind="$ctrl.watchList.name"></span>
+        <ma-drop-down auto-focus="::false">
+            <ma-option-list ng-model="$ctrl.watchList" ng-disabled="$ctrl.ngDisabled"
+                            items="$ctrl.filterWatchLists($filter)" ma-configure-input-container>
+                <ma-option ng-if="$ctrl.watchList && !$filter" ng-value="null"><em ma-tr="ui.app.clear"></em></ma-option>
+                <ma-option ng-repeat="wl in $ctrl.watchLists track by wl.xid" ng-value="wl">
+                    <span md-highlight-text="$filter" md-highlight-flags="ig">{{wl.name}}</span>
+                </ma-option>
+            </ma-option-list>
+        </ma-drop-down>
+    </ma-drop-down-button>
 </md-input-container>

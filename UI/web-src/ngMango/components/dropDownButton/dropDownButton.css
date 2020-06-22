@@ -50,8 +50,7 @@ md-input-container > ma-drop-down-button {
     box-sizing: border-box;
     height: 30px;
     line-height: 26px;
-    padding: 2px;
-    padding-bottom: 1px;
+    padding: 2px 2px 1px;
     border-width: 0;
     border-bottom: 1px solid currentColor;
     border-color: var(--ma-foreground-4);
