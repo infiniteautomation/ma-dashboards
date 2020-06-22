@@ -265,6 +265,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector,
         $anchorScroll, installPrompt, developmentConfig, $injector) {
 
+    const document = $document[0];
+
     if (uiSettings.googleAnalyticsPropertyId) {
         webAnalytics.enableGoogleAnalytics(uiSettings.googleAnalyticsPropertyId);
     }
@@ -549,7 +551,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             $rootScope.closeMenu();
         }
     });
-    
+
     $rootScope.toggleMenu = function() {
         const sideNav = $mdSidenav('left');
         const uiPrefs = localStorageService.get('uiPreferences') || {};
@@ -566,7 +568,9 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         if ($mdMedia('gt-sm')) {
             localStorageService.set('uiPreferences', uiPrefs);
         }
-        angular.element('#menu-button').blur();
+
+        const $menuButton = angular.element(document.getElementById('menu-button'));
+        $menuButton.blur();
     };
 
     $rootScope.closeMenu = function() {
