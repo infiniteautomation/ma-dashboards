@@ -68,7 +68,7 @@ function configureInputContainerDirective(maUtil) {
                     if (this.$attrs.hasOwnProperty('hasValue')) {
                         hasValue = this.$scope.$eval(this.$attrs.hasValue, {$value: value});
                     } else {
-                        hasValue = this.$element[0].hasAttribute('multiple') ? Array.isArray(value) && value.length : value !== undefined;
+                        hasValue = this.$element[0].hasAttribute('multiple') ? Array.isArray(value) && value.length : value != null;
                     }
                     containerCtrl.setHasValue(!!hasValue);
                     return value;
