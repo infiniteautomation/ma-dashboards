@@ -379,7 +379,8 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                 }
             }
 
-            function websocketHandler(event, payload) {
+            function websocketHandler(event) {
+                const payload = event.payload;
                 $scope.$applyAsync(() => {
                     if (!payload.value) return;
                     
