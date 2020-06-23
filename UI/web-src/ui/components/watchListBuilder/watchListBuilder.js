@@ -386,10 +386,17 @@ class WatchListBuilderController {
 
         this.deleteParamValues(param);
 
-        if (param && param.type === 'tagValue') {
-            if (!param.options.tagKey) {
-                param.options.tagKey = 'device';
-            }
+        switch(param.type) {
+            case 'tagValue':
+                if (!param.options.tagKey) {
+                    param.options.tagKey = 'device';
+                }
+                break;
+            case 'select':
+                if (!Array.isArray(param.options.options)) {
+                    param.options.options = [];
+                }
+                break;
         }
     }
     
