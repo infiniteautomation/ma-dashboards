@@ -4,7 +4,13 @@
  */
 
 import menuEditorTemplate from './menuEditor.html';
+import './menuEditor.css';
 import angular from 'angular';
+import {Sortable, Draggable} from '@shopify/draggable';
+
+// stops tab index being added to all the trs
+// see https://github.com/Shopify/draggable/issues/317
+delete Draggable.Plugins.Focusable;
 
 menuEditor.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', '$mdMedia', 'maUiMenuEditor'];
 function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
@@ -12,10 +18,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
         scope: {},
         template: menuEditorTemplate,
         link: function($scope, $element) {
-            $scope.menuEditor = {};
-            $scope.$mdMedia = $mdMedia;
-
-            function scrollToTopOfMdContent() {
+            const scrollToTopOfMdContent = function() {
                 let elem = $element[0];
                 while ((elem = elem.parentElement)) {
                     if (elem.tagName === 'MD-CONTENT') {
@@ -23,27 +26,26 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                         break;
                     }
                 }
-            }
-
-            $scope.getHierarchy = function getHierarchy() {
-                Menu.getMenuHierarchy().then(setHierarchy);
             };
-            $scope.getHierarchy();
-            
-            function setHierarchy(menuHierarchy) {
+
+            const setHierarchy = function setHierarchy(menuHierarchy) {
                 $scope.menuHierarchy = menuHierarchy;
                 $scope.path = [];
                 $scope.enterSubmenu(null, $scope.menuHierarchy);
-                
+
                 let uiItem;
                 $scope.menuHierarchy.children.some(function(item) {
                     return (uiItem = item.name === 'ui' && item);
                 });
-                
+
                 if (uiItem) {
                     $scope.enterSubmenu(null, uiItem);
                 }
-            }
+            };
+
+            $scope.getHierarchy = function getHierarchy() {
+                Menu.getMenuHierarchy().then(setHierarchy);
+            };
 
             $scope.enterSubmenu = function enterSubmenu(event, menuItem) {
                 $scope.path.push(menuItem);
@@ -75,28 +77,27 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                 });
             };
 
-            // updates the weights, attempting to keep them as close as possible to the original array
-            $scope.updateWeights = function(event, ui) {
-                let weight = -Infinity;
-                $scope.currentItem.children.forEach(function(item, index, array) {
-                    if (item.weight > weight) {
-                        weight = item.weight;
-                    } else {
-                        if (index !== 0 && array[index - 1].name > item.name) {
-                            weight++;
-                        }
-                        item.weight = weight;
-                    }
+            $scope.setupSortable = function setupSortable() {
+                const tbody = $element[0].querySelector('tbody[md-body]');
+                const sortable = new Sortable([tbody], {
+                    draggable: 'tr',
+                    handle: '.ma-move-handle'
                 });
-            };
-            
-            // ui sortable moves the items within the array, need to specify a call back that updates the
-            // weight property
-            $scope.uiSortableOptions = {
-                handle: '> td > .move-handle',
-                stop: $scope.updateWeights
-            };
-            
+                $scope.$on('$destroy', () => sortable.destroy());
+
+                // move the underlying items in the array and set their weights
+                sortable.on('sortable:stop', event => {
+                    // same array as $scope.currentItem.children
+                    const items = $scope.editItems;
+
+                    // has to be async or angular gets confused trying to keep track of the extra mirror element
+                    $scope.$applyAsync(() => {
+                        const removed = items.splice(event.oldIndex, 1);
+                        items.splice(event.newIndex, 0, ...removed);
+                    });
+                });
+            }
+
             $scope.deleteCustomMenu = function deleteCustomMenu(event) {
                 const confirm = $mdDialog.confirm()
                     .title(Translate.trSync('ui.app.areYouSure'))
@@ -191,10 +192,34 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                     $scope.getChildren();
                 }, () => null);
             };
-            
+
+            // updates the weights, attempting to keep them as close as possible to the original array
+            $scope.updateWeights = function updateWeights(menuItem = this.menuHierarchy) {
+                let weight = -Infinity;
+                menuItem.children.forEach((item, index, array) => {
+                    if (item.weight > weight) {
+                        weight = item.weight;
+                    } else {
+                        if (index !== 0 && array[index - 1].name > item.name) {
+                            weight++;
+                        }
+                        item.weight = weight;
+                    }
+                    if (Array.isArray(item.children)) {
+                        this.updateWeights(item);
+                    }
+                });
+            };
+
             $scope.saveMenu = function saveMenu() {
+                $scope.updateWeights();
                 Menu.saveMenu($scope.menuHierarchy).then(setHierarchy);
             };
+
+            $scope.menuEditor = {};
+            $scope.$mdMedia = $mdMedia;
+            $scope.setupSortable();
+            $scope.getHierarchy();
         }
     };
 }

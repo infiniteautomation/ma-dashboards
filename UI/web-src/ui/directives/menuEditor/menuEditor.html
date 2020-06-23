@@ -31,7 +31,7 @@
               <th md-column flex></th>
             </tr>
         </thead>
-        <tbody md-body ng-model="editItems" ui-sortable="uiSortableOptions">
+        <tbody md-body>
           <tr ng-repeat="menuItem in editItems track by menuItem.name">
             <td>
               <md-button class="md-icon-button" ng-if="menuItem.children && menuItem.children.length" ng-click="enterSubmenu($event, menuItem)">
@@ -52,7 +52,7 @@
               <md-button class="md-icon-button" ng-click="removeItem(menuItem)" ng-disabled="menuItem.builtIn">
                 <md-icon>delete</md-icon>
               </md-button>
-              <md-icon class="move-handle">reorder</md-icon>
+              <md-icon class="ma-move-handle">reorder</md-icon>
             </td>
           </tr>
         </tbody>

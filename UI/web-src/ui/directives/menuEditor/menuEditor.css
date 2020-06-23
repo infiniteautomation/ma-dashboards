@@ -1,0 +1,19 @@
+ma-ui-menu-editor td .md-button.md-icon-button {
+    padding: 0;
+    margin: 0;
+}
+
+.ma-ui-menu-editor-path {
+    min-height: 48px;
+    margin-bottom: 10px;
+}
+
+.ma-ui-menu-editor-path .md-toolbar-tools {
+    height: 48px;
+    min-height: 48px;
+    max-height: 48px;
+}
+
+.ma-ui-menu-editor-dialog md-radio-button {
+    margin-right: 20px;
+}

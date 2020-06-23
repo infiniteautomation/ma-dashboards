@@ -38,7 +38,7 @@
         </md-select>
       </md-input-container>
       <md-button class="md-icon-button" ng-click="showSettings=!showSettings" ng-class="{'md-accent': showSettings}"><md-icon>settings</md-icon></md-button>
-      <md-icon class="move-handle">reorder</md-icon>
+      <md-icon class="ma-move-handle">reorder</md-icon>
     </div>
     <div ng-if="showSettings" class="watchlist-parameter-options">
       <div ng-if="param.type === 'input'" layout="row" layout-align="end center">
@@ -60,7 +60,7 @@
             <label ma-tr="ui.app.value"></label>
             <input ng-model="option.value" required>
           </md-input-container>
-          <md-icon class="move-handle">reorder</md-icon>
+          <md-icon class="ma-move-handle">reorder</md-icon>
         </div>
         <md-button class="md-raised" ng-click="param.options.options ? param.options.options.push({}) : param.options.options = [{}]" ma-tr="ui.app.addOption"></md-button>
       </div>
