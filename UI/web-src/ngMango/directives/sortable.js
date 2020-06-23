@@ -30,12 +30,20 @@ function sortableDirective() {
             this.sortable.destroy();
         }
 
+        isMirrorEnabled() {
+            return this.options && this.options.enableMirror;
+        }
+
         setupSortable() {
             const container = this.$element[0];
             this.sortable = new Sortable([container], Object.assign({
                 draggable: '[ng-repeat]',
                 handle: '.ma-move-handle'
             }, this.options));
+
+            if (!this.isMirrorEnabled()) {
+                this.sortable.removePlugin(Draggable.Plugins.Mirror);
+            }
 
             // move the underlying items in the array
             this.sortable.on('sortable:stop', event => {
