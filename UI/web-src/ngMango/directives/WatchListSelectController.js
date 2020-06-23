@@ -26,13 +26,12 @@ class WatchListSelectController {
 
     $onInit() {
         this.ngModelCtrl.$render = this.render.bind(this);
+        this.subscribe();
 
         this.doQuery().then((items) => {
             if (!this.watchList && this.selectFirst && items.length) {
                 this.setViewValue(items[0]);
             }
-
-            this.subscribe();
         });
     }
 
@@ -172,19 +171,17 @@ class WatchListSelectController {
     }
 
     updateHandler(event, item) {
-        if (event.name === 'add') {
-            // TODO filter added points according to the current query somehow
-            this.watchLists.push(item);
-        } else {
-            for (let i = 0; i < this.watchLists.length; i++) {
-                if (this.watchLists[i].xid === item.xid) {
-                    if (event.name === 'update') {
-                        this.watchLists[i] = item;
-                    } else if (event.name === 'delete') {
-                        this.watchLists.splice(i, 1);
-                    }
-                    break;
+        if (Array.isArray(this.watchLists)) {
+            const index = this.watchLists.findIndex(wl => wl.xid === item.xid);
+            if (index >= 0) {
+                if (event.name === 'add' || event.name === 'update') {
+                    this.watchLists[index] = item;
+                } else if (event.name === 'delete') {
+                    this.watchLists.splice(index, 1);
                 }
+            } else if (event.name === 'add') {
+                // TODO filter added points according to the current query somehow
+                this.watchLists.push(item);
             }
         }
 
