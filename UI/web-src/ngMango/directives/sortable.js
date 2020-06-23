@@ -32,7 +32,10 @@ function sortableDirective() {
 
         setupSortable() {
             const container = this.$element[0];
-            this.sortable = new Sortable([container], this.options);
+            this.sortable = new Sortable([container], Object.assign({
+                draggable: '[ng-repeat]',
+                handle: '.ma-move-handle'
+            }, this.options));
 
             // move the underlying items in the array
             this.sortable.on('sortable:stop', event => {
