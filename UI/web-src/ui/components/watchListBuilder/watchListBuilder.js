@@ -44,8 +44,6 @@ class WatchListBuilderController {
             page: 1
         };
         this.selectedTab = 0;
-        
-        this.dragAndDropBound = (...args) => this.dragAndDrop(...args);
     }
 
     newWatchlist(name) {
@@ -360,10 +358,10 @@ class WatchListBuilderController {
         this.pointsInView = this.watchlist.points.slice(start, start + limit);
     }
     
-    dragAndDrop(event, ui) {
+    dragAndDrop(event) {
         this.resetSort();
-        const from = this.staticTableQuery.start + ui.item.sortable.index;
-        const to = this.staticTableQuery.start + ui.item.sortable.dropindex;
+        const from = this.staticTableQuery.start + event.oldIndex;
+        const to = this.staticTableQuery.start + event.newIndex;
         
         const item = this.watchlist.points[from];
         this.watchlist.points.splice(from, 1);

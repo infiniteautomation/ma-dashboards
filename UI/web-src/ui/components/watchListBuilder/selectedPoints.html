@@ -10,7 +10,7 @@
             <th md-column></th>
           </tr>
       </thead>
-      <tbody md-body ng-model="$ctrl.pointsInView" ui-sortable="{update: $ctrl.dragAndDropBound, handle: '> td > .move-handle'}">
+      <tbody md-body ma-sortable="{draggable: 'tr'}" ma-sortable-items="$ctrl.pointsInView" ma-sortable-stop="$ctrl.dragAndDrop($event)">
         <tr md-row md-select="point" md-select-id="xid" md-auto-select ng-repeat="point in $ctrl.pointsInView track by point.xid">
             <td md-cell ng-bind="point.dataSourceName"></td>
             <td md-cell ng-bind="point.deviceName"></td>
