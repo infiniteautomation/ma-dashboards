@@ -6,11 +6,6 @@
 import menuEditorTemplate from './menuEditor.html';
 import './menuEditor.css';
 import angular from 'angular';
-import {Sortable, Draggable} from '@shopify/draggable';
-
-// stops tab index being added to all the trs
-// see https://github.com/Shopify/draggable/issues/317
-delete Draggable.Plugins.Focusable;
 
 menuEditor.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', '$mdMedia', 'maUiMenuEditor'];
 function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
@@ -76,27 +71,6 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                     return 0;
                 });
             };
-
-            $scope.setupSortable = function setupSortable() {
-                const tbody = $element[0].querySelector('tbody[md-body]');
-                const sortable = new Sortable([tbody], {
-                    draggable: 'tr',
-                    handle: '.ma-move-handle'
-                });
-                $scope.$on('$destroy', () => sortable.destroy());
-
-                // move the underlying items in the array and set their weights
-                sortable.on('sortable:stop', event => {
-                    // same array as $scope.currentItem.children
-                    const items = $scope.editItems;
-
-                    // has to be async or angular gets confused trying to keep track of the extra mirror element
-                    $scope.$applyAsync(() => {
-                        const removed = items.splice(event.oldIndex, 1);
-                        items.splice(event.newIndex, 0, ...removed);
-                    });
-                });
-            }
 
             $scope.deleteCustomMenu = function deleteCustomMenu(event) {
                 const confirm = $mdDialog.confirm()
@@ -218,7 +192,6 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
 
             $scope.menuEditor = {};
             $scope.$mdMedia = $mdMedia;
-            $scope.setupSortable();
             $scope.getHierarchy();
         }
     };

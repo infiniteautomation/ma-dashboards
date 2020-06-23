@@ -31,7 +31,7 @@
               <th md-column flex></th>
             </tr>
         </thead>
-        <tbody md-body>
+        <tbody md-body ma-sortable="{draggable: 'tr', handle: '.ma-move-handle'}" ma-sortable-items="editItems">
           <tr ng-repeat="menuItem in editItems track by menuItem.name">
             <td>
               <md-button class="md-icon-button" ng-if="menuItem.children && menuItem.children.length" ng-click="enterSubmenu($event, menuItem)">
