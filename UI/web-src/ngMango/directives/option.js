@@ -18,6 +18,7 @@ function optionDirective($injector) {
             this.$attrs = $attrs;
             
             Object.defineProperty($scope, '$selected', {get: () => this.selected});
+            Object.defineProperty($scope, '$multiple', {get: () => this.listCtrl && this.listCtrl.multiple});
             this.disabled = false;
         }
         

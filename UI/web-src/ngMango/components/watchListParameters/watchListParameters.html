@@ -8,14 +8,16 @@
         <label ng-bind="param.label"></label>
         <ma-drop-down-button>
             <span ng-bind="$ctrl.optionLabel(param)"></span>
-            <ma-drop-down auto-focus="::false">
+            <ma-drop-down auto-focus="::false" class="ma-full-screen-centered">
                 <ma-option-list ma-form-exclude ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-multiple="param.options.multiple"
                         items="$ctrl.filterOptions(param, $filter)" item-id="$item.value"
                         show-filter="param.options.filtering" ma-configure-input-container>
                     <ma-option ng-repeat="item in $items track by item.value" ng-value="item.value">
-                        <span md-highlight-text="$filter" md-highlight-flags="ig">{{item.label || item.value}}</span>
+                        <md-icon ng-if="$multiple">{{$selected ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
+                        <span class="ma-ellipsis" md-highlight-text="$filter" md-highlight-flags="ig">{{item.label || item.value}}</span>
                     </ma-option>
                 </ma-option-list>
+                <md-button ng-if="$dropDown.fullscreen && param.options.multiple" ng-click="$dropDown.close()"><md-icon>close</md-icon>&nbsp;<span ma-tr="common.close"></span></md-button>
             </ma-drop-down>
         </ma-drop-down-button>
     </md-input-container>
