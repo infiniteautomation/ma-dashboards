@@ -113,10 +113,11 @@ uiApp.config([
     'cfpLoadingBarProvider',
     'maUiMenuProvider',
     '$anchorScrollProvider',
+    '$mdGestureProvider',
 function(MA_UI_NG_DOCS, $urlRouterProvider,
         $httpProvider, $compileProvider, $locationProvider, $mdAriaProvider,
         cfpLoadingBarProvider,
-        maUiMenuProvider, $anchorScrollProvider) {
+        maUiMenuProvider, $anchorScrollProvider, $mdGestureProvider) {
 
     $compileProvider.debugInfoEnabled(false);
     $compileProvider.commentDirectivesEnabled(false);
@@ -127,6 +128,8 @@ function(MA_UI_NG_DOCS, $urlRouterProvider,
     $httpProvider.useApplyAsync(true);
     
     $anchorScrollProvider.disableAutoScrolling();
+
+    $mdGestureProvider.skipClickHijack();
 
     /*
     if ($injector.has('$mdpTimePickerProvider')) {
