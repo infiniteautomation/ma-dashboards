@@ -90,27 +90,42 @@ function svg($document, $templateCache) {
                 
                 // parse the markup and create a dom tree
                 // the ngInclude directive will insert this into $element in its link function
-                const template = angular.element(ngIncludeCtrl.template);
+                const $template = angular.element(ngIncludeCtrl.template);
                 
                 // create a parent node for querying
                 const parent = $document[0].createElement('div');
-                Array.prototype.forEach.call(template, function(node) {
-                    parent.appendChild(node);
-                });
+                Array.prototype.forEach.call($template, n => parent.appendChild(n));
 
                 // iterate over our selectors, find matching elements in the dom tree and add attributes to them
-                Object.keys(attributesBySelector).forEach(function(selector) {
-                    const matchingElements = angular.element(parent.querySelectorAll(selector));
+                Object.keys(attributesBySelector).forEach(selector => {
+                    const matchingElements = parent.querySelectorAll(selector);
                     if (matchingElements.length) {
                         const attributes = attributesBySelector[selector];
-                        Object.keys(attributes).forEach(function(attrName) {
-                            matchingElements.attr(attrName, attributes[attrName]);
+                        Object.keys(attributes).forEach(attrName => {
+                            for (const el of matchingElements) {
+                                el.setAttribute(attrName, attributes[attrName]);
+                            }
                         });
                     }
                 });
 
-                // convert our template back to text
-                ngIncludeCtrl.template = parent.innerHTML;
+                // ngIncludeFillContentDirective calls $element.html() with and argument of ngIncludeCtrl.template
+                // This doesnt work in JQLite unless the argument is a string. Add a shim function to take care
+                // of this.
+                $element.html = function(content) {
+                    // delete this function and restore the one from the prototype
+                    delete this.html;
+
+                    // just in case
+                    if (typeof content === 'string') {
+                        console.warn('Shimmed JQLite html() function was called with string content');
+                        return this.html.apply(this, arguments);
+                    }
+
+                    return this.append.apply(this, arguments);
+                };
+
+                ngIncludeCtrl.template = $template.detach();
             };
         }
     };
