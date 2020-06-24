@@ -1361,13 +1361,8 @@ table.md-table.ma-no-wrap tbody tr td {
 
 /* acknowledge button */
 
-.ma-acknowledged-checkbox,
-.ma-acknowledged-checkbox.material-icons,
-.md-button[disabled] .ma-acknowledged-checkbox.material-icons {
-    color: #8BC34A;
-}
-
 .ma-acknowledged-checkbox.ma-acknowledged {
+    color: var(--ma-color-acknowledged);
     cursor: default;
 }
 
@@ -1670,6 +1665,11 @@ md-input-container:not(.ma-has-hint) .md-errors-spacer {
 .ma-error-text,
 [ng-messages] {
     color: var(--ma-warn-A700);
+}
+
+/* Define some additional colors */
+:root {
+    --ma-color-acknowledged: #8BC34A;
 }
 
 /* Sparkline chart */
