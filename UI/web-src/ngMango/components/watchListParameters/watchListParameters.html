@@ -13,7 +13,7 @@
                         items="$ctrl.filterOptions(param, $filter)" item-id="$item.value"
                         show-filter="param.options.filtering" ma-configure-input-container>
                     <ma-option ng-repeat="item in $items track by item.value" ng-value="item.value">
-                        <md-icon ng-if="$multiple">{{$selected ? 'check_box' : 'check_box_outline_blank'}}</md-icon>
+                        <md-icon ng-if="$multiple" class="ma-selected-show">check</md-icon>
                         <span class="ma-ellipsis" md-highlight-text="$filter" md-highlight-flags="ig">{{item.label || item.value}}</span>
                     </ma-option>
                 </ma-option-list>
