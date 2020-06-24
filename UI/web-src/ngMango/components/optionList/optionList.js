@@ -9,15 +9,16 @@ import './optionList.css';
 
 class OptionListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$element', '$scope', '$attrs', '$q', '$transclude', '$timeout']; }
+    static get $inject() { return ['$element', '$scope', '$attrs', '$q', '$transclude', '$timeout', '$window']; }
     
-    constructor($element, $scope, $attrs, $q, $transclude, $timeout) {
+    constructor($element, $scope, $attrs, $q, $transclude, $timeout, $window) {
         this.$element = $element;
         this.$scope = $scope;
         this.$attrs = $attrs;
         this.$q = $q;
         this.$transclude = $transclude;
         this.$timeout = $timeout;
+        this.$window = $window;
         
         this.showFilter = true;
         this.$element[0].addEventListener('keydown', event => this.onKeyDown(event));
@@ -41,16 +42,14 @@ class OptionListController {
             }
         });
 
-        // always query on init and also when the drop down is opened
-        this.query();
         if (this.dropDownCtrl) {
             this.$scope.$on('maDropDownOpen', (event, dropDown, openedPromise) => {
+                this.focusOnOption();
                 delete this.filter;
-
-                this.$q.all([this.query(), openedPromise]).then(() => {
-                    this.focusOnOption();
-                });
+                this.query();
             });
+        } else {
+            this.query();
         }
 
         const $parent = this.$element.maFind('.ma-option-list-container');
@@ -216,7 +215,7 @@ class OptionListController {
         // prefer the first selected option
         return this.$element[0].querySelector('[role=option]:not([disabled]).ma-selected') || this.$element[0].querySelector('[role=option]:not([disabled])');
     }
-    
+
     focusOnOption() {
         const option = this.firstOption();
         if (option) {
@@ -224,7 +223,7 @@ class OptionListController {
             //option.scrollIntoView({block: 'center'});
         }
     }
-    
+
     addOption(optionCtrl) {
         this.options.push(optionCtrl);
         
@@ -238,18 +237,33 @@ class OptionListController {
     }
     
     setTabIndex() {
-        // clear the current tab option
-        if (this.tabOption) {
-            this.tabOption.setAttribute('tabindex', '-1');
-            delete this.tabOption;
+        if (this.setTabIndexPromise) {
+            return this.setTabIndexPromise;
         }
 
-        // ensure that you can always tab to an option (but only one)
-        const tabOption = !this.disabled && this.firstOption();
-        if (tabOption) {
-            this.tabOption = tabOption;
-            this.tabOption.setAttribute('tabindex', '0');
-        }
+        this.setTabIndexPromise = new this.$q(resolve => {
+            this.$window.requestAnimationFrame(() => {
+                // clear the current tab option
+                if (this.tabOption) {
+                    this.tabOption.setAttribute('tabindex', '-1');
+                    delete this.tabOption;
+                }
+
+                // ensure that you can always tab to an option (but only one)
+                const tabOption = !this.disabled && this.firstOption();
+                if (tabOption) {
+                    this.tabOption = tabOption;
+                    this.tabOption.setAttribute('tabindex', '0');
+                }
+
+                this.focusOnOption();
+
+                delete this.setTabIndexPromise;
+                resolve();
+            });
+        });
+
+        return this.setTabIndexPromise;
     }
     
     updateMultipleAttribute() {
