@@ -27,8 +27,7 @@
         <md-card-content layout-xs="column" layout="row" layout-align="space-between stretch"
             layout-align-gt-sm="space-between center" flex ng-class="{'ma-server-details': $ctrl.$mdMedia('xs')}">
             <div layout="column" layout-align="center center" layout-align-xs="center start">
-                <ma-svg ng-include="$ctrl.sqlSvg">
-                </ma-svg>
+                <div ng-include="$ctrl.sqlSvg"></div>
                 <div>
                     <ma-point-value point-xid="internal_mango_sql_db_size"></ma-point-value>
                     &#47;
@@ -38,8 +37,7 @@
                     ma-tr="systemInfo.databaseSizeDesc"></div>
             </div>
             <div layout="column" layout-align="center center" layout-align-xs="center start">
-                <ma-svg ng-include="$ctrl.noSqlSvg">
-                </ma-svg>
+                <div ng-include="$ctrl.noSqlSvg"></div>
                 <div>
                     <ma-point-value point-xid="internal_mango_no_sql_db_size"></ma-point-value>
                     &#47;
@@ -49,8 +47,7 @@
                     ma-tr="systemSettings.noSqlDatabaseSize"></div>
             </div>
             <div layout="column" layout-align="center center" layout-align-xs="center start">
-                <ma-svg ng-include="$ctrl.diskspaceSvg">
-                </ma-svg>
+                <div ng-include="$ctrl.diskspaceSvg"></div>
                 <div>
                     <ma-point-value point-xid="internal_mango_disk_used_space"></ma-point-value>
                     &#47;
@@ -63,7 +60,7 @@
         <md-card-content layout-xs="column" layout="row" layout-align="space-between stretch"
             layout-align-gt-sm="space-between center" flex flex-md="100" ng-class="{'ma-server-details': $ctrl.$mdMedia('xs'), 'ma-server-details-graph': $ctrl.$mdMedia('gt-xs')}">
             <div layout="column" layout-align="center center" layout-align-xs="center start">
-                <ma-svg ng-include="$ctrl.ramSvg"></ma-svg>
+                <div ng-include="$ctrl.ramSvg"></div>
                 <div>
                     <ma-point-value point-xid="internal_jvm_used_memory"></ma-point-value>
                     &#47;
@@ -73,8 +70,7 @@
                     ma-tr="java.monitor.JAVA_FREE_MEMORY"></div>
             </div>
             <div layout="column" layout-align="center center" layout-align-xs="center start">
-                <ma-svg ng-include="$ctrl.cpuloadSvg">
-                </ma-svg>
+                <div ng-include="$ctrl.cpuloadSvg"></div>
                 <div>
                     <ma-point-value point-xid="internal_cpu_process_load"></ma-point-value>
                     &#47;

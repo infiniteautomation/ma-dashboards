@@ -48,7 +48,7 @@ ma-ui-admin-home-page .ma-ui-home-page-sub-text {
     color: var(--ma-foreground-3);
 }
 
-ma-ui-admin-home-page .ma-server-status-contents ma-svg {
+ma-ui-admin-home-page .ma-server-status-contents svg {
     width: 64px;
     height: 64px;
     margin-bottom: 12px;
