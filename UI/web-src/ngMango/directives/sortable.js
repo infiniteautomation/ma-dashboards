@@ -58,6 +58,13 @@ function sortableDirective() {
                     }
                 });
             });
+
+            this.sortable.on('sortable:start', event => {
+                // cancels the AngularJS Material triggered mouse event
+                if (event.dragEvent.originalEvent.$material) {
+                    event.cancel();
+                }
+            });
         }
     }
 
