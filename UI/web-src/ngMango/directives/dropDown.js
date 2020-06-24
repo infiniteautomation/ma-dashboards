@@ -45,8 +45,8 @@ function dropDown($document, $animate, $window) {
             this.scrollListener = this.scrollListener.bind(this);
             this.focusListener = this.focusListener.bind(this);
             this.resizeListener = this.resizeListener.bind(this);
-            
-            this.fullscreenMedia = '(max-width: 599px)';
+
+            this.fullscreenMedia = '(max-height: 799px)';
         }
         
         $onChanges(changes) {
@@ -213,38 +213,40 @@ function dropDown($document, $animate, $window) {
             if (!this.targetElement || !this.$dropDown) return;
 
             const dropDownEl = this.$dropDown[0];
+            const style = {
+                width: '',
+                height: '',
+                maxHeight: '',
+                top: '',
+                right: '',
+                bottom: '',
+                left: '',
+                transformOrigin: ''
+            };
             
             this.fullscreen = $window.matchMedia(this.fullscreenMedia).matches;
             if (this.fullscreen) {
-                Object.assign(dropDownEl.style, {
-                    width: 'calc(100% - 16px)',
-                    maxHeight: 'calc(100% - 16px)',
-                    left: '8px',
-                    right: '8px',
-                    top: '8px',
-                    bottom: '8px',
-                    transformOrigin: '0 0'
-                });
-                return;
-            }
-            
-            const rect = this.targetElement.getBoundingClientRect();
-            dropDownEl.style.left = `${rect.left}px`;
-            dropDownEl.style.width = `${rect.width}px`;
-            
-            const spaceAbove = rect.top;
-            const spaceBelow = window.innerHeight - rect.bottom;
-            if (spaceBelow > spaceAbove) {
-                dropDownEl.style.top = `${spaceAbove + rect.height}px`;
-                dropDownEl.style.bottom = null;
-                dropDownEl.style.maxHeight = `${spaceBelow - 8}px`;
-                dropDownEl.style.transformOrigin = '0 0';
+                dropDownEl.classList.add('ma-full-screen');
             } else {
-                dropDownEl.style.top = null;
-                dropDownEl.style.bottom = `${spaceBelow + rect.height}px`;
-                dropDownEl.style.maxHeight = `${spaceAbove - 8}px`;
-                dropDownEl.style.transformOrigin = '0 100%';
+                dropDownEl.classList.remove('ma-full-screen');
+
+                const rect = this.targetElement.getBoundingClientRect();
+                const spaceAbove = rect.top;
+                const spaceBelow = $window.innerHeight - rect.bottom;
+
+                style.left = `${rect.left}px`;
+                style.width = `${rect.width}px`;
+                if (spaceBelow > spaceAbove) {
+                    style.top = `${spaceAbove + rect.height}px`;
+                    style.maxHeight = `${spaceBelow - 8}px`;
+                } else {
+                    style.bottom = `${spaceBelow + rect.height}px`;
+                    style.maxHeight = `${spaceAbove - 8}px`;
+                    style.transformOrigin = '0 100%';
+                }
             }
+
+            Object.assign(dropDownEl.style, style);
         }
         
         hasFocus() {

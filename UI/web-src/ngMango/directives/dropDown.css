@@ -36,3 +36,18 @@ ma-drop-down.ma-slide-down.ma-open-remove {
 ma-drop-down.ma-slide-down.ma-open-remove-active {
 	transform: scaleY(0);
 }
+
+ma-drop-down.ma-full-screen {
+	--ma-full-screen-margin: 16px;
+	top: var(--ma-full-screen-margin);
+	bottom: var(--ma-full-screen-margin);
+	left: var(--ma-full-screen-margin);
+	right: var(--ma-full-screen-margin);
+}
+
+ma-drop-down.ma-full-screen.ma-full-screen-centered {
+	max-height: calc(100% - var(--ma-full-screen-margin) * 2);
+	top: 50%;
+	bottom: unset;
+	transform: translateY(-50%);
+}
