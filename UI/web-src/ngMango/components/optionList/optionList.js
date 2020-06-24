@@ -254,9 +254,8 @@ class OptionListController {
                 if (tabOption) {
                     this.tabOption = tabOption;
                     this.tabOption.setAttribute('tabindex', '0');
+                    this.tabOption.focus();
                 }
-
-                this.focusOnOption();
 
                 delete this.setTabIndexPromise;
                 resolve();
