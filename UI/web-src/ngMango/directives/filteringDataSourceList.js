@@ -23,7 +23,8 @@ function filteringDataSourceList($injector, DataSource) {
             sort: '<?',
             labelText: '<',
             allowClear: '<?',
-            disabled: '<?ngDisabled'
+            disabled: '<?ngDisabled',
+            required: '<?ngRequired'
         },
         template: filteringDataSourceListTemplate,
         replace: false,

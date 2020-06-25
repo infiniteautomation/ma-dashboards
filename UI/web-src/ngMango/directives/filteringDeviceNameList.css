@@ -1,0 +1,7 @@
+ma-filtering-device-name-list {
+    display: block;
+}
+
+ma-filtering-device-name-list > md-input-container {
+    display: block;
+}

@@ -4,7 +4,7 @@
         <span ng-bind="dsList.selected.name"></span>
         <ma-drop-down auto-focus="::false" class="ma-full-screen-centered" ng-disabled="disabled">
             <ma-option-list ma-form-exclude ng-disabled="disabled"
-                            ng-model="dsList.selected" ng-change="onChange()"
+                            ng-model="dsList.selected" ng-change="onChange()" ng-required="required"
                             items="queryDataSources($filter)" ma-configure-input-container>
                 <ma-option ng-value="null" ng-if="allowClear && !$filter">
                     <em class="ma-ellipsis" ma-tr="ui.app.clear"></em>
