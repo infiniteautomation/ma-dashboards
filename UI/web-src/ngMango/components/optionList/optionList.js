@@ -25,6 +25,7 @@ class OptionListController {
         this.$element[0].addEventListener('keypress', event => this.onKeyPress(event));
         this.options = [];
         this.selected = new Map();
+        this.queryOnOpen = true;
     }
     
     $onInit() {
@@ -44,11 +45,24 @@ class OptionListController {
 
         if (this.dropDownCtrl) {
             this.$scope.$on('maDropDownOpen', (event, dropDown, openedPromise) => {
-                this.focusOnOption();
-                delete this.filter;
-                this.query();
+                // selected option may already be present, focus on it
+                const option = this.firstOption();
+                if (option) {
+                    option.focus();
+                }
+
+                if (this.queryOnOpen) {
+                    delete this.filter;
+                    this.query().then(() => {
+                        this.setTabIndexFocus = true;
+                        this.setTabIndex();
+                    });
+                }
             });
-        } else {
+        }
+
+        // do query on init by default if there is no drop down
+        if (this.hasOwnProperty('queryOnInit') ? this.queryOnInit : !this.dropDownCtrl) {
             this.query();
         }
 
@@ -76,7 +90,7 @@ class OptionListController {
 
     render() {
         this.selected.clear();
-        
+
         const viewValue = this.ngModelCtrl.$viewValue;
         if (this.multiple && Array.isArray(viewValue)) {
             for (const item of viewValue) {
@@ -85,20 +99,20 @@ class OptionListController {
         } else if (!this.multiple && viewValue !== undefined) {
             this.selected.set(this.itemId(viewValue), viewValue);
         }
-        
+
         for (const optionCtrl of this.options) {
             optionCtrl.updateSelected();
         }
         this.setTabIndex();
     }
-    
+
     select(item) {
         const id = this.itemId(item);
-        
+
         if (!this.multiple) {
             this.selected.clear();
         }
-        
+
         if (this.selected.has(id)) {
             this.selected.delete(id);
         } else {
@@ -115,33 +129,33 @@ class OptionListController {
         if (!this.multiple && this.dropDownCtrl) {
             this.dropDownCtrl.close();
         }
-        
+
         for (const optionCtrl of this.options) {
             optionCtrl.updateSelected();
         }
         this.setTabIndex();
     }
-    
+
     isSelected(item) {
         return this.selected.has(this.itemId(item));
     }
-    
+
     itemId(item) {
         if (item == null || typeof item !== 'object') {
             return item;
         }
         return typeof this.userItemId === 'function' ? this.userItemId({$item: item}) : (item.xid || item.id);
     }
-    
+
     clearFilter() {
         delete this.filter;
         this.$element.maFind('[name=filter]').maFocus();
         this.query();
     }
-    
+
     query() {
         if (typeof this.getItems !== 'function') return;
-        
+
         const items = this.getItems({$filter: this.filter});
 
         const promise = this.queryPromise = this.$q.when(items).then(items => {
@@ -153,10 +167,10 @@ class OptionListController {
                 delete this.queryPromise;
             }
         });
-        
+
         return promise;
     }
-    
+
     onKeyDown(event) {
         const $target = angular.element(event.target);
         if (this.showFilter && event.getModifierState('Control') && event.key === 'f') {
@@ -171,7 +185,7 @@ class OptionListController {
         } else if (event.key === 'ArrowDown') {
             event.stopPropagation();
             event.preventDefault();
-            
+
             // if we are currently focused on an option, select the next option, otherwise select the first option
             if ($target.maMatch('[role=option]').length) {
                 $target.maNext('[role=option]:not([disabled])').maFocus();
@@ -189,7 +203,7 @@ class OptionListController {
             }
         }
     }
-    
+
     /**
      * Jumps to a spot in the list by searching the text content of the options.
      */
@@ -199,70 +213,62 @@ class OptionListController {
             return;
         }
         event.preventDefault();
-        
+
         this.searchText = (this.searchText || '') + event.key.toLowerCase();
         this.$timeout.cancel(this.clearSearchText);
         this.clearSearchText = this.$timeout(() => delete this.searchText, 500);
-        
+
         const options = this.$element[0].querySelectorAll('[role=option]:not([disabled])');
         const match = Array.from(options).find(o => o.textContent.trim().toLowerCase().startsWith(this.searchText));
         if (match) {
             match.focus();
         }
     }
-    
+
     firstOption() {
         // prefer the first selected option
-        return this.$element[0].querySelector('[role=option]:not([disabled]).ma-selected') || this.$element[0].querySelector('[role=option]:not([disabled])');
-    }
-
-    focusOnOption() {
-        const option = this.firstOption();
-        if (option) {
-            option.focus();
-            //option.scrollIntoView({block: 'center'});
-        }
+        return this.$element[0].querySelector('[role=option]:not([disabled]).ma-selected') ||
+            this.$element[0].querySelector('[role=option]:not([disabled])');
     }
 
     addOption(optionCtrl) {
         this.options.push(optionCtrl);
-        
+
         // this is done whenever the value changes inside the option
         //this.setTabIndex();
     }
-    
+
     removeOption(optionCtrl) {
         this.options.splice(this.options.indexOf(optionCtrl), 1);
         this.setTabIndex();
     }
-    
+
     setTabIndex() {
-        if (this.setTabIndexPromise) {
-            return this.setTabIndexPromise;
+        if (this.setTabIndexScheduled) {
+            return;
         }
+        this.setTabIndexScheduled = true;
+        this.$window.requestAnimationFrame(() => {
+            // clear the current tab option
+            if (this.tabOption) {
+                this.tabOption.setAttribute('tabindex', '-1');
+                delete this.tabOption;
+            }
 
-        this.setTabIndexPromise = new this.$q(resolve => {
-            this.$window.requestAnimationFrame(() => {
-                // clear the current tab option
-                if (this.tabOption) {
-                    this.tabOption.setAttribute('tabindex', '-1');
-                    delete this.tabOption;
-                }
+            // ensure that you can always tab to an option (but only one)
+            const tabOption = !this.disabled && this.firstOption();
+            if (tabOption) {
+                this.tabOption = tabOption;
+                this.tabOption.setAttribute('tabindex', '0');
 
-                // ensure that you can always tab to an option (but only one)
-                const tabOption = !this.disabled && this.firstOption();
-                if (tabOption) {
-                    this.tabOption = tabOption;
-                    this.tabOption.setAttribute('tabindex', '0');
+                if (this.setTabIndexFocus) {
                     this.tabOption.focus();
                 }
+            }
 
-                delete this.setTabIndexPromise;
-                resolve();
-            });
+            delete this.setTabIndexScheduled;
+            delete this.setTabIndexFocus;
         });
-
-        return this.setTabIndexPromise;
     }
     
     updateMultipleAttribute() {
@@ -282,7 +288,9 @@ export default {
         reloadItems: '<?',
         userItemId: '&?itemId',
         showFilter: '<?',
-        ngMultiple: '<?'
+        ngMultiple: '<?',
+        queryOnInit: '<?',
+        queryOnOpen: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel',
