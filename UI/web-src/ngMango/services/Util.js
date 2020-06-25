@@ -80,9 +80,7 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
             if (!activeElement) return false;
 
             return Array.prototype.some.call(this, e => {
-                if (e === activeElement || e.contains(activeElement)) {
-                    return true;
-                }
+                return e.contains(activeElement);
             });
         },
 
