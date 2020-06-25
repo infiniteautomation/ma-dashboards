@@ -172,25 +172,32 @@ class OptionListController {
     }
 
     onKeyDown(event) {
-        const $target = angular.element(event.target);
         if (this.showFilter && event.getModifierState('Control') && event.key === 'f') {
             // focus on the filter input on Ctrl-F
             event.stopPropagation();
             event.preventDefault();
-            this.$element.maFind('[name=filter]').maFocus({selectText: true});
-        } else if (event.key === 'ArrowUp') {
-            event.stopPropagation();
-            event.preventDefault();
-            $target.maPrev('[role=option]:not([disabled])').maFocus();
-        } else if (event.key === 'ArrowDown') {
+
+            const filter = this.$element[0].querySelector('[name=filter]');
+            if (filter) {
+                filter.focus();
+                filter.setSelectionRange(0, filter.value.length);
+            }
+        } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
             event.stopPropagation();
             event.preventDefault();
 
-            // if we are currently focused on an option, select the next option, otherwise select the first option
-            if ($target.maMatch('[role=option]').length) {
-                $target.maNext('[role=option]:not([disabled])').maFocus();
+            const options = this.$element[0].querySelectorAll('[role=option]:not([disabled])');
+            const currentIndex = Array.prototype.indexOf.call(options, event.target);
+
+            let nextOption;
+            if (event.key === 'ArrowUp') {
+                nextOption = options[currentIndex - 1] || options[options.length - 1];
             } else {
-                this.$element.maFind('[role=option]:not([disabled])').maFocus();
+                nextOption = options[currentIndex + 1] || options[0];
+            }
+
+            if (nextOption) {
+                nextOption.focus();
             }
         } else if (event.key === 'Tab') {
             // close the drop down on tab
