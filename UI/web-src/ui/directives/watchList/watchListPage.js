@@ -201,9 +201,11 @@ class WatchListPageController {
         Object.keys(tags).forEach(tagKey => {
             const tagValue = tags[tagKey];
             const tagValueArray = Array.isArray(tagValue) ? tagValue : [tagValue];
-            
-            const paramValue = tagValueArray.join(',');
-            param.push(`${tagKey}:${paramValue}`);
+
+            if (tagValueArray.length) {
+                const paramValue = tagValueArray.join(',');
+                param.push(`${tagKey}:${paramValue}`);
+            }
         });
         
         return param;
