@@ -5,6 +5,7 @@
 
 import angular from 'angular';
 import filteringDataSourceListTemplate from './filteringDataSourceList.html';
+import './filteringDataSourceList.css';
 import query from 'rql/query';
 
 filteringDataSourceList.$inject = ['$injector', 'maDataSource'];
@@ -20,23 +21,32 @@ function filteringDataSourceList($injector, DataSource) {
             start: '<?',
             limit: '<?',
             sort: '<?',
-            labelText: '<'
+            labelText: '<',
+            allowClear: '<?',
+            disabled: '<?ngDisabled'
         },
         template: filteringDataSourceListTemplate,
         replace: false,
         link: function($scope, $element, $attrs, ngModelCtrl) {
-            ngModelCtrl.render = () => {
-                $scope.selected = ngModelCtrl.$viewValue;
+            $scope.dsList = {};
+            $scope.ngModelCtrl = ngModelCtrl;
+
+            if (!$scope.hasOwnProperty('allowClear')) {
+                $scope.allowClear = true;
+            }
+
+            ngModelCtrl.$render = () => {
+                $scope.dsList.selected = ngModelCtrl.$viewValue;
             };
             
             $scope.onChange = function() {
-                ngModelCtrl.$setViewValue($scope.selected);
+                ngModelCtrl.$setViewValue($scope.dsList.selected);
             };
 
-            $scope.queryDataSources = function() {
+            $scope.queryDataSources = function(filter) {
                 const q = $scope.query ? angular.copy($scope.query) : new query.Query();
-                if ($scope.searchText)
-                    q.push(new query.Query({name: 'match', args: ['name', '*' + $scope.searchText + '*']}));
+                if (filter)
+                    q.push(new query.Query({name: 'match', args: ['name', '*' + filter + '*']}));
                 
                 return DataSource.objQuery({
                     query: q,
@@ -44,15 +54,15 @@ function filteringDataSourceList($injector, DataSource) {
                     limit: $scope.limit,
                     sort: $scope.sort || DEFAULT_SORT
                 }).$promise.then(function(dataSources) {
-                    if (!$scope.selected && $scope.autoInit && !$scope.autoInitDone && dataSources.length) {
-                        $scope.selected = dataSources[0];
+                    if (!$scope.dsList.selected && $scope.autoInit && !$scope.autoInitDone && dataSources.length) {
+                        $scope.dsList.selected = dataSources[0];
                         $scope.autoInitDone = true;
                     }
                     return dataSources;
                 });
             };
             
-            if ($scope.autoInit && !$scope.selected) {
+            if ($scope.autoInit && !$scope.dsList.selected) {
                 $scope.queryDataSources();
             }
         },

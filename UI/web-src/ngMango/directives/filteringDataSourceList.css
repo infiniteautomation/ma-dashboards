@@ -1,0 +1,7 @@
+ma-filtering-data-source-list {
+    display: block;
+}
+
+ma-filtering-data-source-list > md-input-container {
+    display: block;
+}
