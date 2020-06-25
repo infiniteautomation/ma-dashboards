@@ -57,6 +57,7 @@ function dropDown($document, $animate, $window) {
         
         $onInit() {
             $body[0].addEventListener('focus', this.focusListener, true);
+            $body[0].addEventListener('blur', this.focusListener, true);
             $window.addEventListener('resize', this.resizeListener, true);
             $window.addEventListener('scroll', this.scrollListener, true);
 
@@ -76,6 +77,7 @@ function dropDown($document, $animate, $window) {
         $destroy() {
             this.cancelAnimations();
             $body[0].removeEventListener('focus', this.focusListener, true);
+            $body[0].removeEventListener('blur', this.focusListener, true);
             $window.removeEventListener('resize', this.resizeListener, true);
             $window.removeEventListener('scroll', this.scrollListener, true);
             
@@ -249,13 +251,22 @@ function dropDown($document, $animate, $window) {
             Object.assign(dropDownEl.style, style);
         }
         
-        hasFocus() {
-            return this.$dropDown.maHasFocus() || $body.maFind('.md-open-menu-container').maHasFocus() ||
-                angular.element(this.targetElement).maHasFocus();
+        hasFocus(activeElement = $document[0].activeElement) {
+            if (!activeElement) return false;
+            return this.$dropDown[0].contains(activeElement) || this.targetElement.contains(activeElement);
         }
-        
+
+        /**
+         * This listens for focus and blur events on the body element. Need to listen to blur events as sometimes we do
+         * not get a focus event (e.g. when the drop down is inside a md-dialog and you click outside the dialog).
+         * @param event
+         */
         focusListener(event) {
-            if (this.isOpen() && !this.hasFocus()) {
+            // for blur events document.activeElement is the body
+            // the element about to receive focus is event.relatedTarget
+            const activeElement = event.type === 'blur' && event.relatedTarget || $document[0].activeElement;
+
+            if (this.isOpen() && !this.hasFocus(activeElement)) {
                 // getting $digest already in progress errors due to AngularJS material triggering a focus event inside the $digest cycle
                 if (this.$scope.$root.$$phase != null) {
                     this.close();
@@ -266,7 +277,7 @@ function dropDown($document, $animate, $window) {
                 }
             }
         }
-        
+
         resizeListener(event) {
             clearTimeout(this.resizeDebounceTimeout);
             this.resizeDebounceTimeout = setTimeout(() => {
