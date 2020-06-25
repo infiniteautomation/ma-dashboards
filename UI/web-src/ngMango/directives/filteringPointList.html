@@ -1,33 +1,22 @@
-<md-autocomplete
-  md-selected-item-change="$ctrl.pointListChanged($ctrl.selectedItem)"
-  md-selected-item="$ctrl.selectedItem"
-  md-search-text="$ctrl.searchText"
-  md-items="item in $ctrl.querySearch($ctrl.searchText)"
-  md-item-text="$ctrl.displayText({$point: item})"
-  md-no-cache="true"
-  md-min-length="0"
-  md-floating-label="{{$ctrl.label}}"
-  md-delay="500"
-  md-select-on-focus="true"
-  md-escape-options="none"
-  md-clear-button="true"
-  ng-blur="$ctrl.blurred($event)"
-  ng-required="$ctrl.required"
-  ng-disabled="$ctrl.disabled"
-  md-input-name="{{$ctrl.ngModelCtrl.$name}}">
-
-    <md-item-template>
-      <span md-highlight-text="$ctrl.highlight" md-highlight-flags="gi">{{$ctrl.listText({$point: item})}}</span>
-    </md-item-template>
-
-    <md-not-found>
-      <span ma-tr="ui.app.noPointsFound" ma-tr-args="[$ctrl.searchText]"></span>
-    </md-not-found>
-    
-    
+<md-input-container>
+    <label ng-bind="$ctrl.label"></label>
+    <ma-drop-down-button>
+        <span ng-bind="$ctrl.displayText({$point: $ctrl.selectedItem})"></span>
+        <ma-drop-down auto-focus="::false" class="ma-full-screen-centered" ng-disabled="$ctrl.disabled">
+            <ma-option-list ma-form-exclude ng-disabled="$ctrl.disabled"
+                            ng-model="$ctrl.selectedItem" ng-change="$ctrl.pointListChanged()"
+                            items="$ctrl.querySearch($filter)" ma-configure-input-container>
+                <ma-option ng-value="null" ng-if="$ctrl.allowClear && !$filter">
+                    <em class="ma-ellipsis" ma-tr="ui.app.clear"></em>
+                </ma-option>
+                <ma-option ng-repeat="point in $items track by point.xid" ng-value="point">
+                    <span class="ma-ellipsis" md-highlight-text="$filter" md-highlight-flags="ig">{{$ctrl.listText({$point: point})}}</span>
+                </ma-option>
+            </ma-option-list>
+        </ma-drop-down>
+    </ma-drop-down-button>
     <div ng-messages="$ctrl.ngModelCtrl.$error">
         <div ng-message="required" ma-tr="validate.required"></div>
         <div ng-message="validationMessage" ng-bind="$ctrl.ngModelCtrl.validationMessage"></div>
     </div>
-
-</md-autocomplete>
+</md-input-container>

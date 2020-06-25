@@ -4,6 +4,7 @@
  */
 
 import filteringPointListTemplate from './filteringPointList.html';
+import './filteringPointList.css';
 import query from 'rql/query';
 
 /**
@@ -89,18 +90,6 @@ class FilteringPointListController {
             }
         }
 
-        if (!this.listText) {
-            this.listText = defaultText;
-        }
-        
-        if (!this.displayText) {
-            this.displayText = defaultText;
-        }
-        
-        function defaultText(opts) {
-            return opts.$point.formatLabel();
-        }
-        
         this.deregister = this.Point.notificationManager.subscribe((event, point) => {
             if (this.viewValue && this.viewValue.id === point.id) {
                 this.$scope.$apply(() => {
@@ -125,9 +114,9 @@ class FilteringPointListController {
         this.viewValue = this.selectedItem = this.ngModelCtrl.$viewValue || null;
     }
 
-    pointListChanged(point) {
-        if (point || this.allowClear) {
-            this.setViewValue(point);
+    pointListChanged() {
+        if (this.selectedItem || this.allowClear) {
+            this.setViewValue(this.selectedItem);
         }
     }
     
@@ -249,6 +238,16 @@ class FilteringPointListController {
                 this.setViewValue(item);
             });
         }
+    }
+
+    listText(opts) {
+        if (opts.$point) {
+            return opts.$point.formatLabel();
+        }
+    }
+
+    displayText(opts) {
+        return this.listText(opts);
     }
 }
 

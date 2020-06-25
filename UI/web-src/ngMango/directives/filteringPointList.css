@@ -1,0 +1,7 @@
+ma-filtering-point-list {
+    display: block;
+}
+
+ma-filtering-point-list > md-input-container {
+    display: block;
+}
