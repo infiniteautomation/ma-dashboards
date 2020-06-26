@@ -9,9 +9,9 @@ import './optionList.css';
 
 class OptionListController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$element', '$scope', '$attrs', '$q', '$transclude', '$timeout', '$window']; }
+    static get $inject() { return ['$element', '$scope', '$attrs', '$q', '$transclude', '$timeout', '$window', 'maTranslate']; }
     
-    constructor($element, $scope, $attrs, $q, $transclude, $timeout, $window) {
+    constructor($element, $scope, $attrs, $q, $transclude, $timeout, $window, maTranslate) {
         this.$element = $element;
         this.$scope = $scope;
         this.$attrs = $attrs;
@@ -26,6 +26,8 @@ class OptionListController {
         this.options = [];
         this.selected = new Map();
         this.queryOnOpen = true;
+
+        this.filterPlaceholder = maTranslate.trSync('ui.app.filter');
     }
     
     $onInit() {
@@ -150,7 +152,7 @@ class OptionListController {
     clearFilter() {
         delete this.filter;
         this.$element.maFind('[name=filter]').maFocus();
-        this.query();
+        this.filterChanged();
     }
 
     query() {
@@ -285,6 +287,14 @@ class OptionListController {
             this.$element[0].removeAttribute('multiple');
         }
     }
+
+    filterChanged() {
+        this.query();
+        if (typeof this.filterChangedCallback === 'function') {
+            const inOptions = this.options.some(o => this.itemId(o.value) === this.filter);
+            this.filterChangedCallback({$filter: this.filter, $inOptions: inOptions});
+        }
+    }
 }
 
 export default {
@@ -297,7 +307,9 @@ export default {
         showFilter: '<?',
         ngMultiple: '<?',
         queryOnInit: '<?',
-        queryOnOpen: '<?'
+        queryOnOpen: '<?',
+        filterChangedCallback: '&?filterChanged',
+        filterPlaceholder: '@?'
     },
     require: {
         ngModelCtrl: 'ngModel',
