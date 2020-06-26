@@ -101,11 +101,11 @@ function WatchListFactory($resource, maUtil, $http, Point, $q,
                             return null;
                         }
                     } else {
-                        if (paramValue === undefined && param.options.required) {
+                        if (paramValue !== undefined) {
+                            builder.eq(rqlProperty, paramValue);
+                        } else if (param.options.required) {
                             return null;
                         }
-
-                        builder.eq(rqlProperty, paramValue);
                     }
                 }
             } else {
