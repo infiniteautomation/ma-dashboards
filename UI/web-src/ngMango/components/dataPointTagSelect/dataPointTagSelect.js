@@ -30,7 +30,6 @@ class DataPointTagSelectController {
     constructor(maDataPointTags, maTranslate) {
         this.maDataPointTags = maDataPointTags;
         this.maTranslate = maTranslate;
-        this.showAnyOption = false;
         this.queryOnOpen = true;
     }
     
@@ -118,7 +117,7 @@ export default {
         selectedText: '<?',
         noFloat: '<?',
         onQuery: '&?',
-        showAnyOption: '<?',
+        required: '<?ngRequired',
         queryOnOpen: '<?',
         editMode: '<?',
         disabled: '<?ngDisabled'

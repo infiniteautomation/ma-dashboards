@@ -15,7 +15,7 @@
                             filter-changed="$ctrl.filterChanged($filter, $inOptions)"
                             filter-placeholder="{{$ctrl.filterPlaceholder}}"
                             query-on-open="$ctrl.queryOnOpen">
-                <ma-option ng-if="!$ctrl.multiple && $ctrl.showAnyOption" ng-value="undefined"><em ma-tr="ui.app.any"></em></ma-option>
+                <ma-option ng-if="!$ctrl.multiple && !$ctrl.required" ng-value="undefined"><em ma-tr="ui.app.any"></em></ma-option>
                 <ma-option ng-if="$ctrl.editMode && $ctrl.addNewValue" ng-value="$ctrl.addNewValue">
                     <span class="ma-ellipsis">
                         <span ng-bind="$ctrl.addNewValue"></span> (<em ma-tr="ui.components.newTagValue"></em>)
