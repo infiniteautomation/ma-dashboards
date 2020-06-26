@@ -4,6 +4,7 @@
  */
 
 import dataPointTagGroupTemplate from './dataPointTagGroup.html';
+import './dataPointTagGroup.css';
 
 /**
  * @ngdoc directive

@@ -60,7 +60,7 @@
     </ma-data-source-scroll-list>
 
     <div ng-if="$ctrl.listType === 'tags'" flex layout="column" class="ma-scroll-parent">
-        <ma-data-point-tag-group layout="column" class="ma-scroll-child"
+        <ma-data-point-tag-group class="ma-scroll-child"
              ng-model="$ctrl.tags"
              ng-change="$ctrl.itemSelected('tags')"
              on-query="$ctrl.queryChanged($promise)">

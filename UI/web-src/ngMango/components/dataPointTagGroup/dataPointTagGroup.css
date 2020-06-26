@@ -1,0 +1,9 @@
+ma-data-point-tag-group {
+    display: block;
+}
+
+ma-data-point-tag-group > ma-data-point-tag-select {
+    display: block;
+    width: 100%;
+    margin: 24px 0;
+}
