@@ -16,15 +16,16 @@
 import watchListParametersTemplate from './watchListParameters.html';
 import query from 'rql/query';
 
-
 class WatchListParametersController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$parse', '$interpolate', '$filter']; }
+    static get $inject() { return ['$parse', '$interpolate', '$filter', 'maDataPointTags', '$q']; }
     
-    constructor($parse, $interpolate, $filter) {
+    constructor($parse, $interpolate, $filter, maDataPointTags, $q) {
         this.$parse = $parse;
         this.$interpolate = $interpolate;
         this.maFilter = $filter('maFilter');
+        this.maDataPointTags = maDataPointTags;
+        this.$q = $q;
     }
     
     $onInit() {
@@ -42,6 +43,7 @@ class WatchListParametersController {
 
     inputChanged(param) {
         this.updateOptionValues();
+        let complete = this.$q.resolve();
 
         // in the future could find all dependent parameters by looking for interpolation expressions like
         // {{param.name}} or {{this[param.name]}}
@@ -52,15 +54,40 @@ class WatchListParametersController {
             const paramIndex = this.watchList.params.indexOf(param);
             for (let i = paramIndex + 1; i < this.watchList.params.length; i++) {
                 const dependentParam = this.watchList.params[i];
-                if (dependentParam.options.multiple) {
-                    this.parameters[dependentParam.name] = [];
-                } else {
-                    delete this.parameters[dependentParam.name];
-                }
+                complete = complete.then(() => {
+                    return this.checkTagValues(dependentParam);
+                });
             }
         }
 
-        this.ngModelCtrl.$setViewValue(Object.assign({}, this.parameters));
+        complete.then(() => {
+            this.ngModelCtrl.$setViewValue(Object.assign({}, this.parameters));
+        });
+    }
+
+    /**
+     * Checks the current parameter values are valid tag values given the restrictions.
+     * Removes any parameter values which are not valid.
+     *
+     * @param param
+     * @returns {Promise}
+     */
+    checkTagValues(param) {
+        const restrictions = this.optionValues[param.name].restrictions;
+        return this.maDataPointTags.values(param.options.tagKey, restrictions).then(values => {
+            let oldValue = this.parameters[param.name];
+            let changed;
+            if (Array.isArray(oldValue)) {
+                this.parameters[param.name] = oldValue.filter(v => values.includes(v));
+                changed = this.parameters[param.name].length !== oldValue.length;
+            } else if (!values.includes(oldValue)) {
+                changed = true;
+                delete this.parameters[param.name];
+            }
+            if (changed) {
+                this.updateOptionValues();
+            }
+        });
     }
 
     /**
