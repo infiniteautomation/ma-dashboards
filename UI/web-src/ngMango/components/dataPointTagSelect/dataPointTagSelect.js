@@ -4,6 +4,7 @@
  */
 
 import dataPointTagSelectTemplate from './dataPointTagSelect.html';
+import './dataPointTagSelect.css';
 
 /**
  * @ngdoc directive
@@ -24,12 +25,12 @@ import dataPointTagSelectTemplate from './dataPointTagSelect.html';
 
 class DataPointTagSelectController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maDataPointTags']; }
+    static get $inject() { return ['maDataPointTags', 'maTranslate']; }
     
-    constructor(maDataPointTags) {
+    constructor(maDataPointTags, maTranslate) {
         this.maDataPointTags = maDataPointTags;
-        
-        this.showAnyOption = true;
+        this.maTranslate = maTranslate;
+        this.showAnyOption = false;
         this.queryOnOpen = true;
     }
     
@@ -37,95 +38,65 @@ class DataPointTagSelectController {
         this.ngModelCtrl.$render = () => {
             this.selected = this.ngModelCtrl.$viewValue;
         };
+        this.updatePlaceholder();
     }
     
     $onChanges(changes) {
-        if (changes.key || changes.restrictions || changes.editMode) {
+        if (changes.key && !changes.key.isFirstChange() || changes.restrictions && !changes.restrictions.isFirstChange()) {
+            this.reloadItems = {};
             delete this.queryPromise;
-            delete this.values;
-            delete this.searchValues;
-            
-            if (!this.editMode) {
-                this.doQuery(true);
-            }
+        }
+
+        if (changes.editMode && !changes.editMode.isFirstChange()) {
+            this.updatePlaceholder();
         }
     }
-    
-    doQuery(forceRefresh = this.queryOnOpen) {
-        if (this.queryPromise && !forceRefresh) {
-            return this.queryPromise;
-        }
-        
-        const restrictions = Object.assign({}, this.restrictions);
-        delete restrictions[this.key];
 
-        this.queryPromise = this.maDataPointTags.values(this.key, restrictions).then(values => {
-            this.values = values.sort();
-            
-            if (this.deselectOnQuery) {
-                if (this.selected === null || typeof this.selected === 'string') {
-                    if (!this.values.includes(this.selected)) {
-                        this.selected = undefined;
-                        this.inputChanged();
-                    }
-                } else if (Array.isArray(this.selected)) {
-                    const newSelections = this.selected.filter(s => this.values.includes(s));
-                    if (newSelections.length !== this.selected.length) {
-                        this.selected = newSelections;
-                        this.inputChanged();
-                    }
-                }
-            }
-            
-            return this.values;
-        });
-        
-        if (this.onQuery) {
-            this.onQuery({$promise: this.queryPromise});
+    updatePlaceholder() {
+        this.filterPlaceholder = this.maTranslate.trSync(this.editMode ? 'ui.components.filterOrAddTagValue' : 'ui.app.filter');
+    }
+
+    dropDownOpen() {
+        if (this.queryOnOpen) {
+            delete this.queryPromise;
         }
-        
-        return this.queryPromise;
+    }
+
+    doQuery(filter) {
+        if (!this.queryPromise) {
+            const restrictions = Object.assign({}, this.restrictions);
+            delete restrictions[this.key];
+
+            this.queryPromise = this.maDataPointTags.values(this.key, restrictions);
+            if (this.onQuery) {
+                this.onQuery({$promise: this.queryPromise, $restrictions: restrictions});
+            }
+        }
+
+        return this.queryPromise.then(values => {
+            return values.filter(v => !filter || v.toLowerCase().includes(filter.toLowerCase())).sort();
+        });
     }
     
     inputChanged() {
-        if (this.editMode) {
-            this.ngModelCtrl.$setViewValue(this.selected || this.searchText || '');
-        } else {
-            this.ngModelCtrl.$setViewValue(this.selected);
+        if (this.selected !== this.addNewValue) {
+            delete this.addNewValue;
         }
+        this.ngModelCtrl.$setViewValue(this.selected);
     }
 
-    searchTextChanged() {
-        this.ngModelCtrl.$setViewValue(this.searchText);
-    }
-    
-    doSearch() {
-        // if we already have the array of tags, just filter it and return it now
-        if (Array.isArray(this.searchValues)) {
-            return this.filterValues();
+    filterChanged(filterText, inOptions) {
+        if (this.editMode) {
+            if (filterText === this.addNewValue) {
+                return;
+            }
+
+            if (filterText && !inOptions) {
+                this.addNewValue = filterText;
+            } else {
+                delete this.addNewValue;
+            }
         }
-        
-        // refresh the array of tags and return promise
-        return this.doQuery().then(values => {
-            this.searchValues = values;
-            return this.filterValues();
-        });
-    }
-    
-    autocompleteBlurred() {
-        // clear the values when the input blurs so next time the drop down opens we call doQuery() again
-        this.searchValues = null;
-    }
-    
-    filterValues() {
-        if (!this.searchText || typeof this.searchText !== 'string') {
-            return this.searchValues.slice();
-        }
-        
-        const searchLower = this.searchText.toLowerCase();
-        return this.searchValues.filter(val => {
-            return val.toLowerCase().includes(searchLower);
-        });
     }
 }
 
@@ -133,15 +104,14 @@ export default {
     bindings: {
         key: '@',
         restrictions: '<?',
-        selectMultiple: '<?',
-        deselectOnQuery: '<?',
+        multiple: '<?selectMultiple',
         selectedText: '<?',
         noFloat: '<?',
         onQuery: '&?',
         showAnyOption: '<?',
         queryOnOpen: '<?',
         editMode: '<?',
-        labelText: '@?'
+        disabled: '<?ngDisabled'
     },
     require: {
         ngModelCtrl: 'ngModel'
@@ -159,5 +129,3 @@ export default {
         }
     }
 };
-
-

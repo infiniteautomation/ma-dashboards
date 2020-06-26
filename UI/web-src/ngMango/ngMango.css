@@ -438,7 +438,6 @@ ma-bulk-data-point-tasks {
   display: block;
 }
 
-ma-data-point-tag-select,
 ma-revision-select {
 	display: flex;
 }

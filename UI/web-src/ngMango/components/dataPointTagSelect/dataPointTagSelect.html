@@ -1,45 +1,30 @@
-<md-input-container ng-if="!$ctrl.editMode && !$ctrl.selectMultiple" md-no-float="$ctrl.noFloat" flex>
+<md-input-container md-no-float="$ctrl.noFloat" flex>
     <label ng-if="!$ctrl.noFloat" ng-transclude="label"><span ma-tr="ui.components.selectTagValue" ma-tr-args="[$ctrl.key]"></span></label>
-    <md-select ng-attr-md-selected-text="{{$ctrl.selectedText && '$ctrl.selectedText'}}"
-            ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()"
-            md-on-open="$ctrl.doQuery()" ma-form-exclude>
-        <md-option ng-if="$ctrl.showAnyOption" ng-value="undefined" md-option-empty><em ma-tr="ui.app.any"></em></md-option>
-        <md-option ng-repeat="value in $ctrl.values" ng-value="value">
-            <em ng-if="value === null" ma-tr="ui.components.noTagKey" ma-tr-args="[$ctrl.key]"></em>
-            <span ng-if="value !== null" ng-bind="value"></span>
-        </md-option>
-    </md-select>
+    <ma-drop-down-button>
+        <span ng-if="$ctrl.selectedText" ng-bind="$ctrl.selectedText"></span>
+        <span ng-if="!$ctrl.selectedText">
+            <span ng-if="$ctrl.multiple && $ctrl.selected.length" ng-bind="$ctrl.selected.join(', ')"></span>
+            <span ng-if="!$ctrl.multiple && $ctrl.selected != null" ng-bind="$ctrl.selected"></span>
+        </span>
+        <ma-drop-down auto-focus="::false" class="ma-full-screen-centered" ng-disabled="$ctrl.disabled" on-open="$ctrl.dropDownOpen()">
+            <ma-option-list ma-form-exclude ma-configure-input-container
+                            ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()"
+                            ng-multiple="$ctrl.multiple" ng-required="$ctrl.required" ng-disabled="$ctrl.disabled"
+                            items="$ctrl.doQuery($filter)" reload-items="$ctrl.reloadItems"
+                            filter-changed="$ctrl.filterChanged($filter, $inOptions)"
+                            filter-placeholder="{{$ctrl.filterPlaceholder}}"
+                            query-on-open="$ctrl.queryOnOpen">
+                <ma-option ng-if="!$ctrl.multiple && $ctrl.showAnyOption" ng-value="undefined"><em ma-tr="ui.app.any"></em></ma-option>
+                <ma-option ng-if="$ctrl.editMode && $ctrl.addNewValue" ng-value="$ctrl.addNewValue">
+                    <span class="ma-ellipsis">
+                        <span ng-bind="$ctrl.addNewValue"></span> (<em ma-tr="ui.components.newTagValue"></em>)
+                    </span>
+                </ma-option>
+                <ma-option ng-repeat="value in $items" ng-value="value">
+                    <md-icon ng-if="$multiple" class="ma-selected-show">check</md-icon>
+                    <span class="ma-ellipsis" md-highlight-text="$filter" md-highlight-flags="ig">{{value}}</span>
+                </ma-option>
+            </ma-option-list>
+        </ma-drop-down>
+    </ma-drop-down-button>
 </md-input-container>
-<md-input-container ng-if="!$ctrl.editMode && $ctrl.selectMultiple" md-no-float="$ctrl.noFloat" flex>
-    <label ng-if="!$ctrl.noFloat" ng-transclude="label"><span ma-tr="ui.components.selectTagValue" ma-tr-args="[$ctrl.key]"></span></label>
-    <md-select ng-attr-md-selected-text="{{$ctrl.selectedText && '$ctrl.selectedText'}}" multiple="true"
-            ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()" ng-model-options="{trackBy: '$value'}"
-            md-on-open="$ctrl.doQuery()" ma-form-exclude>
-        <md-option ng-repeat="value in $ctrl.values" ng-value="value">
-            <em ng-if="value === null" ma-tr="ui.components.noTagKey" ma-tr-args="[$ctrl.key]"></em>
-            <span ng-if="value !== null" ng-bind="value"></span>
-        </md-option>
-    </md-select>
-</md-input-container>
-
-<md-autocomplete ng-if="$ctrl.editMode" flex
-        md-selected-item="$ctrl.selected"
-        md-selected-item-change="$ctrl.inputChanged()"
-        md-search-text="$ctrl.searchText"
-        md-search-text-change="$ctrl.searchTextChanged()"
-        md-items="value in $ctrl.doSearch()"
-        md-item-text="value"
-        md-no-cache="::true"
-        md-min-length="0"
-        md-floating-label="{{$ctrl.labelText || ('ui.components.enterTagValue' | maTr:[$ctrl.key])}}"
-        md-delay="0"
-        md-select-on-match="::true"
-        md-escape-options="blur"
-        md-clear-button="::true"
-        ng-blur="$ctrl.autocompleteBlurred()"
-        ng-form="form"
-        ma-form-exclude>
-    <md-item-template>
-        <span md-highlight-text="$ctrl.searchText" md-highlight-flags="gi">{{value}}</span>
-    </md-item-template>
-</md-autocomplete>

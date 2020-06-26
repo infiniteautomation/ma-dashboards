@@ -1,0 +1,8 @@
+ma-data-point-tag-select {
+    display: inline-block;
+    width: 200px;
+}
+
+ma-data-point-tag-select > md-input-container {
+    display: block;
+}
