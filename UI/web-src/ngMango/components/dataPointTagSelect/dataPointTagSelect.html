@@ -8,22 +8,23 @@
         </span>
         <ma-drop-down auto-focus="::false" class="ma-full-screen-centered" ng-disabled="$ctrl.disabled"
                       on-open="$ctrl.onOpen()" on-close="$ctrl.onClose()">
-            <ma-option-list ma-form-exclude ma-configure-input-container
+            <ma-option-list ma-form-exclude ma-configure-input-container has-value="$value === null || $value"
                             ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()"
                             ng-multiple="$ctrl.multiple" ng-required="$ctrl.required" ng-disabled="$ctrl.disabled"
                             items="$ctrl.doQuery($filter)" reload-items="$ctrl.reloadItems"
                             filter-changed="$ctrl.filterChanged($filter, $inOptions)"
                             filter-placeholder="{{$ctrl.filterPlaceholder}}"
                             query-on-open="$ctrl.queryOnOpen">
-                <ma-option ng-if="!$ctrl.multiple && !$ctrl.required" ng-value="undefined"><em ma-tr="ui.app.any"></em></ma-option>
                 <ma-option ng-if="$ctrl.editMode && $ctrl.addNewValue" ng-value="$ctrl.addNewValue">
                     <span class="ma-ellipsis">
                         <span ng-bind="$ctrl.addNewValue"></span> (<em ma-tr="ui.components.newTagValue"></em>)
                     </span>
                 </ma-option>
+                <ma-option ng-if="!$ctrl.multiple && !$ctrl.required" ng-value="undefined"><em ma-tr="ui.app.any"></em></ma-option>
                 <ma-option ng-repeat="value in $items" ng-value="value">
                     <md-icon ng-if="$multiple" class="ma-selected-show">check</md-icon>
-                    <span class="ma-ellipsis" md-highlight-text="$filter" md-highlight-flags="ig">{{value}}</span>
+                    <em ng-if="value === null" ma-tr="ui.components.noTagKey" ma-tr-args="[$ctrl.key]"></em>
+                    <span ng-if="value !== null" class="ma-ellipsis" md-highlight-text="$filter" md-highlight-flags="ig">{{value}}</span>
                 </ma-option>
             </ma-option-list>
             <md-button ng-if="$dropDown.fullscreen && $ctrl.multiple" ng-click="$dropDown.close()"><md-icon>close</md-icon>&nbsp;<span ma-tr="common.close"></span></md-button>
