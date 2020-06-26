@@ -80,32 +80,34 @@ function WatchListFactory($resource, maUtil, $http, Point, $q,
             } else if (this.type === 'query') {
                 return this.interpolateQuery(paramValues);
             } else if (this.type === 'tags') {
-                this.params.filter(p => p.type === 'tagValue').forEach(param => {
+                const tagParams = this.params.filter(p => p.type === 'tagValue');
+                for (const param of tagParams) {
                     const paramValue = paramValues[param.name];
                     const rqlProperty = `tags.${param.options.tagKey}`;
-                    
+
                     if (param.options.multiple) {
-                        if (!(Array.isArray(paramValue) && paramValue.length) && param.options.required) {
+                        if (Array.isArray(paramValue) && paramValue.length) {
+                            // remove the null from the in query and add a separate eq==null query
+                            if (paramValue.includes(null)) {
+                                const filteredParamValue = paramValue.filter(v => v != null);
+                                builder.or()
+                                    .in(rqlProperty, filteredParamValue)
+                                    .eq(rqlProperty, null)
+                                    .up();
+                            } else {
+                                builder.in(rqlProperty, paramValue);
+                            }
+                        } else if (param.options.required) {
                             return null;
-                        }
-                        // remove the null from the in query and add a separate eq==null query
-                        if (paramValue.includes(null)) {
-                            const filteredParamValue = paramValue.filter(v => v != null);
-                            builder.or()
-                                .in(rqlProperty, filteredParamValue)
-                                .eq(rqlProperty, null)
-                                .up();
-                        } else {
-                            builder.in(rqlProperty, paramValue);
                         }
                     } else {
                         if (paramValue === undefined && param.options.required) {
                             return null;
                         }
-                        
+
                         builder.eq(rqlProperty, paramValue);
                     }
-                });
+                }
             } else {
                 throw new Error('unknown watchlist type');
             }
