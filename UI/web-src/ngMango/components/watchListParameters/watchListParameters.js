@@ -40,9 +40,25 @@ class WatchListParametersController {
         }
     }
 
-    inputChanged() {
-        // TODO remove selected tag values that are no longer valid
+    inputChanged(param) {
         this.updateOptionValues();
+
+        // in the future could find all dependent parameters by looking for interpolation expressions like
+        // {{param.name}} or {{this[param.name]}}
+
+        // all tag parameters are dependent on the previous parameters, clear their parameter values since
+        // they could now be invalid
+        if (this.watchList.type === 'tags') {
+            const paramIndex = this.watchList.params.indexOf(param);
+            for (let i = paramIndex + 1; i < this.watchList.params.length; i++) {
+                const dependentParam = this.watchList.params[i];
+                if (dependentParam.options.multiple) {
+                    this.parameters[dependentParam.name] = [];
+                } else {
+                    delete this.parameters[dependentParam.name];
+                }
+            }
+        }
 
         this.ngModelCtrl.$setViewValue(Object.assign({}, this.parameters));
     }
