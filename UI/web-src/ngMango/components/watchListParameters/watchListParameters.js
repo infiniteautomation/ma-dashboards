@@ -11,8 +11,6 @@
   *
   * @param {expression} ng-model Assignable expression to output the parameter values to.
   * @param {object} watch-list The watch list object to display the parameter inputs for.
-  * @param {object=} parameters Deprecated. Use `ng-model`.
-  * @param {expression=} parameters-changed Deprecated. Use `ng-change`.
   */
 
 import watchListParametersTemplate from './watchListParameters.html';
@@ -30,101 +28,65 @@ class WatchListParametersController {
     }
     
     $onInit() {
-        if (this.ngModelCtrl) {
-            this.ngModelCtrl.$render = () => {
-                this.parameters = this.ngModelCtrl.$viewValue;
-                this.paramOptions = {};
-            };
-        }
+        this.ngModelCtrl.$render = () => {
+            this.parameters = Object.assign({}, this.ngModelCtrl.$viewValue);
+            this.updateOptionValues();
+        };
     }
-    
+
     $onChanges(changes) {
-        if (!this.ngModelCtrl && changes.watchList && this.watchList) {
-            if (!this.parameters) {
-                this.parameters = {};
-            }
-            this.watchList.defaultParamValues(this.parameters);
-            this.paramOptions = {};
+        if (changes.watchList && !changes.watchList.isFirstChange()) {
+            this.updateOptionValues();
         }
     }
-    
+
     inputChanged() {
-        this.parameters = Object.assign({}, this.parameters);
-        this.paramOptions = {};
-        
-        if (this.watchList && this.parametersChanged) {
-            this.parametersChanged({$parameters: this.parameters});
-        }
-        if (this.ngModelCtrl) {
-            this.ngModelCtrl.$setViewValue(this.parameters);
-        }
+        // TODO remove selected tag values that are no longer valid
+        this.updateOptionValues();
+
+        this.ngModelCtrl.$setViewValue(Object.assign({}, this.parameters));
     }
-    
-    getParamOption(param, optionName) {
-        if (!param || !param.options || !optionName) return;
-        
-        let storedOptions = this.paramOptions[param.name];
-        if (!storedOptions) {
-            storedOptions = this.paramOptions[param.name] = {};
+
+    /**
+     * Interpolates all the options with the parameter values and stores them
+     */
+    updateOptionValues() {
+        this.optionValues = {};
+
+        if (!this.watchList || !Array.isArray(this.watchList.params)) {
+            return;
         }
-    
-        const rawValue = param.options[optionName];
-        const cachedValue = storedOptions[optionName];
-    
-        if (cachedValue && cachedValue.input === rawValue) {
-            return cachedValue.output;
-        }
-        
-        let interpolatedValue;
-        if (rawValue != null && typeof rawValue === 'object') {
-            interpolatedValue = this.interpolateObjectValues(rawValue);
-        } else {
-            interpolatedValue = this.interpolateOption(rawValue);
-        }
-        
-        storedOptions[optionName] = {
-            input: rawValue,
-            output: interpolatedValue
-        };
-        
-        return interpolatedValue;
-    }
-    
-    getDsQuery(param) {
-        if (!param || !param.options) return;
-        
-        let storedOptions = this.paramOptions[param.name];
-        if (!storedOptions) {
-            storedOptions = this.paramOptions[param.name] = {};
-        }
-    
-        const rawValue = '' + param.options.nameIsLike + param.options.xidIsLike;
-        const cachedValue = storedOptions.dsQuery;
-    
-        if (cachedValue && cachedValue.input === rawValue) {
-            return cachedValue.output;
-        }
-    
-        const interpolatedValue = new query.Query();
-        if (param.options.nameIsLike) {
-            interpolatedValue.push(new query.Query({
-                name: 'match',
-                args: ['name', this.getParamOption(param, 'nameIsLike')]
-            }));
-        }
-        if (param.options.xidIsLike) {
-            interpolatedValue.push(new query.Query({
-                name: 'match',
-                args: ['xid', this.getParamOption(param, 'xidIsLike')]
-            }));
-        }
-        
-        storedOptions.dsQuery = {
-            input: rawValue,
-            output: interpolatedValue
-        };
-        
-        return interpolatedValue;
+
+        this.watchList.params.filter(p => !!p.options)
+        .forEach(p => {
+            this.optionValues[p.name] = {};
+            Object.keys(p.options).forEach(optionName => {
+                const value = p.options[optionName];
+                if (value != null && typeof value === 'object') {
+                    this.optionValues[p.name][optionName] = this.interpolateObjectValues(value);
+                } else {
+                    this.optionValues[p.name][optionName] = this.interpolateOption(value);
+                }
+            });
+
+            // Creates a virtual option called dsQuery that combines the nameIsLike and xidIsLike options
+            if (p.type === 'dataSource' && (p.options.nameIsLike || p.options.xidIsLike)) {
+                const dsQuery = new query.Query();
+                if (p.options.nameIsLike) {
+                    dsQuery.push(new query.Query({
+                        name: 'match',
+                        args: ['name', this.optionValues[p.name].nameIsLike]
+                    }));
+                }
+                if (p.options.xidIsLike) {
+                    dsQuery.push(new query.Query({
+                        name: 'match',
+                        args: ['xid', this.optionValues[p.name].xidIsLike]
+                    }));
+                }
+                this.optionValues[p.name].dsQuery = dsQuery;
+            }
+        });
     }
     
     interpolateObjectValues(option) {
@@ -184,7 +146,7 @@ export default {
         parameters: '<?'
     },
     require: {
-        ngModelCtrl: '?ngModel'
+        ngModelCtrl: 'ngModel'
     },
     designerInfo: {
         translation: 'ui.components.watchListParameters',

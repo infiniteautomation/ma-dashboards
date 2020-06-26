@@ -40,36 +40,36 @@
   <md-input-container ng-if="param.type === 'deviceName' && !param.options.filtering" flex>
     <label ng-bind="param.label"></label>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-        auto-init="false" show-clear="true" data-source-xid="$ctrl.getParamOption(param, 'dataSourceXid')"
-        contains="$ctrl.getParamOption(param, 'contains')" ng-if="!param.options.multiple"></ma-device-name-list>
+        auto-init="false" show-clear="true" data-source-xid="$ctrl.optionValues[param.name].dataSourceXid"
+        contains="$ctrl.optionValues[param.name].contains" ng-if="!param.options.multiple"></ma-device-name-list>
     <ma-device-name-list ng-model="$ctrl.parameters[param.name]" ng-model-options="{trackBy: '$value'}" ng-change="$ctrl.inputChanged()"
-        auto-init="false" show-clear="true" data-source-xid="$ctrl.getParamOption(param, 'dataSourceXid')"
-        contains="$ctrl.getParamOption(param, 'contains')" ng-if="param.options.multiple" multiple></ma-device-name-list>
+        auto-init="false" show-clear="true" data-source-xid="$ctrl.optionValues[param.name].dataSourceXid"
+        contains="$ctrl.optionValues[param.name].contains" ng-if="param.options.multiple" multiple></ma-device-name-list>
   </md-input-container>
   <ma-filtering-device-name-list ng-if="param.type === 'deviceName' && param.options.filtering" flex
       ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-      auto-init="false" data-source-xid="$ctrl.getParamOption(param, 'dataSourceXid')"
+      auto-init="false" data-source-xid="$ctrl.optionValues[param.name].dataSourceXid"
       label-text="param.label">
   </ma-filtering-device-name-list>
   <md-input-container ng-if="param.type === 'dataSource' && !param.options.filtering" flex>
     <label ng-bind="param.label"></label>
-    <ma-data-source-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()" ng-model-options="{trackBy: '$value.xid'}"
+    <ma-data-source-list ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
         auto-init="false" show-clear="true"
-        query="$ctrl.getDsQuery(param)">
+        query="$ctrl.optionValues[param.name].dsQuery">
     </ma-data-source-list>
   </md-input-container>
   <ma-filtering-data-source-list ng-if="param.type === 'dataSource' && param.options.filtering" flex
       ng-model="$ctrl.parameters[param.name]" ng-change="$ctrl.inputChanged()"
-      auto-init="false" query="$ctrl.getDsQuery(param)"
+      auto-init="false" query="$ctrl.optionValues[param.name].dsQuery"
       label-text="param.label">
   </ma-filtering-data-source-list>
   <ma-data-point-tag-select ng-if="param.type === 'tagValue'" flex
       ng-model="$ctrl.parameters[param.name]"
       ng-change="$ctrl.inputChanged()"
+      ng-required="$ctrl.optionValues[param.name].required"
       key="{{param.options.tagKey}}"
-      restrictions="$ctrl.getParamOption(param,'restrictions')"
-      select-multiple="param.options.multiple"
-      deselect-on-query="true">
+      restrictions="$ctrl.optionValues[param.name].restrictions"
+      select-multiple="param.options.multiple">
       <ma-label>
           <span ng-if="param.label" ng-bind="param.label"></span>
           <span ng-if="!param.label" ma-tr="ui.app.tag" ma-tr-args="[param.options.tagKey]"></span>
