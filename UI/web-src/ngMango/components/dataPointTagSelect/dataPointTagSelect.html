@@ -6,7 +6,8 @@
             <span ng-if="$ctrl.multiple && $ctrl.selected.length" ng-bind="$ctrl.selected.join(', ')"></span>
             <span ng-if="!$ctrl.multiple && $ctrl.selected != null" ng-bind="$ctrl.selected"></span>
         </span>
-        <ma-drop-down auto-focus="::false" class="ma-full-screen-centered" ng-disabled="$ctrl.disabled" on-open="$ctrl.dropDownOpen()">
+        <ma-drop-down auto-focus="::false" class="ma-full-screen-centered" ng-disabled="$ctrl.disabled"
+                      on-open="$ctrl.onOpen()" on-close="$ctrl.onClose()">
             <ma-option-list ma-form-exclude ma-configure-input-container
                             ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()"
                             ng-multiple="$ctrl.multiple" ng-required="$ctrl.required" ng-disabled="$ctrl.disabled"

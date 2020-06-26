@@ -43,8 +43,11 @@ class DataPointTagSelectController {
     
     $onChanges(changes) {
         if (changes.key && !changes.key.isFirstChange() || changes.restrictions && !changes.restrictions.isFirstChange()) {
-            this.reloadItems = {};
             delete this.queryPromise;
+
+            if (this.dropDownOpen) {
+                this.reloadItems = {};
+            }
         }
 
         if (changes.editMode && !changes.editMode.isFirstChange()) {
@@ -56,7 +59,14 @@ class DataPointTagSelectController {
         this.filterPlaceholder = this.maTranslate.trSync(this.editMode ? 'ui.components.filterOrAddTagValue' : 'ui.app.filter');
     }
 
-    dropDownOpen() {
+    onOpen() {
+        this.dropDownOpen = true;
+    }
+
+    onClose() {
+        this.dropDownOpen = false;
+
+        // delete the query promise so the API request is issued on next open
         if (this.queryOnOpen) {
             delete this.queryPromise;
         }
