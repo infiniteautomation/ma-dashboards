@@ -49,17 +49,17 @@ function configureInputContainerDirective(maUtil) {
                 this.$scope.$watch(isErrorGetter, containerCtrl.setInvalid);
 
                 // handle adding the asterisk to the label when input is required
-                if (containerCtrl.label) {
-                    this.required = false;
-                    this.$attrs.$observe('required', value => {
-                        const required = typeof value === 'string' || !!value;
-                        if (this.required !== required) {
-                            this.required = required;
+                this.required = false;
+                this.$attrs.$observe('required', value => {
+                    const required = typeof value === 'string' || !!value;
+                    if (this.required !== required) {
+                        this.required = required;
+                        if (containerCtrl.label) {
                             const mdNoAsterisk = this.$attrs.mdNoAsterisk === '' || this.$scope.$eval(this.$attrs.mdNoAsterisk);
                             containerCtrl.label.toggleClass('md-required', required && !mdNoAsterisk);
                         }
-                    });
-                }
+                    }
+                });
 
                 // tell the container when we have a value (i.e. not empty) so the label can float up
                 const setHasValue = value => {
