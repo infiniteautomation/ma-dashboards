@@ -74,7 +74,7 @@ function dropDown($document, $animate, $window) {
             }
         }
         
-        $destroy() {
+        $onDestroy() {
             this.cancelAnimations();
             $body[0].removeEventListener('focus', this.focusListener, true);
             $body[0].removeEventListener('blur', this.focusListener, true);
