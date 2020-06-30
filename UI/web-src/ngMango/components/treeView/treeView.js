@@ -44,12 +44,16 @@ class Context {
         
         this.childrenPromise = this.$q.when(children).then(resolvedChildren => {
             if (this.loadCount === count) {
-                this.updateChildren(resolvedChildren);
+                if (Array.isArray(resolvedChildren)) {
+                    this.updateChildren(resolvedChildren);
 
-                if (Number.isFinite(resolvedChildren.$total)) {
-                    this.total = resolvedChildren.$total;
-                    this.offset += resolvedChildren.length;
-                    this.limited = this.total > this.children.length;
+                    if (Number.isFinite(resolvedChildren.$total)) {
+                        this.total = resolvedChildren.$total;
+                        this.offset += resolvedChildren.length;
+                        this.limited = this.total > this.children.length;
+                    }
+                } else {
+                    this.removeChildren();
                 }
             }
         }, error => {
