@@ -27,3 +27,12 @@ ma-tree-view .ma-tree-view-open-icon {
 ma-tree-view li.ma-tree-view-open > span > .ma-tree-view-open-icon {
   transform: rotate(-180deg);
 }
+
+ma-tree-view li.ma-tree-view-loading,
+ma-tree-view li.ma-tree-view-load-more {
+	font-style: italic;
+}
+
+ma-tree-view li.ma-tree-view-load-more:focus {
+	outline: none;
+}
