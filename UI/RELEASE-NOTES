@@ -1,3 +1,6 @@
+*Version 3.7.6*
+* Add button to load more event types in event types tree view
+
 *Version 3.7.5*
 * Add attribute to events table that allows specifying the date format
 
