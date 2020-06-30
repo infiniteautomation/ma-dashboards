@@ -58,10 +58,9 @@ function eventTypeProvider() {
 
     this.$get = eventTypeFactory;
 
-    eventTypeFactory.$inject = ['maRestResource', 'maRqlBuilder', 'maUtil', '$filter'];
-    function eventTypeFactory(RestResource, RqlBuilder, Util, $filter) {
+    eventTypeFactory.$inject = ['maRestResource', 'maRqlBuilder', 'maUtil'];
+    function eventTypeFactory(RestResource, RqlBuilder, Util) {
 
-        const orderBy = $filter('orderBy');
         const eventTypeOptionsMap = new Map();
         
         /**
@@ -247,16 +246,14 @@ function eventTypeProvider() {
                 return false;
             }
             
-            loadChildren() {
+            loadChildren(limit, offset) {
                 const eventType = this.type;
                 return this.constructor.list({
                     eventType: eventType.eventType,
                     subType: this.supportsSubtype ? eventType.subType || undefined : null,
                     referenceId1: eventType.referenceId1,
                     referenceId2: eventType.referenceId2
-                }).then(items => {
-                    return orderBy(items, this.orderBy || 'description');
-                });
+                }, limit, offset);
             }
 
             getSource() {
@@ -267,8 +264,12 @@ function eventTypeProvider() {
                 return this.description;
             }
 
-            static list(eventType, opts = {}) {
-                return this.query(eventType, null, opts);
+            static list(eventType, limit, offset = 0, opts = {}) {
+                const builder = this.buildQuery(eventType).sort('description');
+                if (Number.isFinite(limit)) {
+                    builder.limit(limit, offset);
+                }
+                return builder.query(opts);
             }
             
             static buildQuery(eventType) {

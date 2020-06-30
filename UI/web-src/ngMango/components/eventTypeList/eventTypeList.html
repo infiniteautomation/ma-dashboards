@@ -1,4 +1,4 @@
-<ma-tree-view items="$ctrl.typesPromise" item-id="$item.typeId" item-children="$item.loadChildren()" item-has-children="$item.hasChildren()"
+<ma-tree-view items="$ctrl.typesPromise" item-id="$item.typeId" item-children="$item.loadChildren($limit, $offset)" item-has-children="$item.hasChildren()"
         item-expanded="$ctrl.hasSelectedCount($item.type)"><!-- no space
  --><md-checkbox ng-if="$item.handleable()" ng-click="$event.stopPropagation()" ng-disabled="$context.parent.item && $ctrl.selected.has($context.parent.item.type)"
         ng-init="checked = $ctrl.selectedGetterSetter($item.type)" ng-model="checked" ng-model-options="{getterSetter: true}" ma-form-exclude>
