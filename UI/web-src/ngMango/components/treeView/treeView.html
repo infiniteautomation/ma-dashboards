@@ -5,7 +5,6 @@
 	<li ng-if="!context.childrenPromise && context.loadError" class="ma-tree-view-load-error" md-colors="::{color: 'warn-A700'}">
         <em ma-tr="ui.components.errorLoadingChildren" ma-tr-args="[context.loadError]"></em>
     </li>
-	<li ng-if="context.loading" class="ma-tree-view-loading"><em ma-tr="ui.components.loadingItems"></em></li>
     <li ng-repeat="item in context.children track by $ctrl.id(item)" class="ma-tree-view-item" ng-init="itemContext = $ctrl.newContext(item, context)"
 			ng-class="{'ma-tree-view-open': itemContext.showChildren, 'ma-tree-view-items-loaded': itemContext.children}">
 		<span ng-if="itemContext.hasChildren" ng-click="itemContext.toggleChildren()">
@@ -18,4 +17,7 @@
 
         <ul ng-if="itemContext.showChildren" ng-include="'maTreeView.listItems.html'" ng-init="context = itemContext" ng-class="::'ma-tree-view-depth-' + context.depth"></ul>
     </li>
+	<li ng-if="context.loading" class="ma-tree-view-loading" ma-tr="ui.components.loadingItems"></li>
+	<li ng-if="context.limited" class="ma-tree-view-load-more" ng-click="context.loadChildren()"
+		ma-tr="ui.components.loadMore" ma-tr-args="[context.total - context.children.length]"></li>
 </script>

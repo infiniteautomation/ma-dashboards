@@ -15,10 +15,12 @@ class Context {
         this.$timeout = $ctrl.$timeout;
         this.$ctrl = $ctrl;
         this.loadCount = 0;
+        this.offset = 0;
+        this.children = [];
         
         if (item) {
             this.hasChildren = $ctrl.hasChildren(item);
-            this.retrieveChildren = () => $ctrl.children(this.item);
+            this.retrieveChildren = (offset) => $ctrl.children(this.item, offset);
             
             if (this.hasChildren && $ctrl.expanded(item, this.depth)) {
                 this.toggleChildren();
@@ -27,10 +29,9 @@ class Context {
     }
 
     loadChildren() {
-        const children = this.retrieveChildren();
-
+        delete this.limited;
+        const children = this.retrieveChildren(this.offset);
         const loadingDelay = this.$timeout(() => this.loading = true, 200);
-        
         const count = ++this.loadCount;
 
         const showResults = () => {
@@ -44,6 +45,12 @@ class Context {
         this.childrenPromise = this.$q.when(children).then(resolvedChildren => {
             if (this.loadCount === count) {
                 this.updateChildren(resolvedChildren);
+
+                if (Number.isFinite(resolvedChildren.$total)) {
+                    this.total = resolvedChildren.$total;
+                    this.offset += resolvedChildren.length;
+                    this.limited = this.total > this.children.length;
+                }
             }
         }, error => {
             this.loadError = error && (error.mangoStatusText || error.localizedMessage) || ('' + error);
@@ -58,21 +65,16 @@ class Context {
     }
     
     updateChildren(newChildren) {
-        const existingChildren = this.children;
-        this.children = newChildren;
-        
-        if (!Array.isArray(existingChildren)) {
-            return;
-        }
-        
         // context is created via a ng-init for each object tracked by id
         // we need to update the existing item if it exists so the item in the context is updated
-        const existingById = existingChildren.reduce((map, e) => (map[this.$ctrl.id(e)] = e, map), {});
-        this.children.forEach(c => {
+        const existingById = this.children.reduce((map, e) => (map[this.$ctrl.id(e)] = e, map), {});
+        newChildren.forEach(c => {
             const id = this.$ctrl.id(c);
             const existing = existingById[id];
             if (existing) {
                 Object.assign(existing, c);
+            } else {
+                this.children.push(c);
             }
         });
     }
@@ -82,9 +84,14 @@ class Context {
         if (this.showChildren) {
             this.loadChildren();
         } else {
-            delete this.children;
-            delete this.loadError;
+            this.removeChildren();
         }
+    }
+
+    removeChildren() {
+        this.children = [];
+        this.offset = 0;
+        delete this.loadError;
     }
 }
     
@@ -100,11 +107,12 @@ class TreeViewController {
 
         this.$scope.context = new Context(this);
         this.$scope.context.retrieveChildren = () => this.items;
+        this.limit = 100;
     }
     
     $onChanges(changes) {
         if (changes.items) {
-            delete this.$scope.context.children;
+            this.$scope.context.removeChildren();
             this.$scope.context.loadChildren();
         }
     }
@@ -127,9 +135,9 @@ class TreeViewController {
         return Array.isArray(item.children) && item.children.length;
     }
 
-    children(item) {
+    children(item, offset = 0) {
         if (typeof this.itemChildren === 'function') {
-            return this.itemChildren({$item: item});
+            return this.itemChildren({$item: item, $limit: this.limit, $offset: offset});
         } else {
             return item.children;
         }
@@ -152,7 +160,8 @@ export default {
         itemId: '&?',
         itemChildren: '&?',
         itemHasChildren: '&?',
-        itemExpanded: '&?'
+        itemExpanded: '&?',
+        limit: '<?'
     },
     transclude: true
 };
