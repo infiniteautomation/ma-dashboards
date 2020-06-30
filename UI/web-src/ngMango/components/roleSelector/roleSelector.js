@@ -32,11 +32,16 @@ class RoleSelectorController {
         this.ngModelCtrl.$setViewValue(Array.from(this.selected));
     }
 
-    loadInherited(role) {
-        return this.maRole.buildQuery()
+    loadInherited(role, limit, offset = 0) {
+        const queryBuilder = this.maRole.buildQuery()
             .eq('inheritedBy', role.xid)
-            .sort('name')
-            .query();
+            .sort('name');
+
+        if (Number.isFinite(limit)) {
+            queryBuilder.limit(limit, offset)
+        }
+
+        return queryBuilder.query();
     }
     
     createModel(xid) {
