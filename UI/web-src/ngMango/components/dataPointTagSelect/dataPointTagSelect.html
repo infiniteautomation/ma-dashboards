@@ -8,7 +8,7 @@
         </span>
         <ma-drop-down auto-focus="::false" class="ma-full-screen-centered" ng-disabled="$ctrl.disabled"
                       on-open="$ctrl.onOpen()" on-close="$ctrl.onClose()">
-            <ma-option-list ma-form-exclude ma-configure-input-container has-value="$value === null || $value"
+            <ma-option-list ma-form-exclude ma-configure-input-container has-value="$ctrl.multiple ? $value.length : $value !== undefined"
                             ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()"
                             ng-multiple="$ctrl.multiple" ng-required="$ctrl.required" ng-disabled="$ctrl.disabled"
                             items="$ctrl.doQuery($filter)" reload-items="$ctrl.reloadItems"
