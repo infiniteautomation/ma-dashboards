@@ -96,7 +96,7 @@ class DataPointTagSelectController {
             }
 
             return values
-                .filter(v => !filter || v.toLowerCase().includes(filter.toLowerCase()))
+                .filter(v => !filter || typeof v === 'string' && v.toLowerCase().includes(filter.toLowerCase()))
                 .sort();
         });
     }
