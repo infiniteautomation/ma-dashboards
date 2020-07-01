@@ -1,5 +1,5 @@
 <md-input-container md-no-float="$ctrl.noFloat" flex>
-    <label ng-if="!$ctrl.noFloat" ng-transclude="label"><span ma-tr="ui.components.selectTagValue" ma-tr-args="[$ctrl.key]"></span></label>
+    <label ng-if="!$ctrl.noFloat" ng-transclude="label"><span ma-tr="{{$ctrl.multiple ? 'ui.components.selectTagValues' : 'ui.components.selectTagValue'}}" ma-tr-args="[$ctrl.key]"></span></label>
     <ma-drop-down-button>
         <span ng-if="$ctrl.selectedText" ng-bind="$ctrl.selectedText"></span>
         <span ng-if="!$ctrl.selectedText">
