@@ -12,47 +12,42 @@ class DataPointTagsEditorController {
     
     constructor(maDataPointTags, $timeout) {
         this.maDataPointTags = maDataPointTags;
-        
-        this.tags = {};
-        this.updateExcludedTags();
     }
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
     }
-    
-    $onChanges(changes) {
-    }
 
-    updateExcludedTags() {
-        const tagKeys = Object.keys(this.tags);
-        this.excludedTags = ['device', 'name', ...tagKeys];
+    updateTagKeys() {
+        this.tagKeys = Object.keys(this.tags);
     }
     
     render() {
         this.tags = Object.assign({}, this.ngModelCtrl.$viewValue);
-        this.updateExcludedTags();
+        this.updateTagKeys();
     }
     
     deleteTagKey(key) {
         delete this.tags[key];
-        
-        this.updateExcludedTags();
+        this.updateTagKeys();
         this.setViewValue();
     }
     
-    addTagKey(key) {
-        // blurs the autocomplete so it's dropdown doesn't open again
-        if (document.activeElement) {
-            document.activeElement.blur();
+    tagKeysChanged() {
+        // add selected tag keys into the tags object
+        for (const key of this.tagKeys) {
+            if (!this.tags.hasOwnProperty(key)) {
+                this.tags[key] = undefined;
+            }
         }
-        
-        this.newTagKey = null;
-        if (this.tags.hasOwnProperty(key)) return;
-        
-        this.tags[key] = undefined;
-        
-        this.updateExcludedTags();
+
+        // remove deselected tag keys from the tags object
+        for (const key of Object.keys(this.tags)) {
+            if (!this.tagKeys.includes(key)) {
+                delete this.tags[key];
+            }
+        }
+
         this.setViewValue();
     }
     
@@ -68,8 +63,6 @@ class DataPointTagsEditorController {
 export default {
     template: dataPointTagsEditorTemplate,
     controller: DataPointTagsEditorController,
-    bindings: {
-    },
     require: {
         ngModelCtrl: 'ngModel'
     }
