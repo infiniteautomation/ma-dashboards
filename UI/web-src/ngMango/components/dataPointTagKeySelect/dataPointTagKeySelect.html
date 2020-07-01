@@ -14,10 +14,10 @@
                             ng-model="$ctrl.selected" ng-change="$ctrl.inputChanged()"
                             ng-multiple="$ctrl.multiple" ng-required="$ctrl.required" ng-disabled="$ctrl.disabled"
                             items="$ctrl.doQuery($filter)" reload-items="$ctrl.reloadItems"
-                            filter-changed="$ctrl.filterChanged($filter, $inOptions)"
                             filter-placeholder="{{$ctrl.filterPlaceholder}}"
                             query-on-open="$ctrl.queryOnOpen">
                 <ma-option ng-if="$ctrl.editMode && $ctrl.addNewValue" ng-value="$ctrl.addNewValue">
+                    <md-icon ng-if="$multiple" class="ma-selected-show">check</md-icon>
                     <span class="ma-ellipsis">
                         <span ng-bind="$ctrl.addNewValue"></span> (<em ma-tr="ui.components.addTagKey"></em>)
                     </span>

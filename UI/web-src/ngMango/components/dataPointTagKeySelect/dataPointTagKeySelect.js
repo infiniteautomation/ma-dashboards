@@ -78,29 +78,23 @@ class DataPointTagKeySelectController {
         }
 
         return this.queryPromise.then(values => {
-            return values.filter(v => !filter || v.toLowerCase().includes(filter.toLowerCase())).sort();
+            if (this.editMode) {
+                values = this.addSelectedOptions(values);
+                if (filter && !values.includes(filter)) {
+                    this.addNewValue = filter;
+                } else {
+                    delete this.addNewValue;
+                }
+            }
+
+            return values
+                .filter(v => !filter || v.toLowerCase().includes(filter.toLowerCase()))
+                .sort();
         });
     }
 
     inputChanged() {
-        if (this.selected !== this.addNewValue) {
-            delete this.addNewValue;
-        }
         this.ngModelCtrl.$setViewValue(this.selected);
-    }
-
-    filterChanged(filterText, inOptions) {
-        if (this.editMode) {
-            if (filterText === this.addNewValue) {
-                return;
-            }
-
-            if (filterText && !inOptions) {
-                this.addNewValue = filterText;
-            } else {
-                delete this.addNewValue;
-            }
-        }
     }
 
     updateDisabledOptions() {
@@ -119,6 +113,21 @@ class DataPointTagKeySelectController {
                 this.excludeTagsMap[key] = true;
             }
         }
+    }
+
+    /**
+     * Ensures all currently selected tags are available in the list when using edit mode.
+     * @param {string[]} values
+     * @returns {string[]}
+     */
+    addSelectedOptions(values) {
+        const valueSet = new Set(values);
+        if (this.multiple && Array.isArray(this.selected)) {
+            this.selected.forEach(v => valueSet.add(v));
+        } else if (!this.multiple && this.selected != null) {
+            valueSet.add(this.selected)
+        }
+        return Array.from(valueSet);
     }
 }
 
