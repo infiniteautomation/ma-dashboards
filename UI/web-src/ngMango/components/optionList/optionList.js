@@ -98,7 +98,7 @@ class OptionListController {
             for (const item of viewValue) {
                 this.selected.set(this.itemId(item), item);
             }
-        } else if (!this.multiple && viewValue !== undefined) {
+        } else if (!this.multiple) {
             this.selected.set(this.itemId(viewValue), viewValue);
         }
 
