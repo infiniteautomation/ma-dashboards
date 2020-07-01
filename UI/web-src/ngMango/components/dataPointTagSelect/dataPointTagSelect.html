@@ -3,8 +3,11 @@
     <ma-drop-down-button>
         <span ng-if="$ctrl.selectedText" ng-bind="$ctrl.selectedText"></span>
         <span ng-if="!$ctrl.selectedText">
-            <span ng-if="$ctrl.multiple && $ctrl.selected.length" ng-bind="$ctrl.selected.join(', ')"></span>
-            <span ng-if="!$ctrl.multiple && $ctrl.selected != null" ng-bind="$ctrl.selected"></span>
+            <span ng-repeat="value in ($ctrl.multiple ? $ctrl.selected : [$ctrl.selected])">
+                <em ng-if="value === null" ma-tr="ui.components.noTagKey" ma-tr-args="[$ctrl.key]"></em><!--
+                --><span ng-if="value !== null" class="ma-ellipsis" ng-bind="value"></span><!--
+                --><span ng-if="!$last">,</span>
+            </span>
         </span>
         <ma-drop-down auto-focus="::false" class="ma-full-screen-centered" ng-disabled="$ctrl.disabled"
                       on-open="$ctrl.onOpen()" on-close="$ctrl.onClose()">
