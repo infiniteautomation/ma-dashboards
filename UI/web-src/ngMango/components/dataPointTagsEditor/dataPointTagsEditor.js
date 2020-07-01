@@ -50,7 +50,7 @@ class DataPointTagsEditorController {
         this.newTagKey = null;
         if (this.tags.hasOwnProperty(key)) return;
         
-        this.tags[key] = '';
+        this.tags[key] = undefined;
         
         this.updateExcludedTags();
         this.setViewValue();
