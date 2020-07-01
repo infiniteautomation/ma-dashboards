@@ -265,7 +265,8 @@ function eventTypeProvider() {
             }
 
             static list(eventType, limit, offset = 0, opts = {}) {
-                const builder = this.buildQuery(eventType).sort('description');
+                const builder = this.buildQuery(eventType)
+                	.sort('type.eventType', 'type.subType', 'type.reference1.name', 'type.reference2.name');
                 if (Number.isFinite(limit)) {
                     builder.limit(limit, offset);
                 }
