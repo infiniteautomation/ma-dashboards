@@ -62,19 +62,17 @@ function configureInputContainerDirective(maUtil) {
                 });
 
                 // tell the container when we have a value (i.e. not empty) so the label can float up
-                const setHasValue = value => {
+                ngModelCtrl.$validators.maSetHasValue = (modelValue, viewValue) => {
                     let hasValue;
                     // allow user to define their own has-value attribute
                     if (this.$attrs.hasOwnProperty('hasValue')) {
-                        hasValue = this.$scope.$eval(this.$attrs.hasValue, {$value: value});
+                        hasValue = this.$scope.$eval(this.$attrs.hasValue, {$value: viewValue});
                     } else {
-                        hasValue = this.$element[0].hasAttribute('multiple') ? Array.isArray(value) && value.length : value != null;
+                        hasValue = this.$element[0].hasAttribute('multiple') ? Array.isArray(viewValue) && viewValue.length : viewValue != null;
                     }
                     containerCtrl.setHasValue(!!hasValue);
-                    return value;
+                    return true;
                 };
-                ngModelCtrl.$parsers.push(setHasValue);
-                ngModelCtrl.$formatters.push(setHasValue);
 
                 if (!this.dropDownCtrl) {
                     // tell the container when we are focused
