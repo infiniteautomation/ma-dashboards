@@ -128,8 +128,16 @@ class OptionListController {
             this.ngModelCtrl.$setViewValue(first);
         }
 
-        if (!this.multiple && this.dropDownCtrl) {
-            this.dropDownCtrl.close();
+        if (this.dropDownCtrl) {
+            if (this.multiple) {
+                // changing the value can cause the layout to be affected, e.g. tag editor inside the data point edit
+                // dialog. Resize the drop down to ensure it remains below the input.
+                this.$timeout(() => {
+                    this.dropDownCtrl.resizeDropDown();
+                });
+            } else {
+                this.dropDownCtrl.close();
+            }
         }
 
         for (const optionCtrl of this.options) {
