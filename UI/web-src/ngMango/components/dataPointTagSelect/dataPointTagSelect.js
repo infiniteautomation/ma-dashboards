@@ -83,7 +83,7 @@ class DataPointTagSelectController {
         }
 
         return this.queryPromise.then(values => {
-            return values.filter(v => !filter || v.toLowerCase().includes(filter.toLowerCase())).sort();
+            return values.filter(v => !filter || v && v.toLowerCase().includes(filter.toLowerCase())).sort();
         });
     }
     
