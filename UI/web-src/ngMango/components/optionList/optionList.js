@@ -182,7 +182,7 @@ class OptionListController {
     }
 
     onKeyDown(event) {
-        if (this.showFilter && event.getModifierState('Control') && event.key === 'f') {
+        if (this.showFilter && event.key === 'f' && event.getModifierState('Control')) {
             // focus on the filter input on Ctrl-F
             event.stopPropagation();
             event.preventDefault();
@@ -225,7 +225,7 @@ class OptionListController {
      * Jumps to a spot in the list by searching the text content of the options.
      */
     onKeyPress(event) {
-        if (event.key.length > 1 || event.target.matches('input[name=filter]') ||
+        if (!event.key || event.key.length > 1 || event.target.matches('input[name=filter]') ||
                 event.getModifierState('Control') || event.getModifierState('Alt') || event.getModifierState('Meta') || event.getModifierState('OS')) {
             return;
         }
