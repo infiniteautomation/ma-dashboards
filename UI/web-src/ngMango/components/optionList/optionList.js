@@ -298,10 +298,6 @@ class OptionListController {
 
     filterChanged() {
         this.query();
-        if (typeof this.filterChangedCallback === 'function') {
-            const inOptions = this.options.some(o => this.itemId(o.value) === this.filter);
-            this.filterChangedCallback({$filter: this.filter, $inOptions: inOptions});
-        }
     }
 }
 
@@ -316,7 +312,6 @@ export default {
         ngMultiple: '<?',
         queryOnInit: '<?',
         queryOnOpen: '<?',
-        filterChangedCallback: '&?filterChanged',
         filterPlaceholder: '@?'
     },
     require: {
