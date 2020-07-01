@@ -52,6 +52,9 @@ class DataPointTagSelectController {
         if (changes.editMode && !changes.editMode.isFirstChange()) {
             this.updatePlaceholder();
         }
+        if (changes.disabledOptions && !changes.disabledOptions.isFirstChange()) {
+            this.updateDisabledOptions();
+        }
     }
 
     updatePlaceholder() {
@@ -107,6 +110,15 @@ class DataPointTagSelectController {
             }
         }
     }
+
+    updateDisabledOptions() {
+        this.disabledOptionsMap = {};
+        if (Array.isArray(this.disabledOptions)) {
+            for (const key of this.disabledOptions) {
+                this.disabledOptionsMap[key] = true;
+            }
+        }
+    }
 }
 
 export default {
@@ -120,7 +132,8 @@ export default {
         required: '<?ngRequired',
         queryOnOpen: '<?',
         editMode: '<?',
-        disabled: '<?ngDisabled'
+        disabled: '<?ngDisabled',
+        disabledOptions: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'

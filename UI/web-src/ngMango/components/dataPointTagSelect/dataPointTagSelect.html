@@ -24,7 +24,7 @@
                     </span>
                 </ma-option>
                 <ma-option ng-if="!$ctrl.multiple && !$ctrl.required" ng-value="undefined"><em ma-tr="ui.app.any"></em></ma-option>
-                <ma-option ng-repeat="value in $items" ng-value="value">
+                <ma-option ng-repeat="value in $items" ng-value="value" ng-disabled="$ctrl.disabledOptionsMap[value]">
                     <md-icon ng-if="$multiple" class="ma-selected-show">check</md-icon>
                     <em ng-if="value === null" ma-tr="ui.components.noTagKey" ma-tr-args="[$ctrl.key]"></em>
                     <span ng-if="value !== null" class="ma-ellipsis" md-highlight-text="$filter" md-highlight-flags="ig">{{value}}</span>
