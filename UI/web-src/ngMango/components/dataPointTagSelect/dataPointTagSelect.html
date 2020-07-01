@@ -33,4 +33,8 @@
             <md-button ng-if="$dropDown.fullscreen && $ctrl.multiple" ng-click="$dropDown.close()"><md-icon>close</md-icon>&nbsp;<span ma-tr="common.close"></span></md-button>
         </ma-drop-down>
     </ma-drop-down-button>
+    <div ng-messages="$ctrl.ngModelCtrl.$error">
+        <div ng-message="required" ma-tr="validate.required"></div>
+        <div ng-message="validationMessage" ng-bind="$ctrl.ngModelCtrl.validationMessage"></div>
+    </div>
 </md-input-container>
