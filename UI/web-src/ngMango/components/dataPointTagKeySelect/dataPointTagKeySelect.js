@@ -23,129 +23,118 @@ import './dataPointTagKeySelect.css';
 
 class DataPointTagKeySelectController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maDataPointTags', '$element']; }
+    static get $inject() { return ['maDataPointTags', 'maTranslate']; }
     
-    constructor(maDataPointTags, $element) {
+    constructor(maDataPointTags, maTranslate) {
         this.maDataPointTags = maDataPointTags;
-        this.$element = $element;
-        
+        this.maTranslate = maTranslate;
         this.queryOnOpen = true;
     }
-    
+
     $onInit() {
         this.ngModelCtrl.$render = () => {
             this.selected = this.ngModelCtrl.$viewValue;
         };
-        
-        if (!this.editMode) {
-            this.doQuery();
-        }
+        this.updatePlaceholder();
+        this.updateDisabledOptions();
+        this.updateExcludeTags();
     }
-    
+
     $onChanges(changes) {
-        if (changes.disabledOptions) {
-            this.rebuildDisabledOptions();
+        if (changes.editMode && !changes.editMode.isFirstChange()) {
+            this.updatePlaceholder();
         }
-        
-        if (changes.excludeTags) {
-            this.updateExcluded();
-            this.searchValues = null;
+        if (changes.disabledOptions && !changes.disabledOptions.isFirstChange()) {
+            this.updateDisabledOptions();
+        }
+        if (changes.excludeTags && !changes.excludeTags.isFirstChange()) {
+            this.updateExcludeTags();
         }
     }
-    
-    doQuery(forceRefresh = this.queryOnOpen) {
-        if (this.queryPromise && !forceRefresh) {
-            return this.queryPromise;
+
+    updatePlaceholder() {
+        this.filterPlaceholder = this.maTranslate.trSync(this.editMode ? 'ui.components.filterOrAddTagKey' : 'ui.app.filter');
+    }
+
+    onOpen() {
+        this.dropDownOpen = true;
+    }
+
+    onClose() {
+        this.dropDownOpen = false;
+
+        // delete the query promise so the API request is issued on next open
+        if (this.queryOnOpen) {
+            delete this.queryPromise;
         }
-        
-        this.queryPromise = this.maDataPointTags.keys().then(values => {
-            this.allValues = values.sort();
-            this.updateExcluded();
-            
-            return this.values;
+    }
+
+    doQuery(filter) {
+        if (!this.queryPromise) {
+            this.queryPromise = this.maDataPointTags.keys();
+            if (this.onQuery) {
+                this.onQuery({$promise: this.queryPromise});
+            }
+        }
+
+        return this.queryPromise.then(values => {
+            return values.filter(v => !filter || v.toLowerCase().includes(filter.toLowerCase())).sort();
         });
-        
-        if (this.onQuery) {
-            this.onQuery({$promise: this.queryPromise});
-        }
-        
-        return this.queryPromise;
     }
-    
-    updateExcluded() {
-        if (!Array.isArray(this.allValues)) return;
-        
-        if (Array.isArray(this.excludeTags)) {
-            this.values = this.allValues.filter(v => !this.excludeTags.includes(v));
-        } else {
-            this.values = this.allValues.slice();
-        }
-    }
-    
-    rebuildDisabledOptions() {
-        this.disabledOptionsMap = {};
-        if (Array.isArray(this.disabledOptions)) {
-            this.disabledOptions.forEach(o => this.disabledOptionsMap[o] = true);
-        }
-        if (this.ngModelCtrl) {
-            delete this.disabledOptionsMap[this.ngModelCtrl.$modelValue];
-        }
-    }
-    
+
     inputChanged() {
+        if (this.selected !== this.addNewValue) {
+            delete this.addNewValue;
+        }
         this.ngModelCtrl.$setViewValue(this.selected);
     }
 
-    searchTextChanged() {
-    }
-    
-    doSearch() {
-        // if we already have the array of tag keys, just filter it and return it now
-        if (Array.isArray(this.searchValues)) {
-            return this.filterValues();
+    filterChanged(filterText, inOptions) {
+        if (this.editMode) {
+            if (filterText === this.addNewValue) {
+                return;
+            }
+
+            if (filterText && !inOptions) {
+                this.addNewValue = filterText;
+            } else {
+                delete this.addNewValue;
+            }
         }
-        
-        // refresh the array of tag keys and return promise
-        return this.doQuery().then(values => {
-            this.searchValues = values;
-            return this.filterValues();
-        });
     }
-    
-    autocompleteBlurred() {
-        // clear the values when the input blurs so next time the drop down opens we call doQuery() again
-        this.searchValues = null;
-    }
-    
-    filterValues() {
-        if (!this.searchText || typeof this.searchText !== 'string') {
-            return this.searchValues.slice();
+
+    updateDisabledOptions() {
+        this.disabledOptionsMap = {};
+        if (Array.isArray(this.disabledOptions)) {
+            for (const key of this.disabledOptions) {
+                this.disabledOptionsMap[key] = true;
+            }
         }
-        
-        const searchLower = this.searchText.toLowerCase();
-        return this.searchValues.filter(val => {
-            return val.toLowerCase().includes(searchLower);
-        });
     }
-    
-    enterPressed() {
-        this.selected = this.searchText;
-        this.searchText = '';
-        this.inputChanged();
+
+    updateExcludeTags() {
+        this.excludeTagsMap = {};
+        if (Array.isArray(this.excludeTags)) {
+            for (const key of this.excludeTags) {
+                this.excludeTagsMap[key] = true;
+            }
+        }
     }
 }
 
 export default {
     bindings: {
         disabledOptions: '<?',
-        selectMultiple: '<?',
+        multiple: '<?selectMultiple',
         selectedText: '<?',
         excludeTags: '<?',
         noFloat: '<?',
         onQuery: '&?',
         queryOnOpen: '<?',
         editMode: '<?',
-        labelText: '@?'
+        labelText: '@?',
+        required: '<?ngRequired',
+        disabled: '<?ngDisabled'
     },
     require: {
         ngModelCtrl: 'ngModel'
@@ -160,5 +149,3 @@ export default {
         icon: 'label'
     }
 };
-
-
