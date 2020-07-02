@@ -21,9 +21,6 @@ const templates = {
  * @description Editor for a data point, allows creating, updating or deleting
  */
 
-const $inject = Object.freeze(['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
-    'maMultipleValues', '$templateCache', '$filter', 'maUser', 'maUtil']);
-
 /**
  * Stores a map of validation property keys that come back from the API and what they actually map to in the model.
  */
@@ -34,10 +31,11 @@ const validationMessagePropertyMap = {
 
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return $inject; }
+    static get $inject() { return ['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs',
+        '$parse', 'maMultipleValues', '$templateCache', '$filter', 'maUser', 'maUtil']; }
     
-    constructor(Point, $q, DialogHelper, $scope, $window, Translate, $attrs, $parse,
-            MultipleValues, $templateCache, $filter, User, Util) {
+    constructor(Point, $q, DialogHelper, $scope, $window, Translate, $attrs,
+                $parse, MultipleValues, $templateCache, $filter, User, Util) {
 
         Object.keys(templates).forEach(key => {
             const name = `maDataPointEditor.${key}.html`;
@@ -352,19 +350,7 @@ class DataPointEditorController {
         }
         return true;
     }
-    
-    deleteDataPoint(event, item) {
-        const notifyName = item.name || item.originalId;
-        this.DialogHelper.confirm(event, ['ui.components.dataPointConfirmDelete', notifyName]).then(() => {
-            item.delete().then(() => {
-                this.DialogHelper.toast(['ui.components.dataPointDeleted', notifyName]);
-                this.queryPoints();
-            }, error => {
-                this.DialogHelper.toast(['ui.components.dataPointDeleteError', error.mangoStatusText]);
-            });
-        }, angular.noop);
-    }
-    
+
     notifyBulkEditError(error) {
         this.DialogHelper.toastOptions({
             textTr: ['ui.app.errorStartingBulkEdit', error.mangoStatusText],

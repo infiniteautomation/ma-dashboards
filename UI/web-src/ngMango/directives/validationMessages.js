@@ -3,8 +3,8 @@
  * @author Jared Wiltshire
  */
 
-validationMessages.$inject = ['maUtil'];
-function validationMessages(Util) {
+validationMessages.$inject = ['maUtil', '$timeout'];
+function validationMessages(Util, $timeout) {
 
     class ValidationMessagesController {
         static get $$ngIsClass() { return true; }
@@ -53,23 +53,36 @@ function validationMessages(Util) {
         }
         
         activateTabWithClientError() {
-            Object.values(this.ngFormCtrl.$error).some(ctrls => {
+            const success = Object.values(this.ngFormCtrl.$error).some(ctrls => {
                 return ctrls.some(ctrl => {
-                    this.activateTab(ctrl.$$element[0]);
-                    return true;
+                    return this.activateTab(ctrl.$$element[0]);
                 });
             });
+
+            // fallback to focus on first invalid input container
+            if (!success) {
+                this.activateFirstInvalid();
+            }
         }
         
         activateTabWithValidationError() {
-            if (!Array.isArray(this.messagesArray)) return;
-            
-            const withProperty = this.messagesArray.filter(m => m.property);
-            if (withProperty.length) {
-                const property = withProperty[0].property;
+            if (!Array.isArray(this.messagesArray) || !this.messagesArray.length) return;
+
+            const success = this.messagesArray.filter(m => m.property).some(message => {
+                const property = message.property;
                 const inputElement = Util.findInputElement(property, this.ngFormCtrl);
-                this.activateTab(inputElement);
+                return this.activateTab(inputElement);
+            });
+
+            // fallback to focus on first invalid input container
+            if (!success) {
+                this.activateFirstInvalid();
             }
+        }
+
+        activateFirstInvalid() {
+            // timeout required as class not added to md-input-container yet
+            $timeout(() => this.activateTab('md-input-container.md-input-invalid'));
         }
         
         activateTab(query) {
@@ -86,8 +99,11 @@ function validationMessages(Util) {
                 return !!tab.querySelector(query);
             });
             
-            if (index >= 0 && typeof this.activateTabCallback === 'function') {
-                this.activateTabCallback({$index: index});
+            if (index >= 0) {
+                if (typeof this.activateTabCallback === 'function') {
+                    this.activateTabCallback({$index: index});
+                }
+                return true;
             }
         }
 
