@@ -4,8 +4,8 @@
         <md-tooltip><span ma-tr="ui.app.moreOptions"></span></md-tooltip>
     </md-button>
     <md-menu-content width="4" class="ma-no-padding" md-colors="::{background: 'background-hue-3'}">
-        <md-menu-item ng-if="$ctrl.User.current.hasAnyRole('superadmin') && $ctrl.User.current.id !== $ctrl.user.id">
-            <md-button class="ma-no-padding-right" ng-click="$ctrl.switchUser($event)" ng-disabled="$ctrl.switchingUser">
+        <md-menu-item ng-if="$ctrl.User.current.hasAnyRole('superadmin')">
+            <md-button class="ma-no-padding-right" ng-click="$ctrl.switchUser($event)" ng-disabled="$ctrl.switchingUser || $ctrl.User.current.id === $ctrl.user.id">
                 <div layout="row" flex>
                     <div flex ma-tr="users.su"></div>
                     <md-icon md-menu-align-target>swap_horiz</md-icon>
@@ -13,7 +13,7 @@
             </md-button>
         </md-menu-item>
         <md-menu-item ng-if="$ctrl.User.current.hasAnyRole('superadmin')">
-            <md-button class="ma-no-padding-right" ng-click="$ctrl.resettingPassword = {}" ng-disabled="$ctrl.resettingPassword">
+            <md-button class="ma-no-padding-right" ng-click="$ctrl.resettingPassword = {}" ng-disabled="$ctrl.resettingPassword || $ctrl.User.current.id === $ctrl.user.id">
                 <div layout="row" flex>
                     <div flex ma-tr="header.resetPassword"></div>
                     <md-icon md-menu-align-target>settings_backup_restore</md-icon>
@@ -51,7 +51,17 @@
 
 <ma-dialog show-dialog="$ctrl.resettingPassword" destroy-dialog="true" on-close="$ctrl.resettingPassword = null">
     <md-dialog>
-        <md-dialog-content flex layout="column" layout-align="center center" class="md-padding">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ma-tr="users.resetPasswordFor" ma-tr-args="[$ctrl.user.username]"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content class="md-padding">
             <ma-reset-password-create-link user="$ctrl.user"></ma-reset-password-create-link>
         </md-dialog-content>
     </md-dialog>

@@ -4,16 +4,19 @@
  */
 
 import componentTemplate from './resetPasswordCreateLink.html';
+import './resetPasswordCreateLink.css';
 
 class RestPasswordCreateLinkController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser']; }
+    static get $inject() { return ['$element', 'maUser', '$document']; }
     
-    constructor(maUser) {
+    constructor($element, maUser, $document) {
+        this.$element = $element;
         this.maUser = maUser;
+        this.$document = $document;
         
         this.lockPassword = true;
-        this.sendEmail = true;
+        this.sendEmail = false;
     }
 
     $onChanges(changes) {
@@ -22,25 +25,24 @@ class RestPasswordCreateLinkController {
         }
     }
     
-    createLink() {
+    createLink(event) {
         return this.maUser.createPasswordResetLink(this.user.username, this.lockPassword, this.sendEmail).then(data => {
-            this.resetData = data;
+            this.resetToken = data;
         });
     }
-    
-    onOk() {
-        console.log(this.maDialog);
+
+    copyToClipboard(event) {
+        const textarea = this.$element[0].querySelector('textarea');
+        textarea.focus();
+        textarea.select();
+        this.$document[0].execCommand("copy");
     }
 }
 
 export default {
     controller: RestPasswordCreateLinkController,
     template: componentTemplate,
-    require: {
-        maDialog: '?^maDialog'
-    },
     bindings: {
-        user: '<?',
-        onOk: '&?'
+        user: '<?'
     }
 };
