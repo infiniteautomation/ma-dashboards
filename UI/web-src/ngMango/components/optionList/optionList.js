@@ -55,7 +55,7 @@ class OptionListController {
 
                 if (this.queryOnOpen) {
                     delete this.filter;
-                    this.query().then(() => {
+                    this.query({$dropDownOpen: true}).then(() => {
                         this.setTabIndexFocus = true;
                         this.setTabIndex();
                     });
@@ -65,7 +65,7 @@ class OptionListController {
 
         // do query on init by default if there is no drop down
         if (this.hasOwnProperty('queryOnInit') ? this.queryOnInit : !this.dropDownCtrl) {
-            this.query();
+            this.query({$onInit: true});
         }
 
         const $parent = this.$element.maFind('.ma-option-list-container');
@@ -81,7 +81,7 @@ class OptionListController {
 
     $onChanges(changes) {
         if (changes.reloadItems && !changes.reloadItems.isFirstChange()) {
-            this.query();
+            this.query({$reload: true});
         }
         if (changes.ngMultiple && !changes.ngMultiple.isFirstChange()) {
             this.multiple = !!this.ngMultiple;
@@ -163,10 +163,10 @@ class OptionListController {
         this.filterChanged();
     }
 
-    query() {
+    query(options) {
         if (typeof this.getItems !== 'function') return;
 
-        const items = this.getItems({$filter: this.filter});
+        const items = this.getItems(Object.assign({$filter: this.filter}, options));
 
         const promise = this.queryPromise = this.$q.when(items).then(items => {
             if (promise === this.queryPromise) {
@@ -297,7 +297,7 @@ class OptionListController {
     }
 
     filterChanged() {
-        this.query();
+        this.query({$filterChanged: true});
     }
 }
 
