@@ -5,20 +5,27 @@
 
 import componentTemplate from './resetPasswordCreateLink.html';
 import './resetPasswordCreateLink.css';
+import moment from 'moment-timezone';
 
 class RestPasswordCreateLinkController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$element', 'maUser', '$document', 'maUtil', 'maDialogHelper']; }
+    static get $inject() { return ['$element', 'maUser', '$document', 'maDialogHelper', '$interval']; }
     
-    constructor($element, maUser, $document, maUtil, maDialogHelper) {
+    constructor($element, maUser, $document, maDialogHelper, $interval) {
         this.$element = $element;
         this.maUser = maUser;
         this.$document = $document;
-        this.maUtil = maUtil;
         this.maDialogHelper = maDialogHelper;
+        this.$interval = $interval;
         
         this.lockPassword = true;
         this.sendEmail = false;
+        this.expiryPreset = '1_hours';
+        this.updateExpiryDate();
+    }
+
+    $onInit() {
+        this.intervalPromise = this.$interval(() => this.updateExpiryDate(), 1000);
     }
 
     $onChanges(changes) {
@@ -28,10 +35,12 @@ class RestPasswordCreateLinkController {
     }
     
     createLink(event) {
-        return this.maUser.createPasswordResetLink(this.user.username, this.lockPassword, this.sendEmail).then(data => {
+        this.$interval.cancel(this.intervalPromise);
+
+        return this.maUser.createPasswordResetLink(this.user.username, this.lockPassword, this.sendEmail, this.expiryDate).then(data => {
             this.resetToken = data;
-            this.resetToken.claims = this.maUtil.parseJwt(this.resetToken.token);
         }, error => {
+            this.intervalPromise = this.$interval(() => this.updateExpiryDate(), 1000);
             this.maDialogHelper.errorToast(['users.errorCreatingResetToken', error.mangoStatusText]);
         });
     }
@@ -44,9 +53,19 @@ class RestPasswordCreateLinkController {
         this.maDialogHelper.toast(['common.copiedToClipboard']);
     }
 
-    tokenExpiry(relative) {
-        const expiry = new Date(this.resetToken.claims.exp * 1000);
-        return relative ? expiry - (new Date()) : expiry;
+    expiryDateChanged() {
+        this.expiryPreset = null;
+    }
+
+    expiryPresetChanged() {
+        this.updateExpiryDate();
+    }
+
+    updateExpiryDate() {
+        if (this.expiryPreset) {
+            const split = this.expiryPreset.split('_');
+            this.expiryDate = moment().add(parseInt(split[0], 10), split[1]).toDate();
+        }
     }
 }
 
