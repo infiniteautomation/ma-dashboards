@@ -413,7 +413,7 @@ ma-switch-img img {
   display: block;
 }
 
-ma-user-select, ma-system-setting-editor {
+ma-user-select {
   box-sizing: border-box;
   display: -webkit-box;
   display: -webkit-flex;

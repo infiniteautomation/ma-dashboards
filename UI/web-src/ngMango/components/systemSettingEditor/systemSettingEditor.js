@@ -4,7 +4,9 @@
  */
 
 import angular from 'angular';
+import moment from 'moment-timezone';
 import systemSettingEditorTemplate from './systemSettingEditor.html';
+import './systemSettingEditor.css';
 
 class SystemSettingEditorController {
     static get $$ngIsClass() { return true; }
@@ -34,6 +36,10 @@ class SystemSettingEditorController {
         if (changes.key || changes.type) {
             this.systemSetting = new this.SystemSettings(this.key, this.type);
             this.systemSetting.getValue().then(value => {
+                if (this.inputType === 'time') {
+                    this.updateTime();
+                }
+
                 if (this.onValueChanged) {
                     this.onValueChanged({$value: value, $initial: true});
                 }
@@ -100,6 +106,41 @@ class SystemSettingEditorController {
             this.done = false;
         });
     }
+
+    updateTime() {
+        const value = this.systemSetting.value;
+        const duration = moment.duration(value, this.settingTimeUnit);
+        if (Number.isInteger(duration.asYears())) {
+            this.timeValue = duration.asYears();
+            this.timeUnit = 'years';
+        } else if (Number.isInteger(duration.asMonths())) {
+            this.timeValue = duration.asMonths();
+            this.timeUnit = 'months';
+        } else if (Number.isInteger(duration.asWeeks())) {
+            this.timeValue = duration.asWeeks();
+            this.timeUnit = 'weeks';
+        } else if (Number.isInteger(duration.asDays())) {
+            this.timeValue = duration.asDays();
+            this.timeUnit = 'days';
+        } else if (Number.isInteger(duration.asHours())) {
+            this.timeValue = duration.asHours();
+            this.timeUnit = 'hours';
+        } else if (Number.isInteger(duration.asMinutes())) {
+            this.timeValue = duration.asMinutes();
+            this.timeUnit = 'minutes';
+        } else if (Number.isInteger(duration.asSeconds())) {
+            this.timeValue = duration.asSeconds();
+            this.timeUnit = 'seconds';
+        } else {
+            this.timeValue = duration.asMilliseconds();
+            this.timeUnit = 'milliseconds';
+        }
+    }
+
+    timeChanged() {
+        this.systemSetting.value = moment.duration(this.timeValue, this.timeUnit).as(this.settingTimeUnit);
+        this.valueChanged();
+    }
 }
 
 export default {
@@ -120,7 +161,8 @@ export default {
         saveOnChange: '<?',
         onInit: '&?',
         availableOptions: '<?',
-        nullOnEmpty: '<?'
+        nullOnEmpty: '<?',
+        settingTimeUnit: '@?timeUnit'
     },
     transclude: {
         options: '?mdOption'

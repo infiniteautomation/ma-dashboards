@@ -1,4 +1,4 @@
-<md-input-container class="ma-icon-inside" ng-if="$ctrl.inputType !== 'checkbox' && $ctrl.inputType !== 'color' && $ctrl.inputType !== 'none' && $ctrl.inputType !== 'status'">
+<md-input-container class="ma-icon-inside" ng-if="$ctrl.inputType !== 'checkbox' && $ctrl.inputType !== 'color' && $ctrl.inputType !== 'none' && $ctrl.inputType !== 'status' && $ctrl.inputType !== 'time'">
     <label ma-tr="{{$ctrl.labelTr}}"></label>
     <input ng-if="$ctrl.inputType === 'text'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}" ng-disabled="$ctrl.disabled">
     <input ng-if="$ctrl.inputType === 'password'" type="password" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}" ng-disabled="$ctrl.disabled">
@@ -37,7 +37,7 @@
         </md-option>
     </md-select>
     <textarea ng-if="$ctrl.inputType === 'textarea'" ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}"  ng-disabled="$ctrl.disabled"></textarea>
-    <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving &amp;&amp; 'sync' || $ctrl.done &amp;&amp; 'done' || $ctrl.error &amp;&amp; 'sync_problem' }}</md-icon>
+    <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving && 'sync' || $ctrl.done && 'done' || $ctrl.error && 'sync_problem' }}</md-icon>
     <div ng-messages="$ctrl.messages" md-auto-hide="false">
         <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting" ma-tr-args="[$ctrl.errorMessage]"></div>
     </div>
@@ -45,7 +45,7 @@
 
 <div ng-if="$ctrl.inputType === 'checkbox'">
     <md-checkbox ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-disabled="$ctrl.disabled"><span ma-tr="{{$ctrl.labelTr}}"></span></md-checkbox>
-    <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button ma-margin-right" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving &amp;&amp; 'sync' || $ctrl.done &amp;&amp; 'done' || $ctrl.error &amp;&amp; 'sync_problem' }}</md-icon>
+    <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button ma-margin-right" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving && 'sync' || $ctrl.done && 'done' || $ctrl.error && 'sync_problem' }}</md-icon>
     <div ng-if="$ctrl.messages.length" ng-messages="$ctrl.messages" class="ma-margin-bottom-large">
         <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting" ma-tr-args="[$ctrl.errorMessage]"></div>
     </div>
@@ -56,7 +56,7 @@
     <md-input-container flex class="ma-icon-inside">
         <label ma-tr="{{$ctrl.labelTr}}"></label>
         <input ng-model="$ctrl.systemSetting.value" ng-change="$ctrl.valueChanged()" ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}" ng-attr-name="{{$ctrl.name || $ctrl.key}}" ng-attr-id="{{$ctrl.name || $ctrl.key}}" ng-disabled="$ctrl.disabled">
-        <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving &amp;&amp; 'sync' || $ctrl.done &amp;&amp; 'done' || $ctrl.error &amp;&amp; 'sync_problem' }}</md-icon>
+        <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving && 'sync' || $ctrl.done && 'done' || $ctrl.error && 'sync_problem' }}</md-icon>
         <div ng-messages="$ctrl.messages" md-auto-hide="false">
             <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting" ma-tr-args="[$ctrl.errorMessage]"></div>
         </div>
@@ -64,10 +64,48 @@
 </div>
 
 <div ng-if="$ctrl.inputType === 'status'" layout ng-class="{'ma-margin-bottom-large': $ctrl.saving || $ctrl.done || $ctrl.error}">
-    <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button ma-margin-right" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving &amp;&amp; 'sync' || $ctrl.done &amp;&amp; 'done' || $ctrl.error &amp;&amp; 'sync_problem' }}</md-icon>
+    <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button ma-margin-right" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">{{$ctrl.saving && 'sync' || $ctrl.done && 'done' || $ctrl.error && 'sync_problem' }}</md-icon>
     <div flex ng-show="$ctrl.saving"><em ma-tr="ui.app.savingSytemSetting"></em></div>
     <div flex ng-show="$ctrl.done"><em  ma-tr="ui.app.savedSytemSetting"></em></div>
     <div flex ng-messages="$ctrl.messages">
         <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting" ma-tr-args="[$ctrl.errorMessage]"></div>
     </div>
+</div>
+
+<div layout layout-align="start center" ng-if="$ctrl.inputType === 'time'" class="ma-system-setting-time">
+    <md-input-container flex class="ma-icon-inside">
+        <label ma-tr="{{$ctrl.labelTr}}"></label>
+        <input type="number" ng-attr-min="{{$ctrl.min}}" ng-attr-max="{{$ctrl.max}}" ng-attr-step="{{$ctrl.step}}"
+               ng-model="$ctrl.timeValue" ng-change="$ctrl.timeChanged()"
+               ng-model-options="{debounce: {default: $ctrl.debounceTime, blur: 0}, updateOn : 'default blur'}"
+               ng-attr-name="{{$ctrl.name || $ctrl.key}}_value" ng-attr-id="{{$ctrl.name || $ctrl.key}}_value"
+               ng-disabled="$ctrl.disabled">
+        <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">
+            {{$ctrl.saving && 'sync' || $ctrl.done && 'done' || $ctrl.error && 'sync_problem' }}
+        </md-icon>
+        <div ng-messages="$ctrl.messages" md-auto-hide="false">
+            <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting" ma-tr-args="[$ctrl.errorMessage]"></div>
+        </div>
+    </md-input-container>
+    <md-input-container flex class="ma-icon-inside">
+        <label ma-tr="systemSettings.unit" ma-tr-args="[[$ctrl.labelTr]]"></label>
+        <md-select ng-model="$ctrl.timeUnit" ng-change="$ctrl.timeChanged()"
+                   ng-attr-name="{{$ctrl.name || $ctrl.key}}_unit" ng-attr-id="{{$ctrl.name || $ctrl.key}}_unit"
+                   ng-disabled="$ctrl.disabled">
+            <md-option value="milliseconds"><span ma-tr="dateAndTime.milliseconds"></span></md-option>
+            <md-option value="seconds"><span ma-tr="dateAndTime.seconds"></span></md-option>
+            <md-option value="minutes"><span ma-tr="dateAndTime.minutes"></span></md-option>
+            <md-option value="hours"><span ma-tr="dateAndTime.hours"></span></md-option>
+            <md-option value="days"><span ma-tr="dateAndTime.days"></span></md-option>
+            <md-option value="weeks"><span ma-tr="dateAndTime.weeks"></span></md-option>
+            <md-option value="months"><span ma-tr="dateAndTime.months"></span></md-option>
+            <md-option value="years"><span ma-tr="dateAndTime.years"></span></md-option>
+        </md-select>
+        <md-icon ng-show="$ctrl.saving || $ctrl.done || $ctrl.error" class="md-icon-button" md-colors="$ctrl.error ? {color: 'warn-A700'} : {}">
+            {{$ctrl.saving && 'sync' || $ctrl.done && 'done' || $ctrl.error && 'sync_problem' }}
+        </md-icon>
+        <div ng-messages="$ctrl.messages" md-auto-hide="false">
+            <div ng-message="errorSaving" ma-tr="ui.app.errorSavingSetting" ma-tr-args="[$ctrl.errorMessage]"></div>
+        </div>
+    </md-input-container>
 </div>
