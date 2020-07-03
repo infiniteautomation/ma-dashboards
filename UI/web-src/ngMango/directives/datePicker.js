@@ -66,8 +66,9 @@ function datePicker($injector, mangoDateFormats, $q) {
     function link($scope, $element, attrs, ngModel) {
         
         $scope.getFormat = function getFormat() {
-            if ($scope.format) return $scope.format;
-            if ($scope.mode === 'date') {
+            if ($scope.format) {
+                return mangoDateFormats[$scope.format] || $scope.format;
+            } else if ($scope.mode === 'date') {
                 return mangoDateFormats.date;
             } else if ($scope.mode === 'time') {
                 return mangoDateFormats.time;
