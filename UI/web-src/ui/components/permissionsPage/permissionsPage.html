@@ -44,13 +44,14 @@
                 </div>
             </md-toolbar>
             <md-card-content>
-                <div layout layout-wrap layout-align="space-between start" class="ma-inputs-container" ng-form="$ctrl.form">
-                    <div flex="100" flex-gt-md="50" layout ng-repeat="permission in $ctrl.selectedModule.permissions | orderBy:'description' track by permission.name">
-                        <ma-permission-editor flex description="{{permission.description}}"
-                            name="{{permission.name}}" ng-model="permission.permission" ng-change="$ctrl.savePermission(permission)">
-                        </ma-permission-editor>
-                        <ma-promise-indicator promise="permission.promise"></ma-promise-indicator>
-                    </div>
+                <div ng-form="$ctrl.form">
+                    <ma-permission-editor
+                        ng-repeat="permission in $ctrl.selectedModule.permissions | orderBy:'description' track by permission.name"
+                        description="{{permission.description}}"
+                        name="{{permission.name}}"
+                        ng-model="permission.permission"
+                        ng-change="$ctrl.savePermission(permission)">
+                    </ma-permission-editor>
                 </div>
             </md-card-content>
         </md-card>
