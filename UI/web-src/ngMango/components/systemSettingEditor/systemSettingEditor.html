@@ -92,7 +92,7 @@
         <md-select ng-model="$ctrl.timeUnit" ng-change="$ctrl.timeChanged()"
                    ng-attr-name="{{$ctrl.name || $ctrl.key}}_unit" ng-attr-id="{{$ctrl.name || $ctrl.key}}_unit"
                    ng-disabled="$ctrl.disabled">
-            <md-option value="milliseconds"><span ma-tr="dateAndTime.milliseconds"></span></md-option>
+            <md-option value="milliseconds" ng-if="$ctrl.settingTimeUnit === 'milliseconds'"><span ma-tr="dateAndTime.milliseconds"></span></md-option>
             <md-option value="seconds"><span ma-tr="dateAndTime.seconds"></span></md-option>
             <md-option value="minutes"><span ma-tr="dateAndTime.minutes"></span></md-option>
             <md-option value="hours"><span ma-tr="dateAndTime.hours"></span></md-option>
