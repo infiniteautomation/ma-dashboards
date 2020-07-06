@@ -45,13 +45,15 @@
             </md-toolbar>
             <md-card-content>
                 <div ng-form="$ctrl.form">
-                    <ma-permission-editor
-                        ng-repeat="permission in $ctrl.selectedModule.permissions | orderBy:'description' track by permission.name"
-                        description="{{permission.description}}"
-                        name="{{permission.name}}"
-                        ng-model="permission.permission"
-                        ng-change="$ctrl.savePermission(permission)">
-                    </ma-permission-editor>
+                    <ma-permission-editor-container>
+                        <ma-permission-editor
+                            ng-repeat="permission in $ctrl.selectedModule.permissions | orderBy:'description' track by permission.name"
+                            description="{{permission.description}}"
+                            name="{{permission.name}}"
+                            ng-model="permission.permission"
+                            ng-change="$ctrl.savePermission(permission)">
+                        </ma-permission-editor>
+                    </ma-permission-editor-container>
                 </div>
             </md-card-content>
         </md-card>

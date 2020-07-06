@@ -6,36 +6,22 @@
 import permissionEditorTemplate from './permissionEditor.html';
 import './permissionEditor.css';
 
-const mintermsEqual = function(a, b) {
-    return a.length === b.length && a.every(r => b.includes(r));
-};
-
-const mintermId = function(minterm) {
-    return minterm.sort().join('&');
-};
-
-const mintermLabel = function(minterm) {
-    return minterm.sort().join(' & ');
-};
-
 class PermissionEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return []; }
     
     constructor() {
-        this.minterms = [['superadmin'], ['user']];
     }
     
     $onInit() {
+        this.containerCtrl.register(this);
         this.ngModelCtrl.$render = () => this.render();
     }
 
-    $onChanges(changes) {
-        if (changes.minterms && !changes.minterms.isFirstChange()) {
-            this.render();
-        }
+    $onDestroy() {
+        this.containerCtrl.deregister(this);
     }
-    
+
     render() {
         this.permission = [];
         if (Array.isArray(this.ngModelCtrl.$viewValue)) {
@@ -49,30 +35,30 @@ class PermissionEditorController {
             });
         }
 
-        const minterms = Array.isArray(this.minterms) ? this.minterms : [];
+        const minterms = this.containerCtrl.minterms;
         this.columns = minterms.map(minterm => {
             const includesSuperadmin = minterm.includes('superadmin');
-            const checked = includesSuperadmin || this.permission.some(a => mintermsEqual(a, minterm));
+            const checked = includesSuperadmin || this.permission.some(a => this.containerCtrl.mintermsEqual(a, minterm));
             return {
                 minterm,
                 checked,
                 includesSuperadmin,
-                id: mintermId(minterm)
+                id: minterm.join('&')
             };
         });
 
-        this.additionalMinterms = this.permission.filter(a => !minterms.some(b => mintermsEqual(a, b))).map(minterm => {
+        this.additionalMinterms = this.permission.filter(a => !minterms.some(b => this.containerCtrl.mintermsEqual(a, b))).map(minterm => {
             return {
                 minterm,
-                id: mintermId(minterm),
-                label: mintermLabel(minterm)
+                id: minterm.join('&'),
+                label: minterm.join(' & ')
             };
         });
     }
     
     columnChanged(column) {
         const i = this.permission.findIndex(mt => {
-            return mintermsEqual(mt, column.minterm);
+            return this.containerCtrl.mintermsEqual(mt, column.minterm);
         });
 
         if (column.checked && i < 0) {
@@ -87,12 +73,11 @@ class PermissionEditorController {
 
 export default {
     require: {
-        ngModelCtrl: 'ngModel'
+        ngModelCtrl: 'ngModel',
+        containerCtrl: '^^maPermissionEditorContainer'
     },
     bindings: {
-        description: '@',
-        minterms: '<?',
-        addColumn: '&'
+        description: '@'
     },
     controller: PermissionEditorController,
     template: permissionEditorTemplate
