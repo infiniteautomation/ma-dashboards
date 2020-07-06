@@ -89,7 +89,6 @@ import formName from './directives/formName';
 import intersectionObserver from './directives/intersectionObserver';
 import intersectionListener from './directives/intersectionListener';
 import applyTheme from './directives/applyTheme';
-import permissionExpression from './directives/permissionExpression';
 import optionDirective from './directives/option';
 import configureInputContainerDirective from './directives/configureInputContainer';
 import sortableDirective from './directives/sortable';
@@ -305,7 +304,6 @@ ngMango.directive('maFormName', formName);
 ngMango.directive('maIntersectionObserver', intersectionObserver);
 ngMango.directive('maIntersectionListener', intersectionListener);
 ngMango.directive('maApplyTheme', applyTheme);
-ngMango.directive('maPermissionExpression', permissionExpression);
 ngMango.directive('maOption', optionDirective);
 ngMango.directive('maConfigureInputContainer', configureInputContainerDirective);
 ngMango.directive('maSortable', sortableDirective);
@@ -457,10 +455,7 @@ ngMango.factory('MA_AMCHARTS_DATE_FORMATS', ['MA_DATE_FORMATS', function(mangoDa
 
 ngMango.config(['$animateProvider', function($animateProvider) {
     $animateProvider.customFilter(function(node, event, options) {
-        if (node.classList.contains('ma-disable-animate')) {
-            return false;
-        }
-        return true;
+        return !node.classList.contains('ma-disable-animate');
     });
 }]);
 
