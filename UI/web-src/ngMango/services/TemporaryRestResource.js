@@ -189,6 +189,19 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
             };
             return notificationManager;
         }
+
+        statusMessage() {
+            const errors = this.result && this.result.responses.filter(r => r.error).length;
+
+            const key = 'ui.bulk.status.' + this.status;
+            const translation = [key, this.position, this.maximum, errors];
+            if (this.status === 'RUNNING') {
+                translation.pop(); // remove error count
+            } else if (this.status === 'ERROR') {
+                translation.push(this.error.localizedMessage);
+            }
+            return translation;
+        }
     }
 
     return TemporaryRestResource;

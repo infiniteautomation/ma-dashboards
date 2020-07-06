@@ -187,8 +187,19 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     /*
      * Provides service for getting list of users and create, update, delete
      */
-    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer', '$injector', '$cookies'];
-    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer, $injector, $cookies) {
+    UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer',
+        '$injector', '$cookies', 'maTemporaryRestResource'];
+    function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer,
+                         $injector, $cookies, TemporaryRestResource) {
+
+        class BulkUserTemporaryResource extends TemporaryRestResource {
+            static get baseUrl() {
+                return '/rest/v2/users/bulk';
+            }
+            static get resourceType() {
+                return 'BULK_USER';
+            }
+        }
         
         let cachedUser, angularLocaleDeferred;
         const authTokenBaseUrl = '/rest/v2/auth-tokens';
@@ -558,7 +569,9 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 if (!xsrfCookie) {
                     $cookies.put($http.defaults.xsrfCookieName, Util.uuid(), {path: '/'});
                 }
-            }
+            },
+
+            bulk: BulkUserTemporaryResource
         });
         
         const login = User.login;
@@ -586,7 +599,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 if (!roles || !roles.length) return true;
 
                 if (typeof roles === 'string') {
-                    roles = roles.split(/\s*\,\s*/);
+                    roles = roles.split(/\s*,\s*/);
                 }
 
                 return roles.some(r => this.hasRole(r));
