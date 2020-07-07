@@ -1694,3 +1694,16 @@ md-switch.ma-text-left .md-container {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+/* Class added by md-highlight-text directive */
+.highlight {
+    color: var(--ma-accent-hue-1);
+}
+
+.md-tooltip.md-panel {
+    font-size: 1.2rem;
+}
+
+.md-tooltip.md-panel.md-origin-bottom {
+    margin-top: 8px;
+}

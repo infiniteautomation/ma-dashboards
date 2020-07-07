@@ -13,10 +13,6 @@ ma-option.ma-ellipsis {
     display: block;
 }
 
-ma-option span.highlight {
-    color: var(--ma-accent-hue-1);
-}
-
 ma-option > span,
 ma-option > em {
     overflow-x: hidden;
