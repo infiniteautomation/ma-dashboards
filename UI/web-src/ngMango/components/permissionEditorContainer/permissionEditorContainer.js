@@ -20,13 +20,14 @@ class PermissionEditorContainerController {
         this.editors = new Set();
 
         this.loadSettings();
-        this.minterms = this.settings.minterms.map(t => new this.Minterm(t));
     }
 
     loadSettings() {
         this.settings = this.localStorageService.get(localStorageKey) || {
-            minterms: [['superadmin'], ['user']]
+            minterms: [['superadmin'], ['user']],
+            advancedMode: false
         };
+        this.minterms = this.settings.minterms.map(t => new this.Minterm(t));
     }
 
     saveSettings() {
@@ -64,7 +65,7 @@ class PermissionEditorContainerController {
     }
 
     rolesChanged(dropDown) {
-        if (!this.advancedMode) {
+        if (!this.settings.advancedMode) {
             this.addRolesAsColumn(dropDown);
         }
     }
@@ -78,6 +79,11 @@ class PermissionEditorContainerController {
 
     deleteRoles() {
         delete this.roles;
+    }
+
+    advancedModeChanged() {
+        this.deleteRoles();
+        this.saveSettings();
     }
 }
 

@@ -1,7 +1,7 @@
 ma-permission-editor-container {
     display: block;
-    overflow-y: hidden;
-    overflow-x: auto;
+    overflow: auto;
+    padding-bottom: 8px;
 }
 
 ma-permission-editor-container .ma-permission-editor-row {
@@ -11,10 +11,15 @@ ma-permission-editor-container .ma-permission-editor-row {
     align-items: center;
 }
 
+ma-permission-editor-container .ma-permission-editor-header {
+    align-items: flex-end;
+}
+
 ma-permission-editor-container .ma-permission-editor-row > div {
     width: 200px;
     flex-shrink: 0;
     flex-grow: 2;
+    padding: 8px;
 }
 
 ma-permission-editor-container .ma-permission-editor-row > div.ma-permission-editor-checkbox-column {
@@ -25,20 +30,13 @@ ma-permission-editor-container .ma-permission-editor-row > div.ma-permission-edi
     align-items: center;
 }
 
+ma-permission-editor-container .ma-permission-editor-header > div.ma-permission-editor-checkbox-column {
+    flex-direction: column;
+    text-align: center;
+}
+
 ma-permission-editor-container .ma-permission-editor-header {
     font-weight: bold;
-}
-
-ma-permission-editor-container .ma-permission-editor-header .md-button {
-    text-transform: unset;
-    min-width: unset;
-    font-weight: inherit;
-    font-size: inherit;
-    margin: 0;
-}
-
-ma-permission-editor-container md-checkbox {
-    margin: 0;
 }
 
 .ma-permission-editor-container-role-selector md-switch,

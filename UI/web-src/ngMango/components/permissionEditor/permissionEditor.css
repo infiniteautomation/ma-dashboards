@@ -1,3 +1,13 @@
 ma-permission-editor {
     display: block;
 }
+
+ma-permission-editor:hover {
+    background-color: rgba(var(--ma-background-500-value), 0.18);
+}
+
+ma-permission-editor md-checkbox {
+    margin: 0;
+    width: 20px;
+    height: 20px;
+}
