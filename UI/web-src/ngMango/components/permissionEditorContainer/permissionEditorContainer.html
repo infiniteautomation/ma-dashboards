@@ -1,18 +1,16 @@
 <div layout layout-align="space-between center" class="ma-permission-editor-row ma-permission-editor-header">
     <div flex></div>
-    <div flex ng-repeat="minterm in $ctrl.minterms track by minterm.id">
-        <span ng-bind="minterm.label"></span>
-        <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.removeColumn(minterm)">
-            <md-icon>remove_circle_outline</md-icon>
+    <div flex layout layout-align="center" ng-repeat="minterm in $ctrl.minterms track by minterm.id">
+        <md-button ng-click="$ctrl.removeColumn(minterm)">
+            <span ng-bind="minterm.label"></span>
             <md-tooltip><span ma-tr="ui.permissions.hideColumn"></span></md-tooltip>
         </md-button>
     </div>
     <div flex>
         <ma-drop-down-button>
             <span ma-tr="ui.permissions.otherRolesWithAccess"></span>
-            <md-icon>add_circle_outline</md-icon>
-            <ma-drop-down class="ma-permission-editor-container-role-selector">
-                <md-switch ma-form-exclude ng-model="$ctrl.advancedMode" ng-change="$ctrl.roles = null">
+            <ma-drop-down class="ma-permission-editor-container-role-selector" on-close="$ctrl.deleteRoles()">
+                <md-switch ma-form-exclude ng-model="$ctrl.advancedMode" ng-change="$ctrl.deleteRoles()">
                     <span ma-tr="ui.permissions.advancedMode"></span>
                     <md-tooltip><span ma-tr="ui.permissions.advancedModeHint"></span></md-tooltip>
                 </md-switch>

@@ -1,14 +1,14 @@
 <div layout layout-align="space-between center" class="ma-permission-editor-row">
     <div flex ng-bind="$ctrl.description"></div>
-    <div flex ng-repeat="column in $ctrl.columns track by column.minterm.id">
+    <div flex layout layout-align="center" ng-repeat="column in $ctrl.columns track by column.minterm.id">
         <md-checkbox ng-model="column.checked" ng-change="$ctrl.columnChanged(column)" ng-disabled="column.hasSuperadmin"></md-checkbox>
     </div>
     <div flex>
         <span ng-repeat="minterm in $ctrl.additionalMinterms track by minterm.id">
             <a role="button" ng-click="$ctrl.containerCtrl.addColumn(minterm)">
-                <span ng-bind="minterm.label"></span>
-                <md-tooltip><span ma-tr="ui.permissions.addRoleAsColumn" ma-tr-args="[minterm.size]"></span></md-tooltip>
-            </a><span ng-if="!$last">, </span>
+                <span ng-bind="minterm.label"></span><!--
+                --><md-tooltip><span ma-tr="ui.permissions.addRoleAsColumn" ma-tr-args="[minterm.size]"></span></md-tooltip><!--
+                --></a><span ng-if="!$last">, </span>
         </span>
     </div>
 </div>

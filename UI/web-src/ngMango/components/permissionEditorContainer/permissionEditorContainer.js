@@ -53,9 +53,12 @@ class PermissionEditorContainerController {
     addRolesAsColumn(dropDown) {
         if (this.roles && this.roles.length) {
             this.addColumn(new this.Minterm(this.roles));
-            delete this.roles;
             dropDown.close();
         }
+    }
+
+    deleteRoles() {
+        delete this.roles;
     }
 }
 

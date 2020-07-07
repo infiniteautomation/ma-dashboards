@@ -8,6 +8,18 @@ ma-permission-editor-container .ma-permission-editor-row {
     min-height: 36px;
 }
 
+ma-permission-editor-container .ma-permission-editor-header {
+    font-weight: bold;
+}
+
+ma-permission-editor-container .ma-permission-editor-header .md-button {
+    text-transform: unset;
+    min-width: unset;
+    font-weight: inherit;
+    font-size: inherit;
+    margin: 0;
+}
+
 ma-permission-editor-container md-checkbox {
     margin: 0;
 }
