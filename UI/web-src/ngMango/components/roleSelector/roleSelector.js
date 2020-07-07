@@ -12,13 +12,21 @@ class RoleSelectorController {
     
     constructor(maRole) {
         this.maRole = maRole;
-
         this.selected = new Set();
     }
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
         this.filterRoles();
+    }
+
+    $onChanges(changes) {
+        if (changes.disabledOptions) {
+            this.disabledOptionsMap = {};
+            if (Array.isArray(this.disabledOptions)) {
+                this.disabledOptions.forEach(r => this.disabledOptionsMap[r] = true);
+            }
+        }
     }
 
     render() {
@@ -91,7 +99,8 @@ export default {
     bindings: {
         multiple: '<?ngMultiple',
         disabled: '<?ngDisabled',
-        required: '<?ngRequired'
+        required: '<?ngRequired',
+        disabledOptions: '<?'
     },
     controller: RoleSelectorController,
     template: roleSelectorTemplate
