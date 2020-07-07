@@ -6,18 +6,31 @@
 import permissionEditorContainerTemplate from './permissionEditorContainer.html';
 import './permissionEditorContainer.css';
 
+const localStorageKey = 'maPermissionEditorContainer';
+
 class PermissionEditorContainerController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maPermission']; }
+    static get $inject() { return ['maPermission', 'localStorageService']; }
 
-    constructor(Permission) {
+    constructor(Permission, localStorageService) {
         this.Permission = Permission;
         this.Minterm = Permission.Minterm;
+        this.localStorageService = localStorageService;
 
         this.editors = new Set();
 
-        // TODO get from local storage or user settings
-        this.minterms = [['superadmin'], ['user']].map(t => new this.Minterm(t));
+        this.loadSettings();
+        this.minterms = this.settings.minterms.map(t => new this.Minterm(t));
+    }
+
+    loadSettings() {
+        this.settings = this.localStorageService.get(localStorageKey) || {
+            minterms: [['superadmin'], ['user']]
+        };
+    }
+
+    saveSettings() {
+        this.localStorageService.set(localStorageKey, this.settings);
     }
 
     register(editor) {
@@ -33,6 +46,9 @@ class PermissionEditorContainerController {
         if (i < 0) {
             this.minterms.push(minterm);
             this.editors.forEach(editor => editor.render());
+
+            this.settings.minterms = this.minterms.map(t => t.toArray());
+            this.saveSettings();
         }
     }
 
@@ -41,6 +57,9 @@ class PermissionEditorContainerController {
         if (i >= 0) {
             this.minterms.splice(i, 1);
             this.editors.forEach(editor => editor.render());
+
+            this.settings.minterms = this.minterms.map(t => t.toArray());
+            this.saveSettings();
         }
     }
 
