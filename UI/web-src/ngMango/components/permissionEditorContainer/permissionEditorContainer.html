@@ -13,18 +13,21 @@
         <ma-drop-down-button>
             <span ma-tr="ui.permissions.otherRolesWithAccess"></span>
             <ma-drop-down class="ma-permission-editor-container-role-selector" on-close="$ctrl.deleteRoles()">
-                <md-switch ma-form-exclude ng-model="$ctrl.settings.advancedMode" ng-change="$ctrl.advancedModeChanged()">
-                    <span ma-tr="ui.permissions.advancedMode"></span>
-                    <md-tooltip><span ma-tr="ui.permissions.advancedModeHint"></span></md-tooltip>
-                </md-switch>
-
+                <div layout="row" layout-align="center">
+                    <md-switch ma-form-exclude ng-model="$ctrl.settings.advancedMode" ng-change="$ctrl.advancedModeChanged()">
+                        <span ma-tr="ui.permissions.advancedMode"></span>
+                        <md-tooltip><span ma-tr="ui.permissions.advancedModeHint"></span></md-tooltip>
+                    </md-switch>
+                </div>
                 <ma-role-selector ng-model="$ctrl.roles" ng-change="$ctrl.rolesChanged($dropDown)"
                                   ng-multiple="$ctrl.settings.advancedMode" ma-configure-input-container></ma-role-selector>
-
-                <div layout="column">
-                    <md-button ng-if="$ctrl.settings.advancedMode" class="md-primary" ng-disabled="!$ctrl.roles || !$ctrl.roles.length"
+                <div layout="row" ng-if="$ctrl.settings.advancedMode">
+                    <md-button flex class="md-primary" ng-disabled="!$ctrl.roles || !$ctrl.roles.length"
                                ng-click="$ctrl.addRolesAsColumn($dropDown)">
                         <span ma-tr="common.ok"></span>
+                    </md-button>
+                    <md-button flex ng-click="$dropDown.close()">
+                        <span ma-tr="common.cancel"></span>
                     </md-button>
                 </div>
             </ma-drop-down>
