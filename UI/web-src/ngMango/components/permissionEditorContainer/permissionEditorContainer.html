@@ -1,12 +1,12 @@
-<div layout layout-align="space-between center" class="ma-permission-editor-row ma-permission-editor-header">
-    <div flex></div>
-    <div flex layout layout-align="center" ng-repeat="minterm in $ctrl.minterms track by minterm.id">
-        <md-button ng-click="$ctrl.removeColumn(minterm)">
+<div class="ma-permission-editor-row ma-permission-editor-header">
+    <div class="ma-permission-editor-description-column"></div>
+    <div class="ma-permission-editor-checkbox-column" ng-repeat="minterm in $ctrl.minterms track by minterm.id">
+        <md-button ng-click="$ctrl.removeColumn(minterm)" ng-disabled="$ctrl.minterms.length <= 1">
             <span ng-bind="minterm.label"></span>
             <md-tooltip><span ma-tr="ui.permissions.hideColumn"></span></md-tooltip>
         </md-button>
     </div>
-    <div flex>
+    <div class="ma-permission-editor-other-column">
         <ma-drop-down-button>
             <span ma-tr="ui.permissions.otherRolesWithAccess"></span>
             <ma-drop-down class="ma-permission-editor-container-role-selector" on-close="$ctrl.deleteRoles()">

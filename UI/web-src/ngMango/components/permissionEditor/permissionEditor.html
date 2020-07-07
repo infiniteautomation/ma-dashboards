@@ -1,9 +1,9 @@
-<div layout layout-align="space-between center" class="ma-permission-editor-row">
-    <div flex ng-bind="$ctrl.description"></div>
-    <div flex layout layout-align="center" ng-repeat="column in $ctrl.columns track by column.minterm.id">
+<div class="ma-permission-editor-row">
+    <div class="ma-permission-editor-description-column" ng-bind="$ctrl.description"></div>
+    <div class="ma-permission-editor-checkbox-column" ng-repeat="column in $ctrl.columns track by column.minterm.id">
         <md-checkbox ng-model="column.checked" ng-change="$ctrl.columnChanged(column)" ng-disabled="column.hasSuperadmin"></md-checkbox>
     </div>
-    <div flex>
+    <div class="ma-permission-editor-other-column">
         <span ng-repeat="minterm in $ctrl.additionalMinterms track by minterm.id">
             <a role="button" ng-click="$ctrl.containerCtrl.addColumn(minterm)">
                 <span ng-bind="minterm.label"></span><!--
