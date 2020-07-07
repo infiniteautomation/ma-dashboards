@@ -52,24 +52,7 @@ class RoleSelectorController {
 
         return queryBuilder.query();
     }
-    
-    createModel(xid) {
-        return Object.defineProperty({}, 'value', {
-            get: () => this.selected.has(xid),
-            set: value => {
-                if (!this.multiple) {
-                    this.selected.clear();
-                }
-                if (value) {
-                    this.selected.add(xid);
-                } else {
-                    this.selected.delete(xid);
-                }
-                this.setViewValue();
-            }
-        });
-    }
-    
+
     filterRoles() {
         const builder = this.maRole.buildQuery();
         
@@ -81,6 +64,23 @@ class RoleSelectorController {
         
         this.rolesPromise = builder.sort('name')
             .query();
+    }
+
+    labelClicked(event, item) {
+        event.stopPropagation();
+        if (!this.disabled) {
+            if (!this.multiple) {
+                this.selected.clear();
+            }
+
+            if (this.selected.has(item.xid)) {
+                this.selected.delete(item.xid);
+            } else {
+                this.selected.add(item.xid);
+            }
+
+            this.setViewValue();
+        }
     }
 }
 

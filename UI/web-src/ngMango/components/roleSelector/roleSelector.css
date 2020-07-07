@@ -8,3 +8,13 @@ ma-role-selector > ma-tree-view {
     overflow-y: auto;
     padding: 8px;
 }
+
+ma-role-selector .ma-role-selector-row {
+    text-transform: unset;
+    min-width: unset;
+    margin: 0;
+}
+
+ma-role-selector .ma-role-selector-row md-checkbox {
+    margin: 0;
+}
