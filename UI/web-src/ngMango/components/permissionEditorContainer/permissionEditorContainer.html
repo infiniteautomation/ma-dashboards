@@ -1,9 +1,9 @@
 <div layout layout-align="space-between center">
     <div flex></div>
-    <div flex ng-repeat="column in $ctrl.columns track by column.id">
-        <span ng-bind="column.label"></span>
-        <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.removeColumn(column.minterm)">
-            <md-icon>visibility_off</md-icon>
+    <div flex ng-repeat="minterm in $ctrl.minterms track by minterm.id">
+        <span ng-bind="minterm.label"></span>
+        <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.removeColumn(minterm)">
+            <md-icon>remove_circle_outline</md-icon>
             <md-tooltip><span ma-tr="ui.permissions.hideColumn"></span></md-tooltip>
         </md-button>
     </div>

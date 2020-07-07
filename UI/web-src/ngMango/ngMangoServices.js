@@ -63,6 +63,7 @@ import scriptFactory from './services/Script';
 import discardCheckFactory from './services/DiscardCheck';
 import themingProvider from './services/Theming';
 import systemPermissionFactory from './services/SystemPermission';
+import permissionFactory from './services/Permission';
 import angular from 'angular';
 import rqlQuery from 'rql/query';
 import 'angular-resource';
@@ -144,7 +145,8 @@ ngMangoServices.factory('maLogFileView', logFileViewFactory);
 ngMangoServices.factory('maScript', scriptFactory);
 ngMangoServices.factory('maDiscardCheck', discardCheckFactory);
 ngMangoServices.provider('maTheming', themingProvider)
-ngMangoServices.factory('maSystemPermission', systemPermissionFactory);
+ngMangoServices.factory('maSystemPermission', systemPermissionFactory)
+ngMangoServices.factory('maPermission', permissionFactory);
 
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUTS', {

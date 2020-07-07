@@ -8,9 +8,10 @@ import './permissionEditor.css';
 
 class PermissionEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return []; }
+    static get $inject() { return ['maPermission']; }
     
-    constructor() {
+    constructor(maPermission) {
+        this.maPermission = maPermission;
     }
     
     $onInit() {
@@ -23,51 +24,31 @@ class PermissionEditorController {
     }
 
     render() {
-        this.permission = [];
         if (Array.isArray(this.ngModelCtrl.$viewValue)) {
-            this.ngModelCtrl.$viewValue.forEach(minterm => {
-                // canonicalize the minterms
-                if (typeof minterm === 'string') {
-                    this.permission.push([minterm]);
-                } else if (Array.isArray(minterm)) {
-                    this.permission.push(minterm.slice());
-                }
+            this.permission = new this.maPermission(this.ngModelCtrl.$viewValue);
+
+            const minterms = this.containerCtrl.minterms;
+            this.columns = minterms.map(minterm => {
+                const hasSuperadmin = minterm.has('superadmin');
+                const checked = hasSuperadmin || this.permission.has(minterm);
+                return {
+                    minterm,
+                    checked,
+                    hasSuperadmin
+                };
             });
+
+            this.additionalMinterms = this.permission.minterms.filter(a => !minterms.some(b => a.equals(b)));
         }
-
-        const minterms = this.containerCtrl.minterms;
-        this.columns = minterms.map(minterm => {
-            const includesSuperadmin = minterm.includes('superadmin');
-            const checked = includesSuperadmin || this.permission.some(a => this.containerCtrl.mintermsEqual(a, minterm));
-            return {
-                minterm,
-                checked,
-                includesSuperadmin,
-                id: minterm.join('&')
-            };
-        });
-
-        this.additionalMinterms = this.permission.filter(a => !minterms.some(b => this.containerCtrl.mintermsEqual(a, b))).map(minterm => {
-            return {
-                minterm,
-                id: minterm.join('&'),
-                label: minterm.join(' & ')
-            };
-        });
     }
     
     columnChanged(column) {
-        const i = this.permission.findIndex(mt => {
-            return this.containerCtrl.mintermsEqual(mt, column.minterm);
-        });
-
-        if (column.checked && i < 0) {
-            this.permission.push(column.minterm.slice());
-        } else if (!column.checked  && i >= 0) {
-            this.permission.splice(i, 1);
+        if (column.checked) {
+            this.permission.add(column.minterm);
+        } else {
+            this.permission.delete(column.minterm);
         }
-
-        this.ngModelCtrl.$setViewValue(this.permission.slice());
+        this.ngModelCtrl.$setViewValue(this.permission.toArray());
     }
 }
 
