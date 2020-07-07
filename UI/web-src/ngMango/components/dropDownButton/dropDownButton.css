@@ -3,6 +3,7 @@ ma-drop-down-button {
     align-items: center;
     cursor: default;
     color: var(--ma-foreground-3);
+    position: relative;
 }
 
 ma-drop-down-button > div {

@@ -43,8 +43,8 @@ class DropDownButtonController {
             this.configureInputContainer();
         }
         
-        if (!this.containerCtrl && $injector.has('$mdButtonInkRipple')) {
-            $injector.get('$mdButtonInkRipple').attach(this.$scope, this.$element);
+        if (!this.containerCtrl && this.$injector.has('$mdButtonInkRipple')) {
+            this.$injector.get('$mdButtonInkRipple').attach(this.$scope, this.$element);
         }
     }
 
