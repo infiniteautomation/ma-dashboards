@@ -20,6 +20,7 @@
                     </md-switch>
                 </div>
                 <ma-role-selector ng-model="$ctrl.roles" ng-change="$ctrl.rolesChanged($dropDown)"
+                                  disabled-options="!$ctrl.settings.advancedMode && $ctrl.disabledOptions"
                                   ng-multiple="$ctrl.settings.advancedMode" ma-configure-input-container></ma-role-selector>
                 <div layout="row" ng-if="$ctrl.settings.advancedMode">
                     <md-button flex class="md-primary" ng-disabled="!$ctrl.roles || !$ctrl.roles.length"

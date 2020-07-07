@@ -28,6 +28,7 @@ class PermissionEditorContainerController {
             advancedMode: false
         };
         this.minterms = this.settings.minterms.map(t => new this.Minterm(t));
+        this.updateDisabledOptions();
     }
 
     saveSettings() {
@@ -48,6 +49,7 @@ class PermissionEditorContainerController {
             this.minterms.push(minterm);
             this.editors.forEach(editor => editor.render());
 
+            this.updateDisabledOptions();
             this.settings.minterms = this.minterms.map(t => t.toArray());
             this.saveSettings();
         }
@@ -59,6 +61,7 @@ class PermissionEditorContainerController {
             this.minterms.splice(i, 1);
             this.editors.forEach(editor => editor.render());
 
+            this.updateDisabledOptions();
             this.settings.minterms = this.minterms.map(t => t.toArray());
             this.saveSettings();
         }
@@ -84,6 +87,10 @@ class PermissionEditorContainerController {
     advancedModeChanged() {
         this.deleteRoles();
         this.saveSettings();
+    }
+
+    updateDisabledOptions() {
+        this.disabledOptions = this.minterms.filter(t => t.size === 1).map(t => t.roles[0]);
     }
 }
 
