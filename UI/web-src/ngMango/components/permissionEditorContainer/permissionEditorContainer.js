@@ -10,14 +10,14 @@ class PermissionEditorContainerController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['maPermission']; }
 
-    constructor(maPermission) {
-        this.maPermission = maPermission;
+    constructor(Permission) {
+        this.Permission = Permission;
+        this.Minterm = Permission.Minterm;
 
         this.editors = new Set();
 
         // TODO get from local storage or user settings
-        const Minterm = this.maPermission.Minterm;
-        this.minterms = [['superadmin'], ['user']].map(t => new Minterm(t));
+        this.minterms = [['superadmin'], ['user']].map(t => new this.Minterm(t));
     }
 
     register(editor) {
@@ -41,6 +41,20 @@ class PermissionEditorContainerController {
         if (i >= 0) {
             this.minterms.splice(i, 1);
             this.editors.forEach(editor => editor.render());
+        }
+    }
+
+    rolesChanged(dropDown) {
+        if (!this.advancedMode) {
+            this.addRolesAsColumn(dropDown);
+        }
+    }
+
+    addRolesAsColumn(dropDown) {
+        if (this.roles && this.roles.length) {
+            this.addColumn(new this.Minterm(this.roles));
+            delete this.roles;
+            dropDown.close();
         }
     }
 }

@@ -1,4 +1,4 @@
-<div layout layout-align="space-between center">
+<div layout layout-align="space-between center" class="ma-permission-editor-row">
     <div flex ng-bind="$ctrl.description"></div>
     <div flex ng-repeat="column in $ctrl.columns track by column.minterm.id">
         <md-checkbox ng-model="column.checked" ng-change="$ctrl.columnChanged(column)" ng-disabled="column.hasSuperadmin"></md-checkbox>

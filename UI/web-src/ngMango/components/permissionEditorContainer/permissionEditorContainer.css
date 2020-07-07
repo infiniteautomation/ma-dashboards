@@ -1,3 +1,18 @@
 ma-permission-editor-container {
     display: block;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+ma-permission-editor-container .ma-permission-editor-row {
+    min-height: 36px;
+}
+
+ma-permission-editor-container md-checkbox {
+    margin: 0;
+}
+
+.ma-permission-editor-container-role-selector md-switch,
+.ma-permission-editor-container-role-selector md-switch:last-of-type {
+    margin: 8px 8px 0;
 }
