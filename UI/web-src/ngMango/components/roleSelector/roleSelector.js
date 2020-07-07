@@ -12,7 +12,7 @@ class RoleSelectorController {
     
     constructor(maRole) {
         this.maRole = maRole;
-        
+
         this.selected = new Set();
     }
     
@@ -22,14 +22,23 @@ class RoleSelectorController {
     }
 
     render() {
+        this.selected.clear();
+
         const roles = this.ngModelCtrl.$viewValue;
-        if (Array.isArray(roles)) {
-            this.selected = new Set(roles);
+        if (this.multiple && Array.isArray(roles)) {
+            roles.forEach(r => this.selected.add(r));
+        } else if (!this.multiple && typeof roles === 'string') {
+            this.selected.add(roles);
         }
     }
     
     setViewValue() {
-        this.ngModelCtrl.$setViewValue(Array.from(this.selected));
+        if (this.multiple) {
+            this.ngModelCtrl.$setViewValue(Array.from(this.selected));
+        } else {
+            const [first] = this.selected.values();
+            this.ngModelCtrl.$setViewValue(first);
+        }
     }
 
     loadInherited(role, limit, offset = 0) {
@@ -48,6 +57,9 @@ class RoleSelectorController {
         return Object.defineProperty({}, 'value', {
             get: () => this.selected.has(xid),
             set: value => {
+                if (!this.multiple) {
+                    this.selected.clear();
+                }
                 if (value) {
                     this.selected.add(xid);
                 } else {
@@ -75,6 +87,11 @@ class RoleSelectorController {
 export default {
     require: {
         ngModelCtrl: 'ngModel'
+    },
+    bindings: {
+        multiple: '<?ngMultiple',
+        disabled: '<?ngDisabled',
+        required: '<?ngRequired'
     },
     controller: RoleSelectorController,
     template: roleSelectorTemplate
