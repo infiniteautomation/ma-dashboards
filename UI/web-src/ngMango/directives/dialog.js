@@ -124,28 +124,34 @@ function dialog($compile, $parse, $q) {
             }, () => null);
         }
         
-        doShow(options) {
+        doShow(userOptions) {
             if (!this.$container) {
                 this.createElement();
             }
-            
-            options = Object.assign({
+
+            const options = Object.assign({
                 clickOutsideToClose: true,
                 escapeToClose: true,
                 fullscreen: this.fullscreen(),
-                contentElement: this.$container[0]
-            }, options);
+                contentElement: this.$container[0],
+                onRemoving: (...args) => {
+                    if (typeof userOptions.onRemoving === 'function') {
+                        userOptions.onRemoving.apply(undefined, args);
+                    }
+                    this.transcludeScope.$broadcast('maDialogRemoving', ...args);
+                }
+            }, userOptions);
 
             if (this.onShow) {
                 this.onShow(options);
             }
-            
+
             const showPromise = this.$mdDialog.show(options);
             
             if (options.hidePromise) {
                 options.hidePromise.then(r => this.hide(r), e => this.cancel(e));
             }
-            
+
             this.dialogPromise = showPromise.then(result => {
                 if (this.onHide) {
                     this.onHide(result);

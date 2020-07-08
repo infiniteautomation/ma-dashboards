@@ -59,6 +59,9 @@ function dropDown($document, $animate, $window) {
             $window.addEventListener('resize', this.resizeListener, true);
             $window.addEventListener('scroll', this.scrollListener, true);
 
+            // listen for the when a parent ma-dialog component is removed from the DOM
+            this.$scope.$on('maDialogRemoving', () => this.close());
+
             if (this.createOnInit) {
                 this.createElement();
             }
@@ -247,14 +250,15 @@ function dropDown($document, $animate, $window) {
 
             Object.assign(dropDownEl.style, style);
         }
-        
-        hasFocus(activeElement = $document[0].activeElement) {
-            return activeElement && (this.$dropDown[0].contains(activeElement) || this.targetElement.contains(activeElement) ||
-                this.dropDownHasFocus(activeElement));
+
+        hasFocus(activeElement) {
+            return this.$dropDown[0].contains(activeElement) ||
+                this.targetElement.contains(activeElement) ||
+                this.menuHasFocus(activeElement);
         }
 
-        dropDownHasFocus(activeElement = $document[0].activeElement) {
-            return activeElement && Array.prototype.some.call($document[0].querySelectorAll('.md-open-menu-container'),
+        menuHasFocus(activeElement) {
+            return Array.prototype.some.call($document[0].querySelectorAll('.md-open-menu-container'),
                     e => e.contains(activeElement));
         }
 
@@ -263,7 +267,7 @@ function dropDown($document, $animate, $window) {
          * @param event
          */
         focusListener(event) {
-            if (this.isOpen() && !this.hasFocus()) {
+            if (this.isOpen() && !this.hasFocus(event.target)) {
                 // getting $digest already in progress errors due to AngularJS material triggering a focus event inside the $digest cycle
                 if (this.$scope.$root.$$phase != null) {
                     this.close();
