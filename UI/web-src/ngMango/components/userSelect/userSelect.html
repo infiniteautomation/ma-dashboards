@@ -5,7 +5,7 @@
 
     <ma-drop-down-button ng-disabled="$ctrl.disabled">
         <span class="ma-ellipsis">
-            <span ng-repeat="user in ($ctrl.selectMultiple ? $ctrl.selected : [$ctrl.selected])">
+            <span ng-repeat="user in ($ctrl.selectMultiple ? $ctrl.selected : [$ctrl.selected])" ng-if="user">
                 <span>{{user.username}}</span><em ng-if="!$ctrl.hideName"> ({{user.name}})</em><span ng-if="!$last">, </span>
             </span>
         </span>
