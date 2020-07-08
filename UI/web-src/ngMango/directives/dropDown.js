@@ -249,8 +249,13 @@ function dropDown($document, $animate, $window) {
         }
         
         hasFocus(activeElement = $document[0].activeElement) {
-            if (!activeElement) return false;
-            return this.$dropDown[0].contains(activeElement) || this.targetElement.contains(activeElement);
+            return activeElement && (this.$dropDown[0].contains(activeElement) || this.targetElement.contains(activeElement) ||
+                this.dropDownHasFocus(activeElement));
+        }
+
+        dropDownHasFocus(activeElement = $document[0].activeElement) {
+            return activeElement && Array.prototype.some.call($document[0].querySelectorAll('.md-open-menu-container'),
+                    e => e.contains(activeElement));
         }
 
         /**
