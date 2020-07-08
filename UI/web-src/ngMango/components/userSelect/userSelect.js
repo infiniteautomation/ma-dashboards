@@ -7,22 +7,20 @@ import userSelectTemplate from './userSelect.html';
 
 class UserSelectController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$scope', '$element', 'maUtil']; }
+    static get $inject() { return ['maUser', '$scope', '$element']; }
     
-    constructor(User, $scope, $element, maUtil) {
+    constructor(User, $scope, $element) {
         this.User = User;
         this.$scope = $scope;
-        
-        this.equalByUsername = maUtil.equalByKey.bind(maUtil, 'username');
     }
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        
-        this.getUsers();
 
         this.User.notificationManager.subscribe((event, item, attributes) => {
-            attributes.updateArray(this.users);
+            attributes.updateArray(this.users, user => {
+                return this.matchesFilter(user.username) && (this.hideName || this.matchesFilter(user.name));
+            });
         }, this.$scope);
     }
     
@@ -31,20 +29,43 @@ class UserSelectController {
     }
     
     selectChanged() {
-        // compare the sets of usernames and only set the view value if they are different
-        // this is needed as the md-select calls ng-change when its options are initialized and its view value isn't a full model
-        // we only want to set the view value when the user actually interacts with the select
-        if (!this.equalByUsername(this.selected, this.ngModelCtrl.$viewValue)) {
-            this.ngModelCtrl.$setViewValue(this.selected);
-        }
+        this.ngModelCtrl.$setViewValue(this.selected);
     }
     
-    getUsers() {
-        // TODO this is a unbounded query
-        this.usersPromise = this.User.buildQuery().query().then(users => {
+    getUsers(filter, filterChanged) {
+        // store for use in websocket subscribe method
+        this.filter = filter;
+
+        // dont need to re-query every time drop down opens as we are getting websocket updates
+        if (!filterChanged && this.queryPromise) {
+            return this.queryPromise;
+        }
+
+        const builder = this.User.buildQuery();
+
+        if (filter) {
+            const wildcardFilter = `*${filter}*`;
+            if (!this.hideName) {
+                builder.or()
+                    .match('name', wildcardFilter)
+                    .match('username', wildcardFilter)
+                    .up();
+            } else {
+                builder.match('username', wildcardFilter)
+            }
+        }
+
+        this.queryPromise = builder.limit(100).query().then(users => {
+            // store for use in websocket subscribe method
             this.users = users;
             return users;
         });
+
+        return this.queryPromise;
+    }
+
+    matchesFilter(searchString) {
+        return !this.filter || searchString.toLowerCase().includes(this.filter.toLowerCase());
     }
 }
 
