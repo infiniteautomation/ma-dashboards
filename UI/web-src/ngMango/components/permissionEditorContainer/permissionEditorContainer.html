@@ -1,5 +1,13 @@
 <div class="ma-permission-editor-row ma-permission-editor-header">
-    <div class="ma-permission-editor-description-column"></div>
+    <div class="ma-permission-editor-description-column">
+        <md-input-container flex ng-if="$ctrl.showFilter" class="ma-filter" md-no-float>
+            <input name="filter" ma-form-exclude ng-model="$ctrl.filter" ng-change="$ctrl.filterChanged()" ng-model-options="{debounce: 500}"
+                   ma-tr="ui.permissions.filterPermissions">
+            <md-button ng-show="$ctrl.filter" class="ma-input-button md-icon-button" ng-click="$ctrl.clearFilter()">
+                <md-icon>clear</md-icon>
+            </md-button>
+        </md-input-container>
+    </div>
     <div class="ma-permission-editor-checkbox-column" ng-repeat="minterm in $ctrl.minterms track by minterm.id">
         <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.removeColumn(minterm)" ng-disabled="$ctrl.minterms.length <= 1">
             <md-icon>visibility_off</md-icon>
@@ -36,4 +44,4 @@
         </ma-drop-down-button>
     </div>
 </div>
-<div ng-transclude></div>
+<div class="ma-permission-editor-body"></div>

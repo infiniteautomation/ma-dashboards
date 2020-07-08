@@ -47,7 +47,7 @@
                 <div ng-form="$ctrl.form">
                     <ma-permission-editor-container>
                         <ma-permission-editor
-                            ng-repeat="permission in $ctrl.selectedModule.permissions | orderBy:'description' track by permission.name"
+                            ng-repeat="permission in $ctrl.selectedModule.permissions | filter:{description: $filter} | orderBy:'description' track by permission.name"
                             description="{{permission.description}}"
                             name="{{permission.name}}"
                             ng-model="permission.permission"

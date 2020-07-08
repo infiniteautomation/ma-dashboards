@@ -1,5 +1,7 @@
 <div class="ma-permission-editor-row">
-    <div class="ma-permission-editor-description-column" ng-bind="$ctrl.description"></div>
+    <div class="ma-permission-editor-description-column">
+        <span md-highlight-text="$ctrl.containerCtrl.filter" md-highlight-flags="ig">{{$ctrl.description}}</span>
+    </div>
     <div class="ma-permission-editor-checkbox-column" ng-repeat="column in $ctrl.columns track by column.minterm.id">
         <md-checkbox ng-model="column.checked" ng-change="$ctrl.columnChanged(column)" ng-disabled="column.hasSuperadmin"></md-checkbox>
     </div>

@@ -10,16 +10,28 @@ const localStorageKey = 'maPermissionEditorContainer';
 
 class PermissionEditorContainerController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maPermission', 'localStorageService']; }
+    static get $inject() { return ['maPermission', 'localStorageService', '$element', '$transclude']; }
 
-    constructor(Permission, localStorageService) {
+    constructor(Permission, localStorageService, $element, $transclude) {
         this.Permission = Permission;
         this.Minterm = Permission.Minterm;
         this.localStorageService = localStorageService;
+        this.$element = $element;
+        this.$transclude = $transclude;
 
+        this.showFilter = true;
         this.editors = new Set();
-
         this.loadSettings();
+    }
+
+    $onInit() {
+        const $parent = this.$element.maFind('.ma-permission-editor-body');
+        this.$transclude((clone, scope) => {
+            Object.defineProperties(scope, {
+                $filter: {get: () => this.filter}
+            });
+            $parent.append(clone);
+        }, $parent);
     }
 
     loadSettings() {
@@ -92,10 +104,26 @@ class PermissionEditorContainerController {
     updateDisabledOptions() {
         this.disabledOptions = this.minterms.filter(t => t.size === 1).map(t => t.roles[0]);
     }
+
+    filterChanged() {
+        if (this.onFilterChanged) {
+            this.onFilterChanged({$filter: filter});
+        }
+    }
+
+    clearFilter() {
+        delete this.filter;
+        this.$element.maFind('[name=filter]').maFocus();
+        this.filterChanged();
+    }
 }
 
 export default {
     transclude: true,
     controller: PermissionEditorContainerController,
-    template: permissionEditorContainerTemplate
+    template: permissionEditorContainerTemplate,
+    bindings: {
+        showFilter: '<?',
+        onFilterChanged: '&?'
+    }
 };
