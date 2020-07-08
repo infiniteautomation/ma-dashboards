@@ -12,7 +12,7 @@
     <div class="ma-permission-editor-other-column">
         <ma-drop-down-button>
             <span ma-tr="ui.permissions.otherRolesWithAccess"></span>
-            <ma-drop-down class="ma-permission-editor-container-role-selector" on-close="$ctrl.deleteRoles()">
+            <ma-drop-down class="ma-permission-editor-container-role-selector ma-full-screen-centered" on-close="$ctrl.deleteRoles()">
                 <div layout="row" layout-align="center">
                     <md-switch ma-form-exclude ng-model="$ctrl.settings.advancedMode" ng-change="$ctrl.advancedModeChanged()">
                         <span ma-tr="ui.permissions.advancedMode"></span>
