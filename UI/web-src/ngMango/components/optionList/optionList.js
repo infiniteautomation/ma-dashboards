@@ -54,8 +54,9 @@ class OptionListController {
                 }
 
                 if (this.queryOnOpen) {
+                    const filterChanged = !!this.filter;
                     delete this.filter;
-                    this.query({$dropDownOpen: true}).then(() => {
+                    this.query({$dropDownOpen: true, $filterChanged: filterChanged}).then(() => {
                         this.setTabIndexFocus = true;
                         this.setTabIndex();
                     });
