@@ -13,6 +13,7 @@
             <ma-option-list ma-form-exclude ng-model="$ctrl.selected"
                             ng-change="$ctrl.selectChanged()"
                             ng-disabled="$ctrl.disabled"
+                            ng-required="$ctrl.required"
                             ng-multiple="$ctrl.selectMultiple"
                             items="$ctrl.getUsers($filter, $filterChanged, $loadMore)"
                             item-id="$item.username"

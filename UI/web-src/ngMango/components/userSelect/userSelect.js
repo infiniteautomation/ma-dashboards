@@ -97,7 +97,8 @@ export default {
         showClear: '<?',
         selectMultiple: '<?',
         hideName: '<?',
-        disabled: '<?ngDisabled'
+        disabled: '<?ngDisabled',
+        required: '<?ngRequired'
     },
     transclude: {
         label: '?maLabel'
