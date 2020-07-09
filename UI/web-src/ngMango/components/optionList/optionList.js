@@ -181,6 +181,10 @@ class OptionListController {
         return promise;
     }
 
+    loadMore() {
+        this.query({$loadMore: true});
+    }
+
     onKeyDown(event) {
         if (this.showFilter && event.key === 'f' && event.getModifierState('Control')) {
             // focus on the filter input on Ctrl-F

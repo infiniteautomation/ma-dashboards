@@ -8,7 +8,9 @@ ma-option-list > .ma-option-list-container {
     overflow-y: auto;
 }
 
-ma-option-list > .ma-option-list-no-items {
+ma-option-list > .ma-option-list-no-items,
+ma-option-list > .ma-option-list-load-more,
+ma-option-list > .ma-option-list-loading-text {
     padding: 8px;
     font-style: italic;
     display: flex;

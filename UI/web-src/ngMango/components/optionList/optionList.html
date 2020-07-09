@@ -6,10 +6,15 @@
     </md-button>
 </md-input-container>
 <div class="ma-option-list-container" role="listbox"></div>
-<div ng-if="!$ctrl.options.length" class="ma-option-list-no-items">
-    <span ng-if="!$ctrl.queryPromise" ma-tr="ui.components.noItemsToList"></span>
-    <span ng-if="$ctrl.queryPromise" ma-tr="ui.components.loadingItems"></span>
-</div>
-<div class="ma-option-list-loading" ng-if="$ctrl.queryPromise">
+<div class="ma-option-list-loading"  ng-if-start="$ctrl.queryPromise">
     <md-progress-linear></md-progress-linear>
+</div>
+<div class="ma-option-list-loading-text" ng-if-end>
+    <span ma-tr="ui.components.loadingItems"></span>
+</div>
+<div class="ma-option-list-no-items" ng-if="!$ctrl.options.length && !$ctrl.queryPromise">
+    <span ma-tr="ui.components.noItemsToList"></span>
+</div>
+<div class="ma-option-list-load-more" ng-if="$ctrl.items.$total != null && $ctrl.items.$total - $ctrl.items.length > 0">
+    <span ng-click="$ctrl.loadMore()" ma-tr="ui.components.loadMore" ma-tr-args="[$ctrl.items.$total - $ctrl.items.length]"></span>
 </div>
