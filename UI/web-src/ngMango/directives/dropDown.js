@@ -251,7 +251,7 @@ function dropDown($document, $animate, $window) {
             Object.assign(dropDownEl.style, style);
         }
 
-        hasFocus(activeElement) {
+        hasFocus(activeElement = $document[0].activeElement) {
             return this.$dropDown[0].contains(activeElement) ||
                 this.targetElement.contains(activeElement) ||
                 this.menuHasFocus(activeElement);
