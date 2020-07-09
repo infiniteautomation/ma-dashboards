@@ -157,6 +157,14 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                             const filterMatches = typeof filterFn === 'function' ? filterFn(item) : true;
                             const idProp = item.hasOwnProperty('id') ? 'id' : 'xid';
                             const itemId = idProp === 'xid' && originalXid || item[idProp];
+
+                            if (filterMatches && Number.isFinite(array.$total)) {
+                                if (eventType === 'create') {
+                                    array.$total += 1;
+                                } else if (eventType === 'delete') {
+                                    array.$total -= 1;
+                                }
+                            }
                             
                             const index = array.findIndex(o => o[idProp] === itemId);
                             if (index >= 0) {
