@@ -12,15 +12,28 @@ class UserSelectController {
     constructor(User, $scope, $element) {
         this.User = User;
         this.$scope = $scope;
+        this.pageSize = 100;
     }
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
 
         this.User.notificationManager.subscribe((event, item, attributes) => {
+            const prevLength = this.users.length;
             attributes.updateArray(this.users, user => {
                 return this.matchesFilter(user.username) && (this.hideName || this.matchesFilter(user.name));
             });
+
+            this.users.sort((a, b) => {
+                if (a.username < b.username) return -1;
+                if (b.username > a.username) return 1;
+                return 0;
+            });
+
+            // truncate the array back to the previous length
+            if (this.users.length > prevLength) {
+                this.users.length = prevLength;
+            }
         }, this.$scope);
     }
     
@@ -32,12 +45,12 @@ class UserSelectController {
         this.ngModelCtrl.$setViewValue(this.selected);
     }
     
-    getUsers(filter, filterChanged) {
+    getUsers(filter, filterChanged, loadMore) {
         // store for use in websocket subscribe method
         this.filter = filter;
 
         // dont need to re-query every time drop down opens as we are getting websocket updates
-        if (!filterChanged && this.queryPromise) {
+        if (!filterChanged && !loadMore && this.queryPromise) {
             return this.queryPromise;
         }
 
@@ -55,10 +68,15 @@ class UserSelectController {
             }
         }
 
-        this.queryPromise = builder.limit(100).query().then(users => {
-            // store for use in websocket subscribe method
-            this.users = users;
-            return users;
+        const offset = Array.isArray(this.users) && loadMore ? this.users.length : 0;
+        this.queryPromise = builder.sort('username').limit(this.pageSize, offset).query().then(users => {
+            if (loadMore) {
+                this.users.push(...users);
+                this.users.$total = users.$total;
+            } else {
+                this.users = users;
+            }
+            return this.users;
         });
 
         return this.queryPromise;
@@ -78,7 +96,8 @@ export default {
     bindings: {
         showClear: '<?',
         selectMultiple: '<?',
-        hideName: '<?'
+        hideName: '<?',
+        disabled: '<?ngDisabled'
     },
     transclude: {
         label: '?maLabel'

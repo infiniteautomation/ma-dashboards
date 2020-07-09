@@ -14,7 +14,7 @@
                             ng-change="$ctrl.selectChanged()"
                             ng-disabled="$ctrl.disabled"
                             ng-multiple="$ctrl.selectMultiple"
-                            items="$ctrl.getUsers($filter, $filterChanged)"
+                            items="$ctrl.getUsers($filter, $filterChanged, $loadMore)"
                             item-id="$item.username"
                             ma-configure-input-container>
 
