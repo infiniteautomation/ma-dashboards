@@ -16,3 +16,8 @@ ma-option-list > .ma-option-list-loading-text {
     display: flex;
     justify-content: center;
 }
+
+ma-option-list > .ma-option-list-load-more:focus {
+    outline: none;
+    background-color: rgba(var(--ma-background-300-value), 0.2);
+}
