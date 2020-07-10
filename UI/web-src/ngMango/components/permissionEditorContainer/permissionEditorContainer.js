@@ -25,13 +25,13 @@ class PermissionEditorContainerController {
     }
 
     $onInit() {
-        const $parent = this.$element.maFind('.ma-permission-editor-body');
+        const $table = this.$element.maFind('.ma-permission-editor-table');
         this.$transclude((clone, scope) => {
             Object.defineProperties(scope, {
                 $filter: {get: () => this.filter}
             });
-            $parent.append(clone);
-        }, $parent);
+            $table.append(clone);
+        }, $table);
     }
 
     loadSettings() {

@@ -8,10 +8,11 @@ import './permissionEditor.css';
 
 class PermissionEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maPermission']; }
+    static get $inject() { return ['maPermission', '$element']; }
     
-    constructor(maPermission) {
+    constructor(maPermission, $element) {
         this.maPermission = maPermission;
+        $element.addClass( 'ma-permission-editor-row');
     }
     
     $onInit() {

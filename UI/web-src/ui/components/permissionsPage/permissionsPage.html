@@ -36,7 +36,7 @@
         </md-card-content>
     </md-card>
     
-    <div flex-gt-md ng-if="$ctrl.selectedModule">
+    <div flex-gt-md="80" ng-if="$ctrl.selectedModule">
         <md-card>
             <md-toolbar class="md-hue-3">
                 <div class="md-toolbar-tools">
@@ -44,17 +44,15 @@
                 </div>
             </md-toolbar>
             <md-card-content>
-                <div ng-form="$ctrl.form">
-                    <ma-permission-editor-container show-filter="::true">
-                        <ma-permission-editor
+                <ma-permission-editor-container show-filter="::true">
+                    <ma-permission-editor
                             ng-repeat="permission in $ctrl.selectedModule.permissions | filter:{description: $filter} | orderBy:'description' track by permission.name"
                             description="{{permission.description}}"
                             name="{{permission.name}}"
                             ng-model="permission.permission"
                             ng-change="$ctrl.savePermission(permission)">
-                        </ma-permission-editor>
-                    </ma-permission-editor-container>
-                </div>
+                    </ma-permission-editor>
+                </ma-permission-editor-container>
             </md-card-content>
         </md-card>
     </div>

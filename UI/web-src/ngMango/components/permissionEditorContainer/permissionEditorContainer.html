@@ -1,55 +1,54 @@
-<div class="ma-permission-editor-row ma-permission-editor-header">
-    <div class="ma-permission-editor-description-column">
-        <md-input-container flex ng-if="$ctrl.showFilter" class="ma-filter" md-no-float>
-            <input name="filter" ma-form-exclude ng-model="$ctrl.filter" ng-change="$ctrl.filterChanged()" ng-model-options="{debounce: 500}"
-                   ma-tr="ui.permissions.filterPermissions">
-            <md-button ng-show="$ctrl.filter" class="ma-input-button md-icon-button" ng-click="$ctrl.clearFilter()">
-                <md-icon>clear</md-icon>
+<div class="ma-permission-editor-table">
+    <div class="ma-permission-editor-row ma-permission-editor-header">
+        <div class="ma-permission-editor-cell ma-permission-editor-description-column">
+            <md-input-container flex ng-if="$ctrl.showFilter" class="ma-filter" md-no-float>
+                <input name="filter" ma-form-exclude ng-model="$ctrl.filter" ng-change="$ctrl.filterChanged()" ng-model-options="{debounce: 500}"
+                       ma-tr="ui.permissions.filterPermissions">
+                <md-button ng-show="$ctrl.filter" class="ma-input-button md-icon-button" ng-click="$ctrl.clearFilter()">
+                    <md-icon>clear</md-icon>
+                </md-button>
+            </md-input-container>
+            <span ng-if="!$ctrl.showFilter" ma-tr="header.permissions"></span>
+        </div>
+        <div class="ma-permission-editor-cell ma-permission-editor-checkbox-column" ng-repeat="minterm in $ctrl.minterms track by minterm.id">
+            <md-button md-no-ink class="md-icon-button ma-small-button" ng-click="$ctrl.removeColumn(minterm)" ng-disabled="$ctrl.minterms.length <= 1">
+                <md-icon>visibility_off</md-icon>
+                <md-tooltip><span ma-tr="ui.permissions.hideColumn"></span></md-tooltip>
             </md-button>
-        </md-input-container>
-        <span ng-if="!$ctrl.showFilter" ma-tr="header.permissions"></span>
-    </div>
-    <div class="ma-permission-editor-checkbox-column" ng-repeat="minterm in $ctrl.minterms track by minterm.id">
-        <div layout="column" layout-align="center center">
-            <div ng-repeat="role in minterm.roles" class="ma-ellipsis">
-                <span ng-if="!$first">&amp; </span> <span ng-bind="role"></span>
+            <div layout="column" layout-align="center center">
+                <div ng-repeat="role in minterm.roles" class="ma-ellipsis">
+                    <span ng-if="!$first">&amp; </span> <span ng-bind="role"></span>
+                </div>
             </div>
         </div>
+        <div class="ma-permission-editor-cell ma-permission-editor-other-column">
+            <md-button md-no-ink class="md-icon-button ma-small-button" ng-click="$ctrl.openDropDown = {toggle: true}">
+                <md-icon>add</md-icon>
+                <md-tooltip><span ma-tr="ui.permissions.addColumn"></span></md-tooltip>
 
-        <md-button md-no-ink class="md-icon-button ma-small-button" ng-click="$ctrl.removeColumn(minterm)" ng-disabled="$ctrl.minterms.length <= 1">
-            <md-icon>visibility_off</md-icon>
-            <md-tooltip><span ma-tr="ui.permissions.hideColumn"></span></md-tooltip>
-        </md-button>
-    </div>
-    <div class="ma-permission-editor-other-column">
-        <span ma-tr="ui.permissions.otherRolesWithAccess"></span>
-
-        <md-button md-no-ink class="md-icon-button ma-small-button" ng-click="$ctrl.openDropDown = {toggle: true}">
-            <md-icon>add</md-icon>
-            <md-tooltip><span ma-tr="ui.permissions.addColumn"></span></md-tooltip>
-
-            <ma-drop-down class="ma-permission-editor-container-role-selector ma-full-screen-centered ma-fixed-width-left"
-                          on-close="$ctrl.deleteRoles()" open-drop-down="$ctrl.openDropDown">
-                <div layout="row" layout-align="center">
-                    <md-switch ma-form-exclude ng-model="$ctrl.settings.advancedMode" ng-change="$ctrl.advancedModeChanged()">
-                        <span ma-tr="ui.permissions.advancedMode"></span>
-                        <md-tooltip><span ma-tr="ui.permissions.advancedModeHint"></span></md-tooltip>
-                    </md-switch>
-                </div>
-                <ma-role-selector ng-model="$ctrl.roles" ng-change="$ctrl.rolesChanged($dropDown)"
-                                  disabled-options="!$ctrl.settings.advancedMode && $ctrl.disabledOptions"
-                                  ng-multiple="$ctrl.settings.advancedMode" ma-configure-input-container></ma-role-selector>
-                <div layout="row" ng-if="$ctrl.settings.advancedMode">
-                    <md-button flex class="md-primary" ng-disabled="!$ctrl.roles || !$ctrl.roles.length"
-                               ng-click="$ctrl.addRolesAsColumn($dropDown)">
-                        <span ma-tr="common.ok"></span>
-                    </md-button>
-                    <md-button flex ng-click="$dropDown.close()">
-                        <span ma-tr="common.cancel"></span>
-                    </md-button>
-                </div>
-            </ma-drop-down>
-        </md-button>
+                <ma-drop-down class="ma-permission-editor-container-role-selector ma-full-screen-centered ma-fixed-width-left"
+                              on-close="$ctrl.deleteRoles()" open-drop-down="$ctrl.openDropDown">
+                    <div layout="row" layout-align="center">
+                        <md-switch ma-form-exclude ng-model="$ctrl.settings.advancedMode" ng-change="$ctrl.advancedModeChanged()">
+                            <span ma-tr="ui.permissions.advancedMode"></span>
+                            <md-tooltip><span ma-tr="ui.permissions.advancedModeHint"></span></md-tooltip>
+                        </md-switch>
+                    </div>
+                    <ma-role-selector ng-model="$ctrl.roles" ng-change="$ctrl.rolesChanged($dropDown)"
+                                      disabled-options="!$ctrl.settings.advancedMode && $ctrl.disabledOptions"
+                                      ng-multiple="$ctrl.settings.advancedMode" ma-configure-input-container></ma-role-selector>
+                    <div layout="row" ng-if="$ctrl.settings.advancedMode">
+                        <md-button flex class="md-primary" ng-disabled="!$ctrl.roles || !$ctrl.roles.length"
+                                   ng-click="$ctrl.addRolesAsColumn($dropDown)">
+                            <span ma-tr="common.ok"></span>
+                        </md-button>
+                        <md-button flex ng-click="$dropDown.close()">
+                            <span ma-tr="common.cancel"></span>
+                        </md-button>
+                    </div>
+                </ma-drop-down>
+            </md-button>
+            <div class="ma-ellipsis" ma-tr="ui.permissions.otherRolesWithAccess"></div>
+        </div>
     </div>
 </div>
-<div class="ma-permission-editor-body"></div>

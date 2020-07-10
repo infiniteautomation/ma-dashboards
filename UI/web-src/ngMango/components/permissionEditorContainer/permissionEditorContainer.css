@@ -1,6 +1,7 @@
 ma-permission-editor-container {
     display: block;
-    overflow: auto;
+    overflow-x: auto;
+    /* required to stop the ink on the checkbox at the bottom overflowing and causing the table to resize */
     padding-bottom: 8px;
 }
 
@@ -12,38 +13,37 @@ ma-permission-editor-container:not(:last-child) {
     margin-bottom: 16px;
 }
 
+ma-permission-editor-container .ma-permission-editor-table {
+    display: table;
+    width: 100%;
+}
+
 ma-permission-editor-container .ma-permission-editor-row {
-    min-height: 36px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: table-row;
+}
+
+ma-permission-editor-container .ma-permission-editor-cell {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+ma-permission-editor-container .ma-permission-editor-checkbox-column,
+ma-permission-editor-container .ma-permission-editor-other-column {
+    text-align: center;
 }
 
 ma-permission-editor-container .ma-permission-editor-header {
-    align-items: flex-end;
     font-weight: bold;
     font-size: 1.4rem;
 }
 
-ma-permission-editor-container .ma-permission-editor-row > div {
-    flex-basis: 100px;
-    padding: 8px;
-    display: flex;
-    flex-shrink: 0;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
-}
-
-ma-permission-editor-container .ma-permission-editor-row > div.ma-permission-editor-description-column {
-    justify-content: flex-start;
-}
-
-ma-permission-editor-container .ma-permission-editor-header {
+ma-permission-editor-container .ma-permission-editor-header > .ma-permission-editor-cell {
     border-bottom: 1px solid var(--ma-foreground-4);
+    vertical-align: bottom;
 }
 
-ma-permission-editor-container .ma-permission-editor-header > div.ma-permission-editor-description-column > span {
+ma-permission-editor-container .ma-permission-editor-header > .ma-permission-editor-description-column > span {
     font-size: 1.8rem;
 }
 
@@ -51,15 +51,12 @@ ma-permission-editor-container md-input-container.ma-filter {
     margin: 0;
     font-weight: inherit;
     font-size: inherit;
+    width: 100%;
 }
 
 ma-permission-editor-container md-input-container.ma-filter > input.md-input {
     border-color: transparent;
     font-weight: bold;
-}
-
-ma-permission-editor-container .ma-permission-editor-header > div.ma-permission-editor-description-column > span {
-
 }
 
 ma-permission-editor-container .ma-permission-editor-header .md-button.md-icon-button {
