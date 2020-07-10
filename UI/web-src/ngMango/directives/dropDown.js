@@ -45,12 +45,16 @@ function dropDown($document, $animate, $window) {
             this.focusListener = this.focusListener.bind(this);
             this.resizeListener = this.resizeListener.bind(this);
 
-            this.fullscreenMedia = '(max-height: 799px)';
+            this.fullscreenMedia = '(max-height: 799px), (max-width: 599px)';
         }
         
         $onChanges(changes) {
             if (changes.openOptions && !changes.openOptions.isFirstChange() && this.openOptions) {
-                this.open(this.openOptions);
+                if (this.openOptions.toggle) {
+                    this.toggleOpen(this.openOptions);
+                } else {
+                    this.open(this.openOptions);
+                }
             }
         }
         
@@ -119,8 +123,6 @@ function dropDown($document, $animate, $window) {
         }
 
         open(options = {}) {
-            this.openOptions = options;
-            
             if (!this.$dropDown) {
                 this.createElement();
             }
@@ -236,8 +238,15 @@ function dropDown($document, $animate, $window) {
                 const spaceAbove = rect.top;
                 const spaceBelow = $window.innerHeight - rect.bottom;
 
-                style.left = `${rect.left}px`;
-                style.width = `${rect.width}px`;
+                if (dropDownEl.classList.contains('ma-fixed-width-left')) {
+                    style.right = `${$window.innerWidth - rect.right}px`;
+                } else if (dropDownEl.classList.contains('ma-fixed-width-right')) {
+                    style.left = `${rect.left}px`;
+                } else {
+                    style.left = `${rect.left}px`;
+                    style.width = `${rect.width}px`;
+                }
+
                 if (spaceBelow > spaceAbove) {
                     style.top = `${spaceAbove + rect.height}px`;
                     style.maxHeight = `${spaceBelow - 8}px`;
