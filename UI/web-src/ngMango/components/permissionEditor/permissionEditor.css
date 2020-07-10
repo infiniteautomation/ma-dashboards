@@ -11,3 +11,7 @@ ma-permission-editor md-checkbox {
     width: 20px;
     height: 20px;
 }
+
+ma-permission-editor > .ma-permission-editor-row > .ma-permission-editor-other-column {
+    flex-direction: column;
+}

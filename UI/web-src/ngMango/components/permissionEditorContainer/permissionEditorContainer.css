@@ -4,6 +4,14 @@ ma-permission-editor-container {
     padding-bottom: 8px;
 }
 
+ma-permission-editor-container:not(:first-child) {
+    margin-top: 16px;
+}
+
+ma-permission-editor-container:not(:last-child) {
+    margin-bottom: 16px;
+}
+
 ma-permission-editor-container .ma-permission-editor-row {
     min-height: 36px;
     display: flex;
@@ -13,39 +21,58 @@ ma-permission-editor-container .ma-permission-editor-row {
 
 ma-permission-editor-container .ma-permission-editor-header {
     align-items: flex-end;
+    font-weight: bold;
+    font-size: 1.4rem;
 }
 
 ma-permission-editor-container .ma-permission-editor-row > div {
-    display: flex;
-    width: 200px;
-    flex-shrink: 0;
-    flex-grow: 2;
+    flex-basis: 100px;
     padding: 8px;
-}
-
-ma-permission-editor-container .ma-permission-editor-row > div.ma-permission-editor-checkbox-column {
-    width: 100px;
-    flex-grow: 1;
     display: flex;
+    flex-shrink: 0;
+    flex-grow: 1;
     justify-content: center;
     align-items: center;
 }
 
-ma-permission-editor-container .ma-permission-editor-header > div.ma-permission-editor-checkbox-column {
-    flex-direction: column;
-    text-align: center;
+ma-permission-editor-container .ma-permission-editor-row > div.ma-permission-editor-description-column {
+    justify-content: flex-start;
 }
 
 ma-permission-editor-container .ma-permission-editor-header {
+    border-bottom: 1px solid var(--ma-foreground-4);
+}
+
+ma-permission-editor-container .ma-permission-editor-header > div.ma-permission-editor-description-column > span {
+    font-size: 2.4rem;
+    font-weight: 400;
+    line-height: 3.2rem;
+}
+
+ma-permission-editor-container md-input-container.ma-filter {
+    margin: 0;
+    font-weight: inherit;
+    font-size: inherit;
+}
+
+ma-permission-editor-container md-input-container.ma-filter > input.md-input {
+    border-color: transparent;
     font-weight: bold;
+}
+
+ma-permission-editor-container .ma-permission-editor-header > div.ma-permission-editor-description-column > span {
+
+}
+
+ma-permission-editor-container .ma-permission-editor-header .md-button.md-icon-button {
+    margin-left: 0;
+}
+
+.ma-permission-editor-container-role-selector:not(.ma-full-screen) {
+    width: 400px;
 }
 
 .ma-permission-editor-container-role-selector md-switch,
 .ma-permission-editor-container-role-selector md-switch:last-of-type {
     margin: 8px 8px 0;
-}
-
-ma-permission-editor-container md-input-container.ma-filter {
-    margin-left: 0;
-    margin-right: 0;
 }

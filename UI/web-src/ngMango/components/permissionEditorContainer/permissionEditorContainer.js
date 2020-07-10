@@ -19,7 +19,7 @@ class PermissionEditorContainerController {
         this.$element = $element;
         this.$transclude = $transclude;
 
-        this.showFilter = true;
+        this.showFilter = false;
         this.editors = new Set();
         this.loadSettings();
     }
