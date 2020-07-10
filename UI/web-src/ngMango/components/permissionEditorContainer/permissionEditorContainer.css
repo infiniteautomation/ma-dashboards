@@ -49,14 +49,13 @@ ma-permission-editor-container .ma-permission-editor-header > .ma-permission-edi
 
 ma-permission-editor-container md-input-container.ma-filter {
     margin: 0;
-    font-weight: inherit;
-    font-size: inherit;
+    padding: 0;
     width: 100%;
 }
 
 ma-permission-editor-container md-input-container.ma-filter > input.md-input {
     border-color: transparent;
-    font-weight: bold;
+    font-size: 1.6rem;
 }
 
 .ma-permission-editor-container-role-selector:not(.ma-full-screen) {

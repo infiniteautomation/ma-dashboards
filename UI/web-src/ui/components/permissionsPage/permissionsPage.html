@@ -44,13 +44,13 @@
                 </div>
             </md-toolbar>
             <md-card-content>
-                <ma-permission-editor-container show-filter="::true">
+                <ma-permission-editor-container show-filter="::true" ng-form="$ctrl.form">
                     <ma-permission-editor
                             ng-repeat="permission in $ctrl.selectedModule.permissions | filter:{description: $filter} | orderBy:'description' track by permission.name"
-                            description="{{permission.description}}"
                             name="{{permission.name}}"
                             ng-model="permission.permission"
                             ng-change="$ctrl.savePermission(permission)">
+                        <span md-highlight-text="$filter" md-highlight-flags="ig">{{permission.description}}</span>
                     </ma-permission-editor>
                 </ma-permission-editor-container>
             </md-card-content>

@@ -43,15 +43,11 @@
             </div>
 
             <ma-permission-editor-container>
-                <ma-permission-editor
-                        description="{{'ui.permissions.readRoles' | maTr}}"
-                        name="readPermissions"
-                        ng-model="$ctrl.list.readPermissions">
+                <ma-permission-editor name="readPermissions" ng-model="$ctrl.list.readPermissions">
+                    <span ma-tr="ui.permissions.readRoles"></span>
                 </ma-permission-editor>
-                <ma-permission-editor
-                        description="{{'ui.permissions.editRoles' | maTr}}"
-                        name="editPermissions"
-                        ng-model="$ctrl.list.editPermissions">
+                <ma-permission-editor name="editPermissions" ng-model="$ctrl.list.editPermissions">
+                    <span ma-tr="ui.permissions.editRoles"></span>
                 </ma-permission-editor>
             </ma-permission-editor-container>
 

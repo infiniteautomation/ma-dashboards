@@ -10,11 +10,12 @@ const filterSearchKeys = ['moduleName', 'moduleDescription', 'description', 'nam
 
 class PermissionsPageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maSystemPermission', '$q']; }
+    static get $inject() { return ['maSystemPermission', '$q', 'maDialogHelper']; }
     
-    constructor(maSystemPermission, $q) {
+    constructor(maSystemPermission, $q, maDialogHelper) {
         this.maSystemPermission = maSystemPermission;
         this.$q = $q;
+        this.maDialogHelper = maDialogHelper;
     }
     
     $onInit() {
@@ -78,7 +79,7 @@ class PermissionsPageController {
                 ngModelCtrl.$setValidity('validationMessage', false);
                 ngModelCtrl.validationMessage = error.mangoStatusText;
             } else {
-                // TODO notify
+                this.maDialogHelper.errorToast(['ui.components.errorSavingSettings', error.mangoStatusText]);
             }
             return this.$q.reject(error);
         });

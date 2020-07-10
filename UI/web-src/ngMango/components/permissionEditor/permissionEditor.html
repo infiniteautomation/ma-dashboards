@@ -1,5 +1,7 @@
 <div class="ma-permission-editor-cell ma-permission-editor-description-column">
-    <span md-highlight-text="$ctrl.containerCtrl.filter" md-highlight-flags="ig">{{$ctrl.description}}</span>
+    <span ng-transclude ng-class="{'ma-error-text': $ctrl.ngModelCtrl.$invalid}">
+        <span md-highlight-text="$ctrl.containerCtrl.filter" md-highlight-flags="ig">{{$ctrl.description}}</span>
+    </span>
     <div ng-messages="$ctrl.ngModelCtrl.$error" class="ma-small-text">
         <div ng-message="validationMessage" ng-bind="$ctrl.ngModelCtrl.validationMessage"></div>
     </div>

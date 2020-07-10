@@ -54,6 +54,7 @@ class PermissionEditorController {
 }
 
 export default {
+    transclude: true,
     require: {
         ngModelCtrl: 'ngModel',
         containerCtrl: '^^maPermissionEditorContainer'
