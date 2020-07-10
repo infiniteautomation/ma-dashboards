@@ -59,10 +59,6 @@ ma-permission-editor-container md-input-container.ma-filter > input.md-input {
     font-weight: bold;
 }
 
-ma-permission-editor-container .ma-permission-editor-header .md-button.md-icon-button {
-    margin-left: 0;
-}
-
 .ma-permission-editor-container-role-selector:not(.ma-full-screen) {
     width: 400px;
 }
