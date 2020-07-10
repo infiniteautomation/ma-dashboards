@@ -28,7 +28,9 @@ class PermissionEditorContainerController {
         const $table = this.$element.maFind('.ma-permission-editor-table');
         this.$transclude((clone, scope) => {
             Object.defineProperties(scope, {
-                $filter: {get: () => this.filter}
+                $filter: {get: () => this.filter},
+                $minterms: {get: () => this.minterms},
+                $container: {get: () => this}
             });
             $table.append(clone);
         }, $table);
@@ -107,7 +109,7 @@ class PermissionEditorContainerController {
 
     filterChanged() {
         if (this.onFilterChanged) {
-            this.onFilterChanged({$filter: filter});
+            this.onFilterChanged({$filter: this.filter});
         }
     }
 

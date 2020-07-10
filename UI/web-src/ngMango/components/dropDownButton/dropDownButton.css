@@ -19,6 +19,7 @@ ma-drop-down-button[disabled] {
 ma-drop-down-button:active,
 ma-drop-down-button:focus {
     outline: none;
+    background-color: rgba(var(--ma-background-300-value), 0.2);
 }
 
 ma-drop-down-button > div {

@@ -867,6 +867,11 @@ ma-config-import-dialog {
   cursor: pointer;
 }
 
+[ng-click]:focus:not([disabled]) {
+    outline: none;
+    background-color: rgba(var(--ma-background-300-value), 0.2);
+}
+
 [role=option][disabled] {
   cursor: default;
 }
@@ -906,7 +911,7 @@ ma-file-store-browser .ma-file-selected {
 
 .ma-file-store-browser-files table.md-table tr td.md-cell:first-child,
 .ma-file-store-browser-files table.md-table tr th.md-column:first-child {
-	width: 24x;
+	width: 24px;
 	padding: 0 0 0 5px !important;
 }
 

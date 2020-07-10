@@ -29,6 +29,10 @@ ma-permission-editor-container .ma-permission-editor-cell {
     padding: 8px;
 }
 
+ma-permission-editor-container .ma-permission-editor-row-group {
+    display: table-row-group;
+}
+
 ma-permission-editor-container .ma-permission-editor-checkbox-column,
 ma-permission-editor-container .ma-permission-editor-other-column {
     text-align: center;
