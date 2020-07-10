@@ -51,6 +51,7 @@
                             ng-model="permission.permission"
                             ng-change="$ctrl.savePermission(permission)">
                         <span md-highlight-text="$filter" md-highlight-flags="ig">{{permission.description}}</span>
+                        <ma-promise-indicator promise="permission.promise"></ma-promise-indicator>
                     </ma-permission-editor>
                 </ma-permission-editor-container>
             </md-card-content>

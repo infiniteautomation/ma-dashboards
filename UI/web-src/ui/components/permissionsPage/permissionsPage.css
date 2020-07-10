@@ -1,0 +1,7 @@
+ma-ui-permissions-page {
+    display: block;
+}
+
+ma-ui-permissions-page .ma-permission-editor-label > * {
+    vertical-align: middle;
+}

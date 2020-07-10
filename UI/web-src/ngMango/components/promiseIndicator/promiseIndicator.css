@@ -1,5 +1,5 @@
 ma-promise-indicator {
-    display: flex;
+    display: inline-flex;
 }
 
 ma-promise-indicator.ma-promise-error,

@@ -20,6 +20,7 @@ ma-permission-editor-container .ma-permission-editor-table {
 
 ma-permission-editor-container .ma-permission-editor-row {
     display: table-row;
+    height: 40px;
 }
 
 ma-permission-editor-container .ma-permission-editor-cell {
