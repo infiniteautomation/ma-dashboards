@@ -44,9 +44,7 @@ ma-permission-editor-container .ma-permission-editor-header {
 }
 
 ma-permission-editor-container .ma-permission-editor-header > div.ma-permission-editor-description-column > span {
-    font-size: 2.4rem;
-    font-weight: 400;
-    line-height: 3.2rem;
+    font-size: 1.8rem;
 }
 
 ma-permission-editor-container md-input-container.ma-filter {
