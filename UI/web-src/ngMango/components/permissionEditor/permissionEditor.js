@@ -25,22 +25,21 @@ class PermissionEditorController {
     }
 
     render() {
-        if (Array.isArray(this.ngModelCtrl.$viewValue)) {
-            this.permission = new this.maPermission(this.ngModelCtrl.$viewValue);
+        const viewValue = Array.isArray(this.ngModelCtrl.$viewValue) ? this.ngModelCtrl.$viewValue : [];
+        this.permission = new this.maPermission(viewValue);
 
-            const minterms = this.containerCtrl.minterms;
-            this.columns = minterms.map(minterm => {
-                const hasSuperadmin = minterm.has('superadmin');
-                const checked = hasSuperadmin || this.permission.has(minterm);
-                return {
-                    minterm,
-                    checked,
-                    hasSuperadmin
-                };
-            });
+        const minterms = this.containerCtrl.minterms;
+        this.columns = minterms.map(minterm => {
+            const hasSuperadmin = minterm.has('superadmin');
+            const checked = hasSuperadmin || this.permission.has(minterm);
+            return {
+                minterm,
+                checked,
+                hasSuperadmin
+            };
+        });
 
-            this.additionalMinterms = this.permission.minterms.filter(a => !minterms.some(b => a.equals(b)));
-        }
+        this.additionalMinterms = this.permission.minterms.filter(a => !minterms.some(b => a.equals(b)));
     }
     
     columnChanged(column) {
