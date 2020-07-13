@@ -63,6 +63,10 @@ ma-permission-editor-container md-input-container.ma-filter > input.md-input {
     font-size: 1.6rem;
 }
 
+ma-permission-editor-container .ma-permissions-title > * {
+    vertical-align: middle;
+}
+
 .ma-permission-editor-container-role-selector:not(.ma-full-screen) {
     width: 400px;
 }

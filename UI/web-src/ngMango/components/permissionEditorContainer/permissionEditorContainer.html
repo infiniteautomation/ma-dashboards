@@ -8,7 +8,12 @@
                     <md-icon>clear</md-icon>
                 </md-button>
             </md-input-container>
-            <span ng-if="!$ctrl.showFilter" ma-tr="header.permissions"></span>
+            <span ng-if="!$ctrl.showFilter" class="ma-permissions-title">
+                <span ma-tr="header.permissions"></span>
+                <md-button class="md-icon-button ma-small-button ma-no-margin" ui-sref="ui.help.permissions">
+                    <md-icon>help</md-icon>
+                </md-button>
+            </span>
         </div>
         <div class="ma-permission-editor-cell ma-permission-editor-checkbox-column" ng-repeat="minterm in $ctrl.minterms track by minterm.id">
             <md-button md-no-ink class="md-icon-button ma-small-button" ng-click="$ctrl.removeColumn(minterm)" ng-disabled="$ctrl.minterms.length <= 1">
