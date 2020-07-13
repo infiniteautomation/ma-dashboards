@@ -56,34 +56,6 @@
                             </div>
                         </md-input-container>
 
-                        <md-input-container flex="100" flex-gt-md="50">
-                            <md-icon>lock</md-icon>
-                            <label ma-tr="dsEdit.permission.edit"></label>
-                            <input name="editPermission" ng-model="$ctrl.dataSource.editPermission"
-                                pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
-                            <div ng-messages="$ctrl.form.editPermission.$error">
-                                <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
-                                <div ng-message="validationMessage"
-                                    ng-bind="$ctrl.form.editPermission.validationMessage"></div>
-                            </div>
-                            <ma-permissions-menu ng-model="$ctrl.dataSource.editPermission">
-                            </ma-permissions-menu>
-                        </md-input-container>
-
-                        <md-input-container flex="100" flex-gt-md="50">
-                            <md-icon>lock</md-icon>
-                            <label ma-tr="ui.permissions.readRoles"></label>
-                            <input name="readPermission" ng-model="$ctrl.dataSource.readPermission"
-                                pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
-                            <div ng-messages="$ctrl.form.readPermission.$error">
-                                <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
-                                <div ng-message="validationMessage"
-                                    ng-bind="$ctrl.form.readPermission.validationMessage"></div>
-                            </div>
-                            <ma-permissions-menu ng-model="$ctrl.dataSource.readPermission">
-                            </ma-permissions-menu>
-                        </md-input-container>
-
                         <div style="display: none" ng-if-start="$ctrl.showPollingControls()"></div>
 
                         <ma-duration-editor ng-if="!$ctrl.dataSource.useCron" flex="100" flex-gt-md="50"
@@ -118,6 +90,15 @@
                             </md-checkbox>
                         </div>
                     </div>
+
+                    <ma-permission-editor-container>
+                        <ma-permission-editor name="readPermission" ng-model="$ctrl.dataSource.readPermission">
+                            <span ma-tr="dsEdit.permission.view"></span>
+                        </ma-permission-editor>
+                        <ma-permission-editor name="editPermission" ng-model="$ctrl.dataSource.editPermission">
+                            <span ma-tr="dsEdit.permission.edit"></span>
+                        </ma-permission-editor>
+                    </ma-permission-editor-container>
 
                     <div ng-include="$ctrl.dataSourceType.templateUrl"></div>
                 </div>
