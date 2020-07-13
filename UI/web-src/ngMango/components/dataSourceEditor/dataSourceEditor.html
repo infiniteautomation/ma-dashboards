@@ -12,14 +12,20 @@
                         <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>settings</md-icon>
                             <label ma-tr="dsEdit.dataSourceType"></label>
-                            <md-select name="modelType" ng-model="$ctrl.dataSource.modelType"
-                                ng-disabled="!$ctrl.dataSource.isNew()" ng-change="$ctrl.typeChanged()" required>
-                                <md-option
-                                    ng-repeat="type in $ctrl.types | orderBy:'descriptionTranslated' track by type.type"
-                                    ng-value="type.type">
-                                    <span ng-bind="type.descriptionTranslated"></span>
-                                </md-option>
-                            </md-select>
+                            <ma-drop-down-button ng-disabled="!$ctrl.dataSource.isNew()">
+                                <span ng-bind="$ctrl.typesByName[$ctrl.dataSource.modelType].descriptionTranslated"></span>
+                                <ma-drop-down class="ma-model-type-select ma-full-screen-centered" auto-focus="::false">
+                                    <ma-option-list name="modelType"
+                                                    ng-model="$ctrl.dataSource.modelType"
+                                                    ng-disabled="!$ctrl.dataSource.isNew()"
+                                                    items="$ctrl.types | maFilter:$filter"
+                                                    ma-configure-input-container>
+                                        <ma-option ng-repeat="type in $items | orderBy:'descriptionTranslated' track by type.type" ng-value="type.type" md-no-ink>
+                                            <span md-highlight-text="$filter" md-highlight-flags="ig">{{type.descriptionTranslated}}</span>
+                                        </ma-option>
+                                    </ma-option-list>
+                                </ma-drop-down>
+                            </ma-drop-down-button>
                             <div ng-messages="$ctrl.form.modelType.$error">
                                 <div ng-message="required" ma-tr="validate.required"></div>
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.modelType.validationMessage">
