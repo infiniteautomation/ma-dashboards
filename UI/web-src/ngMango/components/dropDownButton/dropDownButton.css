@@ -64,6 +64,7 @@ md-input-container > ma-drop-down-button.ma-drop-down-open:not([disabled]) {
     padding-bottom: 0;
     border-bottom-width: 2px;
     border-color: var(--ma-primary);
+    background-color: unset;
 }
 
 md-input-container.md-input-invalid > ma-drop-down-button:not([disabled]) {
