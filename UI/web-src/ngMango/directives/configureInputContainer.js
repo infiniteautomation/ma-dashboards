@@ -27,7 +27,9 @@ function configureInputContainerDirective(maUtil) {
                 if (!this.formCtrl) {
                     const form = this.dropDownCtrl.formCtrl;
                     if (form) {
-                        form.$addControl(ngModelCtrl);
+                        // just set the $$parentForm property and let ngModelPreLink call $addControl()
+                        // otherwise we end up in the $$controls array twice
+                        ngModelCtrl.$$parentForm = form;
                     }
                 }
                 
