@@ -261,7 +261,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                         menuItem.weight = 1000;
                     }
                     if (menuItem.permission == null) {
-                        menuItem.permission = 'user';
+                        menuItem.permission = ['user'];
                     }
                 });
                 
@@ -453,10 +453,10 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 name: originalItem.name
             };
             
-            ['menuHidden', 'weight', 'menuIcon', 'menuTr', 'menuText', 'permission', 'requiredPermission'].forEach(property => {
+            ['menuHidden', 'weight', 'menuIcon', 'menuTr', 'menuText', 'permission', 'systemPermission'].forEach(property => {
                 propertyDiff(property, newItem, originalItem, difference);
             });
-            
+
             if (!angular.equals(newItem.params, originalItem.params)) {
                 difference.params = newItem.params;
             }
@@ -477,7 +477,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 item.weight = 1000;
             }
             if (item.permission == null) {
-                item.permission = 'user';
+                item.permission = ['user'];
             }
         }
         

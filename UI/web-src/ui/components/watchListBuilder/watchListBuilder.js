@@ -225,7 +225,7 @@ class WatchListBuilderController {
             this.selectedWatchlist = null;
             const watchlist = this.$state.params.watchList;
             watchlist.username = this.User.current.username;
-            watchlist.readPermission = 'user';
+            watchlist.readPermission = ['user'];
             watchlist.editPermission = this.User.current.hasAnyRole('edit-watchlists') ? 'edit-watchlists' : '';
             this.editWatchlist(watchlist);
             this.resetForm();

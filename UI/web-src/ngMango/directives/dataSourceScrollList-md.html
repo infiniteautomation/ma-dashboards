@@ -1,7 +1,7 @@
 <md-progress-linear ng-if="$ctrl.queryPromise"></md-progress-linear>
 
 <md-list class="ma-no-padding ma-no-text-overflow">
-    <md-list-item ng-if="$ctrl.showNew && !$ctrl.filter && $ctrl.User.current.hasAnyPermission('permissionDatasource')" class="md-2-line"
+    <md-list-item ng-if="$ctrl.showNew && !$ctrl.filter && $ctrl.User.current.hasSystemPermission('permissionDatasource')" class="md-2-line"
             ng-click="$ctrl.createNew($event)" ng-class="{'ma-list-selected': $ctrl.selected.isNew()}">
         <div class="md-list-item-text">
             <h3 ma-tr="ui.app.new"></h3>

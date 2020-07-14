@@ -336,7 +336,9 @@
         </span>
     </md-card-header>
     <md-card-content layout layout-wrap>
-        <div flex="100" flex-gt-xs="50" flex-gt-md="33" flex-gt-lg="20" ng-repeat="item in ::$ctrl.utilityMenuItems track by item.name" ng-if="$ctrl.maUser.current.hasAnyRole(item.permission)">
+        <div flex="100" flex-gt-xs="50" flex-gt-md="33" flex-gt-lg="20"
+             ng-repeat="item in ::$ctrl.utilityMenuItems track by item.name"
+             ng-if="$ctrl.maUser.current.hasPermission(item.permission)">
             <md-button class="md-raised md-primary ma-redirect" layout="row" ui-sref="{{item.name}}">
                 <div ma-tr="{{item.menuTr}}" flex></div>
                 <md-icon>{{item.menuIcon}}</md-icon>

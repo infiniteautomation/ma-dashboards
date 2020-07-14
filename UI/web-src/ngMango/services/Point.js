@@ -685,7 +685,7 @@ function dataPointProvider() {
             },
             
             hasEditPermission(user) {
-                return user && (user.hasAnyPermission('permissionDatasource') || user.hasAnyRole(this.dataSourceEditRoles, true));
+                return user && (user.hasSystemPermission('permissionDatasource') || user.hasAnyRole(this.dataSourceEditRoles, true));
             },
             
             hasSetPermission(user) {

@@ -4,7 +4,7 @@
             <div class="md-toolbar-tools">
                 <span ma-tr="dsList.selectDataSource"></span>
                 <div flex></div>
-                <md-button class="md-raised" ng-click="$ctrl.newDataSource($event)" ng-if="!$ctrl.$mdMedia('gt-md') && $ctrl.User.current.hasAnyPermission('permissionDatasource')">
+                <md-button class="md-raised" ng-click="$ctrl.newDataSource($event)" ng-if="!$ctrl.$mdMedia('gt-md') && $ctrl.User.current.hasSystemPermission('permissionDatasource')">
                     <md-icon>add</md-icon> <span ma-tr="ui.app.new"></span>
                     <md-tooltip><span ma-tr="dsList.createDataSource"></span></md-tooltip>
                 </md-button>

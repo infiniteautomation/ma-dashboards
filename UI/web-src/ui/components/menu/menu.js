@@ -18,13 +18,15 @@ function MenuController() {
             if (menuItem.children && menuItem.abstract) {
                 info.visibleChildren = this.childVisible(menuItem.children);
                 info.visible = !menuItem.menuHidden &&
-                    !!info.visibleChildren &&
-                    this.user.hasAnyRole(menuItem.permission) &&
-                    this.user.hasAnyPermission(menuItem.requiredPermission);
+                    !!info.visibleChildren && (
+                        this.user.hasPermission(menuItem.permission) ||
+                        this.user.hasSystemPermission(...menuItem.systemPermission)
+                    );
             } else {
-                info.visible = !menuItem.menuHidden &&
-                    this.user.hasAnyRole(menuItem.permission) &&
-                    this.user.hasAnyPermission(menuItem.requiredPermission);
+                info.visible = !menuItem.menuHidden && (
+                    this.user.hasPermission(menuItem.permission) ||
+                    this.user.hasSystemPermission(...menuItem.systemPermission)
+                );
             }
             if (info.visible) {
                 visibleCount++;

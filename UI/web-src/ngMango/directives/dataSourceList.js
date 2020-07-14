@@ -62,7 +62,7 @@ function dataSourceList(DataSource, $injector, $filter, User) {
             if ($injector.has('$mdUtil')) {
                 return `<md-select md-on-open="onOpen()" ng-model-options="{trackBy: '$value.xid'}">
                     <md-option ng-if="showClear" ng-value="undefined" md-option-empty><md-icon>clear</md-icon> <em ma-tr="ui.app.clear"></em></md-option>
-                    <md-option ng-if="showNew && User.current.hasAnyPermission('permissionDatasource')"
+                    <md-option ng-if="showNew && User.current.hasSystemPermission('permissionDatasource')"
                         ng-value="newValue"><em ma-tr="dsList.createDataSource"></em></md-option>
                     <md-option ng-value="dataSource" ng-repeat="dataSource in dataSources track by dataSource.xid">
                     <span ng-bind="dataSourceLabel(dataSource)"></span>

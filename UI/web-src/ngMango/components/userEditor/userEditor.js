@@ -53,7 +53,7 @@ class UserEditorController {
         }
         
         if (changes.disabledAttr) {
-            this.disabled = this.disabledAttr || !this.registerMode && !this.User.current.hasAnyPermission('permissions.user.editSelf');
+            this.disabled = this.disabledAttr || !this.registerMode && !this.User.current.hasSystemPermission('permissions.user.editSelf');
         }
     }
     

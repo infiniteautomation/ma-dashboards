@@ -30,7 +30,7 @@ const examplesTemplate = function(fileName) {
     };
 };
 
-// TODO Mango 4.0 remove permission references and use requiredPermission 
+// TODO Mango 4.0 remove permission references and use systemPermission 
 
 export default [
     {
@@ -559,7 +559,7 @@ export default [
             }]
         },
         weight: 990,
-        permission: 'superadmin'
+        permission: ['superadmin']
     },
     {
         name: 'ui.settings.dataSources',
@@ -567,7 +567,7 @@ export default [
         template: '<ma-ui-data-source-page flex="noshrink" layout="column"><ma-ui-data-source-page>',
         menuTr: 'header.dataSources',
         menuIcon: 'device_hub',
-        requiredPermission: 'permissionDatasource',
+        systemPermission: ['permissionDatasource'],
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -601,7 +601,7 @@ export default [
         params: {
             helpPage: 'ui.help.publishers'
         },
-        permission: 'superadmin'
+        permission: ['superadmin']
     },
     {
         url: '/edit-pages/{pageXid}',
@@ -611,7 +611,7 @@ export default [
         },
         menuTr: 'ui.app.editPages',
         menuIcon: 'dashboard',
-        requiredPermission: 'ui.pages.edit',
+        systemPermission: ['ui.pages.edit'],
         params: {
             dateBar: {
                 rollupControls: true
@@ -629,7 +629,7 @@ export default [
         },
         menuTr: 'ui.app.editMenu',
         menuIcon: 'toc',
-        requiredPermission: 'ui.settings.edit',
+        systemPermission: ['ui.settings.edit'],
         params: {
             helpPage: 'ui.help.menuEditor'
         }
@@ -642,7 +642,7 @@ export default [
         },
         menuTr: 'ui.app.autoLoginSettings',
         menuIcon: 'face',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         menuHidden: true,
         showInUtilities: true
     },
@@ -652,7 +652,7 @@ export default [
         template: '<ma-ui-settings-page></ma-ui-settings-page>',
         menuTr: 'ui.app.uiSettings',
         menuIcon: 'color_lens',
-        requiredPermission: 'ui.settings.edit',
+        systemPermission: ['ui.settings.edit'],
         params: {
             helpPage: 'ui.help.uiSettings'
         },
@@ -673,7 +673,7 @@ export default [
         template: '<ma-ui-users-page flex="noshrink" layout="column"><ma-ui-users-page>',
         menuTr: 'header.users',
         menuIcon: 'people',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         params: {
             helpPage: 'ui.help.users'
         },
@@ -694,7 +694,7 @@ export default [
         template: '<ma-ui-system-settings-page flex="noshrink" layout="column"><ma-ui-system-settings-page>',
         menuTr: 'header.systemSettings',
         menuIcon: 'settings',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         // params: {
         //     helpPage: 'ui.help.systemSettings'
         // },
@@ -949,7 +949,7 @@ export default [
         template: '<ma-ui-system-status-page flex="noshrink" layout="column"><ma-ui-system-status-page>',
         menuTr: 'ui.settings.systemStatus',
         menuIcon: 'new_releases',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         menuHidden: true,
         params: {
             helpPage: 'ui.help.systemStatus'
@@ -1045,7 +1045,7 @@ export default [
         template: '<ma-ui-import-export-page><ma-ui-import-export-page>',
         menuTr: 'header.emport',
         menuIcon: 'import_export',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         menuHidden: true,
         showInUtilities: true,
         params: {
@@ -1068,7 +1068,7 @@ export default [
         template: '<ma-ui-modules-page><ma-ui-modules-page>',
         menuTr: 'header.modules',
         menuIcon: 'extension',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         params: {
             helpPage: 'ui.help.modules'
         },
@@ -1093,7 +1093,7 @@ export default [
         },
         menuTr: 'ui.app.moduleUpgrades',
         menuIcon: 'update',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         menuHidden: true,
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
@@ -1116,7 +1116,7 @@ export default [
         },
         menuTr: 'ui.app.offlineUpgrades',
         menuIcon: 'update',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         menuHidden: true,
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
@@ -1135,7 +1135,7 @@ export default [
         template: '<ma-file-store-browser flex preview="true" ng-model="tmp"><ma-file-store-browser>',
         menuTr: 'ui.app.fileStores',
         menuIcon: 'file_upload',
-        permission: 'superadmin'
+        permission: ['superadmin']
     },
     {
         name: 'ui.settings.jsonStore',
@@ -1149,7 +1149,7 @@ export default [
             <ma-json-store-table edit-clicked="$state.go(\'ui.settings.jsonStoreEditor\', {xid: $item.xid})"><ma-json-store-table>`,
         menuTr: 'ui.app.jsonStorePage',
         menuIcon: 'sd_storage',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         menuHidden: true,
         showInUtilities: true
     },
@@ -1166,7 +1166,7 @@ export default [
             <ma-json-store-editor ng-if="item || !$state.params.xid" ng-model="item"><ma-json-store-editor>`,
         menuTr: 'ui.app.jsonStoreEditorPage',
         menuIcon: 'sd_storage',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         menuHidden: true
     },
     {
@@ -1175,7 +1175,7 @@ export default [
         template: '<ma-ui-bulk-data-point-edit-page flex="noshrink" layout="column"></ma-ui-bulk-data-point-edit-page>',
         menuTr: 'ui.app.bulkDataPointEdit',
         menuIcon: 'fitness_center',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
@@ -1193,7 +1193,7 @@ export default [
         template: '<ma-ui-event-handler-page flex="noshrink" layout="column"><ma-ui-event-handler-page>',
         menuTr: 'ui.app.eventHandlers',
         menuIcon: 'assignment_turned_in',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         params: {
             helpPage: 'ui.help.eventHandlers'
         },
@@ -1250,7 +1250,7 @@ export default [
         menuTr: 'ui.dox.examples',
         menuIcon: 'info',
         // menuHidden: true,
-        requiredPermission: 'ui.pages.edit',
+        systemPermission: ['ui.pages.edit'],
         submenu: true,
         weight: 2001
     },
@@ -1621,7 +1621,7 @@ export default [
         template: '<ma-virtual-serial-port></ma-virtual-serial-port>',
         menuTr: 'systemSettings.comm.virtual.serialPorts',
         menuIcon: 'settings_input_hdmi',
-        permission: 'superadmin',
+        permission: ['superadmin'],
         params: {
             noPadding: false,
             hideFooter: false,

@@ -85,7 +85,7 @@
         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.registerMode" class="ma-has-hint">
             <md-icon>group</md-icon>
             <label ma-tr="users.roles"></label>
-            <ma-drop-down-button ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasAnyRole('superadmin')">
+            <ma-drop-down-button ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasRole('superadmin')">
                 <span ng-bind="$ctrl.user.permissions.join(', ')"></span>
                 <ma-drop-down class="ma-user-editor-role-selector ma-full-screen-centered">
                     <ma-role-selector name="permissions" ng-model="$ctrl.user.permissions" ng-multiple="::true"
@@ -175,7 +175,7 @@
             </div>
         </md-input-container>
         
-        <ma-duration-editor ng-if="$ctrl.User.current.hasAnyRole('superadmin') && $ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled"
+        <ma-duration-editor ng-if="$ctrl.User.current.hasRole('superadmin') && $ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled"
                 flex="100" flex-gt-md="50" name="sessionExpirationPeriod" ng-model="$ctrl.user.sessionExpirationPeriod"
                 allowed-types="::['MINUTES', 'HOURS', 'DAYS', 'MONTHS', 'YEARS']" required>
             <ma-periods-label ma-tr="users.sessionExpirationPeriod"></ma-periods-label>
@@ -193,7 +193,7 @@
         <md-checkbox name="receiveOwnAuditEvents" ng-model="$ctrl.user.receiveOwnAuditEvents" ng-disabled="$ctrl.disabled">
             <span ma-tr="users.receiveOwnAuditEvents"></span>
         </md-checkbox>
-        <md-checkbox ng-if="$ctrl.User.current.hasAnyRole('superadmin')" name="sessionExpirationOverride" ng-model="$ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled">
+        <md-checkbox ng-if="$ctrl.User.current.hasRole('superadmin')" name="sessionExpirationOverride" ng-model="$ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled">
             <span ma-tr="users.sessionExpirationOverride"></span>
         </md-checkbox>
     </div>

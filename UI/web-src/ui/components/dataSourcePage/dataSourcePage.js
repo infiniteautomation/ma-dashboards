@@ -39,7 +39,7 @@ class DataSourcePageController {
     }
     
     newDataSource() {
-        if (!this.User.current.hasAnyPermission('permissionDatasource')) {
+        if (!this.User.current.hasSystemPermission('permissionDatasource')) {
             return;
         }
         

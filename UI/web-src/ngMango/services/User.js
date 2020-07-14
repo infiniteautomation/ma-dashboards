@@ -589,38 +589,39 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
 
         Object.assign(User.prototype, {
             /**
-             * returns true if user has any of the desired roles (can be an array or comma separated string)
+             * @param permission
+             * @returns {boolean} true if user has permission (i.e. they hold the required roles)
              */
-            hasAnyRole(roles, emptyIsAdminOnly) {
-                if (emptyIsAdminOnly && (!roles || !roles.length)) {
-                    roles = ['superadmin'];
-                }
-                
-                if (!roles || !roles.length) return true;
-
-                if (typeof roles === 'string') {
-                    roles = roles.split(/\s*,\s*/);
+            hasPermission(permission) {
+                if (typeof permission === 'string') {
+                    console.warn('Deprecated use of hasPermission():', permission);
+                    permission = permission.split(/\s*,\s*/).map(r => r.trim()).filter(r => r.length);
                 }
 
-                return roles.some(r => this.hasRole(r));
+                return permission.some(t => {
+                    if (typeof t === 'string') {
+                        return this.hasRole(t);
+                    } else {
+                        return t.every(r => this.hasRole(r));
+                    }
+                });
             },
-            
+
+            /**
+             * @param {string} role
+             * @returns {boolean} true if the user holds the specified role
+             */
             hasRole(role) {
                 // this.permissions is actually an array of the user's roles
                 return this.permissions.some(r => r === 'superadmin' || r === role);
             },
 
             /**
-             * returns true if user has any of the permissions (can be an array or a single permission string)
+             * @param {...string} permissionName name of the system permission
+             * @returns {boolean} true if the user has any of the system permissions
              */
-            hasAnyPermission(permission) {
-                if (!permission) return true;
-                
-                if (Array.isArray(permission)) {
-                    if (!permission.length) return true;
-                    return permission.some(p => this.grantedPermissions.includes(p));
-                }
-                return this.grantedPermissions.includes(permission);
+            hasSystemPermission(permissionName) {
+                return Array.prototype.some.call(arguments, p => this.grantedPermissions.includes(p));
             },
 
             getTimezone() {
