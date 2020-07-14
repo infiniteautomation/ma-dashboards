@@ -1,7 +1,17 @@
 <ma-ui-page-editor-controls on-page-changed="$ctrl.page = $page">
     <extra-controls layout>
-        <md-switch ng-model="$ctrl.showEditor" ma-tr-aria-label="ui.app.editor" ng-change="$ctrl.showPreview = $ctrl.showEditor ? $ctrl.showPreview : true"><span ma-tr="ui.app.editor"></span></md-switch>
-        <md-switch ng-model="$ctrl.showPreview" ma-tr-aria-label="ui.app.preview" ng-change="$ctrl.showEditor = $ctrl.showPreview ? $ctrl.showEditor : true"><span ma-tr="ui.app.preview"></span></md-switch>
+        <md-switch ma-form-exclude
+                   ng-model="$ctrl.showEditor"
+                   ma-tr-aria-label="ui.app.editor"
+                   ng-change="$ctrl.showPreview = $ctrl.showEditor ? $ctrl.showPreview : true">
+            <span ma-tr="ui.app.editor"></span>
+        </md-switch>
+        <md-switch ma-form-exclude
+                   ng-model="$ctrl.showPreview"
+                   ma-tr-aria-label="ui.app.preview"
+                   ng-change="$ctrl.showEditor = $ctrl.showPreview ? $ctrl.showEditor : true">
+            <span ma-tr="ui.app.preview"></span>
+        </md-switch>
     </extra-controls>
 </ma-ui-page-editor-controls>
 
