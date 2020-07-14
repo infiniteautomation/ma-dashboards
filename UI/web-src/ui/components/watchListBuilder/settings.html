@@ -21,22 +21,13 @@
       <label ma-tr="common.user"></label>
       <input ng-model="$ctrl.watchlist.username" disabled>
     </md-input-container>
-    <md-input-container flex="100" flex-gt-md="50">
-      <label ma-tr="ui.app.readPermission"></label>
-      <input ng-model="$ctrl.watchlist.readPermission" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
-      <div ng-messages="$ctrl.watchListForm.readPermission.$error">
-        <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
-      </div>
-      <ma-permissions-menu ng-model="$ctrl.watchlist.readPermission"></ma-permissions-menu>
-    </md-input-container>
-    <md-input-container flex="100" flex-gt-md="50">
-      <label ma-tr="ui.app.editPermission"></label>
-      <input name="editRoles" ng-model="$ctrl.watchlist.editPermission" ng-change="$ctrl.watchListForm.editPermission.$setValidity('server-error', true)" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$">
-      <div ng-messages="$ctrl.watchListForm.editRoles.$error">
-        <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
-        <div ng-message="validationMessage" ng-bind="$ctrl.watchListForm.editRoles.validationMessage"></div>
-      </div>
-      <ma-permissions-menu ng-model="$ctrl.watchlist.editPermission"></ma-permissions-menu>
-    </md-input-container>
   </div>
+  <ma-permission-editor-container>
+    <ma-permission-editor name="readPermission" ng-model="$ctrl.watchlist.readPermission">
+      <span ma-tr="ui.watchList.permission.read"></span>
+    </ma-permission-editor>
+    <ma-permission-editor name="editPermission" ng-model="$ctrl.watchlist.editPermission">
+      <span ma-tr="ui.watchList.permission.edit"></span>
+    </ma-permission-editor>
+  </ma-permission-editor-container>
 </div>

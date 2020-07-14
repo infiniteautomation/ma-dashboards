@@ -17,8 +17,8 @@ function WatchListFactory($resource, maUtil, $http, Point, $q,
         points: [],
         username: '',
         type: 'tags',
-        readPermission: 'user',
-        editPermission: 'edit-watchlists'
+        readPermission: ['user'],
+        editPermission: []
     };
     
     /**

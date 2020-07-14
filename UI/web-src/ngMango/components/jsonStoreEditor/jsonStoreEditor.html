@@ -17,25 +17,16 @@
                 <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
             </div>
         </md-input-container>
-        
-        <md-input-container>
-            <label ma-tr="ui.app.editPermission"></label>
-            <input name="editPermission" ng-model="$ctrl.storeItem.editPermission">
-            <div ng-messages="$ctrl.form.editPermission.$error">
-                <div ng-message="validationMessage" ng-bind="$ctrl.form.editPermission.validationMessage"></div>
-            </div>
-            <ma-permissions-menu ng-model="$ctrl.storeItem.editPermission"></ma-permissions-menu>
-        </md-input-container>
-        
-        <md-input-container>
-            <label ma-tr="ui.app.readPermission"></label>
-            <input name="readPermission" ng-model="$ctrl.storeItem.readPermission">
-            <div ng-messages="$ctrl.form.readPermission.$error">
-                <div ng-message="validationMessage" ng-bind="$ctrl.form.readPermission.validationMessage"></div>
-            </div>
-            <ma-permissions-menu ng-model="$ctrl.storeItem.readPermission"></ma-permissions-menu>
-        </md-input-container>
     </div>
+
+    <ma-permission-editor-container>
+        <ma-permission-editor name="readPermission" ng-model="$ctrl.storeItem.readPermission">
+            <span ma-tr="ui.jsonStore.permission.read"></span>
+        </ma-permission-editor>
+        <ma-permission-editor name="editPermission" ng-model="$ctrl.storeItem.editPermission">
+            <span ma-tr="ui.jsonStore.permission.edit"></span>
+        </ma-permission-editor>
+    </ma-permission-editor-container>
     
     <ma-ace-editor mode="json" name="jsonData" ng-model="$ctrl.storeItem.jsonData" ng-model-options="{debounce: 500}" ma-json-model ma-json-model-pretty="4"></ma-ace-editor>
     <div ng-if="$ctrl.form.jsonData.$error.jsonParseError" class="ma-error-text" ng-bind="$ctrl.form.jsonData.jsonParseError"></div>

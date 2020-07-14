@@ -13,18 +13,19 @@ import jsonStoreTableTemplate from './jsonStoreTable.html';
  * @description Displays a table of all the JSON store objects and allows editing and deleting them
  */
 
-const $inject = Object.freeze(['maJsonStore', '$q', '$filter', '$injector', '$window', 'maTranslate', '$scope']);
+const $inject = Object.freeze(['maJsonStore', '$q', '$filter', '$injector', '$window', 'maTranslate', '$scope', 'maPermission']);
 class JsonStoreTableController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
     
-    constructor(maJsonStore, $q, $filter, $injector, $window, maTranslate, $scope) {
+    constructor(maJsonStore, $q, $filter, $injector, $window, maTranslate, $scope, maPermission) {
         this.maJsonStore = maJsonStore;
         this.$q = $q;
         this.$filter = $filter;
         this.$window = $window;
         this.maTranslate = maTranslate;
         this.$scope = $scope;
+        this.maPermission = maPermission;
         
         if ($injector.has('maDialogHelper')) {
             this.maDialogHelper = $injector.get('maDialogHelper');
@@ -91,6 +92,10 @@ class JsonStoreTableController {
                 this.maJsonStore.notificationManager.notifyIfNotConnected('delete', item, item.xid);
             });
         }, angular.noop);
+    }
+
+    formatPermission(permission) {
+        return new this.maPermission(permission).toString();
     }
 }
 
