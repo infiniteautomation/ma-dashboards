@@ -97,13 +97,23 @@
     <md-tab-body>
         <div layout="row" class="md-padding ma-no-padding-bottom">
             <md-input-container flex="100" flex-gt-md="50">
+                <md-icon>group</md-icon>
                 <label ma-tr="ui.app.scriptRoles"></label>
-                <input name="scriptPermissions" ng-model="editor.eventHandler.scriptPermissions" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
+                <ma-drop-down-button>
+                    <span ng-bind="editor.eventHandler.scriptPermissions.join(', ')"></span>
+                    <ma-drop-down class="ma-script-roles-selector ma-full-screen-centered">
+                        <ma-role-selector name="scriptPermissions" ng-model="editor.eventHandler.scriptPermissions"
+                                          ng-multiple="::true" ma-configure-input-container></ma-role-selector>
+                        <div layout="row" ng-if="$dropDown.fullscreen">
+                            <md-button flex class="md-primary" ng-click="$dropDown.close()">
+                                <span ma-tr="common.ok"></span>
+                            </md-button>
+                        </div>
+                    </ma-drop-down>
+                </ma-drop-down-button>
                 <div ng-messages="editor.form.scriptPermissions.$error">
-                    <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
-                    <div ng-message="validationMessage" ng-bind="editor.form.permissions.validationMessage"></div>
+                    <div ng-message="validationMessage" ng-bind="editor.form.scriptPermissions.validationMessage"></div>
                 </div>
-                <ma-permissions-menu ng-model="editor.eventHandler.scriptPermissions"></ma-permissions-menu>
             </md-input-container>
         </div>
         <div class="md-padding ma-no-padding-bottom">

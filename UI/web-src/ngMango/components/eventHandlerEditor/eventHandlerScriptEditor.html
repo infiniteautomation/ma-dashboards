@@ -1,5 +1,6 @@
 <div layout layout-align="space-between center" layout-wrap class="ma-inputs-container">
     <md-input-container flex="100" flex-gt-md="50">
+        <md-icon>code</md-icon>
         <label ma-tr="script.scriptEngine"></label>
         <md-select name="engineName" ng-model="$ctrl.eventHandler.engineName" ng-change="$ctrl.updateEditMode()" required>
             <md-option ng-repeat="engine in $ctrl.engines | orderBy:'engineName' track by engine.engineName" ng-value="engine.engineName">
@@ -12,13 +13,23 @@
         </div>
     </md-input-container>
     <md-input-container flex="100" flex-gt-md="50">
+        <md-icon>group</md-icon>
         <label ma-tr="ui.app.scriptRoles"></label>
-        <input name="scriptRoles" ng-model="editor.eventHandler.scriptRoles" pattern="^\s*[\w-]+?\s*(,\s*[\w-]+?\s*)*$" ma-array-input>
+        <ma-drop-down-button>
+            <span ng-bind="editor.eventHandler.scriptRoles.join(', ')"></span>
+            <ma-drop-down class="ma-script-roles-selector ma-full-screen-centered">
+                <ma-role-selector name="scriptRoles" ng-model="editor.eventHandler.scriptRoles"
+                                  ng-multiple="::true" ma-configure-input-container></ma-role-selector>
+                <div layout="row" ng-if="$dropDown.fullscreen">
+                    <md-button flex class="md-primary" ng-click="$dropDown.close()">
+                        <span ma-tr="common.ok"></span>
+                    </md-button>
+                </div>
+            </ma-drop-down>
+        </ma-drop-down-button>
         <div ng-messages="editor.form.scriptRoles.$error">
-            <div ng-message="pattern" ma-tr="validate.invalidPermissions"></div>
             <div ng-message="validationMessage" ng-bind="editor.form.scriptRoles.validationMessage"></div>
         </div>
-        <ma-permissions-menu ng-model="editor.eventHandler.scriptRoles"></ma-permissions-menu>
     </md-input-container>
 </div>
 
