@@ -33,11 +33,11 @@ const queryProperties = [
         value: 'enabled'
     },
     {
-        labelTr: 'ui.app.readPermission',
+        labelTr: 'pointEdit.props.permission.read',
         value: 'readPermission'
     },
     {
-        labelTr: 'ui.app.setPermission',
+        labelTr: 'pointEdit.props.permission.set',
         value: 'setPermission'
     },
     {
