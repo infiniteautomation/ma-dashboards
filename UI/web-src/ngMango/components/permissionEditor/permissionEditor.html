@@ -7,7 +7,7 @@
     </div>
 </div>
 <div class="ma-permission-editor-cell ma-permission-editor-checkbox-column" ng-repeat="column in $ctrl.columns track by column.minterm.id">
-    <md-checkbox ng-model="column.checked" ng-change="$ctrl.columnChanged(column)" ng-disabled="column.hasSuperadmin"></md-checkbox>
+    <md-checkbox ng-model="column.checked" ng-change="$ctrl.columnChanged(column)" ng-disabled="column.hasSuperadmin || $ctrl.disabled"></md-checkbox>
 </div>
 <div class="ma-permission-editor-cell ma-permission-editor-other-column">
     <div ng-repeat="minterm in $ctrl.additionalMinterms track by minterm.id" class="ma-ellipsis">

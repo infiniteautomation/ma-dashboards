@@ -59,7 +59,8 @@ export default {
         containerCtrl: '^^maPermissionEditorContainer'
     },
     bindings: {
-        description: '@'
+        description: '@',
+        disabled: '<?ngDisabled'
     },
     controller: PermissionEditorController,
     template: permissionEditorTemplate
