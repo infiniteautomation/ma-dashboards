@@ -44,8 +44,6 @@ class PageEditorControlsController {
         this.maRevisionHistoryDialog = maRevisionHistoryDialog;
         this.maJsonStore = maJsonStore;
         this.maUtil = maUtil;
-        
-        this.showInputs = false;
     }
 
     $onInit() {
@@ -147,20 +145,15 @@ class PageEditorControlsController {
         }
         page.jsonData.markup = markup || '';
         this.menuItem = null;
-        this.showInputs = true;
+        this.showInputs = {};
         return this.setSelectedPage(page);
     }
     
     inputsDirty() {
-        const form = this.pageEditorForm;
-        return form.pageName.$dirty || form.readPermission.$dirty || form.editPermission.$dirty;
+        return this.pageEditorForm && this.pageEditorForm.$dirty;
     }
-    
-    autocompleteChanged() {
-        // md-autocomplete calls this method whenever md-selected-item changes, track changes ourself
-        if (this.selectedPageSummary === this.prevSelectedPageSummary) {
-            return;
-        }
+
+    pageChanged() {
         this.confirmLoadPage(this.selectedPageSummary ? this.selectedPageSummary.xid : null);
     }
     
@@ -171,7 +164,7 @@ class PageEditorControlsController {
                 return;
             }
         }
-    
+
         if (xid) {
             this.loadPage(xid);
         } else {
@@ -192,7 +185,6 @@ class PageEditorControlsController {
         });
         
         return this.$q.all([menuItemPromise, pagePromise]).then(([menuItem, page]) => {
-            this.showInputs = false;
             return this.setSelectedPage(page);
         }, () => {
             return this.createNewPage();
@@ -205,11 +197,13 @@ class PageEditorControlsController {
         this.selectedPage = page;
         this.prevSelectedPageSummary = this.selectedPageSummary = page.isNew() ? null : pageToSummary(page);
         this.updateViewLink();
+
         // form might not have initialized
         if (this.pageEditorForm) {
             this.pageEditorForm.$setPristine();
             this.pageEditorForm.$setUntouched();
         }
+
         if (triggerChange && this.onPageChanged) {
             this.onPageChanged({$page: page});
         }
@@ -288,8 +282,6 @@ class PageEditorControlsController {
         this.pageEditorForm.$setSubmitted();
         if (this.pageEditorForm.$valid) {
             return this.selectedPage.$save().then(page => {
-                this.showInputs = false;
-                
                 this.localStorageService.set('lastSelectedPage', {
                     pageXid: page.xid
                 });
@@ -333,7 +325,7 @@ class PageEditorControlsController {
                 this.$mdToast.show(errorToast);
             });
         } else {
-            this.showInputs = true;
+            this.showInputs = {};
         }
     }
     
