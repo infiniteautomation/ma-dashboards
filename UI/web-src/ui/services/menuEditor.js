@@ -6,8 +6,8 @@
 import angular from 'angular';
 import menuEditorDialogTemplate from './menuEditorDialog.html';
 
-MenuEditorFactory.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', 'maUiPages', '$q', 'maUtil'];
-function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
+MenuEditorFactory.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', 'maUiPages', '$q', 'maUtil', 'maSystemPermission'];
+function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util, maSystemPermission) {
 
     class MenuEditor {
     
@@ -31,7 +31,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                         isNew: true,
                         pageXid: pageXid,
                         linkToPage: true,
-                        permission: 'user',
+                        permission: ['user'],
                         name: '',
                         url: '',
                         params: {
@@ -193,6 +193,21 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                             }
                         }
                     };
+
+                    this.getSystemPermissions = (filter) => {
+                        const builder = maSystemPermission.buildQuery();
+
+                        if (filter) {
+                            const filterWildcard = `*${filter}*`;
+                            builder.or()
+                                .match('moduleName', filterWildcard)
+                                .match('description', filterWildcard)
+                                .up()
+                        }
+
+                        return builder.sort('moduleName', 'description')
+                            .query();
+                    };
                     
                     this.item.parent.children.forEach((item) => {
                         urlPathMap[item.url] = true;
@@ -276,7 +291,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util) {
                 }
                 
                 if (item.permission == null) {
-                    item.permission = '';
+                    item.permission = [];
                 }
 
                 return item;

@@ -103,7 +103,7 @@ function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
                         url: '/',
                         parent: $scope.currentItem,
                         linkToPage: true,
-                        permission: 'user'
+                        permission: ['user']
                     };
                 }
 
