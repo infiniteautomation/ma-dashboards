@@ -88,8 +88,12 @@
             <ma-drop-down-button ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasRole('superadmin')">
                 <span ng-bind="$ctrl.user.permissions.join(', ')"></span>
                 <ma-drop-down class="ma-user-editor-role-selector ma-full-screen-centered">
-                    <ma-role-selector name="permissions" ng-model="$ctrl.user.permissions" ng-multiple="::true"
-                                      ng-disabled="$ctrl.disabled" ma-configure-input-container></ma-role-selector>
+                    <ma-role-selector name="permissions"
+                                      ng-model="$ctrl.user.permissions"
+                                      ng-multiple="::true"
+                                      ng-disabled="$ctrl.disabled"
+                                      disabled-options="::['user']"
+                                      ma-configure-input-container></ma-role-selector>
                     <div layout="row" ng-if="$dropDown.fullscreen">
                         <md-button flex class="md-primary" ng-click="$dropDown.close()">
                             <span ma-tr="common.ok"></span>

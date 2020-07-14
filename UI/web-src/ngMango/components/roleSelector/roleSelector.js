@@ -8,10 +8,11 @@ import './roleSelector.css';
 
 class RoleSelectorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maRole']; }
+    static get $inject() { return ['maRole', '$element']; }
     
-    constructor(maRole) {
+    constructor(maRole, $element) {
         this.maRole = maRole;
+        this.$element = $element;
         this.selected = new Set();
     }
     
@@ -25,6 +26,13 @@ class RoleSelectorController {
             this.disabledOptionsMap = {};
             if (Array.isArray(this.disabledOptions)) {
                 this.disabledOptions.forEach(r => this.disabledOptionsMap[r] = true);
+            }
+        }
+        if (changes.multiple) {
+            if (this.multiple) {
+                this.$element[0].setAttribute('multiple', 'multiple');
+            } else {
+                this.$element[0].removeAttribute('multiple');
             }
         }
     }

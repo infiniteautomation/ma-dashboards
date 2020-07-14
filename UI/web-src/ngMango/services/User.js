@@ -211,9 +211,10 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             email: '',
             phone: '',
             homeUrl: '',
-            locale: '',
-            timezone: '',
-            permissions: [],
+            locale: null,
+            timezone: null,
+            // this is actually a list of roles the user holds
+            permissions: ['user'],
             muted: true,
             receiveOwnAuditEvents: false,
             disabled: false,
@@ -593,11 +594,6 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
              * @returns {boolean} true if user has permission (i.e. they hold the required roles)
              */
             hasPermission(permission) {
-                if (typeof permission === 'string') {
-                    console.warn('Deprecated use of hasPermission():', permission);
-                    permission = permission.split(/\s*,\s*/).map(r => r.trim()).filter(r => r.length);
-                }
-
                 return permission.some(t => {
                     if (typeof t === 'string') {
                         return this.hasRole(t);
