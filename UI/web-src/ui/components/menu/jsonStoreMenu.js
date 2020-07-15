@@ -3,45 +3,46 @@
  * @author Jared Wiltshire
  */
 
-JsonStoreMenuController.$inject = ['$scope', 'maUiMenu'];
-function JsonStoreMenuController($scope, Menu) {
+class JsonStoreMenuController {
+    static get $$ngIsClass() { return true; }
+    static get $inject() { return ['$scope', 'maUiMenu']; }
 
-    this.$onInit = function() {
+    constructor($scope, maUiMenu) {
+        this.$scope = $scope;
+        this.maUiMenu = maUiMenu;
+    }
+
+    $onInit() {
         this.retrieveMenu();
         
-        $scope.$on('maUIMenuChanged', function(event, menuHierarchy) {
+        this.$scope.$on('maUIMenuChanged', (event, menuHierarchy) => {
             this.createMenuItemArray(menuHierarchy);
-        }.bind(this));
-    };
+        });
+    }
 
-    this.retrieveMenu = function() {
-        Menu.getMenuHierarchy().then(function(menuHierarchy) {
+    retrieveMenu() {
+        this.maUiMenu.getMenuHierarchy().then((menuHierarchy) => {
             this.createMenuItemArray(menuHierarchy);
-        }.bind(this));
-    };
+        });
+    }
     
-    this.createMenuItemArray = function(menuHierarchy) {
+    createMenuItemArray(menuHierarchy) {
+        // slice array so we dont modify the original
         const rootArray = menuHierarchy.children.slice();
         
         // combine root menu items and items under ui into a top level menu array
-        rootArray.some(function(item, index, array) {
-            if (item.name === 'ui') {
-                array.splice(index, 1);
-                Array.prototype.push.apply(array, item.children);
-                return true;
-            }
-        });
-        
+        const i = rootArray.findIndex(item => item.name === 'ui');
+        const ui = rootArray[i];
+        rootArray.splice(i, 1, ...ui.children);
+
         this.menuItems = rootArray;
-    };
+    }
 }
 
 export default {
     controller: JsonStoreMenuController,
     template: '<ma-ui-menu menu-items="$ctrl.menuItems" user="$ctrl.user"></ma-ui-menu>',
     bindings: {
-        user: '<user'
+        user: '<'
     }
 };
-
-
