@@ -1,5 +1,5 @@
 /**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2020 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -7,196 +7,192 @@ import menuEditorTemplate from './menuEditor.html';
 import './menuEditor.css';
 import angular from 'angular';
 
-menuEditor.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', '$mdMedia', 'maUiMenuEditor'];
-function menuEditor(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
-    return {
-        scope: {},
-        template: menuEditorTemplate,
-        link: function($scope, $element) {
-            const scrollToTopOfMdContent = function() {
-                let elem = $element[0];
-                while ((elem = elem.parentElement)) {
-                    if (elem.tagName === 'MD-CONTENT') {
-                        elem.scrollTop = 0;
-                        break;
+menuEditorDirective.$inject = ['maUiMenu', '$mdDialog', 'maTranslate', '$mdMedia', 'maUiMenuEditor'];
+function menuEditorDirective(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEditor) {
+
+    class MenuEditorController {
+        static get $$ngIsClass() { return true; }
+        static get $inject() { return ['$element']; }
+
+        constructor($element) {
+            this.$element = $element;
+            this.$mdMedia = $mdMedia;
+        }
+
+        $onInit() {
+            this.getHierarchy();
+        }
+
+        scrollToTopOfMdContent() {
+            let elem = this.$element[0];
+            while ((elem = elem.parentElement)) {
+                if (elem.tagName === 'MD-CONTENT') {
+                    elem.scrollTop = 0;
+                    break;
+                }
+            }
+        }
+
+        setHierarchy(menuHierarchy) {
+            this.menuHierarchy = angular.copy(menuHierarchy);
+            this.path = [];
+            this.enterSubmenu(null, this.menuHierarchy);
+
+            const uiItem = this.menuHierarchy.children.find(item => item.name === 'ui');
+            if (uiItem) {
+                this.enterSubmenu(null, uiItem);
+            }
+        }
+
+        getHierarchy() {
+            Menu.getMenuHierarchy().then(h => this.setHierarchy(h));
+        }
+
+        enterSubmenu(event, menuItem) {
+            this.path.push(menuItem);
+            this.currentItem = menuItem;
+            this.getChildren();
+            this.scrollToTopOfMdContent();
+        }
+
+        goToIndex(event, index) {
+            this.path.splice(index+1, this.path.length - 1 - index);
+            this.currentItem = this.path[this.path.length-1];
+            this.getChildren();
+            this.scrollToTopOfMdContent();
+        }
+
+        getChildren() {
+            this.editItems = this.currentItem.children || [];
+        }
+
+        deleteCustomMenu(event) {
+            const confirm = $mdDialog.confirm()
+                .title(Translate.trSync('ui.app.areYouSure'))
+                .textContent(Translate.trSync('ui.app.confirmRestoreDefaultMenu'))
+                .ariaLabel(Translate.trSync('ui.app.areYouSure'))
+                .targetEvent(event)
+                .ok(Translate.trSync('common.ok'))
+                .cancel(Translate.trSync('common.cancel'));
+
+            $mdDialog.show(confirm).then(() => {
+                Menu.deleteMenu().then(h => this.setHierarchy(h));
+            });
+        }
+
+        removeItem(toBeRemoved) {
+            const index = this.editItems.findIndex(item => toBeRemoved.name === item.name);
+            if (index >= 0) {
+                this.editItems.splice(index, 1);
+            }
+        }
+
+        createNewChild() {
+            return {
+                isNew: true,
+                name: this.currentItem.name ? this.currentItem.name + '.' : '',
+                url: '/',
+                parent: this.currentItem,
+                linkToPage: true,
+                permission: ['user']
+            };
+        }
+
+        editItem(event, origItem = this.createNewChild()) {
+            const parent = origItem.parent;
+            const isNew = origItem.isNew;
+
+            maUiMenuEditor.editMenuItem(event, this.menuHierarchy, origItem).then(item => {
+                const newParent = item.parent;
+
+                // remove item from the original parent's children if it was deleted or moved
+                if (!isNew && (item.deleted || parent !== newParent)) {
+                    const index = parent.children.findIndex(item => item.name === origItem.name);
+                    if (index >= 0) {
+                        parent.children.splice(index, 1);
+                    }
+                    if (!parent.children.length) {
+                        delete parent.children;
+                    }
+                    if (item.deleted) {
+                        return;
                     }
                 }
-            };
 
-            const setHierarchy = function setHierarchy(menuHierarchy) {
-                $scope.menuHierarchy = menuHierarchy;
-                $scope.path = [];
-                $scope.enterSubmenu(null, $scope.menuHierarchy);
+                // copy item properties back onto original item
+                if (!isNew) {
+                    const children = origItem.children;
 
-                let uiItem;
-                $scope.menuHierarchy.children.some(function(item) {
-                    return (uiItem = item.name === 'ui' && item);
-                });
-
-                if (uiItem) {
-                    $scope.enterSubmenu(null, uiItem);
-                }
-            };
-
-            $scope.getHierarchy = function getHierarchy() {
-                Menu.getMenuHierarchy().then(setHierarchy);
-            };
-
-            $scope.enterSubmenu = function enterSubmenu(event, menuItem) {
-                $scope.path.push(menuItem);
-                $scope.currentItem = menuItem;
-                $scope.getChildren();
-                scrollToTopOfMdContent();
-            };
-            
-            $scope.goToIndex = function goUp(event, index) {
-                $scope.path.splice(index+1, $scope.path.length - 1 - index);
-                $scope.currentItem = $scope.path[$scope.path.length-1];
-                $scope.getChildren();
-                scrollToTopOfMdContent();
-            };
-            
-            $scope.getChildren = function getChildren() {
-                if (!$scope.currentItem.children) {
-                    $scope.editItems = [];
-                    return;
-                }
-                
-                // sort items by weight then name
-                $scope.editItems = $scope.currentItem.children.sort(function(a, b) {
-                    if (a.weight < b.weight) return -1;
-                    if (a.weight > b.weight) return 1;
-                    if (a.name < b.name) return -1;
-                    if (a.name > b.name) return 1;
-                    return 0;
-                });
-            };
-
-            $scope.deleteCustomMenu = function deleteCustomMenu(event) {
-                const confirm = $mdDialog.confirm()
-                    .title(Translate.trSync('ui.app.areYouSure'))
-                    .textContent(Translate.trSync('ui.app.confirmRestoreDefaultMenu'))
-                    .ariaLabel(Translate.trSync('ui.app.areYouSure'))
-                    .targetEvent(event)
-                    .ok(Translate.trSync('common.ok'))
-                    .cancel(Translate.trSync('common.cancel'));
-                
-                $mdDialog.show(confirm).then(function() {
-                    Menu.deleteMenu().then(setHierarchy);
-                });
-            };
-
-            $scope.removeItem = function(toBeRemoved) {
-                $scope.editItems.some(function(item, index, array) {
-                    if (toBeRemoved.name === item.name) {
-                        array.splice(index, 1);
-                        return true;
-                    }
-                });
-            };
-
-            $scope.editItem = function($event, origItem) {
-                if (!origItem) {
-                    origItem = {
-                        isNew: true,
-                        name: $scope.currentItem.name ? $scope.currentItem.name + '.' : '',
-                        url: '/',
-                        parent: $scope.currentItem,
-                        linkToPage: true,
-                        permission: ['user']
-                    };
-                }
-
-                const parent = origItem.parent;
-                const isNew = origItem.isNew;
-                
-                maUiMenuEditor.editMenuItem($event, $scope.menuHierarchy, origItem).then(function(item) {
-                    const newParent = item.parent;
-                    
-                    // remove item from the original parent's children if it was deleted or moved
-                    if (!isNew && (item.deleted || parent !== newParent)) {
-                        parent.children.some(function(item, i, array) {
-                            if (item.name === origItem.name) {
-                                return array.splice(i, 1);
+                    // update child state names
+                    if (item.name !== origItem.name) {
+                        Menu.forEach(children, child => {
+                            const search = origItem.name + '.';
+                            if (child.name.indexOf(search) === 0) {
+                                child.name = item.name + '.' + child.name.substring(search.length);
+                            } else {
+                                throw new Error('child has invalid name: ' + child.name);
                             }
                         });
-                        if (!parent.children.length) {
-                            delete parent.children;
-                        }
-                        if (item.deleted) {
-                            return;
-                        }
                     }
 
-                    // copy item properties back onto original item
-                    if (!isNew) {
-                        const children = origItem.children;
-                        
-                        // update child state names
-                        if (item.name !== origItem.name) {
-                            Menu.forEach(children, function(child) {
-                                const search = origItem.name + '.';
-                                if (child.name.indexOf(search) === 0) {
-                                    child.name = item.name + '.' + child.name.substring(search.length);
-                                } else {
-                                    console.warn('child has invalid name', child);
-                                }
-                            });
-                        }
-                        
-                        // prevent stack overflow from cyclic copy of children/parent
-                        delete item.children;
-                        delete item.parent;
-                        
-                        item = angular.copy(item, origItem);
-                        
-                        // set the original children/parent back on the item
-                        item.children = children;
-                        item.parent = newParent;
-                    }
+                    // prevent stack overflow from cyclic copy of children/parent
+                    delete item.children;
+                    delete item.parent;
 
-                    // add item back into new parent's children
-                    if (isNew || parent !== newParent) {
-                        if (!newParent.children)
-                            newParent.children = [];
-                        newParent.children.push(item);
-                    }
-                    
-                    // sorts array in case of new item added
-                    $scope.getChildren();
-                }, () => null);
-            };
+                    item = angular.copy(item, origItem);
 
-            // updates the weights, attempting to keep them as close as possible to the original array
-            $scope.updateWeights = function updateWeights(menuItem = this.menuHierarchy) {
-                let weight = -Infinity;
-                menuItem.children.forEach((item, index, array) => {
-                    if (item.weight > weight) {
-                        weight = item.weight;
-                    } else {
-                        if (index !== 0 && array[index - 1].name > item.name) {
-                            weight++;
-                        }
-                        item.weight = weight;
-                    }
-                    if (Array.isArray(item.children)) {
-                        this.updateWeights(item);
-                    }
-                });
-            };
+                    // set the original children/parent back on the item
+                    item.children = children;
+                    item.parent = newParent;
+                }
 
-            $scope.saveMenu = function saveMenu() {
-                $scope.updateWeights();
-                Menu.saveMenu($scope.menuHierarchy).then(setHierarchy);
-            };
+                // add item back into new parent's children
+                if (isNew || parent !== newParent) {
+                    if (!newParent.children)
+                        newParent.children = [];
+                    newParent.children.push(item);
 
-            $scope.menuEditor = {};
-            $scope.$mdMedia = $mdMedia;
-            $scope.getHierarchy();
+                    // sort array by weight then name
+                    Menu.sortMenuItems(newParent.children);
+                }
+            }, () => null);
         }
+
+        /**
+         * updates the weights, attempting to keep them as close as possible to the original array
+         * @param menuItem
+         */
+        updateWeights(menuItem = this.menuHierarchy) {
+            let weight = -Infinity;
+            menuItem.children.forEach((item, index, array) => {
+                if (item.weight > weight) {
+                    weight = item.weight;
+                } else {
+                    if (index !== 0 && array[index - 1].name > item.name) {
+                        weight++;
+                    }
+                    item.weight = weight;
+                }
+                if (Array.isArray(item.children)) {
+                    this.updateWeights(item);
+                }
+            });
+        }
+
+        saveMenu() {
+            this.updateWeights();
+            Menu.saveMenu(this.menuHierarchy).then(h => this.setHierarchy(h));
+        }
+    }
+
+    return {
+        restrict: 'E',
+        scope: {},
+        template: menuEditorTemplate,
+        controller: MenuEditorController,
+        controllerAs: '$ctrl',
+        bindToController: true
     };
 }
 
-export default menuEditor;
-
-
+export default menuEditorDirective;
