@@ -226,7 +226,7 @@ class WatchListBuilderController {
             const watchlist = this.$state.params.watchList;
             watchlist.username = this.User.current.username;
             watchlist.readPermission = ['user'];
-            watchlist.editPermission = this.User.current.hasAnyRole('edit-watchlists') ? 'edit-watchlists' : '';
+            watchlist.editPermission = [];
             this.editWatchlist(watchlist);
             this.resetForm();
         } else {
@@ -237,8 +237,8 @@ class WatchListBuilderController {
     getWatchlist(xid) {
         this.WatchList.get({xid: xid}).$promise.then(wl => {
             const user = this.User.current;
-            if (wl.username !== user.username && !user.hasAnyRole(wl.editPermission)) {
-                throw 'no edit permission';
+            if (wl.username !== user.username && !user.hasPermission(wl.editPermission)) {
+                throw new Error('No edit permission');
             }
             this.selectedWatchlist = wl;
             this.watchlistSelected();
@@ -248,12 +248,12 @@ class WatchListBuilderController {
     }
     
     refreshWatchlists() {
-        this.WatchList.query({rqlQuery: 'sort(name)'}).$promise.then(watchlists => {
+        this.WatchList.buildQuery().sort('name').query().then(watchlists => {
             const filtered = [];
             const user = this.User.current;
             for (let i = 0; i < watchlists.length; i++) {
                 const wl = watchlists[i];
-                if (wl.username === user.username || user.hasAnyRole(wl.editPermission)) {
+                if (wl.username === user.username || user.hasPermission(wl.editPermission)) {
                     if (this.selectedWatchlist && this.selectedWatchlist.xid === wl.xid) {
                         filtered.push(this.selectedWatchlist);
                     } else {
