@@ -537,7 +537,7 @@ function serialChart(MA_AMCHARTS_DATE_FORMATS, Util, mangoDateFormats, $timeout,
               if ($scope.options && $scope.options.valueAxes) {
                   let customAxisColors = false;
                   $scope.options.valueAxes.some((axis, index, array) => {
-                      if (axis.color) {
+                      if (axis.color || axis.axisColor) {
                             // Turn on custom color mode
                             customAxisColors = true;
                             return true;
