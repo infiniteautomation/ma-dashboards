@@ -594,7 +594,8 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
              * @returns {boolean} true if user has permission (i.e. they hold the required roles)
              */
             hasPermission(permission) {
-                return permission.some(t => {
+                // use isArray() to deal with unresolved expressions used in templates
+                return Array.isArray(permission) && permission.some(t => {
                     if (typeof t === 'string') {
                         return this.hasRole(t);
                     } else {
