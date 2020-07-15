@@ -28,13 +28,12 @@ function livePreviewDirective($compile) {
                 this.childScope = null;
             }
 
+            this.$element.empty();
             if (this.livePreview) {
                 this.childScope = this.$scope.$new();
                 const compileText = '<div>' + this.livePreview + '</div>';
                 const $div = $compile(compileText)(this.childScope);
                 this.$element.append($div.contents());
-            } else {
-                this.$element.empty();
             }
         }
     }
