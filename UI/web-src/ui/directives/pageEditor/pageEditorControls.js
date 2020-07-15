@@ -145,7 +145,7 @@ class PageEditorControlsController {
         }
         page.jsonData.markup = markup || '';
         this.menuItem = null;
-        this.showInputs = {};
+        this.showDialog();
         return this.setSelectedPage(page);
     }
     
@@ -278,7 +278,7 @@ class PageEditorControlsController {
         });
     }
     
-    savePage() {
+    savePage(dialog) {
         this.pageEditorForm.$setSubmitted();
         if (this.pageEditorForm.$valid) {
             return this.selectedPage.$save().then(page => {
@@ -312,6 +312,9 @@ class PageEditorControlsController {
                     .hideDelay(5000);
 
                 this.$mdToast.show(toast);
+                if (dialog) {
+                    dialog.hide();
+                }
             }, error => {
                 const errorToast = this.$mdToast.simple()
                     .textContent(this.Translate.trSync('ui.app.errorSavingPage', [this.selectedPage.name, error.mangoStatusText]))
@@ -325,10 +328,16 @@ class PageEditorControlsController {
                 this.$mdToast.show(errorToast);
             });
         } else {
+            this.showDialog();
+        }
+    }
+
+    showDialog() {
+        if (!this.showInputs) {
             this.showInputs = {};
         }
     }
-    
+
     keyDownHandler(event) {
         // ctrl-s
         if ((event.ctrlKey || event.metaKey) && event.which === 83) {

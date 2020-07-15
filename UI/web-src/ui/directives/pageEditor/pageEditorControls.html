@@ -19,20 +19,21 @@
                     </ma-drop-down>
                 </ma-drop-down-button>
             </md-input-container>
-
             <md-button class="md-icon-button" ng-click="$ctrl.confirmLoadPage()">
                 <md-icon>add_box</md-icon>
                 <md-tooltip md-delay="150" md-direction="bottom" md-autohide>
                     <span ma-tr="ui.app.newPage"></span>
                 </md-tooltip>
             </md-button>
-            <md-button class="md-icon-button md-primary" ng-click="$ctrl.savePage()" ng-disabled="!($ctrl.inputsDirty() || $ctrl.selectedPage.$dirty) || !$ctrl.pageSummaryStore">
+            <md-button class="md-icon-button md-primary" ng-click="$ctrl.savePage()"
+                       ng-disabled="!$ctrl.selectedPage || !$ctrl.pageSummaryStore || !($ctrl.inputsDirty() || $ctrl.selectedPage.$dirty)">
                 <md-icon>save</md-icon>
                 <md-tooltip md-delay="150" md-direction="bottom" md-autohide>
                     <span ma-tr="common.save"></span>
                 </md-tooltip>
             </md-button>
-            <md-button class="md-icon-button md-warn" ng-click="$ctrl.confirmDeletePage($event)" ng-disabled="$ctrl.selectedPage.isNew() || !$ctrl.pageSummaryStore">
+            <md-button class="md-icon-button md-warn" ng-click="$ctrl.confirmDeletePage($event)"
+                       ng-disabled="$ctrl.selectedPage.isNew() || !$ctrl.pageSummaryStore">
               <md-icon>delete</md-icon>
               <md-tooltip md-delay="150" md-direction="bottom" md-autohide><span ma-tr="ui.app.deletePage"></span></md-tooltip>
             </md-button>
@@ -57,7 +58,8 @@
                     <span ma-tr="ui.app.showRevisionHistory"></span>
                 </md-tooltip>
             </md-button>
-            <md-button ng-click="$ctrl.editMenuItem($event)" class="md-icon-button" ng-disabled="$ctrl.selectedPage.isNew() || !$ctrl.User.current.hasSystemPermission('ui.menus.edit')">
+            <md-button ng-click="$ctrl.editMenuItem($event)" class="md-icon-button"
+                       ng-disabled="$ctrl.selectedPage.isNew() || !$ctrl.User.current.hasSystemPermission('ui.menus.edit')">
                 <md-icon>menu</md-icon>
                 <md-tooltip md-delay="150" md-direction="bottom" md-autohide>
                     <span ma-tr="ui.app.addEditMenuItem"></span>
@@ -74,23 +76,40 @@
     <div flex="50" layout layout-align="end start" ng-transclude="extraControls"></div>
 </div>
 
-<ma-dialog show-dialog="$ctrl.showInputs">
-    <span class="ma-dialog-title" ma-tr="ui.app.editNameAndPermissions"></span>
-    <div layout="column">
-        <md-input-container>
-            <label ma-tr="ui.app.pageName"></label>
-            <input name="pageName" required ng-model="$ctrl.selectedPage.name" ma-parent-form="$ctrl.pageEditorForm">
-            <div ng-messages="$ctrl.pageEditorForm.pageName.$error">
-                <div ng-message="required" ma-tr="validate.required"></div>
+<ma-dialog show-dialog="$ctrl.showInputs" on-close="$ctrl.showInputs = null">
+    <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ma-tr="ui.app.editNameAndPermissions"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
             </div>
-        </md-input-container>
-        <ma-permission-editor-container>
-            <ma-permission-editor name="readPermission" ng-model="$ctrl.selectedPage.readPermission" ma-parent-form="$ctrl.pageEditorForm">
-                <span ma-tr="ui.page.permission.read"></span>
-            </ma-permission-editor>
-            <ma-permission-editor name="editPermission" ng-model="$ctrl.selectedPage.editPermission" ma-parent-form="$ctrl.pageEditorForm">
-                <span ma-tr="ui.page.permission.edit"></span>
-            </ma-permission-editor>
-        </ma-permission-editor-container>
-    </div>
+        </md-toolbar>
+
+        <md-dialog-content flex class="md-padding">
+            <div layout="column">
+                <md-input-container>
+                    <label ma-tr="ui.app.pageName"></label>
+                    <input name="pageName" required ng-model="$ctrl.selectedPage.name" ma-parent-form="$ctrl.pageEditorForm">
+                    <div ng-messages="$ctrl.pageEditorForm.pageName.$error">
+                        <div ng-message="required" ma-tr="validate.required"></div>
+                    </div>
+                </md-input-container>
+                <ma-permission-editor-container>
+                    <ma-permission-editor name="readPermission" ng-model="$ctrl.selectedPage.readPermission" ma-parent-form="$ctrl.pageEditorForm">
+                        <span ma-tr="ui.page.permission.read"></span>
+                    </ma-permission-editor>
+                    <ma-permission-editor name="editPermission" ng-model="$ctrl.selectedPage.editPermission" ma-parent-form="$ctrl.pageEditorForm">
+                        <span ma-tr="ui.page.permission.edit"></span>
+                    </ma-permission-editor>
+                </ma-permission-editor-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <md-button ng-click="$dialog.cancel()"><span ma-tr="common.cancel"></span></md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.savePage($dialog)" ng-disabled="!$ctrl.selectedPage || !$ctrl.pageSummaryStore"><span ma-tr="common.save"></span></md-button>
+        </md-dialog-actions>
+    </md-dialog>
 </ma-dialog>
