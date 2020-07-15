@@ -10,11 +10,14 @@ function parentFormDirective() {
         scope: false,
         require: {
             ngModel: '?ngModel',
-            form: '?form'
+            form: '?form',
+            mdInputContainer: '?^^mdInputContainer'
         },
         link: function($scope, $element, $attrs, controllers) {
             const ngModel = controllers.ngModel;
             const form = controllers.form;
+            const mdInputContainer = controllers.mdInputContainer;
+
 
             $scope.$watch($attrs.maParentForm, (parentForm) => {
                 if (ngModel) {
@@ -30,6 +33,12 @@ function parentFormDirective() {
                     }
                 }
             });
+
+            if (mdInputContainer) {
+                mdInputContainer.isErrorGetter = () => {
+                    return ngModel.$invalid && (ngModel.$touched || ngModel.$$parentForm.$submitted);
+                };
+            }
         }
     };
 }
