@@ -17,6 +17,7 @@
                                 <ma-drop-down class="ma-model-type-select ma-full-screen-centered" auto-focus="::false">
                                     <ma-option-list name="modelType"
                                                     ng-model="$ctrl.dataSource.modelType"
+                                                    ng-change="$ctrl.typeChanged()"
                                                     ng-disabled="!$ctrl.dataSource.isNew()"
                                                     items="$ctrl.types | maFilter:$filter"
                                                     ma-configure-input-container>
