@@ -126,8 +126,16 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
 
     this.$get = MenuFactory;
 
-    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope'];
-    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope) {
+    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'maPermission'];
+    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, Permission) {
+
+        const compareMenuItems = (a, b) => {
+            if (a.weight < b.weight) return -1;
+            if (a.weight > b.weight) return 1;
+            if (a.name < b.name) return -1;
+            if (a.name > b.name) return 1;
+            return 0;
+        };
 
         class Menu {
             constructor() {
@@ -193,7 +201,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                     this.combineMenuItems();
                     // register the custom menu items which may have been added
                     registerStates(this.customMenuItems);
-                    $rootScope.$apply($rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy));
+                    $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
                 }
             }
     
@@ -246,9 +254,8 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 
                 jsonMenuItems.forEach(item => {
                     if (this.menuItemsByName[item.name]) {
-                        angular.merge(this.menuItemsByName[item.name], item);
+                        Object.assign(this.menuItemsByName[item.name], item);
                     } else {
-                        setDefaults(item);
                         this.menuItems.push(item);
                         // need to copy it as unflattenMenu() will add a parent/children to it below
                         this.customMenuItems.push(angular.copy(item));
@@ -256,14 +263,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 });
                 
                 // set defaults
-                this.menuItems.forEach(menuItem => {
-                    if (menuItem.weight == null) {
-                        menuItem.weight = 1000;
-                    }
-                    if (menuItem.permission == null) {
-                        menuItem.permission = ['user'];
-                    }
-                });
+                this.menuItems.forEach(setDefaults);
                 
                 this.menuHierarchy = unflattenMenu(this.menuItems);
                 return this.menuItems;
@@ -303,12 +303,9 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                     const originalItem = this.defaultMenuItemsByName[item.name];
                     if (!originalItem) {
                         different.push(item);
-                    } else if (!angular.equals(item, originalItem)) {
+                    } else {
                         const difference = calculateDifference(item, originalItem);
-                        if (Object.keys(difference).length === 1) {
-                            // only has the name property
-                            console.warn('cant detect difference', item, originalItem);
-                        } else {
+                        if (difference) {
                             different.push(difference);
                         }
                     }
@@ -340,9 +337,11 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                     const originalItem = this.defaultMenuItemsByName[menuItem.name];
                     if (!originalItem) {
                         this.storeObject.jsonData.menuItems.push(menuItem);
-                    } else if (!angular.equals(menuItem, originalItem)) {
+                    } else {
                         const difference = calculateDifference(menuItem, originalItem);
-                        this.storeObject.jsonData.menuItems.push(difference);
+                        if (difference) {
+                            this.storeObject.jsonData.menuItems.push(difference);
+                        }
                     }
         
                     return this.storeObject.$save().then(() => {
@@ -384,6 +383,10 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                     result = this.forEach(menuItem.children, fn);
                     if (result) return result;
                 }
+            }
+
+            sortMenuItems(menuItems) {
+                return menuItems.sort(compareMenuItems);
             }
         }
     
@@ -443,41 +446,63 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 childArray.push(transformedChild);
             }
             if (childArray.length) {
-                item.item.children = childArray;
+                // sort items by weight then name
+                item.item.children = childArray.sort(compareMenuItems);
             }
             return item.item;
         }
-        
+
+        const diffKeys = ['menuHidden', 'weight', 'menuIcon', 'menuTr', 'menuText'];
         function calculateDifference(newItem, originalItem) {
-            const difference = {
-                name: originalItem.name
-            };
-            
-            ['menuHidden', 'weight', 'menuIcon', 'menuTr', 'menuText', 'permission', 'systemPermission'].forEach(property => {
-                propertyDiff(property, newItem, originalItem, difference);
-            });
+            const difference = {};
+            for (const k of diffKeys) {
+                if (newItem[k] !== originalItem[k]) {
+                    difference[k] = newItem[k];
+                }
+            }
 
             if (!angular.equals(newItem.params, originalItem.params)) {
                 difference.params = newItem.params;
             }
 
-            return difference;
-
-            function propertyDiff(property, newItem, originalItem, difference) {
-                if (newItem[property] !== originalItem[property]) {
-                    difference[property] = newItem[property];
-                }
+            const newPermission = new Permission(newItem.permission);
+            const originalPermission = new Permission(originalItem.permission);
+            if (!newPermission.equals(originalPermission)) {
+                difference.permission = newPermission.toArray();
             }
+
+            if (!setsEqual(newItem.systemPermission, originalItem.systemPermission)) {
+                difference.systemPermission = newItem.systemPermission;
+            }
+
+            if (Object.keys(difference).length) {
+                difference.name = originalItem.name;
+                return difference;
+            }
+        }
+
+        function setsEqual(a, b) {
+            return a.length === b.length && a.every(v => b.includes(v));
         }
         
         function setDefaults(item) {
             item.menuHidden = !!item.menuHidden;
-
             if (item.weight == null) {
                 item.weight = 1000;
             }
+            if (item.systemPermission == null) {
+                item.systemPermission = [];
+            }
             if (item.permission == null) {
-                item.permission = ['user'];
+                if (item.systemPermission.length) {
+                    item.permission = [];
+                } else {
+                    item.permission = ['user'];
+                }
+            }
+            // transform old style permission into an array
+            if (typeof item.permission === 'string') {
+                item.permission = item.permission.split(',').map(r => r.trim()).filter(r => r.length);
             }
         }
         
