@@ -21,7 +21,7 @@
 
                 <ma-option ng-if="!$ctrl.selectMultiple && $ctrl.showClear && !$filter" ng-value="undefined">
                     <md-icon>clear</md-icon>
-                    <em class="ma-ellipsis" ma-tr="ui.app.clear"></em></md-option>
+                    <em class="ma-ellipsis" ma-tr="ui.app.clear"></em>
                 </ma-option>
 
                 <ma-option ng-repeat="user in $items track by user.username" ng-value="user">
