@@ -1,5 +1,5 @@
 <ul class="ma-ui-menu ma-ui-menu-level-1">
-  <li ng-repeat="item in $ctrl.menuItems | orderBy:['weight', 'name'] track by item.name" ng-if="$ctrl.isVisible(item)"
+  <li ng-repeat="item in $ctrl.menuItems track by item.name" ng-if="$ctrl.isVisible(item)"
       ng-hide="$ctrl.openSubmenu && $ctrl.openSubmenu.name !== item.name">
     <ma-ui-menu-link menu-item="item" ng-if="!(item.children && item.abstract)"></ma-ui-menu-link>
     <ma-ui-menu-toggle menu-item="item" open-menu="$ctrl.openMenu" ng-if="item.children && item.abstract"></ma-ui-menu-toggle>

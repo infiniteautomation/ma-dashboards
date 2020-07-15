@@ -6,9 +6,11 @@
 import menuTemplate from './menu.html';
 import './menu.css';
 
-MenuController.$inject = [];
-function MenuController() {
-    this.childVisible = function childVisible(menuItems) {
+class MenuController {
+    static get $$ngIsClass() { return true; }
+    static get $inject() { return []; }
+
+    childVisible(menuItems) {
         let visibleCount = 0;
         for (let i = 0; i < menuItems.length; i++) {
             const menuItem = menuItems[i];
@@ -33,26 +35,20 @@ function MenuController() {
             }
         }
         return visibleCount;
-    };
+    }
 
-    this.$onChanges = function(changes) {
-        if (this.user && this.origMenuItems) {
-            this.copyMenu();
+    $onChanges(changes) {
+        if (this.user && this.menuItems) {
+            this.visibleMap = {};
+            this.childVisible(this.menuItems);
         }
-    };
+    }
+
+    isVisible(item) {
+        return this.visibleMap && this.visibleMap[item.name].visible;
+    }
     
-    this.copyMenu = function() {
-        const items = this.origMenuItems;
-        this.visibleMap = {};
-        this.childVisible(items);
-        this.menuItems = items;
-    };
-    
-    this.isVisible = function(item) {
-        return this.visibleMap[item.name].visible;
-    };
-    
-    this.menuOpened = function menuOpened(toggleCtrl) {
+    menuOpened(toggleCtrl) {
         let submenu = null;
         let ctrl = toggleCtrl;
         while(ctrl) {
@@ -66,9 +62,9 @@ function MenuController() {
         
         this.openMenu = toggleCtrl.item;
         this.openMenuLevel = toggleCtrl.menuLevel + 1;
-    };
+    }
     
-    this.menuClosed = function menuOpened(toggleCtrl) {
+    menuClosed(toggleCtrl) {
         if (this.openSubmenu && toggleCtrl.item.name === this.openSubmenu.name) {
             delete this.openSubmenu;
         }
@@ -76,16 +72,14 @@ function MenuController() {
             this.openMenu = toggleCtrl.parentToggle ? toggleCtrl.parentToggle.item : null;
             this.openMenuLevel = toggleCtrl.menuLevel;
         }
-    };
+    }
 }
 
 export default {
     controller: MenuController,
     template: menuTemplate,
     bindings: {
-        origMenuItems: '<menuItems',
-        user: '<user'
+        menuItems: '<',
+        user: '<'
     }
 };
-
-
