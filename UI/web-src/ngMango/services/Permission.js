@@ -88,7 +88,10 @@ function PermissionFactory() {
         }
 
         toArray() {
-            return this.minterms.map(t => t.toArray());
+            return this.minterms
+                .map(t => t.toArray())
+                .filter(t => t.length) // just in case
+                .map(t => t.length === 1 ? t[0] : t); // reduce to simplified form if only one role in the minterm
         }
 
         toJSON(key) {
