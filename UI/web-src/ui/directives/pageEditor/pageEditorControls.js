@@ -145,7 +145,6 @@ class PageEditorControlsController {
         }
         page.jsonData.markup = markup || '';
         this.menuItem = null;
-        this.showDialog();
         return this.setSelectedPage(page);
     }
     
@@ -155,6 +154,12 @@ class PageEditorControlsController {
 
     pageChanged() {
         this.confirmLoadPage(this.selectedPageSummary ? this.selectedPageSummary.xid : null);
+    }
+
+    newPageClicked(event) {
+        if (this.confirmLoadPage()) {
+            this.showDialog();
+        }
     }
     
     confirmLoadPage(xid) {
@@ -170,6 +175,7 @@ class PageEditorControlsController {
         } else {
             this.createNewPage();
         }
+        return true;
     }
     
     loadPage(xid) {

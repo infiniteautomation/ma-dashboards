@@ -19,7 +19,7 @@
                     </ma-drop-down>
                 </ma-drop-down-button>
             </md-input-container>
-            <md-button class="md-icon-button" ng-click="$ctrl.confirmLoadPage()">
+            <md-button class="md-icon-button" ng-click="$ctrl.newPageClicked($event)">
                 <md-icon>add_box</md-icon>
                 <md-tooltip md-delay="150" md-direction="bottom" md-autohide>
                     <span ma-tr="ui.app.newPage"></span>
@@ -80,7 +80,7 @@
     <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2 ma-tr="ui.app.editNameAndPermissions"></h2>
+                <h2 ma-tr="{{$ctrl.selectedPage.isNew() ? 'ui.app.newPage' : 'ui.app.editNameAndPermissions'}}"></h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="$dialog.cancel()">
                     <md-icon>close</md-icon>
@@ -92,7 +92,7 @@
             <div layout="column">
                 <md-input-container>
                     <label ma-tr="ui.app.pageName"></label>
-                    <input name="pageName" required ng-model="$ctrl.selectedPage.name" ma-parent-form="$ctrl.pageEditorForm">
+                    <input name="pageName" required ng-model="$ctrl.selectedPage.name" ma-parent-form="$ctrl.pageEditorForm" md-auto-focus>
                     <div ng-messages="$ctrl.pageEditorForm.pageName.$error">
                         <div ng-message="required" ma-tr="validate.required"></div>
                     </div>
