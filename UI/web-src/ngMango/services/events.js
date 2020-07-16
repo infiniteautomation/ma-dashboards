@@ -133,8 +133,8 @@
 *
 */
 
-eventsFactory.$inject = ['$resource', 'maUtil', 'maEventTypeInfo'];
-function eventsFactory($resource, Util, EventTypeInfo) {
+eventsFactory.$inject = ['$resource', 'maUtil', 'maEventTypeInfo', 'maRqlBuilder'];
+function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder) {
     const Events = $resource('/rest/v2/events', {
         id: '@id'
     }, {
@@ -177,8 +177,23 @@ function eventsFactory($resource, Util, EventTypeInfo) {
             return this.sendRequest({
                 requestType: 'SUBSCRIPTION',
                 actions,
-                levels
+                levels,
+                // sendActiveSummary: true,
+                // sendUnacknowledgedSummary: true
             });
+        },
+
+        buildActiveQuery() {
+            const builder = new RqlBuilder();
+            builder.queryFunction = (queryObj, opts) => {
+                return this.openSocket().then(() => {
+                    return this.sendRequest({
+                        requestType: 'ACTIVE_EVENTS_QUERY',
+                        query: queryObj.toString()
+                    });
+                });
+            };
+            return builder;
         }
     });
 
