@@ -167,6 +167,8 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder) {
             method: 'GET',
             isArray: true
         }
+    }, {
+        idProperty: 'id'
     });
 
     Object.assign(Events.notificationManager, {
@@ -191,6 +193,10 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder) {
                         requestType: 'ACTIVE_EVENTS_QUERY',
                         query: queryObj.toString()
                     });
+                }).then(response => {
+                    const items = response.items.map(e => this.transformObject(e));
+                    items.$total = response.$total;
+                    return items;
                 });
             };
             return builder;
