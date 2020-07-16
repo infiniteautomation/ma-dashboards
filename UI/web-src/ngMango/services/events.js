@@ -195,7 +195,7 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder) {
                     });
                 }).then(response => {
                     const items = response.items.map(e => this.transformObject(e));
-                    items.$total = response.$total;
+                    items.$total = response.total;
                     return items;
                 });
             };
