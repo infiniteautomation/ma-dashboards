@@ -419,7 +419,82 @@ function dataPointProvider() {
             chartTypes: MA_CHART_TYPES,
             simplifyTypes: MA_SIMPLIFY_TYPES
         });
-        
+
+        class ActiveEventInfo {
+            constructor(dataPointId) {
+                // prevents a circular dependency
+                this.Events = $injector.get('maEvents');
+
+                this.dataPointId = dataPointId;
+                this.scopes = new Set();
+                this.events = [];
+                this.counts = {};
+                this.updateCounts();
+
+                this.Events.notificationManager.buildActiveQuery()
+                    .eq('eventType.eventType', 'DATA_POINT')
+                    .eq('eventType.referenceId1', this.dataPointId)
+                    .eq('active', true)
+                    .query().then(events => {
+                        events.forEach(e => this.eventUpdated(e));
+                    });
+
+                this.deregister = this.Events.notificationManager.subscribe({
+                    handler: this.notifyHandler.bind(this),
+                    eventTypes: ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']
+                });
+            }
+
+            notifyHandler(event, mangoEvent) {
+                if (mangoEvent.eventType.eventType === 'DATA_POINT' &&
+                    mangoEvent.eventType.referenceId1 === this.dataPointId) {
+
+                    $rootScope.$apply(() => {
+                        this.eventUpdated(mangoEvent);
+                    });
+                }
+            }
+
+            eventUpdated(event) {
+                const index = this.events.findIndex(e => e.id === event.id);
+                if (event.active && index < 0) {
+                    // note that it would be possible to receive a subscription notification saying an event
+                    // was deactivated then retrieve the same event from the query with an active status
+                    // could keep a list of recently seen deactivated events to mitigate this
+
+                    const outOfOrder = !!this.events.length && this.events[this.events.length - 1].activeTimestamp > event.activeTimestamp;
+                    this.events.push(event);
+
+                    // this is not common but could occur if we got an event via notify before the query
+                    // completed
+                    if (outOfOrder) {
+                        this.events.sort((a, b) => a.activeTimestamp - b.activeTimestamp);
+                    }
+                    this.updateCounts();
+                } else if (!event.active && index >= 0) {
+                    this.events.splice(index, 1);
+                    this.updateCounts();
+                }
+            }
+
+            updateCounts() {
+                this.Events.levels.forEach(l => this.counts[l.key] = 0);
+                this.events.forEach(e => this.counts[e.alarmLevel]++);
+            }
+
+            addSubscriber(scope) {
+                this.scopes.add(scope);
+            }
+
+            removeSubscriber(scope) {
+                this.scopes.delete(scope);
+                if (!this.scopes.size) {
+                    this.deregister();
+                    return true;
+                }
+            }
+        }
+
         Object.assign(Point.prototype, {
             forceRead() {
                 const url = '/rest/v2/runtime-manager/force-refresh/' + encodeURIComponent(this.xid);
@@ -694,69 +769,22 @@ function dataPointProvider() {
             },
 
             subscribeToEvents($scope) {
-                // prevents a circular dependency
-                const Events = $injector.get('maEvents');
-                
-                let activeEvents;
+                let activeEventInfo;
                 if (activeEventsMap.has(this.id)) {
                     // already subscribed
-                    activeEvents = activeEventsMap.get(this.id);
-                    activeEvents.scopes.add($scope);
+                    activeEventInfo = activeEventsMap.get(this.id);
                 } else {
                     // first subscription for this id
-                    activeEvents = [];
-                    activeEventsMap.set(this.id, activeEvents);
-                    
-                    activeEvents.scopes = new Set([$scope]);
-                    
-                    activeEvents.promise = Events.buildQuery()
-                        .eq('eventType', 'DATA_POINT')
-                        .eq('referenceId1', this.id)
-                        .eq('active', true)
-                        .query();
-                    
-                    activeEvents.promise.then(events => {
-                        activeEvents.push(...events);
-                    }, error => {
-                        if (error && error.xhrStatus === 'abort') {
-                            //cancelled request, ignore
-                        } else {
-                            return $q.reject(error);
-                        }
-                    });
-                    
-                    activeEvents.deregister = Events.notificationManager.subscribe((event, mangoEvent) => {
-                        if (mangoEvent.eventType.eventType !== 'DATA_POINT' || mangoEvent.eventType.referenceId1 !== this.id) return;
-
-                        $rootScope.$apply(() => {
-                            const eventIndex = activeEvents.findIndex(e => e.id === mangoEvent.id);
-                            
-                            // DEACTIVATED occurs when the data point/data source is disabled etc
-                            if (event.name === 'RAISED' && mangoEvent.active) {
-                                if (eventIndex < 0) {
-                                    activeEvents.push(mangoEvent);
-                                }
-                            } else if (event.name === 'RETURN_TO_NORMAL' || event.name === 'DEACTIVATED') {
-                                if (eventIndex >= 0) {
-                                    activeEvents.splice(eventIndex, 1);
-                                }
-                            }
-                        });
-                    }, null, ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']);
+                    activeEventInfo = new ActiveEventInfo(this.id);
+                    activeEventsMap.set(this.id, activeEventInfo);
                 }
+                activeEventInfo.addSubscriber($scope);
 
                 let deregisterScopeOnDestroy;
                 const destroy = () => {
                     deregisterScopeOnDestroy();
-                    
-                    activeEvents.scopes.delete($scope);
-                    if (!activeEvents.scopes.size) {
-                        activeEvents.deregister();
-                        
-                        // prevents the query completing and attempting to push
-                        // to active events after it has been deleted
-                        Events.cancelRequest(activeEvents.promise);
-                        
+                    const lastSubscriber = activeEventInfo.removeSubscriber($scope);
+                    if (lastSubscriber) {
                         activeEventsMap.delete(this.id);
                     }
                 };
@@ -767,7 +795,22 @@ function dataPointProvider() {
         });
         
         Object.defineProperty(Point.prototype, 'activeEvents', {
-            get() { return activeEventsMap.get(this.id); },
+            get() {
+                const info = activeEventsMap.get(this.id);
+                if (info) {
+                    return info.events;
+                }
+            },
+            set(value) { }
+        });
+
+        Object.defineProperty(Point.prototype, 'activeEventCounts', {
+            get() {
+                const info = activeEventsMap.get(this.id);
+                if (info) {
+                    return info.counts;
+                }
+            },
             set(value) { }
         });
 
