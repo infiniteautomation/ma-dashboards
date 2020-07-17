@@ -73,7 +73,8 @@ export default {
     template: dataPointSelectorTemplate,
     controller: DataPointSelectorController,
     require: {
-        ngModelCtrl: 'ngModel'
+        ngModelCtrl: 'ngModel',
+        dropDownCtrl: '?^^maDropDown'
     },
     bindings: {
         localStorageKey: '<?',

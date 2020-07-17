@@ -1401,7 +1401,7 @@ md-input-container.ma-filter > .ma-input-button > md-icon.material-icons {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	padding: 4px;
+	padding: 4px 2px;
 }
 
 .ma-virtual-repeat-table .ma-virtual-repeat-table-header {

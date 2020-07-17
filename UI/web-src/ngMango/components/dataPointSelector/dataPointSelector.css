@@ -1,8 +1,18 @@
 ma-data-point-selector {
-	display: flex;
 	flex-grow: 1;
 	min-height: 400px;
+	display: flex;
+	flex-direction: column;
+}
+
+ma-data-point-selector .ma-virtual-repeat-table-container {
+	flex: 1 0 auto;
+	display: flex;
 	overflow-x: auto;
+}
+
+ma-data-point-selector .ma-virtual-repeat-table {
+	flex: 1 0 auto;
 }
 
 ma-data-point-selector .ma-empty-null {

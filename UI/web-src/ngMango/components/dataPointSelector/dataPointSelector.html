@@ -1,4 +1,4 @@
-<div flex="noshrink" layout="column" ng-form="dataPointSelector" ma-form-exclude>
+<div ng-form="dataPointSelector" ma-form-exclude class="ma-virtual-repeat-table-container">
     <div class="ma-virtual-repeat-table">
         <div class="ma-virtual-repeat-table-header">
             <div class="ma-virtual-repeat-table-row">
@@ -135,4 +135,9 @@
             </div>
         </div>
     </div>
+</div>
+<div layout="column" ng-if="$ctrl.dropDownCtrl.fullscreen && $ctrl.selectMultiple">
+    <md-button ng-click="$ctrl.dropDownCtrl.close()">
+        <span ma-tr="common.ok"></span>
+    </md-button>
 </div>
