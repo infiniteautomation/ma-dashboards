@@ -45,11 +45,11 @@
         
         <div flex></div>
         
-        <ma-data-point-tag-key-select ng-model="$ctrl.selectedTags" ng-change="$ctrl.watchListSettingChanged()"
+        <ma-data-point-tag-key-select class="ma-watchlist-tag-select" ng-model="$ctrl.selectedTags" ng-change="$ctrl.watchListSettingChanged()"
                 select-multiple="true" no-float="true" selected-text="'ui.app.selectTags' | maTr">
         </ma-data-point-tag-key-select>
 
-        <md-input-container md-no-float="true">
+        <md-input-container class="ma-watchlist-column-select" md-no-float="true">
             <md-select md-selected-text="'ui.app.selectColumns' | maTr" multiple="true"
                     ng-model="$ctrl.selectedColumns" ng-model-options="{trackBy: '$value.name'}" ng-change="$ctrl.watchListSettingChanged()">
                 <md-option ng-repeat="column in $ctrl.columns track by column.name" ng-value="column"><span ma-tr="{{column.label}}"></span></md-option>

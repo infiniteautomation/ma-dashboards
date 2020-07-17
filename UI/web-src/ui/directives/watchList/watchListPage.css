@@ -118,3 +118,8 @@ ma-ui-watch-list-page table.md-table.md-row-select.ma-watch-list-table md-checkb
 	top: -2px;
 	bottom: -2px;
 }
+
+ma-ui-watch-list-page .ma-watchlist-tag-select,
+ma-ui-watch-list-page .ma-watchlist-column-select {
+	width: 250px;
+}
