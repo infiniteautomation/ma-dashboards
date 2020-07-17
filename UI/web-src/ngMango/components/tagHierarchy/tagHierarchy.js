@@ -12,7 +12,9 @@ import './tagHierarchy.css';
  * @restrict E
  * @description Displays a hierarchy/tree view of data point tags
  * 
- * @param {object[]=} ng-model Array of objects representing which folders are selected, object properties are the tag keys and the values are tag values.
+ * @param {object[]=} ng-model Object or array of objects (for multi-select) representing which folders are selected,
+ * object properties are the tag keys and the values are tag values.
+ * @param {boolean} ng-multiple Allows the selection of multiple tag values, if true the model is an array
  * @param {string[]} tags Array of tag keys to display in the hierarchy
  * @param {expression=} points Expression that is evaluated when points are fetched. Available locals are <code>$points</code>.
  */
@@ -105,7 +107,11 @@ class TagHierarchyController {
     }
     
     select(restrictions) {
-        this.selected = this.selected.filter(r => !this.matches(restrictions, r));
+        if (this.multiple) {
+            this.selected = this.selected.filter(r => !this.matches(restrictions, r));
+        } else {
+            this.selected = [];
+        }
         this.selected.push(restrictions);
         this.setViewValue();
     }
@@ -116,13 +122,25 @@ class TagHierarchyController {
     }
 
     render() {
-        this.selected = this.ngModelCtrl && this.ngModelCtrl.$viewValue || [];
+        this.selected = [];
+        if (this.ngModelCtrl) {
+            const viewValue = this.ngModelCtrl.$viewValue;
+            if (this.multiple && Array.isArray(viewValue)) {
+                this.selected = viewValue;
+            } else if (!this.multiple && viewValue != null) {
+                this.selected = Object.keys(viewValue).length ? [viewValue] : [];
+            }
+        }
         this.retrievePoints();
     }
     
     setViewValue() {
         if (this.ngModelCtrl) {
-            this.ngModelCtrl.$setViewValue(this.selected);
+            if (this.multiple) {
+                this.ngModelCtrl.$setViewValue(this.selected);
+            } else {
+                this.ngModelCtrl.$setViewValue(this.selected[0] || {});
+            }
         }
         this.retrievePoints();
     }
@@ -157,7 +175,8 @@ export default {
     controller: TagHierarchyController,
     bindings: {
         tags: '<',
-        pointsCallback: '&?points'
+        pointsCallback: '&?points',
+        multiple: '<?ngMultiple'
     },
     require: {
         ngModelCtrl: '?ngModel'
