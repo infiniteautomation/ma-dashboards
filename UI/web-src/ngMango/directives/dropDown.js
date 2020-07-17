@@ -83,7 +83,11 @@ function dropDown($document, $animate, $window) {
         }
 
         createElement() {
-            this.$backdrop = angular.element('<div class="ma-drop-down-backdrop"></div>');
+            this.$backdrop = angular.element('<div class="ma-drop-down-backdrop" tabindex="0"></div>');
+            this.$backdrop[0].addEventListener('focus', () => {
+                this.$scope.$apply(() => this.close());
+            });
+
             this.$dropDown = this.$transclude((tClone, tScope) => {
                 tScope.$dropDown = this;
                 this.transcludeScope = tScope;
@@ -262,6 +266,7 @@ function dropDown($document, $animate, $window) {
 
         hasFocus(activeElement = $document[0].activeElement) {
             return this.$dropDown[0].contains(activeElement) ||
+                this.$backdrop[0].contains(activeElement) ||
                 this.targetElement.contains(activeElement) ||
                 this.menuHasFocus(activeElement);
         }

@@ -56,7 +56,6 @@ ma-drop-down.ma-full-screen.ma-full-screen-centered {
 
 .ma-drop-down-backdrop {
 	display: none;
-	pointer-events: none;
 	/* same z-index as ma-drop-down, positioned in DOM before ma-drop-down so it is underneath */
 	z-index: 81;
 	position: fixed;
