@@ -29,7 +29,7 @@
                 <td md-cell ng-bind="$ctrl.getPoint(contextPoint).formatTags()"></td>
                 <td md-cell ng-bind="$ctrl.getPoint(contextPoint).dataType"></td>
                 <td md-cell>
-                    <md-input-container flex="100">
+                    <md-input-container class="ma-context-variable">
                         <label ma-tr="pointEdit.text.key"></label>
                         <input name="variableName" ng-model="contextPoint.variableName" ng-change="$ctrl.setViewValue()" required>
                     </md-input-container>

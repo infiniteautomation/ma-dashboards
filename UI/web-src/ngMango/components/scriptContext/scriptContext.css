@@ -5,3 +5,8 @@ ma-script-context {
 ma-script-context > md-input-container {
     display: block;
 }
+
+ma-script-context md-input-container.ma-context-variable {
+    display: block;
+    min-width: 150px;
+}
