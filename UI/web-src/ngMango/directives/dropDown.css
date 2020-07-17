@@ -40,7 +40,7 @@ ma-drop-down.ma-slide-down.ma-open-remove-active {
 }
 
 ma-drop-down.ma-full-screen {
-	--ma-full-screen-margin: 16px;
+	--ma-full-screen-margin: 8px;
 	top: var(--ma-full-screen-margin);
 	bottom: var(--ma-full-screen-margin);
 	left: var(--ma-full-screen-margin);
