@@ -21,7 +21,7 @@
     <span ma-tr="ui.components.loadMore" ma-tr-args="[$ctrl.items.$total - $ctrl.items.length]"></span>
 </div>
 <div layout="column" ng-if="$ctrl.dropDownCtrl.fullscreen && $ctrl.multiple">
-    <md-button class="md-primary" ng-click="$ctrl.dropDownCtrl.close()">
+    <md-button ng-click="$ctrl.dropDownCtrl.close()">
         <span ma-tr="common.ok"></span>
     </md-button>
 </div>
