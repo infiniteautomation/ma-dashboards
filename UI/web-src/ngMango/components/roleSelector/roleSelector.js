@@ -54,6 +54,10 @@ class RoleSelectorController {
         } else {
             const [first] = this.selected.values();
             this.ngModelCtrl.$setViewValue(first);
+
+            if (this.dropDownCtrl) {
+                this.dropDownCtrl.close();
+            }
         }
     }
 
@@ -102,7 +106,8 @@ class RoleSelectorController {
 
 export default {
     require: {
-        ngModelCtrl: 'ngModel'
+        ngModelCtrl: 'ngModel',
+        dropDownCtrl: '?^^maDropDown'
     },
     bindings: {
         multiple: '<?ngMultiple',

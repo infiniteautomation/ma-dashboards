@@ -12,3 +12,9 @@
         <span md-highlight-text="$ctrl.filter" md-highlight-flags="ig">{{$item.name}}</span>
     </md-button>
 </ma-tree-view>
+
+<div layout="column" ng-if="$ctrl.dropDownCtrl.fullscreen && $ctrl.multiple">
+    <md-button class="md-primary" ng-click="$ctrl.dropDownCtrl.close()">
+        <span ma-tr="common.ok"></span>
+    </md-button>
+</div>
