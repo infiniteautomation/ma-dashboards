@@ -221,6 +221,11 @@ class TableController {
             } else {
                 const [first] = this.selectedItems.values();
                 this.ngModelCtrl.$setViewValue(first || null);
+
+                // automatically close the drop down
+                if (this.dropDownCtrl) {
+                    this.dropDownCtrl.close();
+                }
             }
         }
     }
