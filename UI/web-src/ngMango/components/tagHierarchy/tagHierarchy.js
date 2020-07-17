@@ -95,7 +95,8 @@ class TagHierarchyController {
     }
     
     matches(r1, r2) {
-        return Object.keys(r1).every(k => r1[k] === r2[k]);
+        const k1 = Object.keys(r1);
+        return k1.length && k1.every(k => r1[k] === r2[k]);
     }
     
     isSelected(restrictions) {
@@ -128,8 +129,9 @@ class TagHierarchyController {
             if (this.multiple && Array.isArray(viewValue)) {
                 this.selected = viewValue;
             } else if (!this.multiple && viewValue != null) {
-                this.selected = Object.keys(viewValue).length ? [viewValue] : [];
+                this.selected = [viewValue];
             }
+            this.selected = this.selected.filter(tags => Object.keys(tags).length);
         }
         this.retrievePoints();
     }
