@@ -20,11 +20,6 @@
             <ma-drop-down class="ma-script-roles-selector ma-full-screen-centered">
                 <ma-role-selector name="scriptRoles" ng-model="editor.eventHandler.scriptRoles"
                                   ng-multiple="::true" ma-configure-input-container></ma-role-selector>
-                <div layout="row" ng-if="$dropDown.fullscreen">
-                    <md-button flex class="md-primary" ng-click="$dropDown.close()">
-                        <span ma-tr="common.ok"></span>
-                    </md-button>
-                </div>
             </ma-drop-down>
         </ma-drop-down-button>
         <div ng-messages="editor.form.scriptRoles.$error">
