@@ -5,6 +5,7 @@
 
 import angular from 'angular';
 import pointBrowserTemplate from './pointBrowser.html';
+import './pointBrowser.css';
 
 const types = ['watchList', 'deviceName', 'dataSource', 'tags'];
 
@@ -38,7 +39,7 @@ class PointBrowserController {
                     this.watchList = this.selected;
                 } else if (this.selected.type === 'tags' && this.selected.tags) {
                     this.listType = 'tags';
-                    this.tags = this.selected.tags;
+                    this.convertTags(this.selected.tags);
                 } else if (this.selected.type === 'query' && this.selected.deviceName) {
                     this.listType = 'deviceName';
                     this.deviceName = this.selected.deviceName;
@@ -103,12 +104,31 @@ class PointBrowserController {
             this.listType = 'deviceName';
             this.itemSelected('deviceName');
         } else if (item.tags) {
-            this.tags = item.tags;
+            this.convertTags(item.tags);
             this.listType = 'tags';
             this.itemSelected('tags');
         } else {
             this.listType = 'watchList';
         }
+    }
+
+    /**
+     * Converts the tags object from WL page which can have arrays for tag values
+     * @param tags
+     */
+    convertTags(tags) {
+        // item.tags is an object with tag values that may be arrays
+        this.tagKeys = Object.keys(tags);
+
+        this.tags = {};
+        this.tagKeys.forEach(key => {
+            const value = tags[key];
+            if (Array.isArray(value)) {
+                this.tags[key] = value[0];
+            } else {
+                this.tags[key] = value;
+            }
+        });
     }
     
     itemSelected(type) {
@@ -164,33 +184,65 @@ class PointBrowserController {
     }
     
     createTagsWatchList() {
-        const params = Object.keys(this.tags).map(tagKey => {
-            const tagValues = this.tags[tagKey];
-            if (Array.isArray(tagValues) && tagValues.length) {
+        const params = this.tagKeys.map((tagKey, i, keys) => {
+            const tagValue = this.tags[tagKey];
+            if (tagValue) {
+                // calculate restrictions in case the user saves this WL then removes the fixed value
+                const restrictions = {};
+                for (let j = 0; j < i; j++) {
+                    const prevKey = keys[j];
+                    const prevValue = this.tags[prevKey];
+                    if (prevValue != null) {
+                        restrictions[prevKey] = prevValue;
+                    }
+                }
+
                 return {
                     name: tagKey,
                     type: 'tagValue',
                     options: {
-                        multiple: true,
-                        fixedValue: tagValues,
-                        restrictions: {},
+                        multiple: Array.isArray(tagValue),
+                        fixedValue: tagValue,
+                        restrictions,
                         tagKey
                     }
                 };
             }
         }).filter(p => p != null);
+
+        // ensures keys are in order and have null value for unset tags
+        const tags = {};
+        this.tagKeys.forEach(k => {
+            tags[k] = this.tags[k] != null ? this.tags[k] : null;
+        });
         
         this.selected = new this.maWatchList({
             type: 'tags',
             name: this.maTranslate.trSync('ui.app.newTagWatchList'),
             params,
-            tags: this.tags
+            tags
         });
     }
 
     queryChanged(promise) {
         this.queryPromise = promise;
         promise.finally(() => delete this.queryPromise);
+    }
+
+    tagKeysChanged() {
+        if (!this.tags) {
+            this.tags = {};
+        }
+        Object.keys(this.tags).forEach(key => {
+            if (!this.tagKeys.includes(key)) {
+                delete this.tags[key];
+            }
+        });
+        this.itemSelected('tags');
+    }
+
+    tagsChanged() {
+        this.itemSelected('tags');
     }
 }
 

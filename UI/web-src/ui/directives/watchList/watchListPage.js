@@ -181,14 +181,16 @@ class WatchListPageController {
         
         paramArray.forEach(p => {
             const parts = p.split(':');
-            if (parts.length === 2) {
-                const tagKey = parts[0];
-                const values = parts[1].split(',');
-                
+            const tagKey = parts[0];
+            if (tagKey) {
                 if (!tags[tagKey]) {
                     tags[tagKey] = [];
                 }
-                tags[tagKey].push(...values);
+
+                if (parts.length > 1) {
+                    const values = parts[1].split(',');
+                    tags[tagKey].push(...values);
+                }
             }
         });
 
@@ -200,11 +202,14 @@ class WatchListPageController {
         
         Object.keys(tags).forEach(tagKey => {
             const tagValue = tags[tagKey];
-            const tagValueArray = Array.isArray(tagValue) ? tagValue : [tagValue];
-
-            if (tagValueArray.length) {
-                const paramValue = tagValueArray.join(',');
-                param.push(`${tagKey}:${paramValue}`);
+            if (tagValue == null) {
+                param.push(tagKey);
+            } else {
+                const tagValueArray = Array.isArray(tagValue) ? tagValue : [tagValue];
+                if (tagValueArray.length) {
+                    const paramValue = tagValueArray.join(',');
+                    param.push(`${tagKey}:${paramValue}`);
+                }
             }
         });
         

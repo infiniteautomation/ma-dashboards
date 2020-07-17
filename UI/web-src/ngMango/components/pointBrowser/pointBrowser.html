@@ -59,11 +59,15 @@
         ng-model="$ctrl.dataSource" ng-change="$ctrl.itemSelected('dataSource')" select-first="false">
     </ma-data-source-scroll-list>
 
-    <div ng-if="$ctrl.listType === 'tags'" flex layout="column" class="ma-scroll-parent">
-        <ma-data-point-tag-group class="ma-scroll-child"
-             ng-model="$ctrl.tags"
-             ng-change="$ctrl.itemSelected('tags')"
-             on-query="$ctrl.queryChanged($promise)">
-        </ma-data-point-tag-group>
+    <div ng-if="$ctrl.listType === 'tags'" flex layout="column">
+        <ma-data-point-tag-key-select ng-model="$ctrl.tagKeys"
+                                      ng-change="$ctrl.tagKeysChanged()"
+                                      select-multiple="true"></ma-data-point-tag-key-select>
+        <div flex class="ma-scroll-parent">
+            <ma-tag-hierarchy class="ma-scroll-child md-padding"
+                              tags="$ctrl.tagKeys"
+                              ng-model="$ctrl.tags"
+                              ng-change="$ctrl.tagsChanged()"></ma-tag-hierarchy>
+        </div>
     </div>
 </md-card>
