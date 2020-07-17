@@ -2,8 +2,10 @@ ma-drop-down {
 	display: flex;
 	flex-direction: column;
 	position: fixed;
-	 /* has to be less than md-backdrop z-index (99) */
-	z-index: 98;
+	/* has to be more than z-index of  md-backdrop.md-dialog-backdrop (79) and .md-dialog-container (80)
+	and less than z-index of md-backdrop.md-menu-backdrop (99)
+	(we have md-menu inside a drop down for the data point selector) */
+	z-index: 81;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
 	overflow: hidden;
     background-color: var(--ma-background-hue-1);
@@ -50,4 +52,24 @@ ma-drop-down.ma-full-screen.ma-full-screen-centered {
 	top: 50%;
 	bottom: unset;
 	transform: translateY(-50%);
+}
+
+.ma-drop-down-backdrop {
+	display: none;
+	pointer-events: none;
+	/* same z-index as ma-drop-down, positioned in DOM before ma-drop-down so it is underneath */
+	z-index: 81;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	/* want a dark background regardless of light/dark theme */
+	background-color: var(--ma-background-900);
+	opacity: 0.48;
+}
+
+/* only show backdrop for full screen */
+.ma-drop-down-backdrop.ma-full-screen {
+	display: block;
 }

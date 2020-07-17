@@ -10,16 +10,6 @@
  * @description
  */
 
-/*
- * TODO
- * Additional way to define other elements which maintain the focus
- * (better) Way to disable animation
- * Set height according to position of element
- * 
- * window resizing is not resizing the drop down correctly
- * toggle is not working correctly due to focus being incorrect
- */
-
 import './dropDown.css';
 
 dropDown.$inject = ['$document', '$animate', '$window'];
@@ -93,6 +83,7 @@ function dropDown($document, $animate, $window) {
         }
 
         createElement() {
+            this.$backdrop = angular.element('<div class="ma-drop-down-backdrop"></div>');
             this.$dropDown = this.$transclude((tClone, tScope) => {
                 tScope.$dropDown = this;
                 this.transcludeScope = tScope;
@@ -111,6 +102,10 @@ function dropDown($document, $animate, $window) {
             if (this.$dropDown) {
                 this.$dropDown.remove();
                 delete this.$dropDown;
+            }
+            if (this.$backdrop) {
+                this.$backdrop.remove();
+                delete this.$backdrop;
             }
             if (this.transcludeScope) {
                 this.transcludeScope.$destroy();
@@ -141,6 +136,7 @@ function dropDown($document, $animate, $window) {
             if (!this.isOpen()) {
                 this.cancelAnimations();
 
+                $body.append(this.$backdrop);
                 $body.append(this.$dropDown);
                 
                 // trigger any virtual repeat directives to scroll back to the top
@@ -185,6 +181,7 @@ function dropDown($document, $animate, $window) {
                         this.destroyElement();
                     } else {
                         this.$dropDown.detach();
+                        this.$backdrop.detach();
                     }
                     tScope.$broadcast('maDropDownClosed', this);
                     this.onClosed({$dropDown: this});
@@ -217,6 +214,7 @@ function dropDown($document, $animate, $window) {
             if (!this.targetElement || !this.$dropDown) return;
 
             const dropDownEl = this.$dropDown[0];
+            const backdropEl = this.$backdrop[0];
             const style = {
                 width: '',
                 height: '',
@@ -230,8 +228,10 @@ function dropDown($document, $animate, $window) {
             
             this.fullscreen = $window.matchMedia(this.fullscreenMedia).matches;
             if (this.fullscreen) {
+                backdropEl.classList.add('ma-full-screen');
                 dropDownEl.classList.add('ma-full-screen');
             } else {
+                backdropEl.classList.remove('ma-full-screen');
                 dropDownEl.classList.remove('ma-full-screen');
 
                 const rect = this.targetElement.getBoundingClientRect();
