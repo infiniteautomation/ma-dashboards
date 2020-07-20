@@ -85,7 +85,7 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
         prompt(optionsOrEvent, shortTr, longTr, placeHolderTr, initialValue) {
             let event = optionsOrEvent;
             let rejectWithCancelled = false;
-            if (!(optionsOrEvent instanceof Event || optionsOrEvent instanceof angular.element.Event)) {
+            if (!(optionsOrEvent instanceof Event)) {
                 const options = optionsOrEvent || {};
                 event = options.event;
                 shortTr = options.shortTr;
