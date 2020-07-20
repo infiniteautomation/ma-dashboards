@@ -121,7 +121,15 @@ class WatchListPageController {
             if (params.tags) {
                 this.pointBrowserLoadItem = {tags: this.parseTagsParam(params.tags)};
             } else {
-                this.pointBrowserLoadItem = {tags: localStorage.tags};
+                const tags = {};
+                // copy the tag values over in order specified by the tagKeys array
+                // also copies undefined values into the tag object (which could not be stored in local storage JSON)
+                if (Array.isArray(localStorage.tagKeys)) {
+                    localStorage.tagKeys.forEach(k => tags[k] = localStorage.tags[k]);
+                } else {
+                    Object.assign(tags, localStorage.tags);
+                }
+                this.pointBrowserLoadItem = {tags};
             }
         } else if (this.$mdMedia('gt-md')) {
             // select first watch list automatically for large displays
@@ -231,7 +239,11 @@ class WatchListPageController {
         });
         
         if (state.tags) {
-            this.$state.params.tags = this.formatTagsParam(state.tags); 
+            this.$state.params.tags = this.formatTagsParam(state.tags);
+
+            // when the tags object is stored to local storage as JSON any tag keys with a value of undefined
+            // will be lost, so we store an array of tag keys too
+            localStorageParams.tagKeys = Object.keys(state.tags);
         }
 
         this.localStorageService.set('watchListPage', localStorageParams);
