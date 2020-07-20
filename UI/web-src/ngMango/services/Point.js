@@ -420,81 +420,6 @@ function dataPointProvider() {
             simplifyTypes: MA_SIMPLIFY_TYPES
         });
 
-        class ActiveEventInfo {
-            constructor(dataPointId) {
-                // prevents a circular dependency
-                this.Events = $injector.get('maEvents');
-
-                this.dataPointId = dataPointId;
-                this.scopes = new Set();
-                this.events = [];
-                this.counts = {};
-                this.updateCounts();
-
-                this.Events.notificationManager.buildActiveQuery()
-                    .eq('eventType.eventType', 'DATA_POINT')
-                    .eq('eventType.referenceId1', this.dataPointId)
-                    .eq('active', true)
-                    .query().then(events => {
-                        events.forEach(e => this.eventUpdated(e));
-                    });
-
-                this.deregister = this.Events.notificationManager.subscribe({
-                    handler: this.notifyHandler.bind(this),
-                    eventTypes: ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']
-                });
-            }
-
-            notifyHandler(event, mangoEvent) {
-                if (mangoEvent.eventType.eventType === 'DATA_POINT' &&
-                    mangoEvent.eventType.referenceId1 === this.dataPointId) {
-
-                    $rootScope.$apply(() => {
-                        this.eventUpdated(mangoEvent);
-                    });
-                }
-            }
-
-            eventUpdated(event) {
-                const index = this.events.findIndex(e => e.id === event.id);
-                if (event.active && index < 0) {
-                    // note that it would be possible to receive a subscription notification saying an event
-                    // was deactivated then retrieve the same event from the query with an active status
-                    // could keep a list of recently seen deactivated events to mitigate this
-
-                    const outOfOrder = !!this.events.length && this.events[this.events.length - 1].activeTimestamp > event.activeTimestamp;
-                    this.events.push(event);
-
-                    // this is not common but could occur if we got an event via notify before the query
-                    // completed
-                    if (outOfOrder) {
-                        this.events.sort((a, b) => a.activeTimestamp - b.activeTimestamp);
-                    }
-                    this.updateCounts();
-                } else if (!event.active && index >= 0) {
-                    this.events.splice(index, 1);
-                    this.updateCounts();
-                }
-            }
-
-            updateCounts() {
-                this.Events.levels.forEach(l => this.counts[l.key] = 0);
-                this.events.forEach(e => this.counts[e.alarmLevel]++);
-            }
-
-            addSubscriber(scope) {
-                this.scopes.add(scope);
-            }
-
-            removeSubscriber(scope) {
-                this.scopes.delete(scope);
-                if (!this.scopes.size) {
-                    this.deregister();
-                    return true;
-                }
-            }
-        }
-
         Object.assign(Point.prototype, {
             forceRead() {
                 const url = '/rest/v2/runtime-manager/force-refresh/' + encodeURIComponent(this.xid);
@@ -774,8 +699,18 @@ function dataPointProvider() {
                     // already subscribed
                     activeEventInfo = activeEventsMap.get(this.id);
                 } else {
-                    // first subscription for this id
-                    activeEventInfo = new ActiveEventInfo(this.id);
+                    // first subscription for this id, create new active event info query
+
+                    // prevents circular dependency
+                    const Events = $injector.get('maEvents');
+                    activeEventInfo = Events.notificationManager.buildActiveQuery()
+                        .eq('eventType.eventType', 'DATA_POINT')
+                        .eq('eventType.referenceId1', this.id)
+                        .activeEvents(event => {
+                            const type = event.eventType;
+                            return type.eventType === 'DATA_POINT' && type.referenceId1 === this.id
+                        });
+
                     activeEventsMap.set(this.id, activeEventInfo);
                 }
                 activeEventInfo.addSubscriber($scope);

@@ -133,8 +133,8 @@
 *
 */
 
-eventsFactory.$inject = ['$resource', 'maUtil', 'maEventTypeInfo', 'maRqlBuilder'];
-function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder) {
+eventsFactory.$inject = ['$resource', 'maUtil', 'maEventTypeInfo', 'maRqlBuilder', '$rootScope'];
+function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
     const Events = $resource('/rest/v2/events', {
         id: '@id'
     }, {
@@ -171,6 +171,74 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder) {
         idProperty: 'id'
     });
 
+    class ActiveEventInfo {
+        constructor(queryBuilder, filterFn) {
+            this.scopes = new Set();
+            this.events = [];
+            this.counts = {};
+            this.updateCounts();
+
+            this.queryBuilder = queryBuilder;
+            this.filterFn = filterFn;
+
+            this.queryBuilder.query().then(events => {
+                events.forEach(e => this.eventUpdated(e));
+            });
+
+            this.deregister = Events.notificationManager.subscribe({
+                handler: this.notifyHandler.bind(this),
+                eventTypes: ['RAISED', 'RETURN_TO_NORMAL', 'DEACTIVATED']
+            });
+        }
+
+        notifyHandler(event, mangoEvent) {
+            if (this.filterFn(mangoEvent)) {
+                $rootScope.$apply(() => {
+                    this.eventUpdated(mangoEvent);
+                });
+            }
+        }
+
+        eventUpdated(event) {
+            const index = this.events.findIndex(e => e.id === event.id);
+            if (event.active && index < 0) {
+                // note that it would be possible to receive a subscription notification saying an event
+                // was deactivated then retrieve the same event from the query with an active status
+                // could keep a list of recently seen deactivated events to mitigate this
+
+                const outOfOrder = !!this.events.length && this.events[this.events.length - 1].activeTimestamp > event.activeTimestamp;
+                this.events.push(event);
+
+                // this is not common but could occur if we got an event via notify before the query
+                // completed
+                if (outOfOrder) {
+                    this.events.sort((a, b) => a.activeTimestamp - b.activeTimestamp);
+                }
+                this.updateCounts();
+            } else if (!event.active && index >= 0) {
+                this.events.splice(index, 1);
+                this.updateCounts();
+            }
+        }
+
+        updateCounts() {
+            Events.levels.forEach(l => this.counts[l.key] = 0);
+            this.events.forEach(e => this.counts[e.alarmLevel]++);
+        }
+
+        addSubscriber(scope) {
+            this.scopes.add(scope);
+        }
+
+        removeSubscriber(scope) {
+            this.scopes.delete(scope);
+            if (!this.scopes.size) {
+                this.deregister();
+                return true;
+            }
+        }
+    }
+
     Object.assign(Events.notificationManager, {
         webSocketUrl: '/rest/v2/websocket/events',
         sendSubscription(levels = ['LIFE_SAFETY', 'CRITICAL', 'URGENT', 'WARNING', 'IMPORTANT', 'INFORMATION', 'NONE'],
@@ -199,8 +267,14 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder) {
                     return items;
                 });
             };
+
+            // add another function which returns the active event info
+            builder.activeEvents = function(filterFn) {
+                return new ActiveEventInfo(this, filterFn);
+            };
+
             return builder;
-        }
+        },
     });
 
     const levels = Util.freezeAll([
