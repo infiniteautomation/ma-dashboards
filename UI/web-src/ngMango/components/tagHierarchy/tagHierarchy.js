@@ -131,7 +131,17 @@ class TagHierarchyController {
             } else if (!this.multiple && viewValue != null) {
                 this.selected = [viewValue];
             }
-            this.selected = this.selected.filter(tags => Object.keys(tags).length);
+
+            this.selected = this.selected.map(tags => {
+                return Object.keys(tags).reduce((newTags, k) => {
+                    // remove any null/undefined values from the tag objects
+                    const value = tags[k];
+                    if (value != null) {
+                        newTags[k] = value;
+                    }
+                    return newTags;
+                }, {});
+            }).filter(tags => Object.keys(tags).length); // remove any tag objects that have no keys/values
         }
         this.retrievePoints();
     }
