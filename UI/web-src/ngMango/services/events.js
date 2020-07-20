@@ -281,7 +281,7 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
             };
 
             return builder;
-        },
+        }
     });
 
     const levels = Util.freezeAll([
