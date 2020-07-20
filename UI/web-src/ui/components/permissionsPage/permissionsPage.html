@@ -1,31 +1,22 @@
-<md-card>
-    <md-toolbar class="md-hue-3">
-        <div class="md-toolbar-tools">
-            <span ma-tr="header.permissions"></span>
-        </div>
-    </md-toolbar>
-    <md-card-content>
-        <ma-permission-editor-container show-filter="::true" ng-form="$ctrl.form" on-filter-changed="$ctrl.filterPermissions($filter)">
+<ma-permission-editor-container show-filter="::true" ng-form="$ctrl.form" on-filter-changed="$ctrl.filterPermissions($filter)">
 
-            <div ng-repeat="module in $ctrl.modules track by module.name" class="ma-permission-editor-row-group">
-                <div class="ma-permission-editor-row ma-module-header" ng-click="$ctrl.expanded[module.name] = !$ctrl.expanded[module.name]">
-                    <div class="ma-permission-editor-cell">
-                        <div class="ma-ellipsis ma-module-name" md-highlight-text="$filter" md-highlight-flags="ig">{{module.name}}</div>
-                        <div class="ma-ellipsis ma-module-description" md-highlight-text="$filter" md-highlight-flags="ig">{{module.description}}</div>
-                    </div>
-                    <!-- no colspan, add dummy columns -->
-                    <div class="ma-permission-editor-cell" ng-repeat="t in $minterms track by t.id"></div>
-                    <div class="ma-permission-editor-cell"></div>
-                </div>
-                <ma-permission-editor
-                        ng-repeat="permission in ($ctrl.expanded[module.name] && module.permissions) track by permission.name"
-                        name="{{permission.name}}"
-                        ng-model="permission.permission"
-                        ng-change="$ctrl.savePermission(permission)">
-                    <span md-highlight-text="$filter" md-highlight-flags="ig">{{permission.description}}</span>
-                    <ma-promise-indicator promise="permission.promise"></ma-promise-indicator>
-                </ma-permission-editor>
+    <div ng-repeat="module in $ctrl.modules track by module.name" class="ma-permission-editor-row-group">
+        <div class="ma-permission-editor-row ma-module-header" ng-click="$ctrl.expanded[module.name] = !$ctrl.expanded[module.name]">
+            <div class="ma-permission-editor-cell">
+                <div class="ma-ellipsis ma-module-name" md-highlight-text="$filter" md-highlight-flags="ig">{{module.name}}</div>
+                <div class="ma-ellipsis ma-module-description" md-highlight-text="$filter" md-highlight-flags="ig">{{module.description}}</div>
             </div>
-        </ma-permission-editor-container>
-    </md-card-content>
-</md-card>
+            <!-- no colspan, add dummy columns -->
+            <div class="ma-permission-editor-cell" ng-repeat="t in $minterms track by t.id"></div>
+            <div class="ma-permission-editor-cell"></div>
+        </div>
+        <ma-permission-editor
+                ng-repeat="permission in ($ctrl.expanded[module.name] && module.permissions) track by permission.name"
+                name="{{permission.name}}"
+                ng-model="permission.permission"
+                ng-change="$ctrl.savePermission(permission)">
+            <span md-highlight-text="$filter" md-highlight-flags="ig">{{permission.description}}</span>
+            <ma-promise-indicator promise="permission.promise"></ma-promise-indicator>
+        </ma-permission-editor>
+    </div>
+</ma-permission-editor-container>
