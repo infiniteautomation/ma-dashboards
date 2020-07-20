@@ -173,7 +173,7 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
 
     class ActiveEventInfo {
         constructor(queryBuilder, filterFn) {
-            this.scopes = new Set();
+            this.subscribers = new Set();
             this.events = [];
             this.counts = {};
             this.updateCounts();
@@ -226,13 +226,20 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
             this.events.forEach(e => this.counts[e.alarmLevel]++);
         }
 
-        addSubscriber(scope) {
-            this.scopes.add(scope);
+        /**
+         * @param subscriber an object representing a subscriber, to be tracked in a set (e.g. a scope or a controller)
+         */
+        addSubscriber(subscriber) {
+            this.subscribers.add(subscriber);
         }
 
-        removeSubscriber(scope) {
-            this.scopes.delete(scope);
-            if (!this.scopes.size) {
+        /**
+         * @param subscriber
+         * @returns {boolean} true if subscriber was the last one and deregister was called
+         */
+        removeSubscriber(subscriber) {
+            const removed = this.subscribers.delete(subscriber);
+            if (removed && !this.subscribers.size) {
                 this.deregister();
                 return true;
             }
