@@ -210,10 +210,10 @@ class PointBrowserController {
             }
         }).filter(p => p != null);
 
-        // ensures keys are in order and have null value for unset tags
+        // ensures keys are in order and have undefined value for unset tags
         const tags = {};
         this.tagKeys.forEach(k => {
-            tags[k] = this.tags[k] != null ? this.tags[k] : null;
+            tags[k] = this.tags[k] != null ? this.tags[k] : undefined;
         });
         
         this.selected = new this.maWatchList({
