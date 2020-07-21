@@ -271,8 +271,9 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
 
                 const xidSubscriptions = this.subscriptionsByXid[xid];
                 if (xidSubscriptions) {
-                    xidSubscriptions.lastPayload = payload;
-                    xidSubscriptions.eventEmitter.dispatchEvent(new PayloadEvent(eventType, payload));
+                    const event = new PayloadEvent(eventType, payload);
+                    xidSubscriptions.lastPayload = event;
+                    xidSubscriptions.eventEmitter.dispatchEvent(event);
                 }
                 angular.element(this).triggerHandler(eventType, payload);
             }
@@ -293,7 +294,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
             if (!Array.isArray(eventTypes)) eventTypes = [eventTypes];
 
             if (this.replayLastPayload && xidSubscriptions && xidSubscriptions.lastPayload && typeof eventHandler === 'function') {
-                eventHandler(null, xidSubscriptions.lastPayload);
+                eventHandler(xidSubscriptions.lastPayload);
             }
 
             for (let i = 0; i < eventTypes.length; i++) {
