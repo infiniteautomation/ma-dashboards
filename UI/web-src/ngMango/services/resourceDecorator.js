@@ -67,8 +67,9 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
 
             buildQuery() {
                 const builder = new RqlBuilder();
-                builder.queryFunction = (queryObj, opts) => {
-                    const resource = this.query({rqlQuery: queryObj.toString()});
+                builder.query = (opts) => {
+                    const queryNode = builder.build();
+                    const resource = this.query({rqlQuery: queryNode.toString()});
                     this.requests.set(resource.$promise, resource);
                     return resource.$promise;
                 };

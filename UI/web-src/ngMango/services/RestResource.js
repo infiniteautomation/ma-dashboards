@@ -114,8 +114,9 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         
         static buildQuery() {
             const builder = new RqlBuilder();
-            builder.queryFunction = (queryObj, opts) => {
-                return this.query(queryObj, opts);
+            builder.query = (opts) => {
+                const queryNode = builder.build();
+                return this.query(queryNode, opts);
             };
             return builder;
         }
