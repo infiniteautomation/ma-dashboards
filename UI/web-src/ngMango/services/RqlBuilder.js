@@ -22,7 +22,10 @@ function rqlBuilderFactory() {
          * @returns {RqlNode}
          */
         build() {
-            return this.root.copy().normalize();
+            if (!this.built) {
+                this.built = this.root.copy().normalize();
+            }
+            return this.built;
         }
 
         toString() {
@@ -38,6 +41,7 @@ function rqlBuilderFactory() {
         }
 
         addAndEnter(name, ...args) {
+            this.checkBuilt();
             const newCurrent = new RqlNode(name, args);
             this.current.args.push(newCurrent);
             this.path.push(newCurrent);
@@ -54,11 +58,13 @@ function rqlBuilderFactory() {
         }
 
         add(name, ...args) {
+            this.checkBuilt();
             this.current.args.push(new RqlNode(name, args));
             return this;
         }
         
         sortLimit(name, ...args) {
+            this.checkBuilt();
             if (this.path.length > 1) {
                 console.warn(`Doing ${name} higher than root`);
             }
@@ -72,15 +78,30 @@ function rqlBuilderFactory() {
             return this.add(name, ...args);
         }
 
-        // TODO remove and define a query method on builder inside buildQuery()
+        /**
+         * Execute the query (typically against a REST endpoint)
+         * @param opts
+         * @returns {Promise}
+         */
         query(opts) {
             if (this.queryFunction) {
                 return this.queryFunction(this, opts);
             }
+            throw new Error('Not implemented');
         }
 
-        createFilter(node = this.build()) {
-            return new RqlFilter(node);
+        /**
+         * Create a filter which can be used to filter/sort/limit an array
+         * @returns {RqlFilter}
+         */
+        createFilter() {
+            return new RqlFilter(this.build());
+        }
+
+        checkBuilt() {
+            if (this.built) {
+                throw new Error('Already built');
+            }
         }
     }
     
