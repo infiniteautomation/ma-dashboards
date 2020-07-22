@@ -20,7 +20,7 @@ class UserListController {
         this.query();
         
         this.User.notificationManager.subscribe((event, item, attributes) => {
-            attributes.updateArray(this.users);
+            attributes.updateArray(this.users, this.queryFilter.test);
         }, this.$scope);
     }
     
@@ -31,8 +31,6 @@ class UserListController {
     }
     
     query() {
-        this.users = [];
-        
         const queryBuilder = this.User.buildQuery();
         if (this.filter) {
             let filter = this.filter.toLowerCase();
@@ -49,6 +47,7 @@ class UserListController {
                 .up();
         }
 
+        this.queryFilter = queryBuilder.createFilter();
         this.usersPromise = queryBuilder // TODO this is a unbounded query
             .query()
             .then(users => this.users = users);
@@ -59,22 +58,6 @@ class UserListController {
     selectUser(user) {
         this.selectedUser = user;
         this.ngModelCtrl.$setViewValue(user);
-    }
-    
-    filterMatches(user) {
-        if (!this.filter) return true;
-
-        let filter = this.filter.toLowerCase();
-        if (!filter.startsWith('*')) {
-            filter = '*' + filter;
-        }
-        if (!filter.endsWith('*')) {
-            filter = filter + '*';
-        }
-        filter = filter.replace(/\*/g, '.*');
-        const regex = new RegExp(filter, 'i');
-
-        return regex.test(user.username) || regex.test(user.name);
     }
 }
 
