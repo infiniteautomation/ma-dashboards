@@ -908,9 +908,14 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
             es6Promise.then(deferred.resolve, deferred.reject);
             return deferred.promise;
         },
-        
+
+        /**
+         * Escapes all RegExp special characters
+         * @param {string} s
+         * @returns {*}
+         */
         regExpEscape(s) {
-            return String(s).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
+            return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
         },
         
         setsEqual(a, b) {
