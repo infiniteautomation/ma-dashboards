@@ -172,16 +172,14 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
     });
 
     class ActiveEventInfo {
-        constructor(queryBuilder, filterFn) {
+        constructor(queryBuilder) {
             this.subscribers = new Set();
             this.events = [];
             this.counts = {};
             this.updateCounts();
 
-            this.queryBuilder = queryBuilder;
-            this.filterFn = filterFn;
-
-            this.queryBuilder.query().then(events => {
+            this.queryFilter = queryBuilder.createFilter();
+            queryBuilder.query().then(events => {
                 events.forEach(e => this.eventUpdated(e));
             });
 
@@ -192,7 +190,7 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
         }
 
         notifyHandler(event, mangoEvent) {
-            if (this.filterFn(mangoEvent)) {
+            if (this.queryFilter.test(mangoEvent)) {
                 $rootScope.$apply(() => {
                     this.eventUpdated(mangoEvent);
                 });
@@ -262,11 +260,12 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
 
         buildActiveQuery() {
             const builder = new RqlBuilder();
-            builder.queryFunction = (queryObj, opts) => {
+            builder.query = (opts) => {
+                const queryNode = builder.build();
                 return this.openSocket().then(() => {
                     return this.sendRequest({
                         requestType: 'ACTIVE_EVENTS_QUERY',
-                        query: queryObj.toString()
+                        query: queryNode.toString()
                     });
                 }).then(response => {
                     const items = response.items.map(e => this.transformObject(e));
@@ -276,8 +275,8 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
             };
 
             // add another function which returns the active event info
-            builder.activeEvents = function(filterFn) {
-                return new ActiveEventInfo(this, filterFn);
+            builder.activeEvents = function() {
+                return new ActiveEventInfo(this);
             };
 
             return builder;
