@@ -23,7 +23,8 @@ function rqlBuilderFactory() {
          */
         build() {
             if (!this.built) {
-                this.built = this.root.copy().normalize();
+                this.built = this.root.normalize();
+                this.path = [];
             }
             return this.built;
         }
@@ -31,7 +32,12 @@ function rqlBuilderFactory() {
         toString() {
             return this.build().toString();
         }
-        
+
+        copy() {
+            this.checkBuilt();
+            return new this.constructor(this.root.copy());
+        }
+
         get current() {
             return this.path[this.path.length - 1];
         }
@@ -49,6 +55,7 @@ function rqlBuilderFactory() {
         }
 
         up() {
+            this.checkBuilt();
             if (this.path.length > 1) {
                 this.path.pop();
             } else {
