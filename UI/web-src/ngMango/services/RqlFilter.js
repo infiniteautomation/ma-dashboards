@@ -62,15 +62,22 @@ export class RqlVisitor {
     sort(args) {
         this.sortComparator = args.reduce((prev, arg) => {
             let descending = false;
-            let propertyName = arg;
+            let propertyName = null;
 
-            // null propertyName means the object itself
-            if (propertyName != null) {
-                if (propertyName.startsWith('-')) {
+            if (Array.isArray(arg)) {
+                propertyName = arg[0];
+                if (arg.length > 1) {
+                    descending = !!arg[1];
+                }
+            } else if (arg != null) {
+                // null propertyName means the object itself
+                if (arg.startsWith('-')) {
                     descending = true;
-                    propertyName = propertyName.substring(1);
-                } else if (propertyName.startsWith('+')) {
-                    propertyName = propertyName.substring(1);
+                    propertyName = arg.substring(1);
+                } else if (arg.startsWith('+')) {
+                    propertyName = arg.substring(1);
+                } else {
+                    propertyName = arg;
                 }
             }
 
