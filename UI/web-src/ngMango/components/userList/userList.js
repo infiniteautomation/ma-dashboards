@@ -33,14 +33,11 @@ class UserListController {
     query() {
         const queryBuilder = this.User.buildQuery();
         if (this.filter) {
-            let filter = this.filter.toLowerCase();
-            if (!filter.startsWith('*')) {
-                filter = '*' + filter;
+            let filter = this.filter;
+            if (!filter.includes('*') && !filter.includes('?')) {
+                filter = '*' + filter + '*';
             }
-            if (!filter.endsWith('*')) {
-                filter = filter + '*';
-            }
-            
+
             queryBuilder.or()
                 .match('username', filter)
                 .match('name', filter)
