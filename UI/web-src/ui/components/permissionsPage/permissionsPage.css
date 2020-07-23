@@ -12,10 +12,6 @@ ma-ui-permissions-page .ma-module-name {
     font-family: var(--ma-font-heading);
 }
 
-ma-ui-permissions-page .ma-module-description {
-    max-width: 400px;
-}
-
 ma-ui-permissions-page .ma-module-header {
     background-color: rgba(var(--ma-background-500-value), 0.2);
 }

@@ -1,5 +1,5 @@
 ma-permission-editor-container {
-    display: block;
+    display: flex;
     overflow-x: auto;
     /* required to stop the ink on the checkbox at the bottom overflowing and causing the table to resize */
     padding-bottom: 8px;
@@ -14,23 +14,25 @@ ma-permission-editor-container:not(:last-child) {
 }
 
 ma-permission-editor-container .ma-permission-editor-table {
-    display: table;
-    width: 100%;
+    flex: 1 0 auto;
 }
 
 ma-permission-editor-container .ma-permission-editor-row {
-    display: table-row;
-    height: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
 }
 
 ma-permission-editor-container .ma-permission-editor-cell {
-    display: table-cell;
-    vertical-align: middle;
     padding: 8px;
+    flex: 1 0 auto;
+    width: 50px;
 }
 
-ma-permission-editor-container .ma-permission-editor-row-group {
-    display: table-row-group;
+ma-permission-editor-container .ma-permission-editor-description-column,
+ma-permission-editor-container .ma-permission-editor-other-column {
+    width: 200px;
+    flex-grow: 2;
 }
 
 ma-permission-editor-container .ma-permission-editor-checkbox-column,
@@ -41,14 +43,14 @@ ma-permission-editor-container .ma-permission-editor-other-column {
 ma-permission-editor-container .ma-permission-editor-header {
     font-weight: bold;
     font-size: 1.4rem;
-}
-
-ma-permission-editor-container .ma-permission-editor-header > .ma-permission-editor-cell {
     border-bottom: 1px solid var(--ma-foreground-4);
-    vertical-align: bottom;
 }
 
-ma-permission-editor-container .ma-permission-editor-header > .ma-permission-editor-description-column > span {
+ma-permission-editor-container .ma-permission-editor-header > .ma-permission-editor-row {
+    align-items: flex-end;
+}
+
+ma-permission-editor-container .ma-permission-editor-header .ma-permission-editor-description-column > span {
     font-size: 1.8rem;
 }
 
