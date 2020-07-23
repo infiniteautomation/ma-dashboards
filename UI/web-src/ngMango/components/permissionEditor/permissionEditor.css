@@ -1,5 +1,5 @@
 ma-permission-editor:hover {
-    background-color: rgba(var(--ma-background-500-value), 0.18);
+    background-color: rgba(var(--ma-background-500-value), 0.08);
 }
 
 ma-permission-editor md-checkbox {

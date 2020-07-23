@@ -1,9 +1,14 @@
 <ma-permission-editor-container show-filter="::true" ng-form="$ctrl.form" on-filter-changed="$ctrl.filterPermissions($filter)">
     <div ng-repeat="module in $ctrl.modules track by module.name" class="ma-permission-editor-group">
-        <div class="ma-permission-editor-row ma-module-header" ng-click="$ctrl.expanded[module.name] = !$ctrl.expanded[module.name]">
-            <div class="ma-permission-editor-cell">
-                <div class="ma-ellipsis ma-module-name" md-highlight-text="$filter" md-highlight-flags="ig">{{module.name}}</div>
-                <div class="ma-ellipsis ma-module-description" md-highlight-text="$filter" md-highlight-flags="ig">{{module.description}}</div>
+        <div class="ma-permission-editor-row ma-module-header"
+             ng-click="$ctrl.expanded[module.name] = !$ctrl.expanded[module.name]"
+             ng-class="{'ma-toggle-open': $ctrl.expanded[module.name]}">
+            <div class="ma-permission-editor-cell" layout="row" layout-align="start center">
+                <div flex>
+                    <div class="ma-ellipsis ma-module-name" md-highlight-text="$filter" md-highlight-flags="ig">{{module.name}}</div>
+                    <div class="ma-ellipsis ma-module-description" md-highlight-text="$filter" md-highlight-flags="ig">{{module.description}}</div>
+                </div>
+                <md-icon class="ma-toggle-icon">arrow_drop_down</md-icon>
             </div>
         </div>
         <ma-permission-editor
