@@ -36,3 +36,10 @@ ma-ui-permissions-page .ma-module-header.ma-toggle-open .ma-toggle-icon {
 ma-ui-permissions-page .ma-permission-editor-group {
     margin-bottom: 8px;
 }
+
+ma-ui-permissions-page .ma-permission-editor-subheader {
+    font-size: 1.4rem;
+    font-weight: bold;
+    align-items: flex-end;
+    opacity: 0.7;
+}

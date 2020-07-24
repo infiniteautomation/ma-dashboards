@@ -11,6 +11,20 @@
                 <md-icon class="ma-toggle-icon">arrow_drop_down</md-icon>
             </div>
         </div>
+
+        <div class="ma-permission-editor-row ma-permission-editor-subheader" ng-if="$ctrl.expanded[module.name]">
+            <div class="ma-permission-editor-cell ma-permission-editor-description-column"></div>
+            <div class="ma-permission-editor-cell ma-permission-editor-checkbox-column"
+                 ng-repeat="minterm in $minterms track by minterm.id">
+                <div ng-repeat="role in minterm.roles" class="ma-ellipsis">
+                    <span ng-if="!$first">&amp; </span> <span ng-bind="role" title="{{role}}"></span>
+                </div>
+            </div>
+            <div class="ma-permission-editor-cell ma-permission-editor-other-column">
+                <div class="ma-ellipsis" ma-tr="ui.permissions.otherRolesWithAccess"></div>
+            </div>
+        </div>
+
         <ma-permission-editor
                 ng-repeat="permission in ($ctrl.expanded[module.name] && module.permissions) track by permission.name"
                 name="{{permission.name}}"
