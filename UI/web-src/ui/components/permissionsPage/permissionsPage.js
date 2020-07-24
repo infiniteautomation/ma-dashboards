@@ -93,7 +93,7 @@ class PermissionsPageController {
                 ngModelCtrl.$setValidity('validationMessage', false);
                 ngModelCtrl.validationMessage = error.mangoStatusText;
             } else {
-                this.maDialogHelper.errorToast(['ui.components.errorSavingSettings', error.mangoStatusText]);
+                this.maDialogHelper.errorToast(['ui.permissions.errorSavingPermission', error.mangoStatusText]);
             }
             return this.$q.reject(error);
         });

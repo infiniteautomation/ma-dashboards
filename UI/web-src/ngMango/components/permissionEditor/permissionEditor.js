@@ -8,24 +8,54 @@ import './permissionEditor.css';
 
 class PermissionEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maPermission', '$element']; }
+    static get $inject() { return ['$element', 'maPermission', 'maSystemPermission', 'maDialogHelper', '$q']; }
     
-    constructor(maPermission, $element) {
+    constructor($element, maPermission, maSystemPermission, maDialogHelper, $q) {
         this.maPermission = maPermission;
+        this.maSystemPermission = maSystemPermission;
+        this.maDialogHelper = maDialogHelper;
+        this.$q = $q;
         $element.addClass( 'ma-permission-editor-row');
     }
     
     $onInit() {
         this.containerCtrl.register(this);
-        this.ngModelCtrl.$render = () => this.render();
+        if (this.ngModelCtrl) {
+            this.ngModelCtrl.$render = () => {
+                this.render(this.ngModelCtrl.$viewValue);
+            };
+        }
+    }
+
+    $onChanges(changes) {
+        if (changes.systemPermissionName && !this.ngModelCtrl) {
+            if (this.systemPermissionName) {
+                const permission = this.systemPermission = new this.maSystemPermission({
+                    name: this.systemPermissionName
+                });
+
+                this.systemPermission.get().then(() => {
+                    if (permission === this.systemPermission) {
+                        this.render(permission.permission);
+                    }
+                }, error => {
+                    if (permission === this.systemPermission) {
+                        this.maDialogHelper.errorToast(['ui.permissions.errorGettingPermission', error.mangoStatusText]);
+                        this.clearColumns();
+                    }
+                });
+            } else {
+                delete this.systemPermission;
+                this.clearColumns();
+            }
+        }
     }
 
     $onDestroy() {
         this.containerCtrl.deregister(this);
     }
 
-    render() {
-        const viewValue = Array.isArray(this.ngModelCtrl.$viewValue) ? this.ngModelCtrl.$viewValue : [];
+    render(viewValue = []) {
         this.permission = new this.maPermission(viewValue);
 
         const minterms = this.containerCtrl.minterms;
@@ -41,6 +71,12 @@ class PermissionEditorController {
 
         this.additionalMinterms = this.permission.minterms.filter(a => !minterms.some(b => a.equals(b)));
     }
+
+    clearColumns() {
+        delete this.permission;
+        delete this.columns;
+        delete this.additionalMinterms();
+    }
     
     columnChanged(column) {
         if (column.checked) {
@@ -48,18 +84,41 @@ class PermissionEditorController {
         } else {
             this.permission.delete(column.minterm);
         }
-        this.ngModelCtrl.$setViewValue(this.permission.toArray());
+
+        const permissionModel = this.permission.toArray();
+        if (this.ngModelCtrl) {
+            this.ngModelCtrl.$setViewValue(permissionModel);
+        } else if (this.systemPermission) {
+            this.systemPermission.permission = permissionModel;
+            this.savePermission();
+        }
+    }
+
+    savePermission() {
+        const permission = this.systemPermission;
+        delete permission.errors;
+        delete permission.validationMessage;
+        permission.promise = permission.save().catch(error => {
+            if (error.status === 422) {
+                permission.errors = {validationMessage: true};
+                permission.validationMessage = error.mangoStatusText;
+            } else {
+                this.maDialogHelper.errorToast(['ui.permissions.errorSavingPermission', error.mangoStatusText]);
+            }
+            return this.$q.reject(error);
+        });
     }
 }
 
 export default {
     transclude: true,
     require: {
-        ngModelCtrl: 'ngModel',
+        ngModelCtrl: '?ngModel',
         containerCtrl: '^^maPermissionEditorContainer'
     },
     bindings: {
-        description: '@',
+        description: '@?',
+        systemPermissionName: '@?',
         disabled: '<?ngDisabled'
     },
     controller: PermissionEditorController,

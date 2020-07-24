@@ -1,9 +1,10 @@
 <div class="ma-permission-editor-cell ma-permission-editor-description-column">
     <span ng-transclude ng-class="{'ma-error-text': $ctrl.ngModelCtrl.$invalid}" class="ma-permission-editor-label">
-        <span md-highlight-text="$ctrl.containerCtrl.filter" md-highlight-flags="ig">{{$ctrl.description}}</span>
+        <span md-highlight-text="$ctrl.containerCtrl.filter" md-highlight-flags="ig">{{$ctrl.description || $ctrl.systemPermission.description}}</span>
+        <ma-promise-indicator ng-if="$ctrl.systemPermission" promise="$ctrl.systemPermission.promise"></ma-promise-indicator>
     </span>
-    <div ng-messages="$ctrl.ngModelCtrl.$error" class="ma-small-text">
-        <div ng-message="validationMessage" ng-bind="$ctrl.ngModelCtrl.validationMessage"></div>
+    <div ng-messages="$ctrl.ngModelCtrl.$error || $ctrl.systemPermission.errors" class="ma-small-text">
+        <div ng-message="validationMessage" ng-bind="$ctrl.ngModelCtrl.validationMessage || $ctrl.systemPermission.validationMessage"></div>
     </div>
 </div>
 <div class="ma-permission-editor-cell ma-permission-editor-checkbox-column" ng-repeat="column in $ctrl.columns track by column.minterm.id">
