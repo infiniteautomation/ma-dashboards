@@ -77,3 +77,8 @@ ma-permission-editor-container .ma-permissions-title > * {
 .ma-permission-editor-container-role-selector md-switch:last-of-type {
     margin: 8px 8px 0;
 }
+
+/* We add our own OK/cancel buttons */
+.ma-permission-editor-container-role-selector .ma-ok-button {
+    display: none;
+}
