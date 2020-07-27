@@ -181,6 +181,8 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
             this.queryFilter = queryBuilder.createFilter();
             queryBuilder.query().then(events => {
                 events.forEach(e => this.eventUpdated(e));
+                this.updateCounts();
+                this.notifySubscribers();
             });
 
             this.deregister = Events.notificationManager.subscribe({
@@ -193,6 +195,8 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
             if (this.queryFilter.test(mangoEvent)) {
                 $rootScope.$apply(() => {
                     this.eventUpdated(mangoEvent);
+                    this.updateCounts();
+                    this.notifySubscribers();
                 });
             }
         }
@@ -212,10 +216,16 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
                 if (outOfOrder) {
                     this.events.sort((a, b) => a.activeTimestamp - b.activeTimestamp);
                 }
-                this.updateCounts();
             } else if (!event.active && index >= 0) {
                 this.events.splice(index, 1);
-                this.updateCounts();
+            }
+        }
+
+        notifySubscribers() {
+            for (const subscriber of this.subscribers) {
+                if (typeof subscriber === 'function') {
+                    subscriber.call(this);
+                }
             }
         }
 
@@ -225,7 +235,8 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
         }
 
         /**
-         * @param subscriber an object representing a subscriber, to be tracked in a set (e.g. a scope or a controller)
+         * @param {object} subscriber An object representing a subscriber, can be a $scope, controller or function.
+         * If a function is passed in, it will be called every time the active events are updated.
          */
         addSubscriber(subscriber) {
             this.subscribers.add(subscriber);
