@@ -142,9 +142,9 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
             }
             
             if (!this.point || !this.point.unreliable) {
-                this.$element.removeClass('point-unreliable');
+                this.$element.removeClass('ma-point-unreliable');
             } else {
-                this.$element.addClass('point-unreliable');
+                this.$element.addClass('ma-point-unreliable');
             }
         
             const $element = this.$element;
