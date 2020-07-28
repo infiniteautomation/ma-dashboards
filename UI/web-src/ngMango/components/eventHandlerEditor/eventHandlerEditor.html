@@ -39,9 +39,20 @@
                         </md-input-container>
 
                         <div flex="100">
-                            <md-checkbox name="disabled" ng-model="$ctrl.eventHandler.disabled"><span ma-tr="common.disabled"></span></md-checkbox>
+                            <md-checkbox class="ma-no-margin-bottom" name="disabled" ng-model="$ctrl.eventHandler.disabled">
+                                <span ma-tr="common.disabled"></span>
+                            </md-checkbox>
                         </div>
                     </div>
+
+                    <ma-permission-editor-container>
+                        <ma-permission-editor name="readPermission" ng-model="$ctrl.eventHandler.readPermission">
+                            <span ma-tr="ui.eventHandlers.permission.read"></span>
+                        </ma-permission-editor>
+                        <ma-permission-editor name="editPermission" ng-model="$ctrl.eventHandler.editPermission">
+                            <span ma-tr="ui.eventHandlers.permission.edit"></span>
+                        </ma-permission-editor>
+                    </ma-permission-editor-container>
                 </div>
             </md-tab-body>
         </md-tab>
