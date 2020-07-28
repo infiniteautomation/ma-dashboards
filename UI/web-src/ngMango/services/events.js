@@ -291,20 +291,6 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
             };
 
             return builder;
-        },
-
-        buildQuery(...args) {
-            const builder = super.buildQuery(...args);
-            builder.visitorOptions = {
-                // maps properties from the RQL query to the actual properties in the returned model
-                propertyNameMap: {
-                    eventType: 'eventType.eventType',
-                    subType: 'eventType.subType',
-                    referenceId1: 'eventType.referenceId1',
-                    referenceId2: 'eventType.referenceId2'
-                }
-            };
-            return builder;
         }
     });
 
@@ -329,10 +315,25 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
             materialIcon: 'block', materialClasses: 'ma-alarm-level-ignore', value: -3}
     ]);
     const levelsMap = Object.freeze(Util.createMapObject(levels, 'key'));
-    
+
+    const superBuildQuery = Events.buildQuery;
     Object.assign(Events, {
         levels,
-        levelsMap
+        levelsMap,
+
+        buildQuery() {
+            const builder = superBuildQuery.apply(this, arguments);
+            builder.visitorOptions = {
+                // maps properties from the RQL query to the actual properties in the returned model
+                propertyNameMap: {
+                    eventType: 'eventType.eventType',
+                    subType: 'eventType.subType',
+                    referenceId1: 'eventType.referenceId1',
+                    referenceId2: 'eventType.referenceId2'
+                }
+            };
+            return builder;
+        }
     });
 
     Object.defineProperty(Events.prototype, 'duration', {
