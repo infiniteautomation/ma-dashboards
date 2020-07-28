@@ -21,9 +21,7 @@ class PermissionEditorController {
     $onInit() {
         this.containerCtrl.register(this);
         if (this.ngModelCtrl) {
-            this.ngModelCtrl.$render = () => {
-                this.render(this.ngModelCtrl.$viewValue);
-            };
+            this.ngModelCtrl.$render = () => this.render();
         }
     }
 
@@ -36,7 +34,7 @@ class PermissionEditorController {
 
                 this.systemPermission.get().then(() => {
                     if (permission === this.systemPermission) {
-                        this.render(permission.permission);
+                        this.render();
                     }
                 }, error => {
                     if (permission === this.systemPermission) {
@@ -55,7 +53,10 @@ class PermissionEditorController {
         this.containerCtrl.deregister(this);
     }
 
-    render(viewValue = []) {
+    render() {
+        const viewValue = this.ngModelCtrl && this.ngModelCtrl.$viewValue ||
+            this.systemPermission && this.systemPermission.permission || [];
+
         this.permission = new this.maPermission(viewValue);
 
         const minterms = this.containerCtrl.minterms;
