@@ -145,8 +145,8 @@ export class RqlVisitor {
     }
 
     getProperty(item, propertyName) {
-        if (this.properyNameMap && this.properyNameMap.hasOwnProperty(propertyName)) {
-            propertyName = this.properyNameMap[propertyName];
+        if (this.propertyNameMap && this.propertyNameMap.hasOwnProperty(propertyName)) {
+            propertyName = this.propertyNameMap[propertyName];
         }
         if (propertyName == null) {
             return item;
