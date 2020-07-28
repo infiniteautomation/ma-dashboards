@@ -21,6 +21,11 @@ const tokenSubstitutes = {
 };
 
 export class RqlVisitor {
+
+    constructor(options) {
+        Object.assign(this, options);
+    }
+
     visit(node) {
         if (typeof this[node.name] === 'function') {
             return this[node.name](node.args);
@@ -140,6 +145,9 @@ export class RqlVisitor {
     }
 
     getProperty(item, propertyName) {
+        if (this.properyNameMap && this.properyNameMap.hasOwnProperty(propertyName)) {
+            propertyName = this.properyNameMap[propertyName];
+        }
         if (propertyName == null) {
             return item;
         }

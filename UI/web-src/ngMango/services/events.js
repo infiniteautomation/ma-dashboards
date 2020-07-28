@@ -291,6 +291,19 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
             };
 
             return builder;
+        },
+
+        buildQuery(...args) {
+            const builder = super.buildQuery(...args);
+            builder.visitorOptions = {
+                // maps properties from the RQL query to the actual properties in the returned model
+                propertyNameMap: {
+                    eventType: 'eventType.eventType',
+                    referenceId1: 'eventType.referenceId1',
+                    referenceId2: 'eventType.referenceId2'
+                }
+            };
+            return builder;
         }
     });
 

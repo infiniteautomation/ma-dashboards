@@ -4,7 +4,7 @@
  */
 
 import RqlNode from './RqlNode';
-import RqlFilter from './RqlFilter';
+import {RqlFilter, RqlVisitor} from './RqlFilter';
 
 rqlBuilderFactory.$inject = [];
 function rqlBuilderFactory() {
@@ -14,8 +14,9 @@ function rqlBuilderFactory() {
     const operators = ['eq', 'ne', 'le', 'ge', 'lt', 'gt', 'in', 'match', 'like', 'contains'];
 
     class RqlBuilder {
-        constructor(root = new RqlNode()) {
+        constructor(root = new RqlNode(), visitorOptions = {}) {
             this.path = [root];
+            this.visitorOptions = visitorOptions;
         }
 
         /**
@@ -102,7 +103,8 @@ function rqlBuilderFactory() {
          * @returns {RqlFilter}
          */
         createFilter() {
-            return new RqlFilter(this.build());
+            const visitor = new RqlVisitor(this.visitorOptions);
+            return new RqlFilter(this.build(), visitor);
         }
 
         checkBuilt() {
