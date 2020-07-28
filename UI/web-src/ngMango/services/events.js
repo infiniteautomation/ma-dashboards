@@ -299,6 +299,7 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
                 // maps properties from the RQL query to the actual properties in the returned model
                 propertyNameMap: {
                     eventType: 'eventType.eventType',
+                    subType: 'eventType.subType',
                     referenceId1: 'eventType.referenceId1',
                     referenceId2: 'eventType.referenceId2'
                 }
