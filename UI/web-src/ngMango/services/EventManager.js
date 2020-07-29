@@ -4,6 +4,7 @@
  */
 
 import angular from 'angular';
+import EventTarget from '../classes/EventTarget';
 
 /**
 * @ngdoc service
@@ -107,28 +108,6 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
         return true;
     }
 
-    let EventTarget = $window.EventTarget;
-    try {
-        // have to actually try constructing it, may exist but not be instantiable
-        new EventTarget();
-    } catch (e) {
-        // polyfill for Safari
-        EventTarget = class EventTarget {
-            constructor() {
-                this.delegate = $window.document.createTextNode('');
-            }
-            addEventListener() {
-                return this.delegate.addEventListener.apply(this.delegate, arguments);
-            }
-            removeEventListener() {
-                return this.delegate.removeEventListener.apply(this.delegate, arguments);
-            }
-            dispatchEvent() {
-                return this.delegate.dispatchEvent.apply(this.delegate, arguments);
-            }
-        }
-    }
-
     class PayloadEvent extends CustomEvent {
         constructor(type, payload) {
             super(type);
@@ -147,7 +126,10 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
             // array of event types active for all xids
             this.activeAllEventTypes = [];
 
-            angular.extend(this, options);
+            Object.assign(this, options);
+
+            // used for subscriptions to all XIDs
+            this.eventEmitter = new EventTarget();
 
             let unloadPending = false;
             $window.addEventListener('beforeunload', event => {
@@ -269,13 +251,14 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
                 const eventType = payload.event || payload.action;
                 const xid = payload.xid || payload.object.xid;
 
+                const event = new PayloadEvent(eventType, payload);
+                this.eventEmitter.dispatchEvent(event);
+
                 const xidSubscriptions = this.subscriptionsByXid[xid];
                 if (xidSubscriptions) {
-                    const event = new PayloadEvent(eventType, payload);
                     xidSubscriptions.lastPayload = event;
                     xidSubscriptions.eventEmitter.dispatchEvent(event);
                 }
-                angular.element(this).triggerHandler(eventType, payload);
             }
         }
 
@@ -313,7 +296,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
                     }
                 } else {
                     if (typeof eventHandler === 'function') {
-                        angular.element(this).on(eventType, eventHandler);
+                        this.eventEmitter.addEventListener(eventType, eventHandler);
                     }
 
                     if (!this.allSubscriptions[eventType]) {
@@ -349,7 +332,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
                     }
                 } else {
                     if (typeof eventHandler === 'function') {
-                        angular.element(this).off(eventType, eventHandler);
+                        this.eventEmitter.removeEventListener(eventType, eventHandler);
                     }
 
                     if (this.allSubscriptions[eventType] > 0) {
