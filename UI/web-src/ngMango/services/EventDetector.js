@@ -169,8 +169,8 @@ function eventDetectorProvider() {
     eventDetectorFactory.$inject = ['maRestResource', '$injector', '$q', '$templateCache', 'maPoint'];
     function eventDetectorFactory(RestResource, $injector, $q, $templateCache, Point) {
     
-        const eventDetectorBaseUrl = '/rest/latest/full-event-detectors';
-        const eventDetectorWebSocketUrl = '/rest/latest/websocket/full-event-detectors';
+        const eventDetectorBaseUrl = '/rest/latest/event-detectors';
+        const eventDetectorWebSocketUrl = '/rest/latest/websocket/event-detectors';
         const eventDetectorXidPrefix = 'ED_';
         
         const eventDetectorTypesByName = Object.create(null);
