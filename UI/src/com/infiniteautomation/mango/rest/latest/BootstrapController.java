@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2018 Infinite Automation Software. All rights reserved.
  */
-package com.infiniteautomation.mango.rest.v2;
+package com.infiniteautomation.mango.rest.latest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,10 +23,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.infiniteautomation.mango.rest.v2.TranslationsController.TranslationsModel;
-import com.infiniteautomation.mango.rest.v2.model.jsondata.JsonDataModel;
-import com.infiniteautomation.mango.rest.v2.model.modules.AngularJSModuleDefinitionGroupModel;
-import com.infiniteautomation.mango.rest.v2.model.user.UserModel;
+import com.infiniteautomation.mango.rest.latest.TranslationsController.TranslationsModel;
+import com.infiniteautomation.mango.rest.latest.model.jsondata.JsonDataModel;
+import com.infiniteautomation.mango.rest.latest.model.modules.AngularJSModuleDefinitionGroupModel;
+import com.infiniteautomation.mango.rest.latest.model.user.UserModel;
 import com.infiniteautomation.mango.spring.MangoRuntimeContextConfiguration;
 import com.infiniteautomation.mango.spring.components.PublicUrlService;
 import com.infiniteautomation.ui.UILifecycle;
