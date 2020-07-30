@@ -46,7 +46,7 @@ class ThrowOnErrorPlugin {
  */
 class DontCacheUserPlugin {
     cacheWillUpdate({request, response, event}) {
-        if (/\/rest\/v2\/ui-bootstrap\/pre-login/.test(request.url)) {
+        if (/\/rest\/latest\/ui-bootstrap\/pre-login/.test(request.url)) {
             return response.json().then(preLoginData => {
                 preLoginData.user = null;
                 return new Response(JSON.stringify(preLoginData), {
@@ -76,7 +76,7 @@ const moduleResourcesStrategy = new workbox.strategies.CacheFirst({
 // register a route for any versioned resources under /modules/xxx/web
 workbox.routing.registerRoute(/\/modules\/[\w-]+\/web\/.*\?v=.+/, moduleResourcesStrategy);
 
-workbox.routing.registerRoute(/\/rest\/v2\/ui-bootstrap\//, new workbox.strategies.NetworkFirst({
+workbox.routing.registerRoute(/\/rest\/latest\/ui-bootstrap\//, new workbox.strategies.NetworkFirst({
     cacheName: uiBootstrapCacheName,
     matchOptions: {
         ignoreVary: true
