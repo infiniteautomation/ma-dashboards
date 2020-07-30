@@ -44,7 +44,7 @@ function publisherProvider() {
     publisherFactory.$inject = ['maRestResource', '$templateCache', 'maUtil', '$injector'];
     function publisherFactory(RestResource, $templateCache, Util, $injector) {
 
-        const publisherBaseUrl = '/rest/latest/publishers-v2';
+        const publisherBaseUrl = '/rest/latest/publishers';
         const publisherWebSocketUrl = '/rest/latest/websocket/publishers';
         const publisherXidPrefix = 'PUB_';
 
