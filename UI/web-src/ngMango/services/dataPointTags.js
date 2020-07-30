@@ -8,7 +8,7 @@ function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
 
     class BulkTagsTemporaryResource extends TemporaryRestResource {
         static get baseUrl() {
-            return '/rest/v2/data-point-tags/bulk';
+            return '/rest/latest/data-point-tags/bulk';
         }
         static get resourceType() {
             return 'BULK_DATA_POINT_TAGS';
@@ -17,13 +17,13 @@ function dataPointTagsFactory($http, RqlBuilder, TemporaryRestResource) {
 
     class DataPointTags {
         static keys() {
-            return $http.get('/rest/v2/data-point-tags/keys').then(response => response.data);
+            return $http.get('/rest/latest/data-point-tags/keys').then(response => response.data);
         }
         
         static queryValues(key, query) {
             const encodedKey = encodeURIComponent(key);
             return $http({
-                url: `/rest/v2/data-point-tags/values/${encodedKey}`,
+                url: `/rest/latest/data-point-tags/values/${encodedKey}`,
                 params: {
                     rqlQuery: query.toString()
                 }

@@ -69,7 +69,7 @@ const bootstrapUtil = Object.freeze({
     login(credentials) {
         return this.xhrRequest({
             method: 'POST',
-            url: '/rest/v2/login',
+            url: '/rest/latest/login',
             data: credentials,
         }).then(response => {
             if (response.status === 200) {

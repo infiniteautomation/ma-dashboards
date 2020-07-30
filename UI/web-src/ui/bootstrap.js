@@ -49,7 +49,7 @@ Promise.resolve().then(() => {
     
     const preLoginDataPromise = util.xhrRequest({
         method: 'GET',
-        url: '/rest/v2/ui-bootstrap/pre-login'
+        url: '/rest/latest/ui-bootstrap/pre-login'
     }).then(response => {
         if (response.status !== 200) {
             throw new Error('Failed to fetch pre-login bootstrap data');
@@ -64,7 +64,7 @@ Promise.resolve().then(() => {
     });
 
 //    const bundlePromise = new Promise((resolve, reject) => {
-//        requirejs(['/rest/v2/modules/angularjs-modules/bundle'], result => {
+//        requirejs(['/rest/latest/modules/angularjs-modules/bundle'], result => {
 //            resolve(result);
 //        }, error => {
 //            console.log('Failed to load bundle', arguments);
@@ -119,7 +119,7 @@ Promise.resolve().then(() => {
         
         return util.xhrRequest({
             method: 'GET',
-            url: '/rest/v2/ui-bootstrap/post-login'
+            url: '/rest/latest/ui-bootstrap/post-login'
         }).then(response => {
             if (response.status !== 200) {
                 throw new Error('Failed to fetch post-login bootstrap data');

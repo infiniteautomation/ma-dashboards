@@ -5,7 +5,7 @@
 
 ServerFactory.$inject = ['$http', '$q'];
 function ServerFactory($http, $q) {
-    const serverUrl = '/rest/v2/server';
+    const serverUrl = '/rest/latest/server';
     
     function Server() {
     }

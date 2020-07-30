@@ -8,7 +8,7 @@ import angular from 'angular';
 scriptingEditorFactory.$inject = ['$http'];
 function scriptingEditorFactory($http) {
     
-    const baseUrl = '/rest/v2/script/validate';
+    const baseUrl = '/rest/latest/script/validate';
     
     const defaultProperties = {
         wrapInFunction: false,

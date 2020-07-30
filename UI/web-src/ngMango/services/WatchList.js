@@ -27,7 +27,7 @@ function WatchListFactory($resource, maUtil, $http, Point, $q,
     *
     * @description Service for querying, getting and saving watch lists.
     */
-    const WatchList = $resource('/rest/v2/watch-lists/:xid', {
+    const WatchList = $resource('/rest/latest/watch-lists/:xid', {
         xid: data => data && (data.originalId || data.xid)
     }, {
         query: {
@@ -41,7 +41,7 @@ function WatchListFactory($resource, maUtil, $http, Point, $q,
         },
         save: {
             method: 'POST',
-            url: '/rest/v2/watch-lists/',
+            url: '/rest/latest/watch-lists/',
             params: {
                 xid: null
             }
@@ -127,7 +127,7 @@ function WatchListFactory($resource, maUtil, $http, Point, $q,
             if (this.type === 'static') {
                 return $http({
                     method: 'GET',
-                    url: `/rest/v2/watch-lists/${encodeURIComponent(this.xid)}/data-points`,
+                    url: `/rest/latest/watch-lists/${encodeURIComponent(this.xid)}/data-points`,
                     cache: false,
                     transformResponse: maUtil.transformArrayResponse
                 }).then(response => {
@@ -465,7 +465,7 @@ function WatchListFactory($resource, maUtil, $http, Point, $q,
      */
     
     Object.assign(WatchList.notificationManager, {
-        webSocketUrl: '/rest/v2/websocket/watch-lists',
+        webSocketUrl: '/rest/latest/websocket/watch-lists',
         supportsSubscribe: false
     });
 

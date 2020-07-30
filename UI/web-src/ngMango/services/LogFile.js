@@ -6,7 +6,7 @@
 logFileFactory.$inject = ['$resource', 'maUtil', '$http'];
 function logFileFactory($resource, maUtil, $http) {
 
-    const LogFile = $resource('/rest/v2/logging/log-files/:filename', {
+    const LogFile = $resource('/rest/latest/logging/log-files/:filename', {
         filename: data => data && data.filename
     }, {
         query: {
@@ -23,13 +23,13 @@ function logFileFactory($resource, maUtil, $http) {
     
     Object.assign(LogFile.prototype, {
         getDownloadUrl() {
-            return `/rest/v2/logging/view/${encodeURIComponent(this.filename)}?download=true`;
+            return `/rest/latest/logging/view/${encodeURIComponent(this.filename)}?download=true`;
         },
         
         getContents() {
             return $http({
                 method: 'GET',
-                url: `/rest/v2/logging/view/${encodeURIComponent(this.filename)}`
+                url: `/rest/latest/logging/view/${encodeURIComponent(this.filename)}`
             }).then(r => r.data);
         }
     });

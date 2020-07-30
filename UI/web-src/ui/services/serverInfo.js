@@ -46,7 +46,7 @@ class ServerInfoProvider {
                 
                 return this.$http({
                     method: 'GET',
-                    url: '/rest/v2/ui-bootstrap/pre-login'
+                    url: '/rest/latest/ui-bootstrap/pre-login'
                 }).then(response => {
                     this.setPreLoginData(response.data);
                     return this;
@@ -60,7 +60,7 @@ class ServerInfoProvider {
                 
                 return this.$http({
                     method: 'GET',
-                    url: '/rest/v2/ui-bootstrap/post-login'
+                    url: '/rest/latest/ui-bootstrap/post-login'
                 }).then(response => {
                     this.setPostLoginData(response.data);
                     return this;

@@ -45,7 +45,7 @@ import angular from 'angular';
 * @name JsonStore#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/json-data/:xid/:dataPath`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/latest/json-data/:xid/:dataPath`
 * @param {string} xid Used to set the id of the node in the json store.
 * @param {string} dataPath dataPath of the object in the json store.
 * @param {string} name name of the object in the json store.
@@ -61,7 +61,7 @@ import angular from 'angular';
 * @name JsonStore#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/json-data/:xid/:dataPath`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/latest/json-data/:xid/:dataPath`
 * @param {string} xid Used to set the id of the node in the json store.
 * @param {string} dataPath dataPath of the object in the json store.
 * @param {string} name name of the object in the json store.
@@ -77,7 +77,7 @@ import angular from 'angular';
 * @name JsonStore#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/json-data/:xid/:dataPath`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/latest/json-data/:xid/:dataPath`
 * @param {string} xid Used to set the id of the node in the json store.
 * @param {string} dataPath dataPath of the object in the json store.
 * @param {string} name name of the object in the json store.
@@ -93,7 +93,7 @@ import angular from 'angular';
 * @name JsonStore#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/json-data/:xid/:dataPath`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/latest/json-data/:xid/:dataPath`
 * @param {string} xid Used to set the id of the node in the json store.
 * @param {string} dataPath dataPath of the object in the json store.
 * @param {string} name name of the object in the json store.
@@ -104,7 +104,7 @@ import angular from 'angular';
 */
 JsonStoreFactory.$inject = ['$resource'];
 function JsonStoreFactory($resource) {
-    const jsonStoreUrl = '/rest/v2/json-data/';
+    const jsonStoreUrl = '/rest/latest/json-data/';
     
     const defaultProperties = {
         name: '',
@@ -215,7 +215,7 @@ function JsonStoreFactory($resource) {
     });
 
     Object.assign(JsonStore.notificationManager, {
-        webSocketUrl: '/rest/v2/websocket/json-data',
+        webSocketUrl: '/rest/latest/websocket/json-data',
         supportsSubscribe: true
     });
 

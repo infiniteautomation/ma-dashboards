@@ -107,7 +107,7 @@
                  wrap-in-function="true" 
                  context="editor.eventHandler.scriptContext" 
                  ng-model="editor.eventHandler.activeScript"
-                 url="/rest/v2/event-handlers/validate-set-point-handler-script"
+                 url="/rest/latest/event-handlers/validate-set-point-handler-script"
                  permissions="editor.eventHandler.scriptPermissions"
                  ></ma-scripting-editor>
             <div ng-messages="editor.form.activeScript.$error">
@@ -210,7 +210,7 @@
                context="editor.eventHandler.scriptContext"
                ng-model="editor.eventHandler.inactiveScript"
                permissions="editor.eventHandler.scriptPermissions"
-               url="/rest/v2/event-handlers/validate-email-handler-script"
+               url="/rest/latest/event-handlers/validate-email-handler-script"
                ></ma-scripting-editor>
             <div ng-messages="editor.form.inactiveScript.$error">
                 <div ng-message="validationMessage" ng-bind="editor.form.inactiveScript.validationMessage"></div>

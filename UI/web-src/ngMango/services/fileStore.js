@@ -8,7 +8,7 @@ import JSZip from 'jszip';
 
 fileStore.$inject = ['$http', 'maUtil', '$q'];
 function fileStore($http, maUtil, $q) {
-    const fileStoreUrl = '/rest/v2/file-stores';
+    const fileStoreUrl = '/rest/latest/file-stores';
     const fileStoreUrlSplit = fileStoreUrl.split('/');
 
     const editModesByMime = {
@@ -305,7 +305,7 @@ function fileStore($http, maUtil, $q) {
 
             this.filePath = urlArray.join('/');
             this.url = [fileStoreUrl, this.filePath].join('/');
-            this.evalUrl = ['/rest/v2/script', 'eval-file-store', this.filePath].join('/');
+            this.evalUrl = ['/rest/latest/script', 'eval-file-store', this.filePath].join('/');
     
             this.editMode = this.getEditMode();
             

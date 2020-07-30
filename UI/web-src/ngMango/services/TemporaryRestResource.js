@@ -20,7 +20,7 @@ function temporaryRestResourceFactory(RestResource, $q, $timeout) {
         }
         
         static get webSocketUrl() {
-            return '/rest/v2/websocket/temporary-resources';
+            return '/rest/latest/websocket/temporary-resources';
         }
 
         static get notifyUpdateOnGet() {

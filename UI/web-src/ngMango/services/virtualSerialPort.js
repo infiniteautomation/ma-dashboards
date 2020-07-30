@@ -6,8 +6,8 @@
 VirtualSerialPortFactory.$inject = ['maRestResource'];
 function VirtualSerialPortFactory(RestResource) {
     
-    const baseUrl = '/rest/v2/virtual-serial-ports';
-    const webSocketUrl = '/rest/v2/websocket/virtual-serial-ports';
+    const baseUrl = '/rest/latest/virtual-serial-ports';
+    const webSocketUrl = '/rest/latest/websocket/virtual-serial-ports';
     const xidPrefix = 'VSP_';
 
     const defaultProperties = {

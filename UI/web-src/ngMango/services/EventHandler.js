@@ -43,8 +43,8 @@ function eventHandlerProvider() {
     eventHandlerFactory.$inject = ['maRestResource', '$templateCache', '$injector', '$rootScope', 'maEventTypeInfo'];
     function eventHandlerFactory(RestResource, $templateCache, $injector, $rootScope, EventTypeInfo) {
 
-        const eventHandlerBaseUrl = '/rest/v2/event-handlers';
-        const eventHandlerWebSocketUrl = '/rest/v2/websocket/event-handlers';
+        const eventHandlerBaseUrl = '/rest/latest/event-handlers';
+        const eventHandlerWebSocketUrl = '/rest/latest/websocket/event-handlers';
         const eventHandlerXidPrefix = 'EH_';
 
         const eventHandlerTypesByName = Object.create(null);
@@ -132,7 +132,7 @@ function eventHandlerProvider() {
             }
 
             static runCommand (command, timeout) {
-                const url = `/rest/v2/server/execute-command`;
+                const url = `/rest/latest/server/execute-command`;
 
                 const data = {
                     command: command,

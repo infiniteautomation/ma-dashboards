@@ -49,7 +49,7 @@
 * @name DataSource#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/data-sources/:xid`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/latest/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -61,7 +61,7 @@
 * @name DataSource#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/data-sources/:xid`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/latest/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -73,7 +73,7 @@
 * @name DataSource#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/data-sources/:xid`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/latest/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -85,7 +85,7 @@
 * @name DataSource#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/data-sources/:xid`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/latest/data-sources/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -124,7 +124,7 @@
 * @name DataSource#getById
 *
 * @description
-* Query the REST endpoint `/rest/v2/data-sources/by-id/:id` with the `GET` method.
+* Query the REST endpoint `/rest/latest/data-sources/by-id/:id` with the `GET` method.
 * @param {object} query Object containing a `id` property which will be used in the query.
 * @returns {object} Returns a data source object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -189,7 +189,7 @@ function dataSourceProvider() {
             useCron: false
         };
         
-        const DataSource = $resource('/rest/v2/data-sources/:xid', {
+        const DataSource = $resource('/rest/latest/data-sources/:xid', {
                 xid: data => data && (data.originalId || data.xid)
             }, {
             query: {
@@ -201,13 +201,13 @@ function dataSourceProvider() {
                 }
             },
             getById: {
-                url: '/rest/v2/data-sources/by-id/:id',
+                url: '/rest/latest/data-sources/by-id/:id',
                 method: 'GET',
                 isArray: false
             },
             save: {
                 method: 'POST',
-                url: '/rest/v2/data-sources',
+                url: '/rest/latest/data-sources',
                 params: {
                     xid: null
                 }
@@ -221,14 +221,14 @@ function dataSourceProvider() {
         });
         
         Object.assign(DataSource.notificationManager, {
-            webSocketUrl: '/rest/v2/websocket/data-sources'
+            webSocketUrl: '/rest/latest/websocket/data-sources'
         });
 
         Object.assign(DataSource.prototype, {
             enable(enabled = true, restart = false) {
                 this.$enableToggling = true;
                 
-                const url = '/rest/v2/data-sources/enable-disable/' + encodeURIComponent(this.xid);
+                const url = '/rest/latest/data-sources/enable-disable/' + encodeURIComponent(this.xid);
                 return $http({
                     url,
                     method: 'PUT',
@@ -244,7 +244,7 @@ function dataSourceProvider() {
             },
             
             getStatus() {
-                const url = '/rest/v2/data-sources/status/' + encodeURIComponent(this.xid);
+                const url = '/rest/latest/data-sources/status/' + encodeURIComponent(this.xid);
                 return $http({
                     url,
                     method: 'GET'

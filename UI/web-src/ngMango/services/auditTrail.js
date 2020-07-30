@@ -6,7 +6,7 @@
 auditTrailFactory.$inject = ['$http', 'maRqlBuilder'];
 function auditTrailFactory($http, RqlBuilder) {
     
-    const auditTrailUrl = '/rest/v2/audit';
+    const auditTrailUrl = '/rest/latest/audit';
     
     const auditTrail = {
         query(queryObject, opts) {

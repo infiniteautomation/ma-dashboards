@@ -7,7 +7,7 @@ import angular from 'angular';
 
 ImportExportFactory.$inject = ['$http', '$q', '$timeout', 'maUtil'];
 function ImportExportFactory($http, $q, $timeout, Util) {
-    const importExportUrl = '/rest/v2/json-emport';
+    const importExportUrl = '/rest/latest/json-emport';
     
     function ImportStatus(location) {
         this.location = location;

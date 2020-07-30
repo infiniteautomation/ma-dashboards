@@ -75,7 +75,7 @@ function eventTypeProvider() {
             }
         });
 
-        const eventTypeBaseUrl = '/rest/v2/event-types';
+        const eventTypeBaseUrl = '/rest/latest/event-types';
 
         class EventType {
             constructor(data) {

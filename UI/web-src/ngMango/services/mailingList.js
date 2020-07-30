@@ -6,8 +6,8 @@
 MailingListFactory.$inject = ['maRestResource'];
 function MailingListFactory(RestResource) {
     
-    const baseUrl = '/rest/v2/mailing-lists';
-    const webSocketUrl = '/rest/v2/websocket/mailing-lists';
+    const baseUrl = '/rest/latest/mailing-lists';
+    const webSocketUrl = '/rest/latest/websocket/mailing-lists';
     const xidPrefix = 'ML_';
 
     const defaultProperties = {

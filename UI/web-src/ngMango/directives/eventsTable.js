@@ -295,7 +295,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
 
             const rqlQuery = this.displayQuery().toString();
             const separator = rqlQuery.length ? '&' : '';
-            this.csvUrl = `/rest/v2/events?${rqlQuery}${separator}format=csv2`;
+            this.csvUrl = `/rest/latest/events?${rqlQuery}${separator}format=csv2`;
             
             this.queryResource = Events.query({rqlQuery});
 

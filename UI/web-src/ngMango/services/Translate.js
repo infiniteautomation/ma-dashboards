@@ -105,7 +105,7 @@ function translateProvider() {
     translateFactory.$inject = ['$http', '$q', 'maUser'];
     function translateFactory($http, $q, maUser) {
 
-        const translationsUrl = '/rest/v2/translations';
+        const translationsUrl = '/rest/latest/translations';
         
         class Translate {
             static tr(key, args) {

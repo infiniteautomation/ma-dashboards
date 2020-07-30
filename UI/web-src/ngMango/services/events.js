@@ -21,7 +21,7 @@
 * @name Events#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/events`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/latest/events`
 * @returns {array} Returns an Array of event objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -32,7 +32,7 @@
 * @name Events#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/events`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/latest/events`
 * @returns {array} Returns an Array of event objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -43,7 +43,7 @@
 * @name Events#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/events`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/latest/events`
 * @returns {array} Returns an Array of event objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -54,7 +54,7 @@
 * @name Events#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/events`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/latest/events`
 * @param {object} query Object for the query, can have a `contains` property for querying events that contain the given string.
 * @returns {array} Returns an Array of event objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
@@ -66,7 +66,7 @@
 * @name Events#query
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/events`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/latest/events`
 * @param {object} query Object for the query, can have a `contains` property for querying events that contain the given string.
 * @returns {array} Returns an Array of event objects matching the query. Objects will be of the resource class and have resource actions available to them.
 *
@@ -135,7 +135,7 @@
 
 eventsFactory.$inject = ['$resource', 'maUtil', 'maEventTypeInfo', 'maRqlBuilder', '$rootScope'];
 function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
-    const Events = $resource('/rest/v2/events', {
+    const Events = $resource('/rest/latest/events', {
         id: '@id'
     }, {
         query: {
@@ -148,22 +148,22 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
         },
         acknowledge: {
             method: 'PUT',
-            url: '/rest/v2/events/acknowledge/:id',
+            url: '/rest/latest/events/acknowledge/:id',
             transformRequest: (data, headersGetter) => {
                 return null;
             }
         },
         acknowledgeViaRql: {
             method: 'POST',
-            url: '/rest/v2/events/acknowledge'
+            url: '/rest/latest/events/acknowledge'
         },
         getActiveSummary: {
-            url: '/rest/v2/events/active-summary',
+            url: '/rest/latest/events/active-summary',
             method: 'GET',
             isArray: true
         },
         getUnacknowledgedSummary: {
-            url: '/rest/v2/events/unacknowledged-summary',
+            url: '/rest/latest/events/unacknowledged-summary',
             method: 'GET',
             isArray: true
         }
@@ -256,7 +256,7 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
     }
 
     Object.assign(Events.notificationManager, {
-        webSocketUrl: '/rest/v2/websocket/events',
+        webSocketUrl: '/rest/latest/websocket/events',
         sendSubscription(levels = ['LIFE_SAFETY', 'CRITICAL', 'URGENT', 'WARNING', 'IMPORTANT', 'INFORMATION', 'NONE'],
                 actions = ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED']) {
             

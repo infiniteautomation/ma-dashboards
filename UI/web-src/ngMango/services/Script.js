@@ -5,7 +5,7 @@
 
 ScriptFactory.$inject = ['$http', '$q'];
 function ScriptFactory($http, $q) {
-    const scriptUrl = '/rest/v2/script';
+    const scriptUrl = '/rest/latest/script';
     
     class Script {
         static scriptEngines() {

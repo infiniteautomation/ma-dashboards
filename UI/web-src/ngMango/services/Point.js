@@ -34,7 +34,7 @@
 * @name Point#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/data-points/:xid`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/latest/data-points/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data point object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -46,7 +46,7 @@
 * @name Point#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/data-points/:xid`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/latest/data-points/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data point object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -58,7 +58,7 @@
 * @name Point#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/data-points/:xid`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/latest/data-points/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data point object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -70,7 +70,7 @@
 * @name Point#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/data-points/:xid`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/latest/data-points/:xid`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a data point object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -96,7 +96,7 @@
 * @name Point#rql
 *
 * @description
-* Passed a string containing RQL for the query and returns an array of data point objects. Queries the endpoint `/rest/v2/data-points?:query`
+* Passed a string containing RQL for the query and returns an array of data point objects. Queries the endpoint `/rest/latest/data-points?:query`
 * @param {string} RQL RQL string for the query
 * @returns {array} An array of data point objects. Objects will be of the resource class and have resource actions available to them.
 *
@@ -109,7 +109,7 @@
 * @name Point#getById
 *
 * @description
-* Query the REST endpoint `/rest/v2/data-points/by-id/:id` with the `GET` method.
+* Query the REST endpoint `/rest/latest/data-points/by-id/:id` with the `GET` method.
 * @param {object} query Object containing a `id` property which will be used in the query.
 * @returns {object} Returns a data point object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -138,7 +138,7 @@
 * Method for setting the value of a settable data point.
 * @param {number} value New value to set on the data point.
 * @param {object=} options Optional object for setting converted property.
-* @returns {object} Returns promise object from $http.put at `/rest/v2/point-values/`
+* @returns {object} Returns promise object from $http.put at `/rest/latest/point-values/`
 *
 */
 
@@ -227,11 +227,11 @@ function dataPointProvider() {
         
         const typesByName = Object.freeze(Util.createMapObject(types, 'type'));
 
-        const realtimeUrl = '/rest/v2/realtime';
+        const realtimeUrl = '/rest/latest/realtime';
     
         class BulkDataPointTemporaryResource extends TemporaryRestResource {
             static get baseUrl() {
-                return '/rest/v2/data-points/bulk';
+                return '/rest/latest/data-points/bulk';
             }
             static get resourceType() {
                 return 'BULK_DATA_POINT';
@@ -240,7 +240,7 @@ function dataPointProvider() {
 
         class DataPointRestResource extends RestResource {
             static get baseUrl() {
-                return '/rest/v2/data-points';
+                return '/rest/latest/data-points';
             }
             
             static get defaultProperties() {
@@ -249,7 +249,7 @@ function dataPointProvider() {
             
             static pointsForWatchList(xid, opts = {}) {
                 return this.http({
-                    url: `/rest/v2/watch-lists/${encodeURIComponent(xid)}/data-points`,
+                    url: `/rest/latest/watch-lists/${encodeURIComponent(xid)}/data-points`,
                     method: 'GET'
                 }, opts).then(response => {
                     if (opts.responseType != null) {
@@ -268,7 +268,7 @@ function dataPointProvider() {
         // stores an array of active events by point id
         const activeEventsMap = new Map();
     
-        const Point = $resource('/rest/v2/data-points/:xid', {
+        const Point = $resource('/rest/latest/data-points/:xid', {
                 xid: data => data && (data.originalId || data.xid)
             }, {
             query: {
@@ -280,13 +280,13 @@ function dataPointProvider() {
                 }
             },
             getById: {
-                url: '/rest/v2/data-points/by-id/:id',
+                url: '/rest/latest/data-points/by-id/:id',
                 method: 'GET',
                 isArray: false
             },
             save: {
                 method: 'POST',
-                url: '/rest/v2/data-points',
+                url: '/rest/latest/data-points',
                 params: {
                     xid: null
                 }
@@ -300,7 +300,7 @@ function dataPointProvider() {
         });
         
         Object.assign(Point.notificationManager, {
-            webSocketUrl: '/rest/v2/websocket/data-points'
+            webSocketUrl: '/rest/latest/websocket/data-points'
         });
         
         Object.assign(Point, {
@@ -345,7 +345,7 @@ function dataPointProvider() {
             
             postQuery(queryObject, opts = {}) {
                 return $http({
-                    url: '/rest/v2/data-points/query',
+                    url: '/rest/latest/data-points/query',
                     method: 'POST',
                     data: queryObject
                 }).then(response => {
@@ -422,14 +422,14 @@ function dataPointProvider() {
 
         Object.assign(Point.prototype, {
             forceRead() {
-                const url = '/rest/v2/runtime-manager/force-refresh/' + encodeURIComponent(this.xid);
+                const url = '/rest/latest/runtime-manager/force-refresh/' + encodeURIComponent(this.xid);
                 return $http.put(url, null);
             },
         
             enable(enabled = true, restart = false) {
                 this.$enableToggling = true;
                 
-                const url = '/rest/v2/data-points/enable-disable/' + encodeURIComponent(this.xid);
+                const url = '/rest/latest/data-points/enable-disable/' + encodeURIComponent(this.xid);
                 return $http({
                     url,
                     method: 'PUT',
@@ -478,7 +478,7 @@ function dataPointProvider() {
 
                 return $http({
                     method: 'PUT',
-                    url: `/rest/v2/point-values/${encodeURIComponent(this.xid)}`,
+                    url: `/rest/latest/point-values/${encodeURIComponent(this.xid)}`,
                     data,
                     params
                 });
@@ -491,7 +491,7 @@ function dataPointProvider() {
             relinquish() {
                 const xid = encodeURIComponent(this.xid);
                 return $http({
-                    url: `/rest/v2/runtime-manager/relinquish/${xid}`,
+                    url: `/rest/latest/runtime-manager/relinquish/${xid}`,
                     method: 'POST',
                     
                 });

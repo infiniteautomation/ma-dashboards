@@ -38,7 +38,7 @@ function SystemSettingsProvider() {
 
     SystemSettingsFactory.$inject = ['$http'];
     function SystemSettingsFactory($http) {
-        const systemSettingsUrl = '/rest/v2/system-settings';
+        const systemSettingsUrl = '/rest/latest/system-settings';
         
         class SystemSettings {
             constructor(key, type, value) {

@@ -6,7 +6,7 @@
 serialPortFactory.$inject = ['$http'];
 function serialPortFactory($http) {
     
-    const baseUrl = '/rest/v2/server/serial-ports';
+    const baseUrl = '/rest/latest/server/serial-ports';
     
     class SerialPort {
         static list(params = {}) {

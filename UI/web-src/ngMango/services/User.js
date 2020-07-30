@@ -62,7 +62,7 @@ User.logout();
 * @name User#get
 *
 * @description
-* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/v2/users/:username`
+* A default action provided by $resource. Makes a http GET call to the rest endpoint `/rest/latest/users/:username`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -74,7 +74,7 @@ User.logout();
 * @name User#save
 *
 * @description
-* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/v2/users/:username`
+* A default action provided by $resource. Makes a http POST call to the rest endpoint `/rest/latest/users/:username`
 * @param {object} query Object containing a `username` property which will be used in the query.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -86,7 +86,7 @@ User.logout();
 * @name User#remove
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/users/:username`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/latest/users/:username`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -98,7 +98,7 @@ User.logout();
 * @name User#delete
 *
 * @description
-* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/v2/users/:username`
+* A default action provided by $resource. Makes a http DELETE call to the rest endpoint `/rest/latest/users/:username`
 * @param {object} query Object containing a `xid` property which will be used in the query.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -124,7 +124,7 @@ User.logout();
 * @name User#getById
 *
 * @description
-* Query the REST endpoint `/rest/v2/users/by-id/:id` with the `GET` method.
+* Query the REST endpoint `/rest/latest/users/by-id/:id` with the `GET` method.
 * @param {object} query Object containing a `id` property which will be used in the query.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
@@ -136,7 +136,7 @@ User.logout();
 * @name User#getCurrent
 *
 * @description
-* Query the REST endpoint `/rest/v2/users/current` with the `GET` method to return the currently logged in user.
+* Query the REST endpoint `/rest/latest/users/current` with the `GET` method to return the currently logged in user.
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -147,7 +147,7 @@ User.logout();
 * @name User#login
 *
 * @description
-* Attempts to login in the user by using `GET` method at `/rest/v2/login/:username`
+* Attempts to login in the user by using `GET` method at `/rest/latest/login/:username`
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -158,7 +158,7 @@ User.logout();
 * @name User#logout
 *
 * @description
-* Logout the current user by using `GET` method at `/rest/v2/login/:username`
+* Logout the current user by using `GET` method at `/rest/latest/login/:username`
 * @returns {object} Returns a user object. Objects will be of the resource class and have resource actions available to them.
 *
 */
@@ -194,7 +194,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
 
         class BulkUserTemporaryResource extends TemporaryRestResource {
             static get baseUrl() {
-                return '/rest/v2/users/bulk';
+                return '/rest/latest/users/bulk';
             }
             static get resourceType() {
                 return 'BULK_USER';
@@ -202,9 +202,9 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         }
         
         let cachedUser, angularLocaleDeferred;
-        const authTokenBaseUrl = '/rest/v2/auth-tokens';
-        const passwordResetUrl = '/rest/v2/password-reset';
-        const emailVerificationUrl = '/rest/v2/email-verification';
+        const authTokenBaseUrl = '/rest/latest/auth-tokens';
+        const passwordResetUrl = '/rest/latest/password-reset';
+        const emailVerificationUrl = '/rest/latest/email-verification';
         const defaultProperties = {
             username: '',
             name: '',
@@ -221,7 +221,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             receiveAlarmEmails: 'IGNORE'
         };
 
-        const User = $resource('/rest/v2/users/:username', {
+        const User = $resource('/rest/latest/users/:username', {
                 username: data => data && (data.originalId || data.username)
             }, {
             query: {
@@ -233,12 +233,12 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 }
             },
             getById: {
-                url: '/rest/v2/users/by-id/:id',
+                url: '/rest/latest/users/by-id/:id',
                 method: 'GET',
                 isArray: false
             },
             getCurrent: {
-                url: '/rest/v2/users/current',
+                url: '/rest/latest/users/current',
                 method: 'GET',
                 isArray: false,
                 interceptor: {
@@ -246,7 +246,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 }
             },
             login: {
-                url: '/rest/v2/login',
+                url: '/rest/latest/login',
                 method: 'POST',
                 isArray: false,
                 interceptor: {
@@ -254,7 +254,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 }
             },
             switchUser: {
-                url: '/rest/v2/login/su',
+                url: '/rest/latest/login/su',
                 method: 'POST',
                 isArray: false,
                 interceptor: {
@@ -263,7 +263,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 hasBody: false
             },
             exitSwitchUser: {
-                url: '/rest/v2/login/exit-su',
+                url: '/rest/latest/login/exit-su',
                 method: 'POST',
                 isArray: false,
                 interceptor: {
@@ -272,7 +272,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 hasBody: false
             },
             logout: {
-                url: '/rest/v2/logout',
+                url: '/rest/latest/logout',
                 method: 'POST',
                 isArray: false,
                 interceptor: {
@@ -282,7 +282,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             },
             save: {
                 method: 'POST',
-                url: '/rest/v2/users/',
+                url: '/rest/latest/users/',
                 params: {
                     username: null
                 }
@@ -297,7 +297,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         });
 
         Object.assign(User.notificationManager, {
-            webSocketUrl: '/rest/v2/websocket/users'
+            webSocketUrl: '/rest/latest/websocket/users'
         });
 
         Object.assign(User, {

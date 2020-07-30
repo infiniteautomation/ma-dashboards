@@ -5,7 +5,7 @@
 
 SystemPermissionFactory.$inject = ['$http', 'maRqlBuilder'];
 function SystemPermissionFactory($http, maRqlBuilder) {
-    const permissionsUrl = '/rest/v2/system-permissions';
+    const permissionsUrl = '/rest/latest/system-permissions';
     
     class SystemPermission {
         constructor(options) {

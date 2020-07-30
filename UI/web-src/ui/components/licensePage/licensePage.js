@@ -31,7 +31,7 @@ class LicensePageController {
         const p2 = this.usageTrackingEnabled.setValue();
         const p3 = this.$http({
             method: 'POST',
-            url: '/rest/v2/server/accept-license-agreement',
+            url: '/rest/latest/server/accept-license-agreement',
             params: {
                 agree: true
             }

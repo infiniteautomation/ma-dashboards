@@ -28,7 +28,7 @@ class SystemStatusPageController {
         this.RqlBuilder = RqlBuilder;
         this.maLogFile = maLogFile;
     
-        this.logByFileNameUrl = '/rest/v2/logging/view/';
+        this.logByFileNameUrl = '/rest/latest/logging/view/';
     
         this.boundAuditQuery = (...args) => this.updateAuditQuery(...args);
         

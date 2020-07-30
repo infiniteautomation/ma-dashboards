@@ -241,7 +241,7 @@ export default [
                     './views/serverError.html');
         },
         controller: ['$scope', '$http', function($scope, $http) {
-            $http({url: '/rest/v2/exception/latest'}).then(response => {
+            $http({url: '/rest/latest/exception/latest'}).then(response => {
                 const exception = $scope.exception = response.data.MANGO_USER_LAST_EXCEPTION;
                 if (exception) {
                     $scope.fullStack = printException(exception).join('\n');

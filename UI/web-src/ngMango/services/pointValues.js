@@ -18,7 +18,7 @@ function pointValuesProvider() {
     function pointValuesFactory($http, $q, Util, $injector, TemporaryRestResource, MA_TIMEOUTS, $cacheFactory) {
         const pointValuesCache = $cacheFactory('maPointValues', {capacity: 25});
         
-        const pointValuesUrl = '/rest/v2/point-values';
+        const pointValuesUrl = '/rest/latest/point-values';
         let maDialogHelper, lastToast;
         
         if ($injector.has('maDialogHelper')) {

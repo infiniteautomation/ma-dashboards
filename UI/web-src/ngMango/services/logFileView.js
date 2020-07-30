@@ -6,7 +6,7 @@
 logFileViewFactory.$inject = ['$http'];
 function logFileViewFactory($http) {
     
-    const baseUrl = '/rest/v2';
+    const baseUrl = '/rest/latest';
     
     class logFileView {
         static getFilename(url) {

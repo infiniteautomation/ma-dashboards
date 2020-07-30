@@ -8,7 +8,7 @@
                     <md-icon>add</md-icon> <span ma-tr="ui.app.new"></span>
                     <md-tooltip><span ma-tr="dsList.createDataSource"></span></md-tooltip>
                 </md-button>
-                <md-button class="md-icon-button ma-small-button" ng-href="/rest/v2/data-sources/export"
+                <md-button class="md-icon-button ma-small-button" ng-href="/rest/latest/data-sources/export"
                     ng-attr-download="data-sources.json" ng-if="$ctrl.$mdMedia('gt-md')">
                     <md-tooltip md-direction="left" ma-tr="ui.app.exportAll"></md-tooltip>
                     <md-icon md-menu-align-target>save_alt</md-icon>
@@ -48,7 +48,7 @@
                         </md-button>
                         <md-menu-content width="3" class="ma-no-padding" md-colors="::{background: 'background-hue-3'}">
                             <md-menu-item>
-                                <md-button class="ma-no-padding-right" ng-href="/rest/v2/data-sources/export/{{$ctrl.dataSource.originalId}}" ng-attr-download="{{$ctrl.dataSource.name}}.json">
+                                <md-button class="ma-no-padding-right" ng-href="/rest/latest/data-sources/export/{{$ctrl.dataSource.originalId}}" ng-attr-download="{{$ctrl.dataSource.name}}.json">
                                     <div layout="row" flex>
                                         <div flex ma-tr="emport.export"></div>
                                         <md-icon md-menu-align-target>save_alt</md-icon>
@@ -56,7 +56,7 @@
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
-                                <md-button class="ma-no-padding-right" ng-href="/rest/v2/data-sources/export-with-points?xid={{$ctrl.dataSource.originalId}}" ng-attr-download="{{$ctrl.dataSource.name}}.json">
+                                <md-button class="ma-no-padding-right" ng-href="/rest/latest/data-sources/export-with-points?xid={{$ctrl.dataSource.originalId}}" ng-attr-download="{{$ctrl.dataSource.name}}.json">
                                     <div layout="row" flex>
                                         <div flex ma-tr="ui.app.exportWithPoints"></div>
                                         <md-icon md-menu-align-target>save_alt</md-icon>

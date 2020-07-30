@@ -7,14 +7,14 @@ SystemStatusFactory.$inject = ['$http'];
 
 function SystemStatusFactory($http) {
 
-    const auditTrailUrl = '/rest/v2/audit';
-    const internalMetricsUrl = '/rest/v2/system-metrics';
-    const logFilesListUrl = '/rest/v2/logging/files';
-    const logByFileNameUrl = '/rest/v2/logging/view/';
-    const workItemsUrl = '/rest/v2/work-items/';
-    const threadsUrl = '/rest/v2/threads';
-    const systemInfoUrl = '/rest/v2/server/system-info';
-    const pointHistoryCountsUrl = '/rest/v2/server/point-history-counts';
+    const auditTrailUrl = '/rest/latest/audit';
+    const internalMetricsUrl = '/rest/latest/system-metrics';
+    const logFilesListUrl = '/rest/latest/logging/files';
+    const logByFileNameUrl = '/rest/latest/logging/view/';
+    const workItemsUrl = '/rest/latest/work-items/';
+    const threadsUrl = '/rest/latest/threads';
+    const systemInfoUrl = '/rest/latest/server/system-info';
+    const pointHistoryCountsUrl = '/rest/latest/server/point-history-counts';
 
     const SystemStatus = {};
 

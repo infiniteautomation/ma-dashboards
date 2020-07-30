@@ -56,7 +56,7 @@ function ExceptionHandlerProvider($httpProvider) {
                 const xsrfValue = $cookies.get(xsrfCookieName);
                 
                 const xhr = new XMLHttpRequest();
-                xhr.open('POST', MA_BASE_URL + '/rest/v2/server/client-error', true);
+                xhr.open('POST', MA_BASE_URL + '/rest/latest/server/client-error', true);
                 xhr.timeout = MA_TIMEOUTS.xhr;
                 xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
                 xhr.setRequestHeader('Accept', 'application/json, text/plain, */*');

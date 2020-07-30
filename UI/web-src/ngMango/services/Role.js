@@ -6,7 +6,7 @@
 roleFactory.$inject = ['maRestResource', 'maRqlBuilder'];
 function roleFactory(RestResource, RqlBuilder) {
     
-    const baseUrl = '/rest/v2/roles';
+    const baseUrl = '/rest/latest/roles';
 
     class Role extends RestResource {
         static get baseUrl() {
