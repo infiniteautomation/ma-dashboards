@@ -32,22 +32,22 @@ function eventBusFactory() {
             return subtopic;
         }
 
-        subscribe(path, callback) {
+        subscribe(path, listener) {
             if (!path.length) {
-                this.subscribers.add(callback);
+                this.subscribers.add(listener);
             } else {
                 const subtopic = this.createSubtopic(path[0]);
-                subtopic.subscribe(path.slice(1), callback);
+                subtopic.subscribe(path.slice(1), listener);
             }
         }
 
-        unsubscribe(path, callback) {
+        unsubscribe(path, listener) {
             if (!path.length) {
-                return this.subscribers.delete(callback);
+                return this.subscribers.delete(listener);
             } else {
                 const subtopic = this.subtopics.get(path[0]);
                 if (subtopic) {
-                    const deleted = subtopic.unsubscribe(path.slice(1), callback);
+                    const deleted = subtopic.unsubscribe(path.slice(1), listener);
                     if (deleted && subtopic.isEmpty()) {
                         this.subtopics.delete(path[0]);
                     }
@@ -87,33 +87,73 @@ function eventBusFactory() {
         }
     }
 
+    /**
+     * @ngdoc service
+     * @name ngMangoServices.maEventBus
+     * @description
+     * Provides a generic event bus instance which can be shared and used amongst services and components
+     */
     class EventBus {
         constructor() {
             this.topic = new Topic();
         }
 
-        splitPath(path) {
-            return path.split(PATH_SEPARATOR);
-        }
-
-        subscribe(topic, callback) {
-            const path = this.splitPath(topic);
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maEventBus
+         * @name subscribe
+         *
+         * @description
+         * Subscribes a listener callback to a topic. Topic levels are separated by a / character
+         * and may contain a single-level wildcard (+) or a multi-level wildcard (#, at the end only).
+         *
+         * @param {string} topic Topic name
+         * @param {function} listener Listener callback, invoked when a matching event is published. The first argument
+         * is always an Event followed by the arguments passed to the publish method
+         * @returns {function} Unsubscribe function, calling this function will unsubscribe the listener
+         */
+        subscribe(topic, listener) {
+            const path = topic.split(PATH_SEPARATOR);
             const i = path.indexOf(MULTI_LEVEL_WILDCARD);
             if (i >= 0 && i < path.length - 1) {
                 throw new Error('Multi-level wildcard can only be at end of topic');
             }
 
-            this.topic.subscribe(path, callback);
+            this.topic.subscribe(path, listener);
             return () => {
-                this.topic.unsubscribe(path, callback);
+                this.topic.unsubscribe(path, listener);
             };
         }
 
-        unsubscribe(topic, callback) {
-            const path = this.splitPath(topic);
-            return this.topic.unsubscribe(path, callback);
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maEventBus
+         * @name unsubscribe
+         *
+         * @description
+         * Unsubscribes a listener callback for a topic.
+         *
+         * @param {string} topic Topic name, must be exactly the same as the topic that was supplied when listener was
+         * subscribed
+         * @param {function} listener Listener callback
+         * @returns {boolean} true if the listener was successfully removed
+         */
+        unsubscribe(topic, listener) {
+            const path = topic.split(PATH_SEPARATOR);
+            return this.topic.unsubscribe(path, listener);
         }
 
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maEventBus
+         * @name publish
+         *
+         * @description
+         * Unsubscribes a listener callback for a topic.
+         *
+         * @param {string} topic Topic name, cannot contain wildcards
+         * @param {*} args arbitrary number of arguments which will be passed to the listeners (after the event argument)
+         */
         publish(topic, ...args) {
             let event;
             if (topic instanceof Event) {
@@ -123,7 +163,7 @@ function eventBusFactory() {
                 event = new EventBusEvent(topic);
             }
 
-            const path = this.splitPath(topic);
+            const path = topic.split(PATH_SEPARATOR);
             this.topic.publish(path, event, args);
         }
     }
