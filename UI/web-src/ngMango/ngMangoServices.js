@@ -27,6 +27,7 @@ import pointValuesProvider from './services/pointValues';
 import statisticsFactory from './services/statistics';
 import qDecorator from './services/qDecorator';
 import resourceDecorator from './services/resourceDecorator';
+import scopeDecorator from './services/scopeDecorator';
 import ModulesFactory from './services/Modules';
 import roleFactory from './services/Role';
 import systemSettingsProvider from './services/systemSettings';
@@ -64,6 +65,7 @@ import discardCheckFactory from './services/DiscardCheck';
 import themingProvider from './services/Theming';
 import systemPermissionFactory from './services/SystemPermission';
 import permissionFactory from './services/Permission';
+import eventBusFactory from './services/eventBus';
 import angular from 'angular';
 import rqlQuery from 'rql/query';
 import 'angular-resource';
@@ -144,9 +146,10 @@ ngMangoServices.factory('maLogFile', logFileFactory);
 ngMangoServices.factory('maLogFileView', logFileViewFactory);
 ngMangoServices.factory('maScript', scriptFactory);
 ngMangoServices.factory('maDiscardCheck', discardCheckFactory);
-ngMangoServices.provider('maTheming', themingProvider)
-ngMangoServices.factory('maSystemPermission', systemPermissionFactory)
+ngMangoServices.provider('maTheming', themingProvider);
+ngMangoServices.factory('maSystemPermission', systemPermissionFactory);
 ngMangoServices.factory('maPermission', permissionFactory);
+ngMangoServices.factory('maEventBus', eventBusFactory);
 
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUTS', {
@@ -262,6 +265,7 @@ ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provid
 
     $provide.decorator('$q', qDecorator);
     $provide.decorator('$resource', resourceDecorator);
+    $provide.decorator('$rootScope', scopeDecorator);
 }]);
 
 export default ngMangoServices;
