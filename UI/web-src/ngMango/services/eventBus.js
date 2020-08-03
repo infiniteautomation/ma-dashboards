@@ -3,8 +3,8 @@
  * @author Jared Wiltshire
  */
 
-eventBusFactory.$inject = [];
-function eventBusFactory() {
+eventBusFactory.$inject = ['$log'];
+function eventBusFactory($log) {
 
     const SINGLE_LEVEL_WILDCARD = '+';
     const MULTI_LEVEL_WILDCARD = '#';
@@ -82,7 +82,11 @@ function eventBusFactory() {
 
         publishToSubscribers(event, args) {
             for (const subscriber of this.subscribers) {
-                subscriber.call(undefined, event, ...args);
+                try {
+                    subscriber.call(undefined, event, ...args);
+                } catch (e) {
+                    $log.error(e);
+                }
             }
         }
     }
