@@ -6,9 +6,8 @@
 
 import angular from 'angular';
 
-
-NotificationManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUTS', '$q', '$timeout'];
-function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $timeout) {
+NotificationManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUTS', '$q', '$timeout', 'maEventBus', 'maWatchdog'];
+function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $timeout, maEventBus, maWatchdog) {
 
     //const READY_STATE_CONNECTING = 0;
     const READY_STATE_OPEN = 1;
@@ -18,7 +17,6 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
     const mapEventType = {
         add: 'create'
     };
-    
 
     class NotificationManager {
         constructor(options) {
@@ -32,16 +30,14 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             this.pendingRequests = {};
             this.sequenceNumber = 0;
 
-            // assume true
-            this.loggedIn = true;
-            
-            $rootScope.$on('maWatchdog', (event, current, previous) => {
-                this.loggedIn = current.status === 'LOGGED_IN';
-                
-                if (current.status === 'LOGGED_IN' && this.listeners > 0) {
+            this.loggedIn = maWatchdog.status === 'LOGGED_IN';
+            maEventBus.subscribe('maWatchdog/#', (event, watchdog) => {
+                this.loggedIn = watchdog.status === 'LOGGED_IN';
+
+                if (watchdog.status === 'LOGGED_IN' && this.listeners > 0) {
                     // API is up and we are logged in
                     this.openSocket().catch(angular.noop);
-                } else if (current.status === 'API_UP') {
+                } else if (watchdog.status === 'API_UP') {
                     // API is up but we aren't logged in
                     this.closeSocket();
                 }
@@ -232,12 +228,10 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             });
             this.pendingRequests = {};
             this.sequenceNumber = 0;
-            
-            // try to reopen the socket if we think we are logged in and we have listeners
-            if (this.loggedIn && this.listeners > 0) {
-                $timeout(() => {
-                    this.openSocket().catch(angular.noop);
-                }, MA_TIMEOUTS.websocketReconnectDelay);
+
+            if (event) {
+                // websocket closed by server, check if Mango is still up
+                maWatchdog.checkStatus();
             }
         }
         

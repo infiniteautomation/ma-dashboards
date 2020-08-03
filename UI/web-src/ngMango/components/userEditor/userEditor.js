@@ -96,7 +96,8 @@ class UserEditorController {
             
             // update the cached user if we are modifying our own user
             if (previous.username === this.User.current.username) {
-                this.User.current = this.originalUser;
+                // TODO remove / move to user service
+                this.User.setCurrentUser(this.originalUser);
             }
     
             this.maDialogHelper.toast(['ui.components.userSaved', user.username]);

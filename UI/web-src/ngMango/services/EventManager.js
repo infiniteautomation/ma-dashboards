@@ -90,8 +90,8 @@ import EventTarget from '../classes/EventTarget';
 *
 */
 
-EventManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUTS', 'maUser', '$window', '$injector'];
-function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $window, $injector) {
+EventManagerFactory.$inject = ['MA_BASE_URL', '$rootScope', 'MA_TIMEOUTS', 'maUser', '$window', '$injector', 'maEventBus', 'maWatchdog'];
+function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $window, $injector, maEventBus, maWatchdog) {
 
     const $state = $injector.has('$state') && $injector.get('$state');
     
@@ -139,19 +139,18 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
                 }
             });
 
-            this.loggedIn = !!maUser.current;
+            this.loggedIn = maWatchdog.status === 'LOGGED_IN';
+            maEventBus.subscribe('maWatchdog/#', (event, watchdog) => {
+                this.loggedIn = watchdog.status === 'LOGGED_IN';
 
-            $rootScope.$on('maWatchdog', (event, current, previous) => {
-                this.loggedIn = current.status === 'LOGGED_IN';
-
-                if (current.status === 'LOGGED_IN') {
+                if (watchdog.status === 'LOGGED_IN') {
                     // API is up and we are logged in
 
                     // prevent opening WS connections which are closed immediately when maLoginRedirector sets window.location
                     if (!unloadPending) {
                         this.openSocket();
                     }
-                } else if (current.status === 'API_UP') {
+                } else if (watchdog.status === 'API_UP') {
                     // API is up but we aren't logged in
                     this.closeSocket();
                 }
@@ -192,12 +191,12 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
                 this.closeSocket();
             }, MA_TIMEOUTS.websocket);
 
-            socket.onclose = () => {
-                this.closeSocket();
+            socket.onclose = event => {
+                this.closeSocket(event);
             };
 
-            socket.onerror = () => {
-                this.closeSocket();
+            socket.onerror = event => {
+                this.closeSocket(event);
             };
 
             socket.onopen = () => {
@@ -220,7 +219,7 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
             return socket;
         }
 
-        closeSocket(error) {
+        closeSocket(event) {
             if (this.connectTimer) {
                 clearTimeout(this.connectTimer);
                 delete this.connectTimer;
@@ -237,11 +236,9 @@ function EventManagerFactory(mangoBaseUrl, $rootScope, MA_TIMEOUTS, maUser, $win
             this.activeEventTypesByXid = {};
             this.activeAllEventTypes = [];
 
-            // try to reopen the socket if we think we are logged in
-            if (this.loggedIn) {
-                setTimeout(() => {
-                    this.openSocket();
-                }, MA_TIMEOUTS.websocketReconnectDelay);
+            if (event) {
+                // websocket closed by server, check if Mango is still up
+                maWatchdog.checkStatus();
             }
         }
 

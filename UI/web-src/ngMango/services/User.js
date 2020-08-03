@@ -169,7 +169,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     let systemLocale;
     let systemTimezone;
 
-    this.setUser = function(user) {
+    this.setCurrentUser = function(user) {
         bootstrapUser = user;
     };
     this.setSystemLocale = function(locale) {
@@ -201,7 +201,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             }
         }
         
-        let cachedUser, angularLocaleDeferred;
+        let currentUser, angularLocaleDeferred;
         const authTokenBaseUrl = '/rest/latest/auth-tokens';
         const passwordResetUrl = '/rest/latest/password-reset';
         const emailVerificationUrl = '/rest/latest/email-verification';
@@ -242,7 +242,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 method: 'GET',
                 isArray: false,
                 interceptor: {
-                    response: loginInterceptor
+                    response: setCurrentUserInterceptor
                 }
             },
             login: {
@@ -250,7 +250,11 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 method: 'POST',
                 isArray: false,
                 interceptor: {
-                    response: loginInterceptor
+                    request: function(config) {
+                        User.ensureXsrfToken();
+                        return config;
+                    },
+                    response: setCurrentUserInterceptor
                 }
             },
             switchUser: {
@@ -258,7 +262,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 method: 'POST',
                 isArray: false,
                 interceptor: {
-                    response: loginInterceptor
+                    response: setCurrentUserInterceptor
                 },
                 hasBody: false
             },
@@ -267,7 +271,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 method: 'POST',
                 isArray: false,
                 interceptor: {
-                    response: loginInterceptor
+                    response: setCurrentUserInterceptor
                 },
                 hasBody: false
             },
@@ -301,20 +305,21 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         });
 
         Object.assign(User, {
-            setUser(user) {
-                if (!angular.equals(user, cachedUser)) {
-                    const firstChange = cachedUser === undefined;
+            setCurrentUser(user) {
+                if (!angular.equals(user, currentUser)) {
+                    const firstChange = currentUser === undefined;
                     
                     if (user) {
-                        cachedUser = user instanceof User ? user : Object.assign(Object.create(User.prototype), user);
+                        currentUser = user instanceof User ? user : Object.assign(Object.create(User.prototype), user);
                     } else {
-                        cachedUser = null;
+                        currentUser = null;
                     }
                     
                     this.configureLocale();
                     this.configureTimezone();
-                    
-                    this.notificationManager.notify('userChanged', cachedUser, firstChange);
+
+                    // TODO convert to event bus event
+                    this.notificationManager.notify('userChanged', currentUser, firstChange);
                 }
             },
     
@@ -350,7 +355,8 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                             }
                         });
                     }
-    
+
+                    // TODO convert to event bus event
                     this.notificationManager.notify('localeChanged', locale, firstChange);
                 }
             },
@@ -361,14 +367,15 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     this.timezone = timezone;
                     
                     moment.tz.setDefault(timezone);
-                    
+
+                    // TODO convert to event bus event
                     this.notificationManager.notify('timezoneChanged', timezone, firstChange);
                 }
             },
             
             getLocale() {
-                if (cachedUser) {
-                    return cachedUser.getLocale();
+                if (currentUser) {
+                    return currentUser.getLocale();
                 }
                 return this.getSystemLocale();
             },
@@ -378,8 +385,8 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             },
     
             getTimezone() {
-                if (cachedUser) {
-                    return cachedUser.getTimezone();
+                if (currentUser) {
+                    return currentUser.getTimezone();
                 }
                 return this.getSystemTimezone();
             },
@@ -388,9 +395,6 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 return systemTimezone || MA_DEFAULT_TIMEZONE || moment.tz.guess();
             },
 
-            loginInterceptors: [],
-            logoutInterceptors: [],
-    
             storeCredentials(username, password) {
                 localStorageService.set('storedCredentials', {
                     username: username,
@@ -574,18 +578,11 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
 
             bulk: BulkUserTemporaryResource
         });
-        
-        const login = User.login;
-        User.login = function() {
-            this.ensureXsrfToken();
-            return login.apply(this, arguments);
-        };
 
         Object.defineProperty(User, 'current', {
             get: function() {
-                return cachedUser;
-            },
-            set: User.setUser
+                return currentUser;
+            }
         });
 
         Object.assign(User.prototype, {
@@ -685,40 +682,39 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             }
         });
 
-        // This would be more accurately named "fetched current user" interceptor
-        // User.current is set in maWatchdog.setStatus() via one of these interceptors which is registered in ngMango.js
-        function loginInterceptor(data) {
-            
+        function setCurrentUserInterceptor(data) {
             // set some properties on the user from headers that will only be available when logging in
             const loginRedirectUrl = data.headers('X-Mango-Default-URI');
             const lastUpgrade = data.headers('X-Mango-Last-Upgrade');
-            
+
             if (loginRedirectUrl) {
                 data.resource.loginRedirectUrl = loginRedirectUrl;
                 const required = data.headers('X-Mango-Default-URI-Required');
                 data.resource.loginRedirectUrlRequired = !!(required && required.toLowerCase() !== 'false');
             }
-            
+
             if (lastUpgrade) {
                 data.resource.lastUpgradeTime = parseInt(lastUpgrade, 10);
             }
-            
-            User.loginInterceptors.forEach(interceptor => interceptor(data));
-            
+
             if (data.resource.username) {
                 data.resource.originalId = data.resource.username;
             }
+
+            User.setCurrentUser(data.resource);
+            $injector.get('maWatchdog').setStatus('LOGGED_IN');
 
             return data.resource;
         }
-        
+
         function logoutInterceptor(data) {
-            User.logoutInterceptors.forEach(interceptor => interceptor(data));
+            User.setCurrentUser(null);
+            $injector.get('maWatchdog').setStatus('API_UP');
 
             if (data.resource.username) {
                 data.resource.originalId = data.resource.username;
             }
-            
+
             return data.resource;
         }
         
@@ -726,7 +722,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.NoUserError = NoUserError;
 
         // set the initial user and configure initial locale and timezone
-        User.setUser(bootstrapUser);
+        User.setCurrentUser(bootstrapUser);
         bootstrapUser = undefined;
 
         return User;

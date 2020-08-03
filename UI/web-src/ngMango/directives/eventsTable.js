@@ -167,12 +167,10 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 }
             }, this.$scope, ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED']);
 
-            this.$scope.$on('maWatchdog', (event, current, previous) => {
-                if (current.status === 'LOGGED_IN') {
-                    $timeout(() => {
-                        this.doQuery();
-                    }, 5000);
-                }
+            this.$scope.$maSubscribe('maWatchdog/LOGGED_IN', (event, maWatchdog) => {
+                $timeout(() => {
+                    this.doQuery();
+                }, 5000);
             });
 
             // TODO update with websocket

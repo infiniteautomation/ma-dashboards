@@ -28,11 +28,9 @@ ModulesPageController.prototype.$onInit = function() {
         delete payload.storeUrl;
         this.updateLicenseStr = angular.toJson(payload, false);
     }.bind(this));
-    
-    this.$scope.$on('maWatchdog', (event, current, previous) => {
-        if (current.status === 'LOGGED_IN') {
-            this.getModules();
-        }
+
+    this.$scope.$maSubscribe('maWatchdog/LOGGED_IN', (event, current) => {
+        this.getModules();
     });
 };
 

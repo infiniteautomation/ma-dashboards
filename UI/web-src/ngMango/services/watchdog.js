@@ -1,221 +1,213 @@
-    /**
+/**
  * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
 import angular from 'angular';
 
-/**
-* @ngdoc service
-* @name ngMangoServices.maWatchdog
-*
-* @description
-* The mangoWatchdog service checks for connectivity to the Mango API and checks if a user is logged in. It does this by
-* periodically pinging an API endpoint.
-* 
-* The watchdog service broadcasts an event named 'maWatchdog' on the root scope which provides information about
-* the current status of Mango.
-* 
-* The watchdog service check interval is set by defining the 'MA_WATCHDOG_TIMEOUT' constant and when Mango is down
-* the service will try and reconnect every 'MA_RECONNECT_DELAY' milliseconds.
-* 
-* - <a ui-sref="ui.examples.utilities.watchdog">View Demo</a>
-*/
+mangoWatchdog.$inject = ['MA_TIMEOUTS', '$http', '$timeout', '$window', 'maEventBus', '$injector', '$rootScope'];
+function mangoWatchdog(MA_TIMEOUTS, $http, $timeout, window, maEventBus, $injector, $rootScope) {
 
-/**
-* @ngdoc event
-* @name mangoWatchdog#mangoWatchdog
-* @eventType broadcast on root scope
-* @eventOf ngMangoServices.maWatchdog
-*
-* @description
-* Broadcast periodically, indicates the current status of Mango.
-* 
-* @param {object} angularEvent Synthetic event object
-* @param {object} current mango status
-* @param {object} previous mango status
-*/
-
-/**
-* @ngdoc method
-* @methodOf ngMangoServices.maWatchdog
-* @name enable
-*
-* @description
-* Enables the watchdog service.
-*
-*/
-
-/**
-* @ngdoc method
-* @methodOf ngMangoServices.maWatchdog
-* @name disable
-*
-* @description
-* Disables the watchdog service.
-*
-*/
-
-mangoWatchdog.$inject = ['MA_WATCHDOG_TIMEOUT', 'MA_RECONNECT_DELAY', '$rootScope', '$http', '$interval', 'maUser'];
-function mangoWatchdog(mangoWatchdogTimeout, mangoReconnectDelay, $rootScope, $http, $interval, User) {
-
+    const OFFLINE = 'OFFLINE';
     const API_DOWN = 'API_DOWN';
     const STARTING_UP = 'STARTING_UP';
     const API_UP = 'API_UP';
     const API_ERROR = 'API_ERROR';
     const LOGGED_IN = 'LOGGED_IN';
 
-    class MangoWatchdog {
-        constructor(options) {
-            this.enabled = true;
-            angular.extend(this, options);
-            
-            // assume good state until proved otherwise
-            this.loggedIn = true;
-            this.apiUp = true;
-            
-            if (this.timeout <= 0)
-                this.enabled = false;
-            
-            if (this.enabled)
-                this.setInterval(this.timeout);
-        }
-    
-        doPing() {
-            $http({
-                method: 'GET',
-                url: '/rest/latest/users/current',
-                timeout: this.interval / 3
-            }).then(response => {
-                return {
-                    status: LOGGED_IN,
-                    user: response.data
-                };
-            }, error => {
-                if (error.status < 0) {
-                    return {status: API_DOWN};
-                } else if (error.status === 401) {
-                    return {status: API_UP};
-                } else if (error.status === 503) {
-                    return $http({
-                        method: 'GET',
-                        url: '/status',
-                        timeout: this.interval / 3
-                    }).then(statusResponse => {
-                        return {
-                            status: STARTING_UP,
-                            info: {
-                                startupState: statusResponse.data.state,
-                                startupProgress: statusResponse.data.startupProgress
-                            }
-                        };
-                    }, statusError => {
-                        return {status: API_ERROR, info:{responseStatus: statusError.status}};
-                    });
-                } else {
-                    return {status: API_ERROR, info:{responseStatus: error.status}};
-                }
-            }).then(this.setStatus.bind(this));
-        }
-        
-        setStatus(pingResult) {
-            const previous = {
-                status: this.status || (User.current ? 'LOGGED_IN' : 'API_UP'),
-                apiUp: this.apiUp,
-                loggedIn: this.loggedIn,
-                info: this.info,
-                user: User.current
-            };
-            
-            this.status = pingResult.status;
-            this.info = pingResult.info;
-            let broadcastEvent = this.status !== previous.status;
-
-            switch(pingResult.status) {
-            case STARTING_UP:
-                if (previous.status === 'STARTING_UP' && previous.info) {
-                    const progressChanged = this.info.startupProgress !== previous.info.startupProgress;
-                    const stateChanged = this.info.startupState !== previous.info.startupState;
-                    if (progressChanged || stateChanged) {
-                        broadcastEvent = true;
-                    }
-                }
-                /* falls through */
-            case API_ERROR:
-            case API_DOWN:
-                // dont clear the current user, until confirmed we are no longer logged in
-                // we may still be logged in (aka session valid) but cannot prove it
-                //User.current = null;
-                //this.loggedIn = false;
-                
-                this.apiUp = false;
-                // setup a faster check while API is down
-                if (this.enabled && this.interval !== this.reconnectDelay) {
-                    this.setInterval(this.reconnectDelay);
-                }
-                break;
-            case API_UP:
-                User.current = null;
-                
-                this.loggedIn = false;
-                this.apiUp = true;
-                // consider API up but not logged in as a failure but stop the faster retry
-                if (this.enabled && this.interval !== this.timeout) {
-                    this.setInterval(this.timeout);
-                }
-                break;
-            case LOGGED_IN:
-                pingResult.user.originalId = pingResult.user.username;
-                User.current = pingResult.user;
-                
-                this.loggedIn = true;
-                this.apiUp = true;
-                // stop the faster retry
-                if (this.enabled && this.interval !== this.timeout) {
-                    this.setInterval(this.timeout);
-                }
-                break;
-            }
-    
-
-            if (broadcastEvent) {
-                $rootScope.$broadcast('maWatchdog', {
-                    status: this.status,
-                    apiUp: this.apiUp,
-                    loggedIn: this.loggedIn,
-                    info: this.info,
-                    user: User.current,
-                    wasLogout: pingResult.wasLogout
-                }, previous);
-            }
-        }
-        
-        setInterval(interval) {
-            if (interval === undefined) {
-                interval = this.timeout;
-            }
-            if (this.timer) {
-                $interval.cancel(this.timer);
-            }
-            this.interval = interval;
-            this.timer = $interval(this.doPing.bind(this), interval);
-        }
-        
-        enable() {
-            if (this.enabled) return;
-            this.setInterval(this.timeout);
-            this.enabled = true;
-        }
-    
-        disable() {
-            if (this.timer) {
-                $interval.cancel(this.timer);
-            }
-            this.enabled = false;
+    class WatchdogEvent extends CustomEvent {
+        constructor(type, options) {
+            super(type);
+            Object.assign(this, options);
         }
     }
 
-    return new MangoWatchdog({timeout: mangoWatchdogTimeout, reconnectDelay: mangoReconnectDelay});
+    /**
+     * @ngdoc service
+     * @name ngMangoServices.maWatchdog
+     *
+     * @description
+     * The mangoWatchdog service checks for connectivity to the Mango API and checks if a user is logged in. It does this via
+     * a HTTP interceptor and periodically checking the /status endpoint.
+     *
+     * The watchdog service publishes events on the maEventBus under the 'maWatchdog' name space.
+     *
+     * - <a ui-sref="ui.examples.utilities.watchdog">View Demo</a>
+     */
+    class MangoWatchdog {
+        constructor() {
+            this.timeout = MA_TIMEOUTS.xhr;
+            this.reconnectDelay = MA_TIMEOUTS.watchdogStatusDelay;
+
+            // wait until all services are initialized before publishing any events to the bus
+            // so that all services which subscribe get the maWatchdog event (e.g. NotificationManager)
+            $rootScope.$applyAsync(() => {
+                this.init();
+            });
+        }
+
+        init() {
+            if (this.isOffline()) {
+                this.setStatus(OFFLINE);
+            } else if ($injector.get('maUser').current) {
+                this.setStatus(LOGGED_IN);
+            } else {
+                this.setStatus(API_UP);
+            }
+
+            window.addEventListener('online', event => {
+                $rootScope.$apply(() => {
+                    this.checkStatus();
+                });
+            });
+            window.addEventListener('offline', event => {
+                $rootScope.$apply(() => {
+                    this.setStatus(OFFLINE);
+                });
+            });
+        }
+
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maWatchdog
+         * @name setStatus
+         *
+         * @description
+         * Sets the status of the watchdog and publishes the event to the bus
+         *
+         * @param {string} status Status string
+         * @param {object=} statusData additional status data
+         */
+        setStatus(status, statusData = null) {
+            const prevStatus = this.status;
+            const prevStatusData = this.statusData;
+            this.status = status;
+            this.statusData = statusData;
+
+            if ([API_DOWN, STARTING_UP, API_ERROR].includes(status)) {
+                if (this.reconnectDelay > 0) {
+                    // poll faster during startup as we want to provide a bit more feedback
+                    const delay = status === STARTING_UP ? this.reconnectDelay / 3 : this.reconnectDelay;
+                    this.timeoutPromise = $timeout(() => this.checkStatus(), delay);
+                }
+            } else {
+                this.cancelTimeout();
+            }
+
+            const dispatchEvent = status !== prevStatus || status === 'STARTING_UP' && !angular.equals(statusData, prevStatusData);
+            if (dispatchEvent) {
+                maEventBus.publish(new WatchdogEvent(`maWatchdog/${status}`), this, prevStatus);
+            }
+        }
+
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maWatchdog
+         * @name cancelTimeout
+         *
+         * @description
+         * Cancels any scheduled status checks
+         */
+        cancelTimeout() {
+            if (this.timeoutPromise) {
+                $timeout.cancel(this.timeoutPromise);
+                delete this.timeoutPromise;
+            }
+        }
+
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maWatchdog
+         * @name isOffline
+         *
+         * @returns {boolean} true if the browser thinks it has no internet connectivity
+         */
+        isOffline() {
+            return window.navigator.hasOwnProperty('onLine') && !window.navigator.onLine;
+        }
+
+        /**
+         * @ngdoc method
+         * @methodOf ngMangoServices.maWatchdog
+         * @name checkStatus
+         *
+         * @description
+         * Informs the watchdog service that it should check the status
+         */
+        checkStatus() {
+            if (this.statusPromise) {
+                return;
+            }
+
+            this.cancelTimeout();
+
+            if (this.isOffline()) {
+                this.setStatus(OFFLINE);
+                return;
+            }
+
+            this.statusPromise = $http({
+                method: 'GET',
+                url: '/status',
+                timeout: this.timeout,
+                ignoreError: true
+            }).then(response => {
+                const status = response.data;
+                if (status.stateName === 'RUNNING') {
+                    const user = $injector.get('maUser').getCurrent();
+                    return user.$promise.then(user => {
+                        this.setStatus(LOGGED_IN, status);
+                    }, error => {
+                        // TODO check 404 or move to interceptor
+                        this.setStatus(API_UP, status);
+                    });
+                } else {
+                    this.setStatus(STARTING_UP, status);
+                }
+            }, error => {
+                if (error.status < 0) {
+                    this.setStatus(API_DOWN);
+                } else {
+                    // status endpoint should not return HTTP error responses
+                    this.setStatus(API_ERROR);
+                }
+            }).finally(() => {
+                delete this.statusPromise;
+            });
+        }
+
+        /**
+         * @ngdoc property
+         * @propertyOf ngMangoServices.maWatchdog
+         * @name apiUp
+         *
+         * @returns {boolean} true if the API is up
+         */
+        get apiUp() {
+            return this.status === API_UP || this.status === LOGGED_IN;
+        }
+
+        /**
+         * @ngdoc property
+         * @propertyOf ngMangoServices.maWatchdog
+         * @name loggedIn
+         *
+         * @returns {boolean} true if the API is up and a user is logged in
+         */
+        get loggedIn() {
+            return this.status === LOGGED_IN;
+        }
+
+        /**
+         * @ngdoc property
+         * @propertyOf ngMangoServices.maWatchdog
+         * @name status
+         *
+         * @returns {string} the current status, one of OFFLINE, API_DOWN, STARTING_UP, API_UP, API_ERROR, LOGGED_IN
+         */
+    }
+
+    return new MangoWatchdog();
 }
 
 export default mangoWatchdog;

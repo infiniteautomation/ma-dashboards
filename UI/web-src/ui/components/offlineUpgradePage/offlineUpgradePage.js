@@ -29,12 +29,10 @@ class OfflineUpgradePageController {
         this.maModules.getAll().then(modules => {
             this.coreModule = modules.find(module => module.name === 'core');
         });
-        
-        this.$scope.$on('maWatchdog', (event, current, previous) => {
-            if (current.status === 'LOGGED_IN') {
-                delete this.restarting;
-                this.$state.go('^');
-            }
+
+        this.$scope.$maSubscribe('maWatchdog/LOGGED_IN', (event, current) => {
+            delete this.restarting;
+            this.$state.go('^');
         });
     }
 

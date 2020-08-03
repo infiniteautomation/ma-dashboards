@@ -477,25 +477,6 @@ function($rootScope, mangoWatchdog, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
 
     $rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
-    
-    User.loginInterceptors.push(function(data) {
-        // add a $timeout call so LOGGED_IN status is only broadcast after maLoginRedirector gets a chance to reload the page
-        // Otherwise maEventManager instances will open WS connections which are immediately terminated
-        $timeout(() => {
-            mangoWatchdog.setStatus({
-                status: 'LOGGED_IN',
-                user: data.resource
-            });
-        }, 0, false);
-    });
-    
-    User.logoutInterceptors.push(function(data) {
-        mangoWatchdog.setStatus({
-            status: 'API_UP',
-            wasLogout: true
-        });
-    });
-
     $rootScope.rollupTypes = MA_ROLLUP_TYPES;
     $rootScope.timePeriodTypes = MA_TIME_PERIOD_TYPES;
     $rootScope.chartTypes = MA_CHART_TYPES;

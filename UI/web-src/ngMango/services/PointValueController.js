@@ -32,7 +32,7 @@ function pointValueControllerFactory(pointEventManager, Point, $injector) {
             
             $element.addClass('ma-live-value');
             
-            $scope.$on('maWatchdog', (event, current, previous) => {
+            $scope.$maSubscribe('maWatchdog/#', (event, current) => {
                 if (current.status === 'LOGGED_IN' || current.status === 'API_UP') {
                     $element.removeClass('ma-api-down');
                 } else {

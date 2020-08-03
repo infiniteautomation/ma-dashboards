@@ -263,10 +263,11 @@ uiApp.run([
     'MA_UI_INSTALL_PROMPT',
     'MA_DEVELOPMENT_CONFIG',
     '$injector',
+    'maEventBus',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
         webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector,
-        $anchorScroll, installPrompt, developmentConfig, $injector) {
+        $anchorScroll, installPrompt, developmentConfig, $injector, maEventBus) {
 
     const document = $document[0];
 
@@ -611,45 +612,50 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
      * Watchdog timer alert and re-connect/re-login code
      */
 
-    $rootScope.$on('maWatchdog', (event, current, previous) => {
+    maEventBus.subscribe('maWatchdog/#', (event, watchdog, prevState) => {
         let message;
         let hideDelay = 0; // dont auto hide message
 
-        switch(current.status) {
-        case 'API_DOWN':
-            message = Translate.trSync('login.ui.app.apiDown');
-            break;
-        case 'STARTING_UP':
-            message = Translate.trSync('login.ui.app.startingUp', [current.info.startupProgress, current.info.startupState]);
-            break;
-        case 'API_ERROR':
-            message = Translate.trSync('login.ui.app.returningErrors');
-            break;
-        case 'API_UP':
-            if (previous.status && previous.status !== 'LOGGED_IN') {
-                message = Translate.trSync('login.ui.app.connectivityRestored');
-                hideDelay = 5000;
-            }
+        switch(watchdog.status) {
+            case 'OFFLINE':
+                message = Translate.trSync('login.ui.app.offline');
+                break;
+            case 'API_DOWN':
+                message = Translate.trSync('login.ui.app.apiDown');
+                break;
+            case 'STARTING_UP':
+                message = Translate.trSync('login.ui.app.startingUp', [watchdog.statusData.startupProgress, watchdog.statusData.state]);
+                break;
+            case 'API_ERROR':
+                message = Translate.trSync('login.ui.app.returningErrors');
+                break;
+            case 'API_UP':
+                if (prevState && prevState !== 'LOGGED_IN') {
+                    message = Translate.trSync('login.ui.app.connectivityRestored');
+                    hideDelay = 5000;
+                }
 
-            // do automatic re-login if we are not on the login page
-            if (!$state.includes('login') && !current.wasLogout) {
-                User.autoLogin().then(null, error => {
-                    // close dialogs
-                    $mdDialog.cancel();
-                    
-                    // redirect to the login page if auto-login fails
-                    maUiLoginRedirector.saveCurrentState();
-                    maUiLoginRedirector.goToLogin();
-                });
-            }
-            break;
-        case 'LOGGED_IN':
-            // occurs almost simultaneously with API_UP message, only display if we didn't hit API_UP state
-            if (previous.status && previous.status !== 'API_UP') {
-                message = Translate.trSync('login.ui.app.connectivityRestored');
-                hideDelay = 5000;
-            }
-            break;
+                // check what state we are on after the state router gets a chance to redirect us
+                $timeout(() => {
+                    // do automatic re-login if we are not on the login page
+                    if (!$state.includes('login')) {
+                        User.autoLogin().then(null, error => {
+                            // close dialogs
+                            $mdDialog.cancel();
+
+                            // redirect to the login page if auto-login fails
+                            maUiLoginRedirector.saveCurrentState();
+                            maUiLoginRedirector.goToLogin();
+                        });
+                    }
+                }, 0);
+                break;
+            case 'LOGGED_IN':
+                if (prevState && prevState !== 'API_UP') {
+                    message = Translate.trSync('login.ui.app.connectivityRestored');
+                    hideDelay = 5000;
+                }
+                break;
         }
 
         if (message) {

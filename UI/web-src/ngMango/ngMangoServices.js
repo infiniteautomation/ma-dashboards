@@ -153,15 +153,13 @@ ngMangoServices.factory('maEventBus', eventBusFactory);
 
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUTS', {
-    // NOTE: update uiSettings.json as well! These timeouts are overriden by the timeouts in the UI Settings
+    // NOTE: update uiSettings.json as well! These timeouts are overridden by the timeouts in the UI Settings
     xhr: 30000, // default XMLHttpRequest timeout
     websocket: 10000, // WebSocket connection timeout
-    websocketReconnectDelay: 5000, // delay before attempting to reconnect to WebSocket after it was closed (usually due to an error)
     websocketRequest: 10000, // request made over WebSocket
-    pointValues: 60000 // timeout for fetching points values
+    pointValues: 60000, // timeout for fetching points values
+    watchdogStatusDelay: 30000 // delay between status checks when the API is down
 });
-ngMangoServices.constant('MA_WATCHDOG_TIMEOUT', 10000);
-ngMangoServices.constant('MA_RECONNECT_DELAY', 5000);
 
 // These are Moment.js format strings https://momentjs.com/docs/#/displaying/format/
 // They can be configured via UI Settings

@@ -175,7 +175,7 @@ Promise.resolve().then(() => {
             (UserProvider, maUiSettingsProvider, maUiServerInfoProvider, installPrompt, developmentConfig) => {
 
         // store pre-bootstrap user into the User service
-        UserProvider.setUser(user);
+        UserProvider.setCurrentUser(user);
         maUiSettingsProvider.setUiSettings(uiSettings);
 
         maUiServerInfoProvider.setPreLoginData(preLoginData);

@@ -19,12 +19,10 @@ class ActiveEventIconsController {
             
             // ensure the count is up to date if we are auto-logged back in after a restart
             // probably should implement a way to get this from the websocket when it connects
-            $scope.$on('maWatchdog', (event, current, previous) => {
-                if (current.status === 'LOGGED_IN') {
-                    $timeout(() => {
-                        this.refreshCount();
-                    }, 5000);
-                }
+            $scope.$maSubscribe('maWatchdog/LOGGED_IN', (event, current) => {
+                $timeout(() => {
+                    this.refreshCount();
+                }, 5000);
             });
         });
     }

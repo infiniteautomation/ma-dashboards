@@ -26,10 +26,8 @@ UpgradePageController.prototype.$onInit = function() {
         this.coreModule = coreModule;
     }.bind(this));
 
-    this.$scope.$on('maWatchdog', (event, current, previous) => {
-        if (current.status === 'LOGGED_IN') {
-            this.checkForUpgrades();
-        }
+    this.$scope.$maSubscribe('maWatchdog/LOGGED_IN', (event, current) => {
+        this.checkForUpgrades();
     });
 
     this.maModules.notificationManager.subscribe((event, message) => {

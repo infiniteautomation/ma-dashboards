@@ -25,6 +25,14 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, MA_TIMEOUTS, $q, $injector) {
         }
 
         responseError(error) {
+            // TODO error.xhrStatus abort might be a cancel, but could also be a timeout
+            if (this.isApiCall(error.config) &&
+                !error.config.ignoreError && // ignoreError is set true by maWatchdog service
+                (error.status < 0 && ['timeout', 'error'].includes(error.xhrStatus) || error.status === 401)) {
+
+                $injector.get('maWatchdog').checkStatus();
+            }
+
             if (error.data instanceof Blob && error.data.type === 'application/json') {
                 return $injector.get('maUtil').blobToJson(error.data).then(parsedData => {
                     error.data = parsedData;
@@ -33,6 +41,7 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, MA_TIMEOUTS, $q, $injector) {
                     return this.augmentError(error);
                 });
             }
+
             return this.augmentError(error);
         }
 
