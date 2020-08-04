@@ -316,11 +316,11 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         Object.assign(User, {
             setCurrentUser(user) {
                 if (user !== null && !(user instanceof User)) {
-                    throw new Error('Must be an instance of maUser');
+                    throw new Error('Must be an instance of maUser or null');
                 }
                 if (!angular.equals(user, currentUser)) {
                     const previousUser = currentUser;
-                    currentUser = user || null;
+                    currentUser = user;
                     
                     this.configureLocale();
                     this.configureTimezone();
@@ -726,7 +726,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.NoUserError = NoUserError;
 
         // set the initial user and configure initial locale and timezone
-        User.setCurrentUser(Object.assign(Object.create(User.prototype), bootstrapUser));
+        User.setCurrentUser(bootstrapUser ? Object.assign(Object.create(User.prototype), bootstrapUser) : null);
         bootstrapUser = undefined;
 
         return User;
