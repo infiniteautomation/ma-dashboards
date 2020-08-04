@@ -188,9 +188,9 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
      * Provides service for getting list of users and create, update, delete
      */
     UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer',
-        '$injector', '$cookies', 'maTemporaryRestResource'];
+        '$injector', '$cookies', 'maTemporaryRestResource', 'maEventBus'];
     function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer,
-                         $injector, $cookies, TemporaryRestResource) {
+                         $injector, $cookies, TemporaryRestResource, maEventBus) {
 
         class BulkUserTemporaryResource extends TemporaryRestResource {
             static get baseUrl() {
@@ -307,7 +307,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         Object.assign(User, {
             setCurrentUser(user) {
                 if (!angular.equals(user, currentUser)) {
-                    const firstChange = currentUser === undefined;
+                    const previousUser = currentUser;
                     
                     if (user) {
                         currentUser = user instanceof User ? user : Object.assign(Object.create(User.prototype), user);
@@ -318,14 +318,13 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     this.configureLocale();
                     this.configureTimezone();
 
-                    // TODO convert to event bus event
-                    this.notificationManager.notify('userChanged', currentUser, firstChange);
+                    maEventBus.publish('maUser.currentUserChanged', currentUser, previousUser);
                 }
             },
     
             configureLocale(locale = this.getLocale()) {
                 if (locale !== this.locale) {
-                    const firstChange = this.locale == null;
+                    const prevLocale = this.locale;
                     this.locale = locale;
     
                     // moment doesn't support locales with a script, just supply it with language and region
@@ -356,20 +355,18 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                         });
                     }
 
-                    // TODO convert to event bus event
-                    this.notificationManager.notify('localeChanged', locale, firstChange);
+                    maEventBus.publish('maUser.localeChanged', locale, prevLocale);
                 }
             },
     
             configureTimezone(timezone = this.getTimezone()) {
                 if (timezone !== this.timezone) {
-                    const firstChange = this.timezone == null;
+                    const prevTimezone = this.timezone;
                     this.timezone = timezone;
                     
                     moment.tz.setDefault(timezone);
 
-                    // TODO convert to event bus event
-                    this.notificationManager.notify('timezoneChanged', timezone, firstChange);
+                    maEventBus.publish('maUser.timezoneChanged', timezone, prevTimezone);
                 }
             },
             

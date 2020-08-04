@@ -278,10 +278,6 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 return $q.reject('Socket is not open');
             }
         }
-        
-        subscribeLocal(handler, $scope, eventTypes = []) {
-            return this.subscribe(handler, $scope, eventTypes, null, true);
-        }
 
         subscribe(handler, $scope, eventTypes = ['create', 'update', 'delete'], xids = null, localOnly = false) {
             if (typeof handler === 'object') {

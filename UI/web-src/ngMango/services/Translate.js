@@ -102,8 +102,8 @@ function translateProvider() {
         namespaces.forEach(namespace => loadedNamespaces[namespace] = translations);
     }
 
-    translateFactory.$inject = ['$http', '$q', 'maUser'];
-    function translateFactory($http, $q, maUser) {
+    translateFactory.$inject = ['$http', '$q', 'maEventBus'];
+    function translateFactory($http, $q, maEventBus) {
 
         const translationsUrl = '/rest/latest/translations';
         
@@ -240,13 +240,13 @@ function translateProvider() {
         Translate.loadTranslations = loadTranslations;
         Translate.clearLoadedNamespaces = clearLoadedNamespaces;
 
-        maUser.notificationManager.subscribeLocal((event, newLocale, first) => {
-            let globalizeLocale = Globalize.locale();
-            if (!globalizeLocale || globalizeLocale.locale !== newLocale) {
+        maEventBus.subscribe('maUser.localeChanged', (event, locale) => {
+            const globalizeLocale = Globalize.locale();
+            if (!globalizeLocale || globalizeLocale.locale !== locale) {
                 // clear the translation namespace cache if the user's locale changes
                 clearLoadedNamespaces();
             }
-        }, null, ['localeChanged']);
+        });
 
         return Translate;
     }
