@@ -292,7 +292,16 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 }
             },
             update: {
-                method: 'PUT'
+                method: 'PUT',
+                interceptor: {
+                    response: function(data) {
+                        const updatedUser = data.resource;
+                        if (updatedUser.id === currentUser.id) {
+                            User.setCurrentUser(updatedUser);
+                        }
+                        return updatedUser;
+                    }
+                }
             }
         }, {
             idProperty: 'username',

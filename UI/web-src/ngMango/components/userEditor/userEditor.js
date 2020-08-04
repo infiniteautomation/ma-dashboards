@@ -10,9 +10,12 @@ import moment from 'moment-timezone';
 
 class UserEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$http', '$mdDialog', 'maTranslate', 'maLocales', '$window', '$injector', 'maDialogHelper', '$scope', '$filter']; }
+    static get $inject() { return ['maUser', '$http', '$mdDialog', 'maTranslate', 'maLocales', '$window', '$injector',
+        'maDialogHelper', '$scope', '$filter', 'maUtil']; }
     
-    constructor(User, $http, $mdDialog, Translate, maLocales, $window, $injector, maDialogHelper, $scope, $filter) {
+    constructor(User, $http, $mdDialog, Translate, maLocales, $window, $injector,
+                maDialogHelper, $scope, $filter, maUtil) {
+
         this.User = User;
         this.$http = $http;
         this.timezones = moment.tz.names();
@@ -23,6 +26,7 @@ class UserEditorController {
         this.$state = $injector.has('$state') && $injector.get('$state');
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
+        this.maUtil = maUtil;
         
         this.maFilter = $filter('maFilter');
         this.formName = '';
@@ -93,13 +97,7 @@ class UserEditorController {
         this.user.save().then(user => {
             const previous = angular.copy(this.originalUser);
             angular.merge(this.originalUser, user);
-            
-            // update the cached user if we are modifying our own user
-            if (previous.username === this.User.current.username) {
-                // TODO remove / move to user service
-                this.User.setCurrentUser(this.originalUser);
-            }
-    
+
             this.maDialogHelper.toast(['ui.components.userSaved', user.username]);
             
             if (typeof this.onSave === 'function') {
@@ -149,7 +147,8 @@ class UserEditorController {
     }
 
     regExpEscape(s) {
-        return String(s).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
+        if (!s) return;
+        return this.maUtil.escapeRegExp(s);
     }
 
     passwordChanged() {
