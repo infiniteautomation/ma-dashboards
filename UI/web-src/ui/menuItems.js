@@ -39,6 +39,7 @@ export default [
         menuHidden: true,
         menuIcon: 'exit_to_app',
         menuTr: 'header.login',
+        permission: ['anonymous'],
         templatePromise() {
             return import(/* webpackMode: "eager" */
                     './views/login.html');
@@ -50,6 +51,7 @@ export default [
         menuHidden: true,
         menuIcon: 'code',
         menuTr: 'header.resetPassword',
+        permission: ['anonymous'],
         templatePromise() {
             return import(/* webpackMode: "eager" */
                     './views/resetPassword.html');
@@ -61,6 +63,7 @@ export default [
         menuHidden: true,
         menuIcon: 'live_help',
         menuTr: 'header.forgotPassword',
+        permission: ['anonymous'],
         templatePromise() {
             return import(/* webpackMode: "eager" */
                 './views/forgotPassword.html');
@@ -72,6 +75,7 @@ export default [
         menuHidden: true,
         menuIcon: 'vpn_key',
         menuTr: 'header.changePasword',
+        permission: ['anonymous'],
         templatePromise() {
             return import(/* webpackMode: "eager" */
                     './views/changePassword.html');
@@ -87,6 +91,7 @@ export default [
         menuHidden: true,
         menuIcon: 'email',
         menuTr: 'login.emailVerification.verifyEmailForNewAccount',
+        permission: ['anonymous'],
         templatePromise() {
             return import(/* webpackMode: "eager" */
                     './views/verifyEmail.html');
@@ -98,6 +103,7 @@ export default [
         menuHidden: true,
         menuIcon: 'email',
         menuTr: 'login.emailVerification.verifyEmail',
+        permission: ['anonymous'],
         templatePromise() {
             return import(/* webpackMode: "eager" */
                     './views/verifyEmailToken.html');
@@ -109,6 +115,7 @@ export default [
         menuHidden: true,
         menuIcon: 'user',
         menuTr: 'login.emailVerification.registerUser',
+        permission: ['anonymous'],
         templatePromise() {
             return import(/* webpackMode: "eager" */
                     './views/registerUser.html');
@@ -126,6 +133,7 @@ export default [
         name: 'agreeToLicense',
         url: '/agree-to-license',
         template: '<ma-ui-license-page flex layout="column"></ma-ui-license-page>',
+        permission: ['superadmin'],
         resolve: {
             maUiAgreeToLicensePage: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
@@ -150,12 +158,8 @@ export default [
             return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                     './views/main.html');
         },
+        permission: ['user'],
         resolve: {
-            auth: ['maUser', function(User) {
-                if (!User.current) {
-                    throw new User.NoUserError('No user logged in');
-                }
-            }],
             loadMyDirectives: ['$injector', function($injector) {
                 return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                         './mainModule').then(() => {

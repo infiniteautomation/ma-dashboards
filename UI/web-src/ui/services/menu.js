@@ -19,10 +19,6 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
             views.push(...Object.values(menuItem.views));
         }
         views.filter(v => !!v.templatePromise).forEach((view, i) => {
-            if (!menuItem.resolve) {
-                menuItem.resolve = {};
-            }
-            
             const resolveName = `template_${i}`;
             menuItem.resolve[resolveName] = view.templatePromise;
             delete view.templatePromise;
@@ -38,11 +34,29 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
             }
         });
     };
-    
+
+    resolveUserHasPermission.$inject = ['maUser'];
+    function resolveUserHasPermission(User) {
+        const user = User.current || User.anonymous;
+        if (!(user.hasPermission(this.permission) || user.hasSystemPermission(...this.systemPermission))) {
+            if (user instanceof User.AnonymousUser) {
+                throw new User.NoUserError('No user logged in');
+            } else {
+                throw new User.UnauthorizedError('User does not have access');
+            }
+        }
+    }
+
     const registerStates = function(menuItems) {
         menuItems.forEach(menuItem => {
             if (!menuItem.name || registeredStates[menuItem.name]) return;
 
+            // ensure resolve object available, used to add template resolve and permission resolve
+            if (!menuItem.resolve) {
+                menuItem.resolve = {};
+            }
+
+            menuItem.resolve.resolveUserHasPermission = resolveUserHasPermission;
             templatePromiseToProvider(menuItem);
 
             if (menuItem.linkToPage) {
@@ -500,7 +514,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                     item.permission = ['user'];
                 }
             }
-            // transform old style permission into an array
+            // transform old style permission into an array, required for permissions retrieved from JSON store
             if (typeof item.permission === 'string') {
                 item.permission = item.permission.split(',').map(r => r.trim()).filter(r => r.length);
             }

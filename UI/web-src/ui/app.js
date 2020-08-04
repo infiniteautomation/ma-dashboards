@@ -264,10 +264,11 @@ uiApp.run([
     'MA_DEVELOPMENT_CONFIG',
     '$injector',
     'maEventBus',
+    'maDialogHelper',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
         webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector,
-        $anchorScroll, installPrompt, developmentConfig, $injector, maEventBus) {
+        $anchorScroll, installPrompt, developmentConfig, $injector, maEventBus, maDialogHelper) {
 
     const document = $document[0];
 
@@ -397,9 +398,14 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
 
     $rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
         event.preventDefault();
-        if (error && (error instanceof User.NoUserError || error.status === 401 || error.status === 403)) {
+        if (error && error.status === 401 || error instanceof User.NoUserError) {
+            maDialogHelper.errorToast(['login.ui.menu.unauthenticated']);
+            // no user logged in and menu item permission requires user or got a HTTP 401 in response to a resolve
             maUiLoginRedirector.saveState(toState, toParams);
             maUiLoginRedirector.goToLogin();
+        } else if (error && error.status === 403 || error instanceof User.UnauthorizedError) {
+            maDialogHelper.errorToast(['login.ui.menu.unauthorized']);
+            maUiLoginRedirector.goToUrl(User.current.homeUrl || '/ui/');
         } else {
             $exceptionHandler(error, 'Error transitioning to state ' + (toState && toState.name));
 
@@ -636,6 +642,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
 
                 // check what state we are on after the state router gets a chance to redirect us
                 $timeout(() => {
+                    // TODO change this to check current state's permission (including parents)
                     // do automatic re-login if we are not on the login page
                     if (!$state.includes('login')) {
                         User.autoLogin().then(null, error => {

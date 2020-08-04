@@ -215,6 +215,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             timezone: null,
             // this is actually a list of roles the user holds
             permissions: ['user'],
+            grantedPermissions: [], //stops calls to hasSystemPermission failing
             muted: true,
             receiveOwnAuditEvents: false,
             disabled: false,
@@ -586,6 +587,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
 
         Object.defineProperty(User, 'current', {
             get: function() {
+                // TODO return anonymous user, need to update everywhere that we check maUser.current
                 return currentUser;
             }
         });
@@ -718,11 +720,35 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
 
             return data.resource;
         }
-        
-        class NoUserError extends Error {}
+
+        /**
+         * Unauthenticated or anonymous user tried to access resource (HTTP 401)
+         * @type {NoUserError}
+         */
+        class NoUserError extends Error {};
         User.NoUserError = NoUserError;
 
-        // set the initial user and configure initial locale and timezone
+        /**
+         * Unauthorized access to resource, user is logged in but doesnt have access (HTTP 403)
+         * @type {UnauthorizedError}
+         */
+        class UnauthorizedError extends Error {}
+        User.UnauthorizedError = UnauthorizedError;
+
+        class AnonymousUser extends User {
+            constructor() {
+                super();
+                this.name = 'Anonymous';
+                this.permissions = ['anonymous'];
+                // TODO currently no way to obtain granted permissions for anonymous user
+                this.grantedPermissions = [];
+                Object.freeze(this);
+            }
+        }
+        User.AnonymousUser = AnonymousUser;
+        User.anonymous = new AnonymousUser();
+
+            // set the initial user and configure initial locale and timezone
         User.setCurrentUser(bootstrapUser);
         bootstrapUser = undefined;
 
