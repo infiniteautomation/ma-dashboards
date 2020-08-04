@@ -53,7 +53,11 @@ class UserEditorController {
     render() {
         this.resetForm();
         const viewValue = this.ngModelCtrl.$viewValue;
-        this.user = viewValue instanceof this.User ? viewValue.copy() : null;
+        if (this.registerMode) {
+            this.user = viewValue;
+        } else {
+            this.user = viewValue instanceof this.User ? viewValue.copy() : null;
+        }
     }
 
     resetForm() {
