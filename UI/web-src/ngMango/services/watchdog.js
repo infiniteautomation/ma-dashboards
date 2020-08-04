@@ -5,8 +5,8 @@
 
 import angular from 'angular';
 
-mangoWatchdog.$inject = ['MA_TIMEOUTS', '$http', '$timeout', '$window', 'maEventBus', '$injector', '$rootScope'];
-function mangoWatchdog(MA_TIMEOUTS, $http, $timeout, window, maEventBus, $injector, $rootScope) {
+mangoWatchdog.$inject = ['MA_TIMEOUTS', '$http', '$timeout', '$window', 'maEventBus', '$injector', '$rootScope', '$q'];
+function mangoWatchdog(MA_TIMEOUTS, $http, $timeout, window, maEventBus, $injector, $rootScope, $q) {
 
     const OFFLINE = 'OFFLINE';
     const API_DOWN = 'API_DOWN';
@@ -154,17 +154,32 @@ function mangoWatchdog(MA_TIMEOUTS, $http, $timeout, window, maEventBus, $inject
             }).then(response => {
                 const status = response.data;
                 if (status.stateName === 'RUNNING') {
-                    const user = $injector.get('maUser').getCurrent();
-                    return user.$promise.then(user => {
+                    const User = $injector.get('maUser');
+
+                    // dont use User.getCurrent() here as we set ignoreError so the $httpInterceptor does not call
+                    // checkStatus() again
+                    return $http({
+                        method: 'GET',
+                        url: '/rest/latest/user/current',
+                        timeout: this.timeout,
+                        ignoreError: true
+                    }).then(user => {
+                        User.setCurrentUser(user);
                         this.setStatus(LOGGED_IN, status);
                     }, error => {
-                        // TODO check 404 or move to interceptor
-                        this.setStatus(API_UP, status);
+                        if (error.status === 401) {
+                            // API explicitly told us that there is no user logged in
+                            User.setCurrentUser(null);
+                            this.setStatus(API_UP, status);
+                        } else {
+                            // defer to catch block below
+                            return $q.reject(error);
+                        }
                     });
                 } else {
                     this.setStatus(STARTING_UP, status);
                 }
-            }, error => {
+            }).catch(error => {
                 if (error.status < 0) {
                     this.setStatus(API_DOWN);
                 } else {
