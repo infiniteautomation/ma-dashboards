@@ -701,10 +701,6 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 data.resource.lastUpgradeTime = parseInt(lastUpgrade, 10);
             }
 
-            if (data.resource.username) {
-                data.resource.originalId = data.resource.username;
-            }
-
             User.setCurrentUser(data.resource);
             $injector.get('maWatchdog').setStatus('LOGGED_IN');
 
