@@ -35,17 +35,27 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
             if (!action.interceptor) {
                 action.interceptor = {};
             }
-            if (!action.interceptor.response) {
-                // interceptor to copy the xid to the originalId property
-                action.interceptor.response = function(response) {
-                    const resource = response.resource;
+
+            // interceptor to copy the xid to the originalId property
+            const existingInterceptor = action.interceptor.response;
+            action.interceptor.response = (response) => {
+                const resource = typeof existingInterceptor === 'function' ? existingInterceptor(response) : response.resource;
+
+                if (resource instanceof ExtendedResource) {
                     const originalId = resource[idProperty];
                     if (originalId) {
                         resource.originalId = originalId;
                     }
-                    return resource;
-                };
-            }
+                } else if (Array.isArray(resource)) {
+                    resource.filter(r => r instanceof ExtendedResource).forEach(r => {
+                        const originalId = r[idProperty];
+                        if (originalId) {
+                            r.originalId = originalId;
+                        }
+                    });
+                }
+                return resource;
+            };
         });
         
         const Resource = $delegate.call(this, url, paramDefaults, actions, options);
@@ -141,6 +151,10 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
                     delete copy.originalId;
                     copy[idProperty] = xidPrefix + maUtil.uuid();
                 }
+
+                // remove $promise, $cancel, $resolved etc
+                Object.keys(copy).filter(k => k.startsWith('$')).forEach(k => delete copy[k]);
+
                 return copy;
             }
         });
