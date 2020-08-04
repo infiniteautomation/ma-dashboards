@@ -221,8 +221,9 @@ a:not(.md-button) {
 
 a:not(.md-button):hover,
 a:not(.md-button):focus {
-  color: var(--ma-accent-700);
-  border-bottom-color: var(--ma-accent-700);
+    color: var(--ma-accent-700);
+    border-bottom-color: var(--ma-accent-700);
+    outline: none;
 }
 
 a.md-button, .md-button a {
