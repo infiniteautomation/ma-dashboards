@@ -4,6 +4,7 @@
  */
 
 import loginTemplate from './login.html';
+import './login.css';
 
 class LoginController {
     static get $$ngIsClass() { return true; }
@@ -30,12 +31,13 @@ class LoginController {
             username: this.username,
             password: this.password
         };
-        
+
         this.maUser.login(credentials).$promise.then(user => {
             if (typeof this.onSuccess === 'function') {
                 this.onSuccess({$user: user, $state: this.$state});
             } else if (this.$state) {
                 this.maUiLoginRedirector.redirect(user);
+                this.redirecting = true;
             }
         }, error => {
             this.errors.invalidLogin = false;

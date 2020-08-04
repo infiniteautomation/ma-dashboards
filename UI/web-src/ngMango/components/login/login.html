@@ -1,6 +1,6 @@
 <form name="$ctrl.form" novalidate>
     <div layout="column" class="ma-login-form-container">
-        <div class="already-logged-in" ng-if="!$ctrl.loggingIn && $ctrl.maUser.current" ng-transclude="loggedIn">
+        <div class="already-logged-in" ng-if="!($ctrl.loggingIn || $ctrl.redirecting) && $ctrl.maUser.current" ng-transclude="loggedIn">
             <span ma-tr="login.aleadyLoggedIn" ma-tr-args="[$ctrl.maUser.current.username]"></span>
             <a ui-sref="ui.dataPointDetails" ma-tr="login.ui.goToUI"></a>
         </div>
@@ -33,7 +33,10 @@
             <a ui-sref="forgotPassword({username: username})" tabindex="4" ma-tr="login.forgotYourPassword"></a>
         </div>
         <div flex></div>
-        <md-button type="submit" ng-click="$ctrl.doLogin()" ng-disabled="$ctrl.loggingIn" tabindex="3"
-                ma-tr="login.loginButton" class="md-accent md-raised" aria-label="{{'login.loginButton'|maTr}}"></md-button>
+        <md-button type="submit" ng-click="$ctrl.doLogin()" ng-disabled="$ctrl.loggingIn || $ctrl.redirecting" tabindex="3"
+                   class="md-accent md-raised" aria-label="{{'login.loginButton'|maTr}}">
+            <span ma-tr="login.loginButton"></span>
+            <md-progress-circular md-diameter="18" md-mode="indeterminate" ng-if="$ctrl.loggingIn || $ctrl.redirecting"></md-progress-circular>
+        </md-button>
     </div>
 </form>

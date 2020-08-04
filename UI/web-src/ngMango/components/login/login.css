@@ -1,0 +1,12 @@
+ma-login {
+    display: block;
+}
+
+ma-login button[type=submit] {
+    display: flex;
+    justify-content: center;
+}
+
+ma-login button[type=submit] > md-progress-circular {
+    margin: 0 0 0 8px;
+}
