@@ -60,12 +60,7 @@ class RegisterUserController {
         delete this.validationMessages;
         this.disableButton = true;
 
-        //todo
-        // registration uses V2 model
-        const userCopy = Object.assign({}, this.user);
-        userCopy.permissions = this.user.permissions.split(/\s*,\s*/).filter(p => !!p);
-        
-        return this.maUser.publicRegisterUser(this.token, userCopy).then(user => {
+        return this.maUser.publicRegisterUser(this.token, this.user).then(user => {
             this.maDialogHelper.toastOptions({
                 textTr: ['login.userRegistration.success', user.username],
                 hideDelay: 10000
