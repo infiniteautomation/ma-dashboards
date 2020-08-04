@@ -186,7 +186,7 @@
         <md-checkbox name="muted" ng-model="$ctrl.user.muted" ng-disabled="$ctrl.disabled">
             <span ma-tr="users.muted"></span>
         </md-checkbox>
-        <md-checkbox ng-if="!$ctrl.profileMode" name="disabled" ng-model="$ctrl.user.disabled" ng-disabled="$ctrl.User.current.username === $ctrl.originalUser.username || $ctrl.disabled">
+        <md-checkbox ng-if="!$ctrl.profileMode" name="disabled" ng-model="$ctrl.user.disabled" ng-disabled="$ctrl.User.current.username === $ctrl.user.originalId || $ctrl.disabled">
             <span ma-tr="common.disabled"></span>
         </md-checkbox>
         <md-checkbox name="receiveOwnAuditEvents" ng-model="$ctrl.user.receiveOwnAuditEvents" ng-disabled="$ctrl.disabled">
@@ -199,18 +199,16 @@
 
     <ul class="ma-user-status ma-error-text">
         <li ng-if="!$ctrl.user.isNew() && $ctrl.user.oldHashAlgorithm" ma-tr="ui.app.insecureHash"></li>
-        <li ng-if="$ctrl.updatedUserEvent === 'delete'">The user you are editing was deleted.</li>
-        <li ng-if="$ctrl.updatedUserEvent === 'update'">The user you are editing was modified elsewhere. Saving may overwrite someone else's changes.</li>
     </ul>
 
     <div ng-if="!$ctrl.disabled && !$ctrl.registerMode" class="ma-action-buttons">
-        <md-button class="md-raised md-primary" type="submit" ng-click="$ctrl.save($event)" ng-disabled="$ctrl.saving || $ctrl.deleting">
+        <md-button class="md-raised md-primary" type="submit" ng-click="$ctrl.save($event)" ng-disabled="!$ctrl.user || $ctrl.saving || $ctrl.deleting">
             <md-icon>save</md-icon> <span ma-tr="common.save"></span>
         </md-button>
-        <md-button class="md-raised" ng-click="$ctrl.revert($event)" ng-disabled="!($ctrl.userForm.$dirty || $ctrl.updatedUser)">
+        <md-button class="md-raised" ng-click="$ctrl.revert($event)" ng-disabled="!$ctrl.user || !($ctrl.userForm.$dirty || $ctrl.updatedUser)">
             <md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span>
         </md-button>
-        <md-button ng-if="!$ctrl.profileMode" class="md-raised md-warn" ng-disabled="$ctrl.user.isNew() || $ctrl.User.current.username === $ctrl.originalUser.username || $ctrl.saving || $ctrl.deleting"
+        <md-button ng-if="!$ctrl.profileMode" class="md-raised md-warn" ng-disabled="!$ctrl.user || $ctrl.user.isNew() || $ctrl.User.current.username === $ctrl.user.originalId || $ctrl.saving || $ctrl.deleting"
                 ng-click="$ctrl.remove($event)">
             <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
         </md-button>

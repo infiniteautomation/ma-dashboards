@@ -32,17 +32,6 @@ class UserEditorController {
         this.formName = '';
         this.showStatus = true;
 
-        /* Cannot get this to work effectively until we have some sort of version / updated property
-        if (this.User.current) {
-            this.User.notificationManager.subscribe((event, item, attributes) => {
-                if (this.originalUser && !this.originalUser.isNew() && this.originalUser.username === item.username) {
-                    this.updatedUserEvent = event.name;
-                    this.updatedUser = item;
-                }
-            }, this.$scope);
-        }
-        */
-        
         this.locales = {};
         this.maLocales.get().then(locales => {
             for (const locale of locales) {
@@ -50,27 +39,21 @@ class UserEditorController {
             }
         });
     }
-    
+
+    $onInit() {
+        this.ngModelCtrl.$render = () => this.render();
+    }
+
     $onChanges(changes) {
-        if (changes.originalUser && this.originalUser) {
-            this.render();
-        }
-        
         if (changes.disabledAttr) {
             this.disabled = this.disabledAttr || !this.registerMode && !this.User.current.hasSystemPermission('permissions.user.editSelf');
         }
     }
     
-    render(user = this.originalUser) {
-        delete this.updatedUserEvent;
-        delete this.updatedUser;
-        
-        if (this.registerMode) {
-            this.user = user;
-        } else {
-            this.user = angular.copy(user);
-        }
+    render() {
         this.resetForm();
+        const viewValue = this.ngModelCtrl.$viewValue;
+        this.user = viewValue instanceof this.User ? viewValue.copy() : null;
     }
 
     resetForm() {
@@ -93,28 +76,20 @@ class UserEditorController {
         }
 
         this.saving = true;
-        
         this.user.save().then(user => {
-            const previous = angular.copy(this.originalUser);
-            angular.merge(this.originalUser, user);
-
             this.maDialogHelper.toast(['ui.components.userSaved', user.username]);
-            
-            if (typeof this.onSave === 'function') {
-                this.onSave({$user: this.originalUser, $previous: previous});
-            }
-            this.render();
+            this.ngModelCtrl.$setViewValue(user.copy());
         }, error => {
             if (error.status === 422 && error.data && error.data.result && error.data.result.messages) {
                 this.validationMessages = error.data.result.messages;
             }
     
-            this.maDialogHelper.errorToast(['ui.components.errorSavingUser', this.user.username, error.mangoStatusText]);
+            this.maDialogHelper.errorToast(['ui.components.errorSavingUser', this.user.originalId, error.mangoStatusText]);
         }).finally(() => delete this.saving);
     }
     
     revert() {
-        this.render(this.updatedUser);
+        this.render();
     }
     
     remove(event) {
@@ -126,20 +101,16 @@ class UserEditorController {
             .ariaLabel(this.Translate.trSync('ui.app.areYouSure'))
             .targetEvent(event)
             .ok(this.Translate.trSync('common.ok'))
-            .cancel(this.Translate.trSync('common.cancel'));
+            .cancel(this.Translate.trSync('common.cancel'))
+            .multiple(true);
     
         this.$mdDialog.show(confirm).then(() => {
-            const username = this.originalUser.username;
-            this.originalUser.$delete().then(user => {
+            const username = this.user.username;
+            this.user.$delete().then(user => {
                 this.user = null;
-                this.originalUser = null;
                 this.resetForm();
-                
-                if (typeof this.onDelete === 'function') {
-                    this.onDelete({$user: user});
-                }
-    
                 this.maDialogHelper.toast(['ui.components.userDeleted', username]);
+                this.ngModelCtrl.$setViewValue(null);
             }, error => {
                 this.maDialogHelper.errorToast(['ui.components.errorDeletingUser', username, error.mangoStatusText]);
             });
@@ -170,16 +141,13 @@ export default {
     controller: UserEditorController,
     template: userEditorTemplate,
     bindings: {
-        originalUser: '<?user',
-        onSave: '&?',
-        onDelete: '&?',
         disabledAttr: '@?disabled',
         registerMode: '<?',
         showStatus: '<?',
         formName: '@?name',
         profileMode: '<?'
     },
-    designerInfo: {
-        hideFromMenu: true
+    require: {
+        ngModelCtrl: 'ngModel'
     }
 };

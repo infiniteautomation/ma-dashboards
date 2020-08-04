@@ -59,7 +59,8 @@ class RegisterUserController {
         
         delete this.validationMessages;
         this.disableButton = true;
-        
+
+        //todo
         // registration uses V2 model
         const userCopy = Object.assign({}, this.user);
         userCopy.permissions = this.user.permissions.split(/\s*,\s*/).filter(p => !!p);

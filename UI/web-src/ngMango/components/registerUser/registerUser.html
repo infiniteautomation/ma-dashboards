@@ -18,7 +18,7 @@
 
         <ma-now update-interval="1 SECONDS" on-change="$ctrl.updateExpiry($value)"></ma-now>
         
-        <ma-user-editor user="$ctrl.user" name="user" register-mode="::true"></ma-user-editor>
+        <ma-user-editor ng-model="$ctrl.user" name="user" register-mode="::true"></ma-user-editor>
 
         <div ng-messages="$ctrl.serverErrors">
             <div ng-message="invalidToken" ma-tr="login.emailVerification.errorVerifying" ma-tr-args="[$ctrl.serverErrors.invalidToken]"></div>

@@ -32,7 +32,7 @@
                     </md-tab-label>
                     <md-tab-body>
                         <div class="md-padding">
-                            <ma-user-editor user="$ctrl.user" on-delete="$dialog.cancel()" on-save="$dialog.hide()"></ma-user-editor>
+                            <ma-user-editor ng-model="$ctrl.user" ng-change="$ctrl.user ? $dialog.hide() : $dialog.cancel()"></ma-user-editor>
                         </div>
                     </md-tab-body>
                 </md-tab>
