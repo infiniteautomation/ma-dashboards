@@ -296,6 +296,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 interceptor: {
                     response: function(data) {
                         const updatedUser = data.resource;
+                        // check if we are updating the current user
                         if (updatedUser.id === currentUser.id) {
                             User.setCurrentUser(updatedUser.copy());
                         }
@@ -315,12 +316,12 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
 
         Object.assign(User, {
             setCurrentUser(user) {
-                if (user !== null && !(user instanceof User)) {
-                    throw new Error('Must be an instance of maUser or null');
+                if (user != null && !(user instanceof User)) {
+                    user = Object.assign(Object.create(User.prototype), user);
                 }
                 if (!angular.equals(user, currentUser)) {
                     const previousUser = currentUser;
-                    currentUser = user;
+                    currentUser = user || null;
                     
                     this.configureLocale();
                     this.configureTimezone();
@@ -701,7 +702,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 data.resource.lastUpgradeTime = parseInt(lastUpgrade, 10);
             }
 
-            User.setCurrentUser(data.resource);
+            User.setCurrentUser(data.resource.copy());
             $injector.get('maWatchdog').setStatus('LOGGED_IN');
 
             return data.resource;
@@ -722,7 +723,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.NoUserError = NoUserError;
 
         // set the initial user and configure initial locale and timezone
-        User.setCurrentUser(bootstrapUser ? Object.assign(Object.create(User.prototype), bootstrapUser) : null);
+        User.setCurrentUser(bootstrapUser);
         bootstrapUser = undefined;
 
         return User;
