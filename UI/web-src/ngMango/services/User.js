@@ -297,7 +297,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     response: function(data) {
                         const updatedUser = data.resource;
                         if (updatedUser.id === currentUser.id) {
-                            User.setCurrentUser(updatedUser);
+                            User.setCurrentUser(updatedUser.copy());
                         }
                         return updatedUser;
                     }
@@ -315,14 +315,12 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
 
         Object.assign(User, {
             setCurrentUser(user) {
+                if (user !== null && !(user instanceof User)) {
+                    throw new Error('Must be an instance of maUser');
+                }
                 if (!angular.equals(user, currentUser)) {
                     const previousUser = currentUser;
-                    
-                    if (user) {
-                        currentUser = user instanceof User ? user : Object.assign(Object.create(User.prototype), user);
-                    } else {
-                        currentUser = null;
-                    }
+                    currentUser = user || null;
                     
                     this.configureLocale();
                     this.configureTimezone();
@@ -728,7 +726,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
         User.NoUserError = NoUserError;
 
         // set the initial user and configure initial locale and timezone
-        User.setCurrentUser(bootstrapUser);
+        User.setCurrentUser(Object.assign(Object.create(User.prototype), bootstrapUser));
         bootstrapUser = undefined;
 
         return User;
