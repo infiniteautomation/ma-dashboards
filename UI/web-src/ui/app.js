@@ -265,10 +265,11 @@ uiApp.run([
     '$injector',
     'maEventBus',
     'maDialogHelper',
+    '$q',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
         webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector,
-        $anchorScroll, installPrompt, developmentConfig, $injector, maEventBus, maDialogHelper) {
+        $anchorScroll, installPrompt, developmentConfig, $injector, maEventBus, maDialogHelper, $q) {
 
     const document = $document[0];
 
@@ -640,21 +641,24 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
                     hideDelay = 5000;
                 }
 
-                // check what state we are on after the state router gets a chance to redirect us
-                $timeout(() => {
-                    // TODO change this to check current state's permission (including parents)
-                    // do automatic re-login if we are not on the login page
-                    if (!$state.includes('login')) {
-                        User.autoLogin().then(null, error => {
+                // $timeout required to get state on initial page load / bootstrap
+                const noop = () => null;
+                $q.all([$timeout(noop), User.autoLogin().catch(noop)]).finally(() => {
+                    // check if user (or anonymous user) has permission to access current page
+                    // if not redirect to login page
+
+                    const user = User.current || User.anonymous;
+                    // we have to check the parent states permissions too, ui router resolve works this way
+                    for (let state = $state.$current; state != null && state.name; state = state.parent) {
+                        if (!(user.hasPermission(state.permission) || user.hasSystemPermission(...state.systemPermission))) {
                             // close dialogs
                             $mdDialog.cancel();
-
-                            // redirect to the login page if auto-login fails
                             maUiLoginRedirector.saveCurrentState();
                             maUiLoginRedirector.goToLogin();
-                        });
+                            break;
+                        }
                     }
-                }, 0);
+                });
                 break;
             case 'LOGGED_IN':
                 if (prevState && prevState !== 'API_UP') {
