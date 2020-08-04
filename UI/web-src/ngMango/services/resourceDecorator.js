@@ -153,9 +153,16 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
                 }
 
                 // remove $promise, $cancel, $resolved etc
-                Object.keys(copy).filter(k => k.startsWith('$')).forEach(k => delete copy[k]);
+                copy.removeAngularProperties();
 
                 return copy;
+            },
+
+            /**
+             * Removes properties starting with $ such as $promise, $cancel, $resolved
+             */
+            removeAngularProperties() {
+                Object.keys(this).filter(k => k.startsWith('$')).forEach(k => delete this[k]);
             }
         });
 
