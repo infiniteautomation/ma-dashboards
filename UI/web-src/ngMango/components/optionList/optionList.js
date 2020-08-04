@@ -27,7 +27,8 @@ class OptionListController {
         this.selected = new Map();
         this.queryOnOpen = true;
 
-        this.filterPlaceholder = maTranslate.trSync('ui.app.filter');
+        // option list is used on register page, need public translation
+        this.filterPlaceholder = maTranslate.trSync('login.ui.filter');
     }
     
     $onInit() {
