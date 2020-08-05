@@ -31,6 +31,14 @@ class MenuToggleController {
                 //this.close();
             }
         });
+
+        // recalculate height on switch user
+        this.$scope.$maSubscribe('maUser.currentUserChanged', (event, user) => {
+            // ignore logout
+            if (user != null) {
+                this.$timeout(() => this.calcHeight(), 0);
+            }
+        });
     }
 
     $onChanges(changes) {
@@ -45,7 +53,7 @@ class MenuToggleController {
                 if (info.visibleChildren !== this.prevVisibleChildren) {
                     this.prevVisibleChildren = info.visibleChildren;
                     // do on next cycle as elements have not been added/removed yet
-                    this.$timeout(() =>this.calcHeight(), 0);
+                    this.$timeout(() => this.calcHeight(), 0);
                 }
             }
 
