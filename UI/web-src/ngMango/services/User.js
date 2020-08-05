@@ -327,7 +327,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     this.configureLocale();
                     this.configureTimezone();
 
-                    maEventBus.publish('maUser.currentUserChanged', currentUser, previousUser);
+                    maEventBus.publish('maUser/currentUserChanged', currentUser, previousUser);
                 }
             },
     
@@ -364,7 +364,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                         });
                     }
 
-                    maEventBus.publish('maUser.localeChanged', locale, prevLocale);
+                    maEventBus.publish('maUser/localeChanged', locale, prevLocale);
                 }
             },
     
@@ -375,7 +375,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     
                     moment.tz.setDefault(timezone);
 
-                    maEventBus.publish('maUser.timezoneChanged', timezone, prevTimezone);
+                    maEventBus.publish('maUser/timezoneChanged', timezone, prevTimezone);
                 }
             },
             

@@ -604,7 +604,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         maModules.startAvailableUpgradeCheck();
     }
 
-    maEventBus.subscribe('maUser.currentUserChanged', (event, user) => {
+    maEventBus.subscribe('maUser/currentUserChanged', (event, user) => {
         if (user && user.hasRole('superadmin')) {
             if (!maModules.availableUpgradeCheckRunning()) {
                 maModules.startAvailableUpgradeCheck();

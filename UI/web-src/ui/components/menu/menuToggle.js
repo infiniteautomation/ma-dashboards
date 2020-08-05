@@ -33,7 +33,7 @@ class MenuToggleController {
         });
 
         // recalculate height on switch user
-        this.$scope.$maSubscribe('maUser.currentUserChanged', (event, user) => {
+        this.$scope.$maSubscribe('maUser/currentUserChanged', (event, user) => {
             // ignore logout
             if (user != null) {
                 this.$timeout(() => this.calcHeight(), 0);

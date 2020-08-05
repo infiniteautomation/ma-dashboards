@@ -240,7 +240,7 @@ function translateProvider() {
         Translate.loadTranslations = loadTranslations;
         Translate.clearLoadedNamespaces = clearLoadedNamespaces;
 
-        maEventBus.subscribe('maUser.localeChanged', (event, locale) => {
+        maEventBus.subscribe('maUser/localeChanged', (event, locale) => {
             const globalizeLocale = Globalize.locale();
             if (!globalizeLocale || globalizeLocale.locale !== locale) {
                 // clear the translation namespace cache if the user's locale changes
