@@ -867,7 +867,7 @@ ma-config-import-dialog {
   cursor: pointer;
 }
 
-[ng-click]:focus:not([disabled]) {
+[ng-click]:focus:not([disabled]):not(md-tab-item) {
     outline: none;
     background-color: rgba(var(--ma-background-300-value), 0.2);
 }
