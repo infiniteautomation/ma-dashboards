@@ -704,6 +704,11 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 data.resource.lastUpgradeTime = parseInt(lastUpgrade, 10);
             }
 
+            // the resource decorator interceptor also does this but we need to do it before the User.setCurrentUser() call below
+            if (data.resource.username) {
+                data.resource.originalId = data.resource.username;
+            }
+
             User.setCurrentUser(data.resource.copy());
             $injector.get('maWatchdog').setStatus('LOGGED_IN');
 
