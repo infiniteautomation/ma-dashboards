@@ -32,24 +32,26 @@ function eventBusFactory($log) {
             return subtopic;
         }
 
-        subscribe(path, listener) {
-            if (!path.length) {
+        subscribe(path, listener, i = 0) {
+            const segment = path[i];
+            if (segment == null) {
                 this.subscribers.add(listener);
             } else {
-                const subtopic = this.createSubtopic(path[0]);
-                subtopic.subscribe(path.slice(1), listener);
+                const subtopic = this.createSubtopic(segment);
+                subtopic.subscribe(path, listener, i + 1);
             }
         }
 
-        unsubscribe(path, listener) {
-            if (!path.length) {
+        unsubscribe(path, listener, i = 0) {
+            const segment = path[i];
+            if (segment == null) {
                 return this.subscribers.delete(listener);
             } else {
-                const subtopic = this.subtopics.get(path[0]);
+                const subtopic = this.subtopics.get(segment);
                 if (subtopic) {
-                    const deleted = subtopic.unsubscribe(path.slice(1), listener);
+                    const deleted = subtopic.unsubscribe(path, listener, i + 1);
                     if (deleted && subtopic.isEmpty()) {
-                        this.subtopics.delete(path[0]);
+                        this.subtopics.delete(segment);
                     }
                     return deleted;
                 }
@@ -61,17 +63,18 @@ function eventBusFactory($log) {
             return !this.subscribers.size && !this.subtopics.size;
         }
 
-        publish(path, event, args) {
-            if (!path.length) {
+        publish(path, event, args, i = 0) {
+            const segment = path[i];
+            if (segment == null) {
                 this.publishToSubscribers(event, args);
             } else {
-                const subtopic = this.subtopics.get(path[0]);
+                const subtopic = this.subtopics.get(segment);
                 if (subtopic) {
-                    subtopic.publish(path.slice(1), event, args);
+                    subtopic.publish(path, event, args, i + 1);
                 }
                 const singleLevelWildcardTopic = this.subtopics.get(SINGLE_LEVEL_WILDCARD);
                 if (singleLevelWildcardTopic) {
-                    singleLevelWildcardTopic.publish(path.slice(1), event, args);
+                    singleLevelWildcardTopic.publish(path, event, args, i + 1);
                 }
                 const multiLevelWildcardTopic = this.subtopics.get(MULTI_LEVEL_WILDCARD);
                 if (multiLevelWildcardTopic) {
