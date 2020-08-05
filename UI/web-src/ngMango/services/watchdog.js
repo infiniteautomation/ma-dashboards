@@ -160,11 +160,11 @@ function mangoWatchdog(MA_TIMEOUTS, $http, $timeout, window, maEventBus, $inject
                     // checkStatus() again
                     return $http({
                         method: 'GET',
-                        url: '/rest/latest/user/current',
+                        url: '/rest/latest/users/current',
                         timeout: this.timeout,
                         ignoreError: true
-                    }).then(user => {
-                        User.setCurrentUser(user);
+                    }).then(response => {
+                        User.setCurrentUser(response.data);
                         this.setStatus(LOGGED_IN, status);
                     }, error => {
                         if (error.status === 401) {
