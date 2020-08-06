@@ -7,8 +7,11 @@
 
 <ma-tree-view items="$ctrl.rolesPromise" item-id="$item.xid" item-children="$ctrl.loadInherited($item, $limit, $offset)"
               item-has-children="$item.inherited.length"><!-- no space
- --><md-button class="ma-role-selector-row" ng-click="$ctrl.labelClicked($event, $item)" ng-disabled="$ctrl.disabled || $ctrl.disabledOptionsMap[$item.xid]"><!-- no space
-     --><md-checkbox ng-if="$ctrl.multiple" md-no-ink ng-disabled="$ctrl.disabled || $ctrl.disabledOptionsMap[$item.xid]" ng-checked="$ctrl.selected.has($item.xid)"></md-checkbox>
+ --><md-button class="ma-role-selector-row" ng-click="$ctrl.labelClicked($event, $item)"
+               ng-class="{'ma-selected': $ctrl.selected.has($item.xid)}"
+               ng-disabled="$ctrl.disabled || $ctrl.disabledOptionsMap[$item.xid]"><!-- no space
+     --><md-icon ng-if="$ctrl.multiple" class="ma-selected-show">check</md-icon><!-- no space
+     --><md-icon class="ma-role-icon">group</md-icon>
         <span md-highlight-text="$ctrl.filter" md-highlight-flags="ig">{{$item.name}}</span>
     </md-button>
 </ma-tree-view>

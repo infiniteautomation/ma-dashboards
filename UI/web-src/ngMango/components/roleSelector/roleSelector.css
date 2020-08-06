@@ -15,6 +15,22 @@ ma-role-selector .ma-role-selector-row {
     margin: 0;
 }
 
-ma-role-selector .ma-role-selector-row md-checkbox {
-    margin: 0;
+ma-role-selector .ma-role-selector-row.ma-selected {
+    color: var(--ma-primary);
+}
+
+ma-role-selector .ma-role-selector-row:not(.ma-selected) > .ma-selected-show {
+    visibility: hidden;
+}
+
+ma-role-selector .ma-role-selector-row > md-icon {
+    color: inherit;
+}
+
+ma-role-selector .ma-role-selector-row > .ma-selected-show {
+    margin-right: 8px;
+}
+
+ma-role-selector .ma-role-selector-row > .ma-role-icon {
+    margin-right: 4px;
 }
