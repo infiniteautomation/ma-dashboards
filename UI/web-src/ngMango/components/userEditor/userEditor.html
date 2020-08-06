@@ -88,7 +88,7 @@
             <ma-drop-down-button ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasRole('superadmin')">
                 <span ng-bind="$ctrl.user.permissions.join(', ')"></span>
                 <ma-drop-down class="ma-user-editor-role-selector ma-full-screen-centered">
-                    <ma-role-selector name="permissions"
+                    <ma-role-selector name="permissions" ma-format-array="{xid: $item}" ma-parse-array="$item.xid"
                                       ng-model="$ctrl.user.permissions"
                                       ng-multiple="::true"
                                       ng-disabled="$ctrl.disabled"
