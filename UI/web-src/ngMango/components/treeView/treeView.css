@@ -36,3 +36,7 @@ ma-tree-view li.ma-tree-view-load-more {
 ma-tree-view li.ma-tree-view-load-more:focus {
 	outline: none;
 }
+
+ma-tree-view .ma-tree-view-parent {
+	display: inline-block;
+}
