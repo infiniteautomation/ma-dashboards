@@ -13,7 +13,7 @@ class RoleSelectorController {
     constructor(maRole, $element) {
         this.maRole = maRole;
         this.$element = $element;
-        this.selected = new Set();
+        this.selected = new Map();
     }
     
     $onInit() {
@@ -42,15 +42,16 @@ class RoleSelectorController {
 
         const roles = this.ngModelCtrl.$viewValue;
         if (this.multiple && Array.isArray(roles)) {
-            roles.forEach(r => this.selected.add(r));
-        } else if (!this.multiple && typeof roles === 'string') {
-            this.selected.add(roles);
+            roles.forEach(r => this.selected.set(r.xid, r));
+        } else if (!this.multiple && roles) {
+            const role = roles;
+            this.selected.set(role.xid, role);
         }
     }
     
     setViewValue() {
         if (this.multiple) {
-            this.ngModelCtrl.$setViewValue(Array.from(this.selected));
+            this.ngModelCtrl.$setViewValue(Array.from(this.selected.values()));
         } else {
             const [first] = this.selected.values();
             this.ngModelCtrl.$setViewValue(first);
@@ -96,7 +97,7 @@ class RoleSelectorController {
             if (this.selected.has(item.xid)) {
                 this.selected.delete(item.xid);
             } else {
-                this.selected.add(item.xid);
+                this.selected.set(item.xid, item);
             }
 
             this.setViewValue();
