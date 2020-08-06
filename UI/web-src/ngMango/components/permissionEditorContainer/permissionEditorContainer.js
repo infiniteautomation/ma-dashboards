@@ -10,15 +10,17 @@ const localStorageKey = 'maPermissionEditorContainer';
 
 class PermissionEditorContainerController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maPermission', 'localStorageService', '$element', '$transclude']; }
+    static get $inject() { return ['maPermission', 'localStorageService', '$element', '$transclude', 'maRole']; }
 
-    constructor(Permission, localStorageService, $element, $transclude) {
+    constructor(Permission, localStorageService, $element, $transclude, Role) {
         this.Permission = Permission;
         this.Minterm = Permission.Minterm;
         this.localStorageService = localStorageService;
         this.$element = $element;
         this.$transclude = $transclude;
+        this.Role = Role;
 
+        this.roleCache = new Map();
         this.showFilter = false;
         this.editors = new Set();
         this.loadSettings();
@@ -41,6 +43,24 @@ class PermissionEditorContainerController {
             minterms: [['superadmin'], ['user']],
             advancedMode: false
         };
+
+        // fetch all the roles for the selected columns so we can display their names
+        const roleXids = new Set([].concat(...this.settings.minterms));
+        for (const xid of roleXids) {
+            if (this.roleCache.has(xid)) {
+                roleXids.delete(xid);
+            }
+        }
+        if (roleXids.size) {
+            this.Role.buildQuery()
+            .in('xid', Array.from(roleXids))
+            .query().then(roles => {
+                for (const role of roles) {
+                    this.roleCache.set(role.xid, role);
+                }
+            });
+        }
+
         this.minterms = this.settings.minterms.map(t => new this.Minterm(t));
         this.updateDisabledOptions();
     }
@@ -88,8 +108,13 @@ class PermissionEditorContainerController {
     }
 
     addRolesAsColumn(dropDown) {
-        if (this.roles && this.roles.length) {
-            this.addColumn(new this.Minterm(this.roles));
+        if (this.roles) {
+            const roles = Array.isArray(this.roles) ? this.roles : [this.roles];
+            const roleXids = roles.map(role => {
+                this.roleCache.set(role.xid, role);
+                return role.xid;
+            });
+            this.addColumn(new this.Minterm(roleXids));
             dropDown.close();
         }
     }
@@ -117,6 +142,11 @@ class PermissionEditorContainerController {
         delete this.filter;
         this.$element.maFind('[name=filter]').maFocus();
         this.filterChanged();
+    }
+
+    getRoleName(xid) {
+        const role = this.roleCache.get(xid);
+        return role && role.name || xid;
     }
 }
 

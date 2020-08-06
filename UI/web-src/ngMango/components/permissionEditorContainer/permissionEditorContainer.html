@@ -23,7 +23,7 @@
                 </md-button>
                 <div layout="column" layout-align="center center">
                     <div ng-repeat="role in minterm.roles" class="ma-ellipsis">
-                        <span ng-if="!$first">&amp; </span> <span ng-bind="role" title="{{role}}"></span>
+                        <span ng-if="!$first">&amp; </span> <span ng-bind="$ctrl.getRoleName(role)" title="{{$ctrl.getRoleName(role)}}"></span>
                     </div>
                 </div>
             </div>
