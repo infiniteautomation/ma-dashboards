@@ -1,0 +1,18 @@
+ma-ui-users-page .ma-users-page-card-container {
+    flex: 1 0 auto;
+    display: flex;
+}
+
+ma-ui-users-page .ma-users-page-card-container > .ma-users-page-roles-card {
+    flex: 1 1 25%;
+}
+
+ma-ui-users-page .ma-users-page-card-container > .ma-users-page-users-card {
+    flex: 1 1 75%;
+}
+
+@media (max-width: 959px) {
+    ma-ui-users-page .ma-users-page-card-container {
+        flex-direction: column;
+    }
+}

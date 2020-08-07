@@ -1,5 +1,5 @@
-<div flex="noshrink" layout>
-    <md-card flex="25">
+<div class="ma-users-page-card-container">
+    <md-card class="ma-users-page-roles-card">
         <md-toolbar class="md-hue-3">
             <div class="md-toolbar-tools">
                 <h2 ma-tr="header.roles"></h2>
@@ -16,7 +16,7 @@
         </md-toolbar>
         <ma-role-selector flex ng-model="$ctrl.selectedRole"></ma-role-selector>
     </md-card>
-    <md-card flex>
+    <md-card class="ma-users-page-users-card">
         <md-toolbar class="md-hue-3">
             <div class="md-toolbar-tools">
                 <h2 ma-tr="users.usersInRole" ma-tr-args="[$ctrl.selectedRole.name]"></h2>
