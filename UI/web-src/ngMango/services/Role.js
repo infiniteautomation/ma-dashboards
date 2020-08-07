@@ -7,10 +7,20 @@ roleFactory.$inject = ['maRestResource', 'maRqlBuilder'];
 function roleFactory(RestResource, RqlBuilder) {
     
     const baseUrl = '/rest/latest/roles';
+    const webSocketUrl = '/rest/latest/websocket/roles';
+    const xidPrefix = 'ROLE_';
 
     class Role extends RestResource {
         static get baseUrl() {
             return baseUrl;
+        }
+
+        static get webSocketUrl() {
+            return webSocketUrl;
+        }
+
+        static get xidPrefix() {
+            return xidPrefix;
         }
     }
     
