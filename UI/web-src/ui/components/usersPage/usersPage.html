@@ -1,16 +1,61 @@
-<div class="ma-margin-bottom">
-    <md-button class="md-raised" ng-click="$ctrl.addUser($event)">
-        <md-icon>person_add</md-icon>&nbsp;<span ma-tr="users.add"></span>
-    </md-button>
-    <md-button class="md-raised md-warn" ng-click="$ctrl.deleteUsers($event)" ng-disabled="!$ctrl.selectedUsers.length">
-        <md-icon>delete</md-icon>&nbsp;<span ma-tr="common.delete"></span>
-    </md-button>
+<div flex="noshrink" layout>
+    <md-card flex="25">
+        <md-toolbar class="md-hue-3">
+            <div class="md-toolbar-tools">
+                <h2 ma-tr="header.roles"></h2>
+                <div flex></div>
+                <md-button class="md-icon-button" ng-click="$ctrl.addRole($event)">
+                    <md-icon>group_add</md-icon>
+                    <md-tooltip><span ma-tr="roles.add"></span></md-tooltip>
+                </md-button>
+                <md-button class="md-icon-button" ng-click="$ctrl.editRole($ctrl.selectedRole, $event)" ng-disabled="!$ctrl.selectedRole">
+                    <md-icon>edit</md-icon>
+                    <md-tooltip><span ma-tr="roles.edit"></span></md-tooltip>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <ma-role-selector flex ng-model="$ctrl.selectedRole"></ma-role-selector>
+    </md-card>
+    <md-card flex>
+        <md-toolbar class="md-hue-3">
+            <div class="md-toolbar-tools">
+                <h2 ma-tr="users.usersInRole" ma-tr-args="[$ctrl.selectedRole.name]"></h2>
+                <div flex></div>
+                <md-button class="md-icon-button" ng-click="$ctrl.addUser($event)">
+                    <md-icon>person_add</md-icon>
+                    <md-tooltip><span ma-tr="users.add"></span></md-tooltip>
+                </md-button>
+                <md-button class="md-icon-button md-warn" ng-click="$ctrl.deleteUsers($event)" ng-disabled="!$ctrl.selectedUsers.length">
+                    <md-icon>delete</md-icon>
+                    <md-tooltip><span ma-tr="common.delete"></span></md-tooltip>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <ma-user-table flex ng-model="$ctrl.selectedUsers" select-multiple="true" show-actions="true" on-copy="$ctrl.editUser($user)"
+                           row-clicked="$ctrl.rowClicked($event, $item, $index, $tableCtrl)"></ma-user-table>
+    </md-card>
 </div>
 
-<ma-user-table ng-model="$ctrl.selectedUsers" select-multiple="true" show-actions="true" on-copy="$ctrl.editUser($user)"
-    row-clicked="$ctrl.rowClicked($event, $item, $index, $tableCtrl)"></ma-user-table>
+<ma-dialog show-dialog="$ctrl.showRoleEditDialog" on-close="$ctrl.roleEditorClosed()" lazy-compile="::true">
+    <md-dialog flex="100" flex-gt-sm="60" flex-gt-md="40" flex-gt-lg="30" flex-gt-xl="20">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <span ng-if="!$ctrl.role.isNew()" ma-tr="roles.editX" ma-tr-args="[$ctrl.role.name]"></span>
+                <span ng-if="$ctrl.role.isNew()" ma-tr="roles.add"></span>
+                <div flex></div>
+                <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
 
-<ma-dialog show-dialog="$ctrl.showDialog" on-hide="$ctrl.userEditorClosed()" on-cancel="$ctrl.userEditorClosed()">
+        <md-dialog-content class="md-padding">
+            <ma-role-editor ng-model="$ctrl.role" ng-change="$ctrl.role ? $dialog.hide() : $dialog.cancel()"></ma-role-editor>
+        </md-dialog-content>
+    </md-dialog>
+</ma-dialog>
+
+<ma-dialog show-dialog="$ctrl.showUserEditDialog" on-close="$ctrl.userEditorClosed()" lazy-compile="::true">
     <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30">
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -24,7 +69,7 @@
         </md-toolbar>
 
         <md-dialog-content layout="column" flex>
-            <md-tabs md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.selectedTab">
+            <md-tabs md-dynamic-height="true" md-border-bottom="true" md-swipe-content="false" md-selected="$ctrl.userEditorTab">
                 <md-tab>
                     <md-tab-label>
                         <span ng-if="!$ctrl.user.isNew()" ma-tr="users.editUser"></span>

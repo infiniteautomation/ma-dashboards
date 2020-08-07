@@ -8,13 +8,14 @@ import './usersPage.css';
 
 class UsersPageController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maUser', '$state', 'maDialogHelper', '$scope']; }
+    static get $inject() { return ['maUser', '$state', 'maDialogHelper', '$scope', 'maRole']; }
 
-    constructor(User, $state, maDialogHelper, $scope) {
+    constructor(User, $state, maDialogHelper, $scope, Role) {
         this.User = User;
         this.$state = $state;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
+        this.Role = Role;
     }
 
     $onInit() {
@@ -29,6 +30,28 @@ class UsersPageController {
         } else {
             this.editUser(null);
         }
+
+        this.Role.get('user').then(userRole => this.selectedRole = userRole);
+    }
+
+    addRole(event) {
+        this.editRole(new this.Role(), event);
+    }
+
+    editRole(role, event) {
+        this.role = role;
+        this.$state.go('.', {
+            editRole: this.role && !this.role.isNew() && this.role.xid || null
+        }, {location: 'replace', notify: false});
+
+        if (role != null && !this.showRoleEditDialog) {
+            this.showRoleEditDialog = {event};
+        }
+    }
+
+    roleEditorClosed() {
+        delete this.showRoleEditDialog;
+        this.editRole(null);
     }
 
     addUser(event) {
@@ -40,15 +63,15 @@ class UsersPageController {
         this.$state.params.username = this.user && !this.user.isNew() && this.user.username || null;
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
         
-        if (user != null && !this.showDialog) {
-            this.showDialog = {};
+        if (user != null && !this.showUserEditDialog) {
+            this.showUserEditDialog = {};
         }
     }
     
     userEditorClosed() {
-        delete this.showDialog;
+        delete this.showUserEditDialog;
         this.editUser(null);
-        this.selectedTab = 0;
+        this.userEditorTab = 0;
     }
     
     deleteUsers(event) {
