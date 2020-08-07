@@ -201,7 +201,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             }
         }
         
-        let currentUser, angularLocaleDeferred;
+        let currentUser;
         const authTokenBaseUrl = '/rest/latest/auth-tokens';
         const passwordResetUrl = '/rest/latest/password-reset';
         const emailVerificationUrl = '/rest/latest/email-verification';
@@ -336,30 +336,23 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     
                     // moment doesn't support locales with a script, just supply it with language and region
                     const cldrAttributes = new Cldr(locale).attributes;
-                    moment.locale(`${cldrAttributes.language}-${cldrAttributes.region}`);
+                    moment.locale(cldrAttributes.minLanguageId);
     
                     const localeId = locale.toLowerCase();
                     const $locale = $injector.get('$locale');
                     if (localeId !== $locale.id) {
-                        // cancel any pending request for a locale
-                        if (angularLocaleDeferred) {
-                            angularLocaleDeferred.reject('cancel');
-                        }
-                        
-                        angularLocaleDeferred = $q.defer();
-                        
                         // localeCache.getLocale() returns ES6 promise, convert to AngularJS $q promise
-                        angularLocaleCache.getLocale(localeId).then(angularLocaleDeferred.resolve, angularLocaleDeferred.reject);
-                        
-                        angularLocaleDeferred.promise.then(newLocaleData => {
-                            // deep replace all properties of existing locale with the keys from the new locale
-                            // this is necessary as the filters cache $locale.NUMBER_FORMATS for example
-                            Util.deepReplace($locale, newLocaleData);
-                        }, error => {
-                            if (error !== 'cancel') {
-                                return $q.reject(error);
-                            }
-                        });
+                        const promise = this.replaceLocalePromise = $q.when(angularLocaleCache.getLocale(localeId))
+                            .catch(error => angularLocaleCache.getLocale(cldrAttributes.language))
+                            .then(newLocaleData => {
+                                if (promise === this.replaceLocalePromise) {
+                                    delete this.replaceLocalePromise;
+
+                                    // deep replace all properties of existing locale with the keys from the new locale
+                                    // this is necessary as the filters cache $locale.NUMBER_FORMATS for example
+                                    Util.deepReplace($locale, newLocaleData);
+                                }
+                            });
                     }
 
                     maEventBus.publish('maUser/localeChanged', locale, prevLocale);

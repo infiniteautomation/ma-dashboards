@@ -3,6 +3,9 @@
  * @author Jared Wiltshire
  */
 
+/**
+ * The LocaleCache masquerades as 'angular' via a shim when loading the angular-i18n bundles
+ */
 class LocaleCache {
     constructor() {
         this.cache = {};
