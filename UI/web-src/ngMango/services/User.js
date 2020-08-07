@@ -213,9 +213,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             homeUrl: '',
             locale: null,
             timezone: null,
-            // this is actually a list of roles the user holds
-            permissions: ['user'],
-            grantedPermissions: [], //stops calls to hasSystemPermission failing
+            roles: ['user'],
             muted: true,
             receiveOwnAuditEvents: false,
             disabled: false,
@@ -599,7 +597,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
              */
             hasPermission(permission) {
                 // should return true even for empty array if we are superadmin
-                if (this.permissions.some(r => r === 'superadmin')) {
+                if (this.inheritedRoles.some(r => r === 'superadmin')) {
                     return true;
                 }
 
@@ -618,8 +616,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
              * @returns {boolean} true if the user holds the specified role
              */
             hasRole(role) {
-                // this.permissions is actually an array of the user's roles
-                return this.permissions.some(r => r === 'superadmin' || r === role);
+                return this.inheritedRoles.some(r => r === 'superadmin' || r === role);
             },
 
             /**
@@ -744,7 +741,8 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             constructor() {
                 super();
                 this.name = 'Anonymous';
-                this.permissions = ['anonymous'];
+                this.roles = ['anonymous'];
+                this.inheritedRoles = ['anonymous'];
                 // TODO currently no way to obtain granted permissions for anonymous user
                 this.grantedPermissions = [];
                 Object.freeze(this);
