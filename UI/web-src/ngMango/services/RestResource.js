@@ -4,15 +4,76 @@
  */
 
 import angular from 'angular';
+import BoundedMap from '../classes/BoundedMap';
 
-restResourceFactory.$inject = ['$http', '$q', '$timeout', 'maUtil', 'maNotificationManager', 'maRqlBuilder', 'MA_TIMEOUTS'];
-function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, RqlBuilder, MA_TIMEOUTS) {
+restResourceFactory.$inject = ['$http', '$q', '$timeout', 'maUtil', 'maNotificationManager', 'maRqlBuilder', 'MA_TIMEOUTS', '$rootScope'];
+function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, RqlBuilder, MA_TIMEOUTS, $rootScope) {
     
     const hasSymbol = typeof Symbol === 'function';
     const idProperty = 'xid';
     const originalIdProperty = hasSymbol ? Symbol('originalId') : 'originalId';
     const notificationManagerProperty = hasSymbol ? Symbol('notificationManager') : '_notificationManager';
     const httpBodyProperty = hasSymbol ? Symbol('httpBody') : '_httpBody';
+    const cacheProperty = hasSymbol ? Symbol('cache') : '_cache';
+
+    class Cache extends BoundedMap {
+        constructor(resource) {
+            super(100);
+            this.resource = resource;
+            this.subscribers = new Set();
+        }
+
+        subscribe(subscriber) {
+            if (!this.subscribers.has(subscriber)) {
+                if (!this.subscribers.size) {
+                    this.deregister = this.resource.notificationManager.subscribe((event, item) => {
+                        $rootScope.$applyAsync(() => {
+                            this.updateHandler(event, item);
+                        });
+                    });
+                }
+                this.subscribers.add(subscriber);
+                const unsubscribe = () => this.unsubscribe(subscriber);
+                if (subscriber instanceof $rootScope.constructor) {
+                    subscriber.$on('$destroy', () => {
+                        // adding a timeout gives other pages a chance to subscribe before the websocket is closed
+                        $timeout(unsubscribe, 0);
+                    });
+                }
+                return () => this.unsubscribe(subscriber);
+            }
+        }
+
+        unsubscribe(subscriber) {
+            if (this.subscribers.delete(subscriber) && !this.subscribers.size) {
+                this.deregister();
+                this.clear();
+            }
+        }
+
+        updateHandler(event, item) {
+            if (event.type === 'update') {
+                // TODO handle xid change
+                if (this.delete(item.getOriginalId())) {
+                    this.set(item.getOriginalId(), item);
+                }
+            } else if (event.type === 'delete') {
+                this.delete(item.getOriginalId());
+            }
+        }
+
+        loadItems(ids) {
+            const missingIds = new Set(ids.filter(x => !this.has(x)));
+            if (!missingIds.size) {
+                return $q.resolve();
+            }
+            return this.resource.buildQuery()
+                .in(this.resource.idProperty, Array.from(missingIds))
+                .query().then(items => {
+                    items.forEach(item => this.set(item.getOriginalId(), item));
+                });
+        }
+    }
 
     class RestResource {
         constructor(properties) {
@@ -39,7 +100,10 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         static get timeout() {
             return MA_TIMEOUTS.xhr;
         }
-        
+
+        /**
+         * @returns {NotificationManager}
+         */
         static createNotificationManager() {
             return new NotificationManager({
                 webSocketUrl: this.webSocketUrl,
@@ -48,7 +112,10 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 }
             });
         }
-        
+
+        /**
+         * @returns {NotificationManager}
+         */
         static get notificationManager() {
             let notificationManager = this[notificationManagerProperty];
             
@@ -350,26 +417,6 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         static defer() {
             return $q.defer();
         }
-        
-//        static createCancel(timeout = this.timeout) {
-//            const deferred = $q.defer();
-//            let timeoutPromise;
-//            
-//            const cancel = () => {
-//                if (timeoutPromise) {
-//                    $timeout.cancel(timeoutPromise);
-//                }
-//                deferred.resolve();
-//            };
-//            
-//            if (timeout > 0) {
-//                timeoutPromise = $timeout(cancel, timeout, false);
-//            }
-//            
-//            cancel.promise = deferred.promise;
-//            
-//            return cancel;
-//        }
 
         setEnabled(enable) {
             if (enable == null) {
@@ -388,6 +435,16 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                     delete this.$enableToggling;
                 });
             }
+        }
+
+        /**
+         * @returns {Cache}
+         */
+        static getCache() {
+            if (this[cacheProperty]) {
+                return this[cacheProperty];
+            }
+            return (this[cacheProperty] = new Cache(this));
         }
     }
     

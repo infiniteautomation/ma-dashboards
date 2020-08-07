@@ -10,23 +10,26 @@ const localStorageKey = 'maPermissionEditorContainer';
 
 class PermissionEditorContainerController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maPermission', 'localStorageService', '$element', '$transclude', 'maRole']; }
+    static get $inject() { return ['maPermission', 'localStorageService', '$element', '$transclude', 'maRole', '$scope']; }
 
-    constructor(Permission, localStorageService, $element, $transclude, Role) {
+    constructor(Permission, localStorageService, $element, $transclude, Role, $scope) {
         this.Permission = Permission;
         this.Minterm = Permission.Minterm;
         this.localStorageService = localStorageService;
         this.$element = $element;
         this.$transclude = $transclude;
         this.Role = Role;
+        this.$scope = $scope;
 
-        this.roleCache = new Map();
+        this.roleCache = Role.getCache();
         this.showFilter = false;
         this.editors = new Set();
-        this.loadSettings();
     }
 
     $onInit() {
+        this.roleCache.subscribe(this.$scope);
+        this.loadSettings();
+
         const $table = this.$element.maFind('.ma-permission-editor-table');
         this.$transclude((clone, scope) => {
             Object.defineProperties(scope, {
@@ -45,21 +48,7 @@ class PermissionEditorContainerController {
         };
 
         // fetch all the roles for the selected columns so we can display their names
-        const roleXids = new Set([].concat(...this.settings.minterms));
-        for (const xid of roleXids) {
-            if (this.roleCache.has(xid)) {
-                roleXids.delete(xid);
-            }
-        }
-        if (roleXids.size) {
-            this.Role.buildQuery()
-            .in('xid', Array.from(roleXids))
-            .query().then(roles => {
-                for (const role of roles) {
-                    this.roleCache.set(role.xid, role);
-                }
-            });
-        }
+        this.roleCache.loadItems([].concat(...this.settings.minterms));
 
         this.minterms = this.settings.minterms.map(t => new this.Minterm(t));
         this.updateDisabledOptions();
