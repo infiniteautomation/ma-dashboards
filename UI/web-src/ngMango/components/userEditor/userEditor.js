@@ -3,7 +3,6 @@
  * @author Jared Wiltshire
  */
 
-import angular from 'angular';
 import userEditorTemplate from './userEditor.html';
 import './userEditor.css';
 import moment from 'moment-timezone';
