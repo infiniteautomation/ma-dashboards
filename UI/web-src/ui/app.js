@@ -266,10 +266,11 @@ uiApp.run([
     'maEventBus',
     'maDialogHelper',
     '$q',
+    '$resolve',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
         webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector,
-        $anchorScroll, installPrompt, developmentConfig, $injector, maEventBus, maDialogHelper, $q) {
+        $anchorScroll, installPrompt, developmentConfig, $injector, maEventBus, maDialogHelper, $q, $resolve) {
 
     const document = $document[0];
 
@@ -289,44 +290,13 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.$log = $log;
     $rootScope.installPrompt = installPrompt;
 
-    // This function basically does what Angular UI router does and resolves the promises in the resolve object
-    // then invokes templateProvider to get the template and put it in the $templateCache.
-    // One exception - it doesn't resolve the parents' resolve objects
-    // If we run into problems, consider using $resolve.resolve() function from UI router
-    const getTemplateUrl = function(view, templateName = view.name, locals = {}) {
-        return Promise.resolve().then(() => {
-            if (typeof view.resolve !== 'object') {
-                return locals;
-            }
-            
-            const promises = Object.keys(view.resolve).map(k => {
-                const fn = view.resolve[k];
-                return Promise.resolve($injector.invoke(fn, null, locals)).then(r => {
-                    locals[k] = r;
-                });
-            });
-            
-            return Promise.all(promises);
-        }).then(() => {
-            if (view.templateUrl) {
-                return view.templateUrl;
-            }
-            
-            let template;
-            if (typeof view.template === 'string') {
-                template = view.template;
-            } else if (view.templateProvider) {
-                // UI router includes parameters as locals, not doing that as we don't have a need for them in help (yet)
-                template = $injector.invoke(view.templateProvider, null, locals);
-            } else if (typeof view.views === 'object' && Object.values(view.views).length) {
-                return getTemplateUrl(Object.values(view.views)[0], `${templateName}_view0`, locals);
-            } else {
-                throw new Error('No template defined');
-            }
-
-            const templateUrl = `${templateName}.tmpl.html`;
-            $templateCache.put(templateUrl, template);
-
+    // Resolve all the promises returned by values of the state.resolve object, get the first view template,
+    // add it to the template cache and return the template url. Note: the self passed to resolve() is different
+    // to what the UI Router uses but it works fine for our resolve functions.
+    const getTemplateUrl = function(state) {
+        return $resolve.resolve(state.resolve, {}, null, state).then(result => {
+            const templateUrl = `${state.name}.tmpl.html`;
+            $templateCache.put(templateUrl, result.template_0.default);
             return templateUrl;
         });
     };
@@ -348,11 +318,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
 
         // put the template in the cache and then set the help url
         getTemplateUrl(helpPageState).then(templateUrl => {
-            // getTemplateUrl returns ES6 promise not AngularJS $q promise, call $scope.$apply
-            $rootScope.$apply(() => {
-                this.pageOpts.helpUrl = templateUrl;
-                $state.go('.', {helpOpen: helpPageState.name}, {location: 'replace', notify: false});
-            });
+            this.pageOpts.helpUrl = templateUrl;
+            $state.go('.', {helpOpen: helpPageState.name}, {location: 'replace', notify: false});
         });
     };
     
