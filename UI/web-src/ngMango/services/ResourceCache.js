@@ -46,6 +46,7 @@ function resourceCacheFactory($q, $timeout, $rootScope) {
         updateHandler(event, item, attributes) {
             if (event.type === 'update') {
                 const originalXid = attributes.originalXid;
+                // only add to cache if it is already in there
                 if (this.delete(originalXid || item.getOriginalId())) {
                     this.set(item.getOriginalId(), item);
                 }
