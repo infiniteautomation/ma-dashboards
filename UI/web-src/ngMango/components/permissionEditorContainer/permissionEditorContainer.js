@@ -43,7 +43,7 @@ class PermissionEditorContainerController {
 
     loadSettings() {
         this.settings = this.localStorageService.get(localStorageKey) || {
-            minterms: [['superadmin'], ['user']],
+            minterms: [['superadmin'], ['user'], ['anonymous']],
             advancedMode: false
         };
 
