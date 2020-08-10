@@ -4,10 +4,9 @@
  */
 
 import angular from 'angular';
-import BoundedMap from '../classes/BoundedMap';
 
-restResourceFactory.$inject = ['$http', '$q', '$timeout', 'maUtil', 'maNotificationManager', 'maRqlBuilder', 'MA_TIMEOUTS', '$rootScope'];
-function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, RqlBuilder, MA_TIMEOUTS, $rootScope) {
+restResourceFactory.$inject = ['$http', '$q', '$timeout', 'maUtil', 'maNotificationManager', 'maRqlBuilder', 'MA_TIMEOUTS', 'maResourceCache'];
+function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, RqlBuilder, MA_TIMEOUTS, ResourceCache) {
     
     const hasSymbol = typeof Symbol === 'function';
     const idProperty = 'xid';
@@ -15,65 +14,6 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
     const notificationManagerProperty = hasSymbol ? Symbol('notificationManager') : '_notificationManager';
     const httpBodyProperty = hasSymbol ? Symbol('httpBody') : '_httpBody';
     const cacheProperty = hasSymbol ? Symbol('cache') : '_cache';
-
-    class Cache extends BoundedMap {
-        constructor(resource) {
-            super(100);
-            this.resource = resource;
-            this.subscribers = new Set();
-        }
-
-        subscribe(subscriber) {
-            if (!this.subscribers.has(subscriber)) {
-                if (!this.subscribers.size) {
-                    this.deregister = this.resource.notificationManager.subscribe((event, item) => {
-                        $rootScope.$applyAsync(() => {
-                            this.updateHandler(event, item);
-                        });
-                    });
-                }
-                this.subscribers.add(subscriber);
-                const unsubscribe = () => this.unsubscribe(subscriber);
-                if (subscriber instanceof $rootScope.constructor) {
-                    subscriber.$on('$destroy', () => {
-                        // adding a timeout gives other pages a chance to subscribe before the websocket is closed
-                        $timeout(unsubscribe, 0);
-                    });
-                }
-                return () => this.unsubscribe(subscriber);
-            }
-        }
-
-        unsubscribe(subscriber) {
-            if (this.subscribers.delete(subscriber) && !this.subscribers.size) {
-                this.deregister();
-                this.clear();
-            }
-        }
-
-        updateHandler(event, item) {
-            if (event.type === 'update') {
-                // TODO handle xid change
-                if (this.delete(item.getOriginalId())) {
-                    this.set(item.getOriginalId(), item);
-                }
-            } else if (event.type === 'delete') {
-                this.delete(item.getOriginalId());
-            }
-        }
-
-        loadItems(ids) {
-            const missingIds = new Set(ids.filter(x => !this.has(x)));
-            if (!missingIds.size) {
-                return $q.resolve();
-            }
-            return this.resource.buildQuery()
-                .in(this.resource.idProperty, Array.from(missingIds))
-                .query().then(items => {
-                    items.forEach(item => this.set(item.getOriginalId(), item));
-                });
-        }
-    }
 
     class RestResource {
         constructor(properties) {
@@ -438,13 +378,13 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
         }
 
         /**
-         * @returns {Cache}
+         * @returns {ResourceCache}
          */
         static getCache() {
             if (this[cacheProperty]) {
                 return this[cacheProperty];
             }
-            return (this[cacheProperty] = new Cache(this));
+            return (this[cacheProperty] = new ResourceCache(this));
         }
     }
     

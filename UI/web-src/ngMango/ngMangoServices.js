@@ -66,6 +66,7 @@ import themingProvider from './services/Theming';
 import systemPermissionFactory from './services/SystemPermission';
 import permissionFactory from './services/Permission';
 import eventBusFactory from './services/eventBus';
+import resourceCacheFactory from './services/ResourceCache';
 import angular from 'angular';
 import rqlQuery from 'rql/query';
 import 'angular-resource';
@@ -150,6 +151,7 @@ ngMangoServices.provider('maTheming', themingProvider);
 ngMangoServices.factory('maSystemPermission', systemPermissionFactory);
 ngMangoServices.factory('maPermission', permissionFactory);
 ngMangoServices.factory('maEventBus', eventBusFactory);
+ngMangoServices.factory('maResourceCache', resourceCacheFactory);
 
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUTS', {
