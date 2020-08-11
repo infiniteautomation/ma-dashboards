@@ -66,8 +66,7 @@ class TreeViewItemController {
         }, error => {
             this.loadError = error && (error.mangoStatusText || error.localizedMessage) || ('' + error);
         }, progressChildren => {
-            // TODO where is this used?
-            debugger;
+            // TODO where is this used? BACNet?
             if (Array.isArray(progressChildren) && this.loadCount === count) {
                 this.updateChildren(progressChildren);
                 showResults();
