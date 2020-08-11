@@ -1,12 +1,12 @@
 <md-input-container class="ma-filter" md-no-float>
-    <input ng-model="$ctrl.filter" ng-model-options="{debounce: 500}" ng-change="$ctrl.filterRoles()" ma-tr="roles.filter">
-    <md-button ng-show="$ctrl.filter" class="ma-input-button md-icon-button" ng-click="$ctrl.filter = null; $ctrl.filterRoles()">
+    <input ng-model="$ctrl.filter" ng-model-options="{debounce: 500}" ng-change="$ctrl.reload = {}" ma-tr="roles.filter">
+    <md-button ng-show="$ctrl.filter" class="ma-input-button md-icon-button" ng-click="$ctrl.filter = null; $ctrl.reload = {}">
         <md-icon>clear</md-icon>
     </md-button>
 </md-input-container>
 
-<ma-tree-view items="$ctrl.rolesPromise" item-id="$item.xid" item-children="$ctrl.loadInherited($item, $limit, $offset)"
-              item-has-children="$item.inherited.length"><!-- no space
+<ma-tree-view reload="$ctrl.reload" load-children="$ctrl.loadRoles($isRoot, $item, $limit, $offset)"
+              has-children="$isRoot || !!$item.inherited.length"><!-- no space
  --><md-button class="ma-role-selector-row" ng-click="$ctrl.labelClicked($event, $item)"
                ng-class="{'ma-selected': $ctrl.selected.has($item.xid)}"
                ng-disabled="$ctrl.disabled || $ctrl.disabledOptionsMap[$item.xid]"><!-- no space

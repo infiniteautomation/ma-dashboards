@@ -18,7 +18,6 @@ class RoleSelectorController {
     
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        this.filterRoles();
     }
 
     $onChanges(changes) {
@@ -62,29 +61,26 @@ class RoleSelectorController {
         }
     }
 
-    loadInherited(role, limit, offset = 0) {
-        const queryBuilder = this.maRole.buildQuery()
-            .eq('inheritedBy', role.xid)
-            .sort('name');
+    loadRoles(isRoot, role, limit, offset = 0) {
+        const builder = this.maRole.buildQuery();
+
+        if (isRoot) {
+            if (this.filter) {
+                builder.match('name', `*${this.filter}*`);
+            } else {
+                builder.eq('inheritedBy', null);
+            }
+        } else {
+            builder.eq('inheritedBy', role.xid);
+        }
+
+        builder.sort('name');
 
         if (Number.isFinite(limit)) {
-            queryBuilder.limit(limit, offset)
+            builder.limit(limit, offset)
         }
 
-        return queryBuilder.query();
-    }
-
-    filterRoles() {
-        const builder = this.maRole.buildQuery();
-        
-        if (this.filter) {
-            builder.match('name', `*${this.filter}*`);
-        } else {
-            builder.eq('inheritedBy', null);
-        }
-        
-        this.rolesPromise = builder.sort('name')
-            .query();
+        return builder.query();
     }
 
     labelClicked(event, item) {

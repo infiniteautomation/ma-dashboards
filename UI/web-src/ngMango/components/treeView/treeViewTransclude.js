@@ -1,5 +1,5 @@
 /**
- * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2020 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -8,20 +8,27 @@ function treeViewTransclude() {
     return {
         restrict: 'A',
         scope: false,
-        link: function($scope, $element, $attrs, maTreeViewCtrl) {
-            const context = $scope.itemContext;
-            maTreeViewCtrl.$transclude(($el, $trScope) => {
-                $scope.$on('$destroy', () => $trScope.$destroy());
+        link: function($scope, $element, $attrs, {treeView, treeViewItem}) {
+            // create a transclude scope from the maTreeView's parent scope
+            const outsideScope = treeView.$scope.$parent;
+            const trScope = outsideScope.$new(false, $scope);
 
-                $trScope.$context = context;
-                $trScope.$item = context.item;
-                $trScope.$depth = context.depth;
-                $trScope.$hasChildren = context.hasChildren;
-
-                $element.append($el);
-            });
+            treeView.$transclude(trScope, (clone, scope) => {
+                scope.$treeCtrl = treeViewItem;
+                Object.defineProperties(scope, {
+                    $expanded: {get: () => treeViewItem.expanded},
+                    $item: {get: () => treeViewItem.item},
+                    $parentItem: {get: () => treeViewItem.parent && treeViewItem.parent.item},
+                    $depth: {get: () => treeViewItem.depth},
+                    $hasChildren: {get: () => treeViewItem.hasChildren}
+                });
+                $element.append(clone);
+            }, $element);
         },
-        require: '^maTreeView'
+        require: {
+            treeView: '^^maTreeView',
+            treeViewItem: '^^maTreeViewItem'
+        }
     };
 }
 

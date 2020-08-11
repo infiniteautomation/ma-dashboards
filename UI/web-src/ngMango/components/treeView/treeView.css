@@ -1,42 +1,46 @@
-ma-tree-view {
+ma-tree-view,
+ma-tree-view-item {
     display: block;
 }
 
-ma-tree-view ul li {
-	list-style: none;
-	margin-left: 0;
-}
-
-ma-tree-view ul li > span:focus {
-	outline: none;
-}
-
-ma-tree-view ul ul li {
+ma-tree-view.ma-show-root-label ma-tree-view-item .ma-tree-view-children {
 	margin-left: 30px;
 }
 
-ma-tree-view md-checkbox {
+ma-tree-view-item .ma-tree-view-children .ma-tree-view-children {
+	margin-left: 30px;
+}
+
+ma-tree-view-item md-checkbox {
 	margin: 4px 0;
 }
 
-ma-tree-view .ma-tree-view-open-icon {
+ma-tree-view-item .ma-tree-view-open-icon {
 	transition: transform 0.3s ease-in-out;
     user-select: none;
 }
 
-ma-tree-view li.ma-tree-view-open > span > .ma-tree-view-open-icon {
-  transform: rotate(-180deg);
+ma-tree-view-item.ma-tree-view-open > .ma-tree-view-label .ma-tree-view-open-icon {
+	transform: rotate(-180deg);
 }
 
-ma-tree-view li.ma-tree-view-loading,
-ma-tree-view li.ma-tree-view-load-more {
+ma-tree-view-item .ma-tree-view-loading,
+ma-tree-view-item .ma-tree-view-load-more {
 	font-style: italic;
 }
 
-ma-tree-view li.ma-tree-view-load-more:focus {
-	outline: none;
+ma-tree-view-item .ma-tree-view-label {
+	display: inline-block;
 }
 
-ma-tree-view .ma-tree-view-parent {
-	display: inline-block;
+ma-tree-view-item .ma-tree-view-label md-checkbox {
+	margin: 0 8px 0 2px;
+}
+
+ma-tree-view-item .ma-tree-view-label md-checkbox .md-label {
+	margin: 0;
+}
+
+ma-tree-view-item .ma-tree-view-item {
+	margin: 4px 0;
 }

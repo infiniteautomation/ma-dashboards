@@ -155,6 +155,7 @@ import eventDetectorSelect from './components/eventDetectorSelect/eventDetectorS
 import eventDetectorLayout from './components/eventDetectorLayout/eventDetectorLayout';
 import durationEditor from './components/durationEditor/durationEditor';
 import treeView from './components/treeView/treeView';
+import treeViewItem from './components/treeView/treeViewItem';
 import treeViewTransclude from './components/treeView/treeViewTransclude';
 import purgePointValues from './components/purgePointValues/purgePointValues';
 import serialPortSelect from './components/serialPortSelect/serialPortSelect';
@@ -373,6 +374,7 @@ ngMango.component('maEventDetectorSelect', eventDetectorSelect);
 ngMango.component('maEventDetectorLayout', eventDetectorLayout);
 ngMango.component('maDurationEditor', durationEditor);
 ngMango.component('maTreeView', treeView);
+ngMango.component('maTreeViewItem', treeViewItem);
 ngMango.component('maPurgePointValues', purgePointValues);
 ngMango.component('maSerialPortSelect', serialPortSelect);
 ngMango.component('maHeatMap', heatMap);
