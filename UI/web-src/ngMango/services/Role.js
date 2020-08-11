@@ -23,7 +23,11 @@ function roleFactory(RestResource, RqlBuilder) {
             return xidPrefix;
         }
     }
-    
+
+    Object.assign(Role.notificationManager, {
+        supportsSubscribe: true
+    });
+
     return Role;
 }
 
