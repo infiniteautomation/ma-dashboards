@@ -7,16 +7,16 @@
     <md-icon class="ma-tree-view-open-icon">keyboard_arrow_down</md-icon>
 </span>
 <div class="ma-tree-view-children" role="list" ng-if="$ctrl.expanded">
-    <div ng-if="!$ctrl.childrenPromise && !$ctrl.loadError && !$ctrl.children.length" class="ma-tree-view-no-items">
+    <div ng-if="!$ctrl.loading && !$ctrl.loadError && !$ctrl.children.length" class="ma-tree-view-no-items">
         <em ma-tr="ui.components.noItemsToList"></em>
     </div>
-    <div ng-if="!$ctrl.childrenPromise && $ctrl.loadError" class="ma-tree-view-load-error ma-error-text">
+    <div ng-if="!$ctrl.loading && $ctrl.loadError" class="ma-tree-view-load-error ma-error-text">
         <em ma-tr="ui.components.errorLoadingChildren" ma-tr-args="[$ctrl.loadError]"></em>
     </div>
     <div ng-repeat="item in $ctrl.children track by $ctrl.id(item)" class="ma-tree-view-item" role="listitem">
         <ma-tree-view-item item="item" depth="$ctrl.depth + 1"></ma-tree-view-item>
     </div>
-    <div ng-if="$ctrl.loading" class="ma-tree-view-loading" ma-tr="ui.components.loadingItems"></div>
+    <div ng-if="$ctrl.showLoading" class="ma-tree-view-loading" ma-tr="ui.components.loadingItems"></div>
     <div ng-if="$ctrl.limited" class="ma-tree-view-load-more" ng-click="$ctrl.loadChildren()"
         ma-tr="ui.components.loadMore" ma-tr-args="[$ctrl.total - $ctrl.children.length]"></div>
 </div>

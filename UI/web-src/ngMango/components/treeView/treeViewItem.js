@@ -4,6 +4,7 @@
  */
 
 import treeViewItemTemplate from './treeViewItem.html';
+const CANCELLED = Symbol('cancelled');
 
 class TreeViewItemController {
     static get $$ngIsClass() { return true; }
@@ -16,7 +17,6 @@ class TreeViewItemController {
         this.$timeout = $timeout;
 
         this.expanded = false;
-        this.loadCount = 0; // TODO remove
         this.offset = 0;
         this.children = [];
     }
@@ -37,43 +37,49 @@ class TreeViewItemController {
 
     loadChildren() {
         delete this.limited;
-        const children = this.treeViewCtrl.children(this.item, this.depth, this.offset);
-        const loadingDelay = this.$timeout(() => this.loading = true, 200);
-        const count = ++this.loadCount;
+        this.$timeout.cancel(this.showLoadingDelay);
+        this.showLoadingDelay = this.$timeout(() => this.showLoading = true, 200);
 
-        const showResults = () => {
-            this.$timeout.cancel(loadingDelay);
-            if (this.loadCount === count) {
-                delete this.childrenPromise;
-                delete this.loading;
-            }
-        };
+        if (this.loading) {
+            this.loading.reject(CANCELLED);
+        }
 
-        this.childrenPromise = this.$q.when(children).then(resolvedChildren => {
-            if (this.loadCount === count) {
-                if (Array.isArray(resolvedChildren)) {
-                    this.updateChildren(resolvedChildren);
+        this.loading = this.$q.defer();
+        const childrenPromise = this.treeViewCtrl.children(this.item, this.depth, this.offset);
+        this.$q.when(childrenPromise).then(this.loading.resolve, this.loading.reject);
 
-                    if (Number.isFinite(resolvedChildren.$total)) {
-                        this.total = resolvedChildren.$total;
-                        this.offset += resolvedChildren.length;
-                        this.limited = this.total > this.children.length;
-                    }
-                } else {
-                    this.removeChildren();
+        this.loading.promise.then(children => {
+            if (Array.isArray(children)) {
+                this.updateChildren(children);
+
+                if (Number.isFinite(children.$total)) {
+                    this.total = children.$total;
+                    this.offset += children.length;
+                    this.limited = this.total > this.children.length;
                 }
+            } else {
+                this.removeChildren();
             }
+            this.showResult();
         }, error => {
-            this.loadError = error && (error.mangoStatusText || error.localizedMessage) || ('' + error);
-        }, progressChildren => {
-            // TODO where is this used? BACNet?
-            if (Array.isArray(progressChildren) && this.loadCount === count) {
-                this.updateChildren(progressChildren);
-                showResults();
+            console.log(error);
+            if (error !== CANCELLED) {
+                this.loadError = error && (error.mangoStatusText || error.localizedMessage) || ('' + error);
+                this.showResult();
+            }
+        }, children => {
+            // progress callback, used by BACnet WHOIS
+            if (Array.isArray(children)) {
+                this.updateChildren(children);
+                this.showResult();
             }
         });
+    }
 
-        this.childrenPromise.finally(showResults);
+    showResult() {
+        this.$timeout.cancel(this.showLoadingDelay);
+        delete this.loading;
+        delete this.showLoading;
     }
 
     updateChildren(updated) {
