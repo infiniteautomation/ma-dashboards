@@ -34,7 +34,7 @@ class TreeViewItemController {
         }
     }
 
-    loadChildren() {
+    loadChildren(loadMore = false) {
         delete this.loadError;
         delete this.showLoading;
         this.loading = true;
@@ -46,7 +46,7 @@ class TreeViewItemController {
         }
 
         this.deferred = this.$q.defer();
-        const childrenPromise = this.treeViewCtrl.children(this.item, this.depth, this.children);
+        const childrenPromise = this.treeViewCtrl.children(this.item, this.depth, this.children, loadMore);
         this.$q.when(childrenPromise).then(this.deferred.resolve, this.deferred.reject);
 
         this.deferred.promise.then(children => {

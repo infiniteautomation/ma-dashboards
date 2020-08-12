@@ -45,9 +45,10 @@ class TreeViewController {
         return Array.isArray(item.children) && item.children.length;
     }
 
-    children(item, depth, existingChildren) {
+    children(item, depth, existingChildren, loadMore) {
         if (typeof this.itemChildren === 'function') {
-            return this.itemChildren({$item: item, $depth: depth, $isRoot: item instanceof RootItem, $existing: existingChildren});
+            return this.itemChildren({$item: item, $depth: depth, $isRoot: item instanceof RootItem,
+                $existing: existingChildren, $loadMore: loadMore});
         } else {
             return item.children;
         }
