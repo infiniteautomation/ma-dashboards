@@ -256,6 +256,14 @@ function eventTypeProvider() {
                 }, limit, offset);
             }
 
+            loadMoreChildren(existing, limit = 100) {
+                return this.loadChildren(limit, existing.length).then(results => {
+                    existing.push(...results);
+                    existing.$total = results.$total;
+                    return existing;
+                });
+            }
+
             getSource() {
                 return this.type.reference2 || this.type.reference1;
             }

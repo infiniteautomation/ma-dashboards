@@ -1,6 +1,6 @@
 <ma-tree-view reload="$ctrl.typesPromise"
               item-id="$item.typeId"
-              load-children="$isRoot ? $ctrl.typesPromise : $item.loadChildren($limit, $offset)"
+              load-children="$isRoot ? $ctrl.typesPromise : $item.loadMoreChildren($existing, 100)"
               has-children="$isRoot || $item.hasChildren()"
               expanded="$isRoot || $ctrl.hasSelectedCount($item.type)"><!-- no space
  --><md-checkbox ng-if="$item.handleable()" ng-click="$event.stopPropagation()" ng-disabled="$parentItem && $parentItem.type && $ctrl.selected.has($parentItem.type)"

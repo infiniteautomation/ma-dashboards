@@ -18,7 +18,6 @@ class TreeViewController {
         // used in maTreeViewItemTransclude
         this.$transclude = $transclude;
 
-        this.limit = 100;
         this.showRootLabel = false;
         this.rootItem = new RootItem();
     }
@@ -46,9 +45,9 @@ class TreeViewController {
         return Array.isArray(item.children) && item.children.length;
     }
 
-    children(item, depth, offset = 0) {
+    children(item, depth, existingChildren) {
         if (typeof this.itemChildren === 'function') {
-            return this.itemChildren({$item: item, $depth: depth, $limit: this.limit, $offset: offset, $isRoot: item instanceof RootItem});
+            return this.itemChildren({$item: item, $depth: depth, $isRoot: item instanceof RootItem, $existing: existingChildren});
         } else {
             return item.children;
         }
@@ -67,7 +66,6 @@ export default {
     template: treeViewTemplate,
     controller: TreeViewController,
     bindings: {
-        limit: '<?',
         showRootLabel: '<?',
         reload: '<?',
         itemId: '&?',

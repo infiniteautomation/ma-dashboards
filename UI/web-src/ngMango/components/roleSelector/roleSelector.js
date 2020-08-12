@@ -8,11 +8,13 @@ import './roleSelector.css';
 
 class RoleSelectorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maRole', '$element']; }
+    static get $inject() { return ['$scope', '$element', 'maRole']; }
     
-    constructor(maRole, $element) {
-        this.maRole = maRole;
+    constructor($scope, $element, maRole) {
+        this.$scope = $scope;
         this.$element = $element;
+        this.maRole = maRole;
+
         this.selected = new Map();
     }
     
@@ -61,7 +63,7 @@ class RoleSelectorController {
         }
     }
 
-    loadRoles(isRoot, role, limit, offset = 0) {
+    loadRoles(isRoot, role, existing) {
         const builder = this.maRole.buildQuery();
 
         if (isRoot) {
@@ -74,13 +76,14 @@ class RoleSelectorController {
             builder.eq('inheritedBy', role.xid);
         }
 
-        builder.sort('name');
+        builder.sort('name')
+            .limit(100, existing.length);
 
-        if (Number.isFinite(limit)) {
-            builder.limit(limit, offset)
-        }
-
-        return builder.query();
+        return builder.query().then(roles => {
+            existing.push(...roles);
+            existing.$total = roles.$total;
+            return existing;
+        });
     }
 
     labelClicked(event, item) {
