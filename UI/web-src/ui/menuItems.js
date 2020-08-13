@@ -928,7 +928,7 @@ export default [
         },
         template: '<ma-ui-permissions-page flex="noshrink" layout="column"></ma-ui-permissions-page>',
         url: '/permissions',
-        menuTr: 'systemSettings.systemPermissions',
+        menuTr: 'header.systemPermissions',
         menuIcon: 'supervised_user_circle',
         resolve: {
             loadMyDirectives: ['$injector', function($injector) {

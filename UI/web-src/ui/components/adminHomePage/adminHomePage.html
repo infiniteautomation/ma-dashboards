@@ -244,9 +244,8 @@
                     </div>
                 </md-button>
                 <md-card-content layout="column" layout-align="center stretch">
-                    <!-- TODO: missing roles and permisions -->
-                    <md-button class="ma-redirect md-raised md-primary" layout="row">
-                        <div ma-tr="ui.adminHome.rolesPermisions" flex></div>
+                    <md-button class="ma-redirect md-raised md-primary" layout="row" ui-sref="ui.settings.permissions">
+                        <div ma-tr="header.systemPermissions" flex></div>
                         <md-icon>subdirectory_arrow_right</md-icon>
                     </md-button>
                     <md-button class="ma-redirect md-raised md-primary" layout="row" ui-sref="ui.settings.autoLoginSettings">
