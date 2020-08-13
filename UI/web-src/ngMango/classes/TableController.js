@@ -306,7 +306,8 @@ class TableController {
 
     createQueryBuilder() {
         const queryBuilder = this.resourceService.buildQuery();
-        
+
+        this.customizeQuery(queryBuilder);
         this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
         
         const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
@@ -321,6 +322,13 @@ class TableController {
         }
         
         return queryBuilder;
+    }
+
+    /**
+     * Allows subclasses to customize the query
+     * @param queryBuilder
+     */
+    customizeQuery(queryBuilder) {
     }
 
     getPage(startIndex = 0, evictCache = true) {

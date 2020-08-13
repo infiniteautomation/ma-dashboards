@@ -45,6 +45,22 @@ class UserTableController extends TableController {
             defaultSort: [{columnName: 'username'}]
         });
     }
+
+    $onChanges(changes) {
+        super.$onChanges(changes);
+
+        if (changes.roles && !changes.roles.isFirstChange()) {
+            this.markCacheAsStale();
+        }
+    }
+
+    customizeQuery(queryBuilder) {
+        if (Array.isArray(this.roles)) {
+            for (const role of this.roles) {
+                queryBuilder.contains('inheritedRoles', role);
+            }
+        }
+    }
 }
 
 export default {
@@ -60,6 +76,7 @@ export default {
         showActions: '<?',
         dateFormat: '@?',
         rowClicked: '&?',
-        onCopy: '&?'
+        onCopy: '&?',
+        roles: '<?'
     }
 };
