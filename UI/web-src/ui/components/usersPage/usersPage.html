@@ -31,8 +31,10 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <ma-user-table flex ng-model="$ctrl.selectedUsers" select-multiple="true" show-actions="true" on-copy="$ctrl.editUser($user)"
-                           row-clicked="$ctrl.rowClicked($event, $item, $index, $tableCtrl)"></ma-user-table>
+        <ma-user-table flex ng-model="$ctrl.selectedUsers"
+                       ng-if="$ctrl.selectedRole" roles="[$ctrl.selectedRole.xid]"
+                       select-multiple="true" show-actions="true" on-copy="$ctrl.editUser($user)"
+                       row-clicked="$ctrl.rowClicked($event, $item, $index, $tableCtrl)"></ma-user-table>
     </md-card>
 </div>
 
