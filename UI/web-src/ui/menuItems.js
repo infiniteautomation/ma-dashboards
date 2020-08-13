@@ -945,7 +945,7 @@ export default [
         url: '/permissions',
         name: 'ui.help.permissions',
         templatePromise: helpTemplate('permissions.html'),
-        menuTr: 'systemSettings.systemPermissions'
+        menuTr: 'header.systemPermissions'
     },
     {
         name: 'ui.settings.systemStatus',
