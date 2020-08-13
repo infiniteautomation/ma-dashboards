@@ -5,7 +5,7 @@
     </md-button>
 </md-input-container>
 
-<ma-tree-view reload="$ctrl.reload" load-children="$ctrl.loadRoles($isRoot, $item, $existing)"
+<ma-tree-view reload="$ctrl.reload" load-children="$ctrl.loadRoles($isRoot, $item, $loadMore)"
               has-children="$isRoot || !!$item.inherited.length"><!-- no space
  --><md-button class="ma-role-selector-row" ng-click="$ctrl.labelClicked($event, $item)"
                ng-class="{'ma-selected': $ctrl.selected.has($item.xid)}"
