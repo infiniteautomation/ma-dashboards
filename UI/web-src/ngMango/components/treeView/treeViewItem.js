@@ -27,10 +27,25 @@ class TreeViewItemController {
     $onChanges(changes) {
         if (changes.item) {
             this.children = [];
-            this.hasChildren = this.treeViewCtrl.hasChildren(this.item, this.depth);
-            this.$element.toggleClass('ma-tree-view-has-children', this.hasChildren);
+            this.updateHasChildren();
             this.expanded = this.hasChildren && this.treeViewCtrl.expanded(this.item, this.depth, this.expanded);
             this.expandedChanged();
+        }
+    }
+
+    $doCheck() {
+        this.updateHasChildren();
+    }
+
+    updateHasChildren() {
+        const hasChildren = this.treeViewCtrl.hasChildren(this.item, this.depth);
+        if (hasChildren !== this.hasChildren) {
+            if (!hasChildren) {
+                this.expanded = false;
+                this.expandedChanged();
+            }
+            this.hasChildren = hasChildren;
+            this.$element.toggleClass('ma-tree-view-has-children', this.hasChildren);
         }
     }
 
