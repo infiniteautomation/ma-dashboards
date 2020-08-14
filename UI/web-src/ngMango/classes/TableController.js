@@ -554,6 +554,9 @@ class TableController {
      * md-virtual-repeat with md-on-demand interface
      */
     getItemAtIndex(index) {
+        if (this.pages.$total != null && index > this.pages.$total - 1) {
+            return null;
+        }
         const startIndex = index - index % this.pageSize;
         const page = this.pages.get(startIndex);
         
