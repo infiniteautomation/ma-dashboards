@@ -222,10 +222,10 @@ class RoleSelectorController {
             if (this.filter) {
                 builder.match('name', `*${this.filter}*`);
             } else {
-                builder.contains('inherited', null);
+                builder.contains('inheritedBy', null);
             }
         } else {
-            builder.contains('inherited', role.xid);
+            builder.contains('inheritedBy', role.xid);
         }
 
         builder.sort('name')
@@ -251,7 +251,7 @@ class RoleSelectorController {
         const inherited = this.inherited.get(role);
         if (inherited) {
             const builder = this.maRole.buildQuery()
-                .contains('inherited', role.xid || null)
+                .contains('inheritedBy', role.xid || null)
                 .sort('name')
                 .limit(this.limit);
 
