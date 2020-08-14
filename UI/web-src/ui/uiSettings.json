@@ -237,7 +237,9 @@
     "xhr": 30000,
     "websocket": 10000,
     "websocketRequest": 10000,
-    "pointValues": 60000
+    "pointValues": 60000,
+    "watchdogStatusDelay": 30000,
+    "moduleUpload": 300000
   },
   "pwaManifest": {
     "name": "Mango",

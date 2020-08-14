@@ -274,6 +274,16 @@
                     <input ng-model="$ctrl.data.timeouts.websocketRequest" type="number" min="0" step="1"
                         ma-format-value="$Math.floor($value / 1000)" ma-parse-value="$value * 1000">
                 </md-input-container>
+                <md-input-container flex="100" flex-gt-md="50">
+                    <label ma-tr="ui.app.timeouts.moduleUpload"></label>
+                    <input ng-model="$ctrl.data.timeouts.moduleUpload" type="number" min="0" step="1"
+                           ma-format-value="$Math.floor($value / 1000)" ma-parse-value="$value * 1000">
+                </md-input-container>
+                <md-input-container flex="100" flex-gt-md="50">
+                    <label ma-tr="ui.app.timeouts.watchdogStatusDelay"></label>
+                    <input ng-model="$ctrl.data.timeouts.watchdogStatusDelay" type="number" min="0" step="1"
+                           ma-format-value="$Math.floor($value / 1000)" ma-parse-value="$value * 1000">
+                </md-input-container>
             </div>
         </md-card-content>
     </md-card>
