@@ -4,8 +4,10 @@
  */
 import angular from 'angular';
 
-ModulesFactory.$inject = ['$http', '$q', 'maServer', 'maNotificationManager', 'maSystemStatus', '$rootScope', '$interval', '$timeout'];
-function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus, $rootScope, $interval, $timeout) {
+ModulesFactory.$inject = ['$http', '$q', 'maServer', 'maNotificationManager', 'maSystemStatus', '$rootScope',
+    '$interval', '$timeout', 'MA_TIMEOUTS'];
+function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus, $rootScope,
+                        $interval, $timeout, MA_TIMEOUTS) {
     const modulesUrl = '/rest/latest/modules';
     const availableUpgradesMonitorId = 'com.serotonin.m2m2.rt.maint.UpgradeCheck.COUNT';
     let availableUpgrades = null;
@@ -134,7 +136,7 @@ function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus
     
     Modules.zipMimeTypes = ['application/zip', 'application/x-zip-compressed'];
 
-    Modules.uploadZipFiles = function(files, restart = false) {
+    Modules.uploadZipFiles = function(files, restart = false, timeout = MA_TIMEOUTS.moduleUpload) {
         return $q.resolve().then(() => {
             const formData = new FormData();
             
@@ -152,7 +154,8 @@ function ModulesFactory($http, $q, maServer, NotificationManager, maSystemStatus
                 },
                 params: {
                     restart
-                }
+                },
+                timeout
             }).then(response => response.data);
         });
     };

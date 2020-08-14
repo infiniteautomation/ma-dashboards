@@ -160,7 +160,8 @@ ngMangoServices.constant('MA_TIMEOUTS', {
     websocket: 10000, // WebSocket connection timeout
     websocketRequest: 10000, // request made over WebSocket
     pointValues: 60000, // timeout for fetching points values
-    watchdogStatusDelay: 30000 // delay between status checks when the API is down
+    watchdogStatusDelay: 30000, // delay between status checks when the API is down
+    moduleUpload: 300000 // timeout for uploading modules on the offline upgrades page
 });
 
 // These are Moment.js format strings https://momentjs.com/docs/#/displaying/format/
