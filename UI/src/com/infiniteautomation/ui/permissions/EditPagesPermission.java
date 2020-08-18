@@ -26,9 +26,9 @@ public class EditPagesPermission extends PermissionDefinition {
     }
 
     @Override
-    public void update(MangoPermission permission) throws ValidationException {
-        super.update(permission);
-        // TODO update JSONDataVO editPermission
+    public void setPermission(MangoPermission permission) throws ValidationException {
+        super.setPermission(permission);
+        // TODO Mango 4.0 update JSONDataVO editPermission
     }
 
 }
