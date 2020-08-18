@@ -50,7 +50,7 @@ public class UILifecycle extends ModuleElementDefinition {
             menu = new JsonDataVO();
             menu.setXid(MA_UI_MENU_XID);
             menu.setName("UI Menu");
-            menu.setReadPermission(MangoPermission.createOrSet(PermissionHolder.USER_ROLE));
+            menu.setReadPermission(MangoPermission.requireAnyRole(PermissionHolder.USER_ROLE));
             isNew = true;
         }
 
@@ -74,7 +74,7 @@ public class UILifecycle extends ModuleElementDefinition {
             pages = new JsonDataVO();
             pages.setXid(MA_UI_PAGES_XID);
             pages.setName("UI Pages");
-            pages.setReadPermission(MangoPermission.createOrSet(PermissionHolder.USER_ROLE));
+            pages.setReadPermission(MangoPermission.requireAnyRole(PermissionHolder.USER_ROLE));
             isNew = true;
         }
 
@@ -98,7 +98,7 @@ public class UILifecycle extends ModuleElementDefinition {
             settings = new JsonDataVO();
             settings.setXid(MA_UI_SETTINGS_XID);
             settings.setName("UI Settings");
-            settings.setReadPermission(MangoPermission.createOrSet(PermissionHolder.ANONYMOUS_ROLE));
+            settings.setReadPermission(MangoPermission.requireAnyRole(PermissionHolder.ANONYMOUS_ROLE));
             isNew = true;
         }
 
