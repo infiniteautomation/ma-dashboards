@@ -45,8 +45,7 @@ public class EditMenusPermission extends PermissionDefinition {
     }
 
     @Override
-    public void postDatabase(Version previousVersion, Version current) {
-        super.postDatabase(previousVersion, current);
+    public void postEventManager(Version previousVersion, Version current) {
         jsonDataDao.doInTransaction(txStatus -> {
             installMenuData();
         });
