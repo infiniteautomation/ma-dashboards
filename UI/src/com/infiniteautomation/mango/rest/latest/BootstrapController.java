@@ -3,22 +3,6 @@
  */
 package com.infiniteautomation.mango.rest.latest;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.TimeZone;
-
-import javax.servlet.ServletContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.env.Environment;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -29,7 +13,7 @@ import com.infiniteautomation.mango.rest.latest.model.modules.AngularJSModuleDef
 import com.infiniteautomation.mango.rest.latest.model.user.UserModel;
 import com.infiniteautomation.mango.spring.MangoRuntimeContextConfiguration;
 import com.infiniteautomation.mango.spring.components.PublicUrlService;
-import com.infiniteautomation.ui.UILifecycle;
+import com.infiniteautomation.ui.UICommon;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.ICoreLicense;
 import com.serotonin.m2m2.db.dao.JsonDataDao;
@@ -39,9 +23,22 @@ import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.vo.User;
 import com.serotonin.m2m2.vo.json.JsonDataVO;
 import com.serotonin.provider.Providers;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.env.Environment;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.TimeZone;
 
 /**
  * Returns a conglomeration of data for use in the UI module AngularJS application bootstrap process.
@@ -90,7 +87,7 @@ public class BootstrapController {
             uiSettings = (ObjectNode) objectMapper.readTree(in);
         }
 
-        JsonDataVO uiSettingsVo = this.jsonDataDao.getByXid(UILifecycle.MA_UI_SETTINGS_XID);
+        JsonDataVO uiSettingsVo = this.jsonDataDao.getByXid(UICommon.MA_UI_SETTINGS_XID);
         if (uiSettingsVo != null) {
             Object uiSettingsData = uiSettingsVo.getJsonData();
             if (uiSettingsData instanceof ObjectNode) {
@@ -143,7 +140,7 @@ public class BootstrapController {
         boolean devEnabled = env.getProperty("development.enabled", Boolean.class, false);
         data.setAngularJsModules(ModulesRestController.getAngularJSModules(devEnabled));
 
-        JsonDataVO uiSettings = this.jsonDataDao.getByXid(UILifecycle.MA_UI_SETTINGS_XID);
+        JsonDataVO uiSettings = this.jsonDataDao.getByXid(UICommon.MA_UI_SETTINGS_XID);
         if (uiSettings != null) {
             data.setUiSettings(new JsonDataModel(uiSettings));
         }
@@ -183,8 +180,8 @@ public class BootstrapController {
         data.setCoreVersion(Common.getVersion().toString());
         data.setCoreLicenseType(ModuleRegistry.getModule(ModuleRegistry.CORE_MODULE_NAME).getLicenseType());
 
-        JsonDataVO menuData = this.jsonDataDao.getByXid(UILifecycle.MA_UI_MENU_XID);
-        JsonDataVO pageData = this.jsonDataDao.getByXid(UILifecycle.MA_UI_PAGES_XID);
+        JsonDataVO menuData = this.jsonDataDao.getByXid(UICommon.MA_UI_MENU_XID);
+        JsonDataVO pageData = this.jsonDataDao.getByXid(UICommon.MA_UI_PAGES_XID);
 
         if (menuData != null) {
             data.setMenu(new JsonDataModel(menuData));

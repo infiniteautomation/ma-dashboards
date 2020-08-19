@@ -3,17 +3,27 @@
  */
 package com.infiniteautomation.ui.permissions;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.zafarkhaja.semver.Version;
 import com.infiniteautomation.mango.permission.MangoPermission;
 import com.infiniteautomation.mango.util.exception.ValidationException;
+import com.infiniteautomation.ui.UICommon;
+import com.serotonin.m2m2.db.dao.JsonDataDao;
 import com.serotonin.m2m2.i18n.TranslatableMessage;
 import com.serotonin.m2m2.module.PermissionDefinition;
+import com.serotonin.m2m2.vo.json.JsonDataVO;
+import com.serotonin.m2m2.vo.permission.PermissionHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Jared Wiltshire
  */
 public class EditPagesPermission extends PermissionDefinition {
-
     public static final String PERMISSION = "ui.pages.edit";
+
+    @Autowired
+    JsonDataDao jsonDataDao;
 
     @Override
     public TranslatableMessage getDescription() {
@@ -28,7 +38,43 @@ public class EditPagesPermission extends PermissionDefinition {
     @Override
     public void setPermission(MangoPermission permission) throws ValidationException {
         super.setPermission(permission);
-        // TODO Mango 4.0 update JSONDataVO editPermission
+        jsonDataDao.doInTransaction(txStatus -> {
+            JsonDataVO jsonData = jsonDataDao.getByXid(UICommon.MA_UI_PAGES_XID);
+            jsonData.setEditPermission(this.permission);
+            jsonDataDao.update(jsonData.getId(), jsonData);
+        });
+    }
+
+    @Override
+    public void postDatabase(Version previousVersion, Version current) {
+        super.postDatabase(previousVersion, current);
+        jsonDataDao.doInTransaction(txStatus -> {
+            installPageData();
+        });
+    }
+
+    public void installPageData() {
+        JsonDataVO jsonData = jsonDataDao.getByXid(UICommon.MA_UI_PAGES_XID);
+        if (jsonData == null) {
+            jsonData = new JsonDataVO();
+            jsonData.setXid(UICommon.MA_UI_PAGES_XID);
+            jsonData.setName("UI Pages");
+            jsonData.setReadPermission(MangoPermission.requireAnyRole(PermissionHolder.USER_ROLE));
+        }
+        jsonData.setEditPermission(this.permission);
+
+        if (jsonData.getJsonData() == null) {
+            JsonNodeFactory nodeFactory = JsonNodeFactory.withExactBigDecimals(false);
+            ObjectNode object = nodeFactory.objectNode();
+            object.set("pages", nodeFactory.arrayNode());
+            jsonData.setJsonData(object);
+        }
+
+        if (jsonData.getId() > 0) {
+            jsonDataDao.update(jsonData.getId(), jsonData);
+        } else {
+            jsonDataDao.insert(jsonData);
+        }
     }
 
 }

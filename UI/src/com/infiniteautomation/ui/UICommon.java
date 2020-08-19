@@ -7,6 +7,8 @@ package com.infiniteautomation.ui;
  * @author Jared Wiltshire
  */
 public class UICommon {
+    private UICommon() {}
+
     public static final String UI_LOGIN_PAGE = "ui.login.page";
     public static final String UI_PASSWORD_RESET_PAGE = "ui.login.passwordReset";
     public static final String UI_FIRST_USER_LOGIN_PAGE = "ui.login.userFirstLogin.page";
@@ -26,4 +28,10 @@ public class UICommon {
     public static final String DEFAULT_UI_NOT_FOUND_PAGE = "/ui/not-found";
     public static final String DEFAULT_UI_ERROR_PAGE = "/ui/server-error";
     public static final String DEFAULT_UI_EMAIL_VERIFICATION_PAGE = "/ui/verify-email-token";
+
+
+    // must match variables defined in web/ui/app.js
+    public static final String MA_UI_PAGES_XID = "mangoUI-pages";
+    public static final String MA_UI_MENU_XID = "mangoUI-menu";
+    public static final String MA_UI_SETTINGS_XID = "mangoUI-settings";
 }
