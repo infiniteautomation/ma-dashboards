@@ -50,7 +50,7 @@ class UserTableController extends TableController {
         super.$onChanges(changes);
 
         if (changes.roles && !changes.roles.isFirstChange()) {
-            this.markCacheAsStale();
+            this.clearCache(false);
         }
     }
 

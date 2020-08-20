@@ -31,7 +31,10 @@ class UsersPageController {
             this.editUser(null);
         }
 
-        this.Role.get('user').then(userRole => this.selectedRole = userRole);
+        this.Role.get('user').then(userRole => {
+            this.selectedRole = userRole;
+            this.updateSelectedRoleXids();
+        });
     }
 
     addRole(event) {
@@ -107,6 +110,10 @@ class UsersPageController {
         } else {
             this.editUser(item);
         }
+    }
+
+    updateSelectedRoleXids() {
+        this.selectedRoleXids = [this.selectedRole.xid];
     }
 }
 

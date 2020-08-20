@@ -14,7 +14,7 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <ma-role-selector flex ng-model="$ctrl.selectedRole"></ma-role-selector>
+        <ma-role-selector flex ng-model="$ctrl.selectedRole" ng-change="$ctrl.updateSelectedRoleXids()"></ma-role-selector>
     </md-card>
     <md-card class="ma-users-page-users-card">
         <md-toolbar class="md-hue-3">
@@ -32,7 +32,7 @@
             </div>
         </md-toolbar>
         <ma-user-table flex ng-model="$ctrl.selectedUsers"
-                       ng-if="$ctrl.selectedRole" roles="[$ctrl.selectedRole.xid]"
+                       ng-if="$ctrl.selectedRole" roles="$ctrl.selectedRoleXids"
                        select-multiple="true" show-actions="true" on-copy="$ctrl.editUser($user)"
                        row-clicked="$ctrl.rowClicked($event, $item, $index, $tableCtrl)"></ma-user-table>
     </md-card>
