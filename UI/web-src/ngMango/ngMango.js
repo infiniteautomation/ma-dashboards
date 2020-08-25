@@ -479,7 +479,6 @@ ngMango.run([
 function($rootScope, mangoWatchdog, MA_ROLLUP_TYPES, MA_TIME_PERIOD_TYPES,
         MA_CHART_TYPES, MA_DATE_RANGE_PRESETS, User, $timeout) {
 
-    $rootScope.Math = Math;
     $rootScope.mangoWatchdog = mangoWatchdog;
     $rootScope.rollupTypes = MA_ROLLUP_TYPES;
     $rootScope.timePeriodTypes = MA_TIME_PERIOD_TYPES;

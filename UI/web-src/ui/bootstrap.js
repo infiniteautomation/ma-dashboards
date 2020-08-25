@@ -192,8 +192,8 @@ Promise.resolve().then(() => {
                 return beforeinstallpromptEvent;
             }
         });
-        
-        developmentConfig.enabled = !!preLoginData.devlopmentMode;
+
+        developmentConfig.enabled = !!preLoginData.developmentMode;
     }]);
 
     // promise resolves when DOM loaded

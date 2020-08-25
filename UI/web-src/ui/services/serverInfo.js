@@ -88,6 +88,7 @@ class ServerInfoProvider {
                 this.coreLicenseType = data.coreLicenseType;
                 this.guid = data.guid;
                 this.instanceDescription = data.instanceDescription;
+                this.coreShortVersion = data.coreNormalVersion.split('.').slice(0, -1).join('.');
 
                 // translations already loaded during config phase
                 if (!data.config) {

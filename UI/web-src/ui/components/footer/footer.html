@@ -1,6 +1,8 @@
-<div><span ng-if="::$ctrl.coreModule.normalVersion" ma-tr="ui.app.poweredBy" ma-tr-args="::[$ctrl.productName + ' v' + $ctrl.coreModule.normalVersion]"></span>
+<div><span ng-if="::$ctrl.maUiServerInfo.postLoginData.coreNormalVersion"
+           ma-tr="ui.app.poweredBy"
+           ma-tr-args="::[['ftl.htmlFooter.mango'], $ctrl.maUiServerInfo.postLoginData.coreNormalVersion]"></span>
   &copy;<span ng-bind="::$ctrl.year"></span>
-  <a ng-href="{{::$ctrl.coreModule.vendorUrl}}" target="_blank" ng-bind="::$ctrl.coreModule.vendor"></a>
+  <a ng-href="{{::$ctrl.maUiServerInfo.postLoginData.vendorUrl}}" target="_blank" ng-bind="::$ctrl.maUiServerInfo.postLoginData.vendor"></a>
 <span ma-tr="footer.rightsReserved"></span>.</div>
 <div flex></div>
-<em md-colors="::{color: 'warn'}" ng-if="::$ctrl.coreModule && !$ctrl.coreModule.licenseType" ma-tr="footer.coreUnlicenced"></em>
+<em md-colors="::{color: 'warn'}" ng-if="::$ctrl.maUiServerInfo.postLoginData && !$ctrl.maUiServerInfo.postLoginData.licenseType" ma-tr="footer.coreUnlicenced"></em>

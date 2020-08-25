@@ -19,6 +19,7 @@ import com.serotonin.m2m2.ICoreLicense;
 import com.serotonin.m2m2.db.dao.JsonDataDao;
 import com.serotonin.m2m2.db.dao.SystemSettingsDao;
 import com.serotonin.m2m2.module.DefaultPagesDefinition;
+import com.serotonin.m2m2.module.Module;
 import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.vo.User;
 import com.serotonin.m2m2.vo.json.JsonDataVO;
@@ -149,7 +150,7 @@ public class BootstrapController {
         data.setServerLocale(Common.getLocale().toLanguageTag());
         data.setLastUpgradeTime(Common.getLastUpgradeTime());
         data.setPublicRegistrationEnabled(systemSettingsDao.getBooleanValue(SystemSettingsDao.USERS_PUBLIC_REGISTRATION_ENABLED));
-        data.setDevlopmentMode(devEnabled);
+        data.setDevelopmentMode(devEnabled);
 
         if (user != null) {
             data.setUser(new UserModel(user));
@@ -173,12 +174,17 @@ public class BootstrapController {
     @RequestMapping(method = RequestMethod.GET, path = "/post-login")
     @PreAuthorize("isAuthenticated()")
     public PostLoginData postLogin(@AuthenticationPrincipal User user) {
-        PostLoginData data = new PostLoginData();
 
+        Module coreModule = ModuleRegistry.getModule(ModuleRegistry.CORE_MODULE_NAME);
+
+        PostLoginData data = new PostLoginData();
         data.setInstanceDescription(systemSettingsDao.getValue(SystemSettingsDao.INSTANCE_DESCRIPTION));
         data.setGuid(Providers.get(ICoreLicense.class).getGuid());
         data.setCoreVersion(Common.getVersion().toString());
-        data.setCoreLicenseType(ModuleRegistry.getModule(ModuleRegistry.CORE_MODULE_NAME).getLicenseType());
+        data.setCoreNormalVersion(Common.getVersion().getNormalVersion());
+        data.setCoreLicenseType(coreModule.getLicenseType());
+        data.setVendor(coreModule.getVendor());
+        data.setVendorUrl(coreModule.getVendorUrl());
 
         JsonDataVO menuData = this.jsonDataDao.getByXid(UICommon.MA_UI_MENU_XID);
         JsonDataVO pageData = this.jsonDataDao.getByXid(UICommon.MA_UI_PAGES_XID);
@@ -204,7 +210,7 @@ public class BootstrapController {
         private int lastUpgradeTime;
         private UserModel user;
         private boolean publicRegistrationEnabled;
-        private boolean devlopmentMode;
+        private boolean developmentMode;
         private String loginUri;
         private String errorUri;
         private String notFoundUri;
@@ -257,11 +263,11 @@ public class BootstrapController {
         public void setPublicRegistrationEnabled(boolean publicRegistrationEnabled) {
             this.publicRegistrationEnabled = publicRegistrationEnabled;
         }
-        public boolean isDevlopmentMode() {
-            return devlopmentMode;
+        public boolean isDevelopmentMode() {
+            return developmentMode;
         }
-        public void setDevlopmentMode(boolean devlopmentMode) {
-            this.devlopmentMode = devlopmentMode;
+        public void setDevelopmentMode(boolean developmentMode) {
+            this.developmentMode = developmentMode;
         }
         public String getLoginUri() {
             return loginUri;
@@ -281,10 +287,13 @@ public class BootstrapController {
         private String instanceDescription;
         private String guid;
         private String coreVersion;
+        private String coreNormalVersion;
         private String coreLicenseType;
         private JsonDataModel menu;
         private JsonDataModel pages;
         private TranslationsModel translations;
+        private String vendor;
+        private String vendorUrl;
 
         public String getInstanceDescription() {
             return instanceDescription;
@@ -329,5 +338,28 @@ public class BootstrapController {
             this.coreLicenseType = coreLicenseType;
         }
 
+        public String getCoreNormalVersion() {
+            return coreNormalVersion;
+        }
+
+        public void setCoreNormalVersion(String coreNormalVersion) {
+            this.coreNormalVersion = coreNormalVersion;
+        }
+
+        public String getVendor() {
+            return vendor;
+        }
+
+        public void setVendor(String vendor) {
+            this.vendor = vendor;
+        }
+
+        public String getVendorUrl() {
+            return vendorUrl;
+        }
+
+        public void setVendorUrl(String vendorUrl) {
+            this.vendorUrl = vendorUrl;
+        }
     }
 }

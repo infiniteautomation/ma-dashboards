@@ -267,10 +267,12 @@ uiApp.run([
     'maDialogHelper',
     '$q',
     '$resolve',
+    'maUiServerInfo',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
         webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector,
-        $anchorScroll, installPrompt, developmentConfig, $injector, maEventBus, maDialogHelper, $q, $resolve) {
+        $anchorScroll, installPrompt, developmentConfig, $injector, maEventBus, maDialogHelper, $q, $resolve,
+         maUiServerInfo) {
 
     const document = $document[0];
 
@@ -281,6 +283,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.stateParams = $stateParams;
     $rootScope.dateBar = maUiDateBar;
     $rootScope.uiSettings = uiSettings;
+    $rootScope.maUiServerInfo = maUiServerInfo;
     $rootScope.User = User;
     $rootScope.Math = Math;
     $rootScope.mathjs = mathjs;
