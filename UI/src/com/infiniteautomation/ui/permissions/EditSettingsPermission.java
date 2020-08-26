@@ -58,7 +58,7 @@ public class EditSettingsPermission extends PermissionDefinition {
             jsonData = new JsonDataVO();
             jsonData.setXid(UICommon.MA_UI_SETTINGS_XID);
             jsonData.setName("UI Settings");
-            jsonData.setReadPermission(MangoPermission.requireAnyRole(PermissionHolder.ANONYMOUS_ROLE));
+            jsonData.setReadPermission(MangoPermission.requireAnyRole(PermissionHolder.ANONYMOUS_ROLE, PermissionHolder.USER_ROLE));
         }
         jsonData.setEditPermission(this.permission);
 
