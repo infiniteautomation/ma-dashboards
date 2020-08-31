@@ -67,6 +67,7 @@ import systemPermissionFactory from './services/SystemPermission';
 import permissionFactory from './services/Permission';
 import eventBusFactory from './services/eventBus';
 import resourceCacheFactory from './services/ResourceCache';
+import templateHooksProvider from './services/TemplateHooks';
 import angular from 'angular';
 import rqlQuery from 'rql/query';
 import 'angular-resource';
@@ -152,6 +153,7 @@ ngMangoServices.factory('maSystemPermission', systemPermissionFactory);
 ngMangoServices.factory('maPermission', permissionFactory);
 ngMangoServices.factory('maEventBus', eventBusFactory);
 ngMangoServices.factory('maResourceCache', resourceCacheFactory);
+ngMangoServices.provider('maTemplateHooks', templateHooksProvider);
 
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUTS', {
@@ -259,7 +261,7 @@ ngMangoServices.config(['localStorageServiceProvider', '$httpProvider', '$provid
         .setPrefix('ngMangoServices')
         .setStorageCookieDomain(window.location.hostname === 'localhost' ? '' : window.location.host)
         .setNotify(false, false);
-    
+
     $httpProvider.defaults.paramSerializer = 'maRqlParamSerializer';
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     $httpProvider.interceptors.push('maHttpInterceptor');

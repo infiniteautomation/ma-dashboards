@@ -27,14 +27,14 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.dataSourceTypeName.validationMessage"></div>
                             </div>
                         </md-input-container>
-                        
+
                         <div flex="100" flex-gt-md="50">
                             <md-switch name="enabled" ng-model="$ctrl.dataPoint.enabled">
                                 <span ma-tr="common.enabled"></span>
                                 <em class="ma-small-text">(<span ma-tr="ui.app.doesNotTakeEffectUntilSaved"></span>)</em>
                             </md-switch>
                         </div>
-                
+
                         <md-input-container flex="100">
                             <md-icon>label</md-icon>
                             <label ma-tr="common.xid"></label>
@@ -53,7 +53,7 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.deviceName.validationMessage"></div>
                             </div>
                         </md-input-container>
-                        
+
                         <md-input-container flex="100" flex-gt-md="50">
                             <md-icon>label</md-icon>
                             <label ma-tr="common.name"></label>
@@ -125,7 +125,7 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.unit.validationMessage"></div>
                             </div>
                         </md-input-container>
-                        
+
                         <div flex="100" flex-gt-md="50">
                             <md-checkbox class="ma-input-container-height" name="useRenderedUnit" ng-model="$ctrl.dataPoint.useRenderedUnit" ma-flatten-values="false">
                                 <span ma-tr="pointEdit.props.useRenderedUnit"></span>
@@ -144,7 +144,7 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.renderedUnit.validationMessage"></div>
                             </div>
                         </md-input-container>
-                        
+
                         <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.useIntegralUnit == true">
                             <md-icon>straighten</md-icon>
                             <label ma-tr="pointEdit.props.integralUnit"></label>
@@ -155,7 +155,7 @@
                             </div>
                         </md-input-container>
                     </div>
-                    
+
                     <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
                         <div flex="100" flex-gt-md="50" layout layout-align="start center">
                             <ma-color-picker ng-model="$ctrl.dataPoint.chartColour" ma-flatten-values="$values.firstNonEmpty()"></ma-color-picker>
@@ -167,7 +167,7 @@
                                 </div>
                             </md-input-container>
                         </div>
-                        
+
                         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.dataPoint.dataType.hasMultipleValues()">
                             <md-icon>loop</md-icon>
                             <label ma-tr="common.rollup"></label>
@@ -184,7 +184,7 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.rollup.validationMessage"></div>
                             </div>
                         </md-input-container>
-                        
+
                         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.dataPoint.dataType.hasMultipleValues()">
                             <md-icon>show_chart</md-icon>
                             <label ma-tr="pointEdit.plotType"></label>
@@ -231,7 +231,7 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.simplifyTarget.validationMessage"></div>
                             </div>
                         </md-input-container>
-                        
+
                         <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.dataPoint.simplifyType === 'TOLERANCE'">
                             <md-icon>tune</md-icon>
                             <label ma-tr="pointEdit.props.simplifyTolerance"></label>
@@ -244,7 +244,7 @@
                             </div>
                         </md-input-container>
                     </div>
-                    
+
                     <div ng-if="$ctrl.dataPoint.dataType === 'NUMERIC'">
                         <md-checkbox class="ma-input-container-height" name="preventSetExtremeValues" ng-model="$ctrl.dataPoint.preventSetExtremeValues" ma-flatten-values="false">
                             <span ma-tr="pointEdit.props.preventSetExtremeValues"></span>
@@ -309,7 +309,7 @@
                     <div>
                         <md-checkbox name="purgeOverride" ng-model="$ctrl.dataPoint.purgeOverride" ma-flatten-values="false"><span ma-tr="pointEdit.logging.purgeOverride"></span></md-checkbox>
                     </div>
-                    
+
                     <div layout layout-wrap layout-align="start start" ng-if="$ctrl.dataPoint.purgeOverride == true">
                         <ma-duration-editor flex="100" flex-gt-md="50" name="purgePeriod" ng-model="$ctrl.dataPoint.purgePeriod"
 	                           allowed-types="::['DAYS', 'WEEKS', 'MONTHS', 'YEARS']" required>
@@ -320,6 +320,7 @@
                 </div>
             </md-tab-body>
         </md-tab>
+        <div ma-template-hook="dataPointEditor"></div>
     </md-tabs>
 
     <div class="md-padding ma-error-text" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert"></div>
@@ -330,15 +331,15 @@
                 <span ng-bind="$ctrl.bulkTask.progress || 0"></span>% (<span ma-tr="ui.app.pointXofX" ma-tr-args="[$ctrl.bulkTask.position || 0, $ctrl.bulkTask.maximum || 0]"></span>)
             </em>
         </div>
-        
+
         <md-progress-linear md-mode="determinate" ng-value="$ctrl.bulkTask.progress"></md-progress-linear>
-        
+
         <md-button class="md-raised md-warn" ng-click="$ctrl.bulkTask.cancel()">
             <md-icon>cancel</md-icon>
             <span ma-tr="ui.app.cancelBulkEdit"></span>
         </md-button>
     </div>
-    
+
     <div ng-if="$ctrl.errorMessages.length" class="md-padding">
         <em class="ma-error-text">
             <span ng-repeat="msg in $ctrl.errorMessages"><span ng-bind="msg"></span><span ng-if="!$last">, </span></span>

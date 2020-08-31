@@ -20,7 +20,7 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.detectorType.validationMessage"></div>
                             </div>
                         </md-input-container>
-                
+
                         <md-input-container flex="100" flex-gt-md="50">
                             <label ma-tr="common.name"></label>
                             <input name="name" ng-model="$ctrl.eventDetector.name">
@@ -29,7 +29,7 @@
                                 <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
                             </div>
                         </md-input-container>
-                
+
                         <md-input-container flex="100" flex-gt-md="50">
                             <label ma-tr="common.xid"></label>
                             <input name="xid" ng-model="$ctrl.eventDetector.xid" required>
@@ -83,6 +83,7 @@
                 </ma-event-handler-check-list>
             </md-tab-body>
         </md-tab>
+        <div ma-template-hook="eventDetectorEditor"></div>
     </md-tabs>
 
     <div class="md-padding" ng-if="$ctrl.form.validationMessage" ng-bind="$ctrl.form.validationMessage" role="alert" class="ma-error-text"></div>

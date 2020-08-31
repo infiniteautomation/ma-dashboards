@@ -20,7 +20,7 @@
             </div>
             <md-icon>arrow_drop_down</md-icon>
           </div>
-          
+
           <md-menu-content width="4" class="user-menu">
             <md-menu-item>
               <md-button aria-label="{{'header.userProfile'|maTr}}" ui-sref="ui.userProfile">
@@ -55,7 +55,7 @@
       <div class="md-toolbar-tools ma-ui-toolbar-tools" tabIndex="-1">
         <md-button flex="none" id="menu-button" class="md-icon-button" ng-click="toggleMenu()" aria-label="Toggle Menu"> <md-icon class="md-light">menu</md-icon>
         </md-button>
-        
+
         <h2 class="md-toolbar-item ma-ui-breadcrumb">
             <span ng-repeat="crumb in crumbs track by $index" ng-class="{'hide-sm': !$last, 'hide-xs': !$last}">
                 <span ma-tr="{{crumb.maTr}}" ng-bind="crumb.text"></span>
@@ -64,7 +64,7 @@
                 </span>
             </span>
         </h2>
-          
+
         <div flex class="md-toolbar-item ma-ui-tools" layout layout-align="end center">
             <ma-event-audio ng-if="User.current && !User.current.muted" audio-files="uiSettings.eventAudioFiles" read-aloud="uiSettings.eventReadAloud"></ma-event-audio>
             <ma-event-notify event-levels="uiSettings.eventNotify"></ma-event-notify>
@@ -83,13 +83,13 @@
                   <md-tooltip md-autohide><span ma-tr="ui.app.expandDateBar"></span></md-tooltip>
               </md-button>
             </div>
-            
+
             <md-button ng-if="developmentConfig.enabled" class="md-icon-button" ng-click="clearTranslations()">
                 <md-icon>restore_page</md-icon>
             </md-button>
-            
-            <div ng-if="::userActions" ng-include="userActions"></div>
-            
+
+            <div ma-template-hook="userActions"></div>
+
             <md-button class="md-icon-button" ng-if="$state.params.helpPage" ui-state="$state.params.helpPage">
                 <md-icon>help</md-icon>
                 <md-tooltip md-autohide>
@@ -99,9 +99,9 @@
           </div>
       </div>
     </md-toolbar>
-    
+
     <ma-ui-date-bar on-refresh="dateBar.refresh = $event" ng-if="stateParams.dateBar" ng-show="dateBar.expanded" class="ng-hide"></ma-ui-date-bar>
-    
+
     <ma-ui-upgrades-banner ng-if="User.current.hasRole('superadmin')"></ma-ui-upgrades-banner>
 
     <md-content layout="column" flex class="main-content">
@@ -109,7 +109,7 @@
       <ma-ui-footer flex="none" aria-role="contentinfo" layout ng-if="!$state.params.hideFooter"></ma-ui-footer>
     </md-content>
   </div>
-  
+
   <md-sidenav class="ma-help-sidebar md-sidenav-right md-whiteframe-z2" md-component-id="right" hide-print md-is-locked-open="$mdMedia('gt-md') && pageOpts.helpUrl" md-is-open="pageOpts.helpUrl" md-swipe-right="closeHelp()">
     <md-content class="md-padding">
         <div class="ma-help-sidebar-buttons md-padding">
