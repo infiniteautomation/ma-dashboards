@@ -77,7 +77,7 @@ class WatchListPageController {
             {name: 'left-2', translation: 'ui.app.farLeft'},
             {name: 'right-2', translation: 'ui.app.farRight'}
         ];
-        
+
         this.columns = [
             {name: 'xid', label: 'ui.app.xidShort'},
             {name: 'dataSourceName', label: 'ui.app.dataSource'},
@@ -89,13 +89,14 @@ class WatchListPageController {
             {name: 'dataType', label: 'dsEdit.pointDataType'},
             {name: 'readPermission', label: 'pointEdit.props.permission.read'},
             {name: 'setPermission', label: 'pointEdit.props.permission.set'},
+            {name: 'editPermission', label: 'pointEdit.props.permission.edit'},
             {name: 'unit', label: 'pointEdit.props.unit'},
             {name: 'chartColour', label: 'pointEdit.props.chartColour'},
             {name: 'plotType', label: 'pointEdit.plotType'},
             {name: 'rollup', label: 'common.rollup'},
             {name: 'integralUnit', label: 'pointEdit.props.integralUnit'}
         ];
-        
+
         this.columns.forEach((c, i) => c.order = i);
         this.loadLocalStorageSettings();
 
@@ -143,14 +144,14 @@ class WatchListPageController {
 
     loadLocalStorageSettings() {
         const settings = this.localStorageService.get('watchListPage') || {};
-        
+
         this.selectedTags = settings.selectedTags || [];
         if (Array.isArray(settings.selectedColumns)) {
             this.selectedColumns = settings.selectedColumns.map(name => this.columns.find(c => c.name === name)).filter(c => !!c);
         } else {
             this.selectedColumns = this.columns.filter(c => c.selectedByDefault);
         }
-        
+
         this.numberOfRows = settings.numberOfRows || (this.$mdMedia('gt-sm') ? 100 : 25);
         this.sortOrder = settings.sortOrder != null ? settings.sortOrder : 'name';
     }
@@ -158,35 +159,35 @@ class WatchListPageController {
     saveLocalStorageSettings() {
         if (this.watchList && this.watchList.isNew()) {
             const settings = this.localStorageService.get('watchListPage') || {};
-            
+
             settings.selectedTags = this.selectedTags;
             settings.selectedColumns = this.selectedColumns.map(c => c.name);
-            
+
             settings.numberOfRows = this.numberOfRows;
             settings.sortOrder = this.sortOrder;
-            
+
             this.localStorageService.set('watchListPage', settings);
         }
     }
-    
+
     watchListSettingChanged() {
         // copy the local settings to the watch list data
         this.copyLocalSettingsToWatchList();
         // save the settings to local storage (if its not a saved watch list)
         this.saveLocalStorageSettings();
     }
-    
+
     copyLocalSettingsToWatchList() {
         this.watchList.data.selectedTags = this.selectedTags;
         this.watchList.data.selectedColumns = this.selectedColumns.map(c => c.name);
         this.watchList.data.sortOrder = this.sortOrder;
         this.watchList.data.numberOfRows = this.numberOfRows;
     }
-    
+
     parseTagsParam(param) {
         const tags = {};
         const paramArray = Array.isArray(param) ? param : [param];
-        
+
         paramArray.forEach(p => {
             const parts = p.split(':');
             const tagKey = parts[0];
@@ -207,7 +208,7 @@ class WatchListPageController {
 
     formatTagsParam(tags) {
         const param = [];
-        
+
         Object.keys(tags).forEach(tagKey => {
             const tagValue = tags[tagKey];
             if (tagValue == null) {
@@ -220,24 +221,24 @@ class WatchListPageController {
                 }
             }
         });
-        
+
         return param;
     }
-    
+
     updateState(state) {
         const localStorageParams = this.localStorageService.get('watchListPage') || {};
 
         ['watchListXid', 'dataSourceXid', 'deviceName', 'tags'].forEach(key => {
             const value = state[key];
             if (value) {
-                localStorageParams[key] = value; 
-                this.$state.params[key] = value; 
+                localStorageParams[key] = value;
+                this.$state.params[key] = value;
             } else {
                 delete localStorageParams[key];
                 this.$state.params[key] = null;
             }
         });
-        
+
         if (state.tags) {
             this.$state.params.tags = this.formatTagsParam(state.tags);
 
@@ -291,7 +292,7 @@ class WatchListPageController {
         if (Number.isFinite(this.watchList.data.numberOfRows) && this.watchList.data.numberOfRows >= 0) {
             this.numberOfRows = this.watchList.data.numberOfRows;
         }
-        
+
         // we might have just copied settings from watch list to local but some watch list settings might not be there, populate them
         this.copyLocalSettingsToWatchList();
 
@@ -307,7 +308,7 @@ class WatchListPageController {
         } else if (this.watchList.type === 'tags' && this.watchList.tags) {
             stateUpdate.tags = this.watchList.tags;
         }
-        
+
         this.updateState(stateUpdate);
         this.rebuildChart();
     }
@@ -326,15 +327,15 @@ class WatchListPageController {
             this.points.forEach(pt => {
                 const count = pointNameCounts[pt.name];
                 pointNameCounts[pt.name] = (count || 0) + 1;
-                
+
                 if (!pt.tags) pt.tags = {};
                 pt.tags.name = pt.name;
                 pt.tags.device = pt.deviceName;
             });
-            
+
             // applies sort and limit to this.points and saves as this.filteredPoints
             this.filterPoints();
-            
+
             // select points based on the watch list data chart config
             this.selected = this.watchList.findSelectedPoints(this.points);
 
@@ -352,24 +353,24 @@ class WatchListPageController {
         const offset = (this.pageNumber - 1) * limit;
         const order = this.sortOrder;
         const points = this.points.slice();
-        
+
         if (order) {
             let propertyName = order;
             let desc = false;
             if ((desc = propertyName.indexOf('-') === 0 || propertyName.indexOf('+') === 0)) {
                 propertyName = propertyName.substring(1);
             }
-            
+
             let tag = false;
             if (propertyName.indexOf('tags.') === 0) {
                 tag = true;
                 propertyName = propertyName.substring(5);
             }
-            
+
             points.sort((a, b) => {
                 const valA = tag ? a.tags[propertyName] : a[propertyName];
                 const valB = tag ? b.tags[propertyName] : b[propertyName];
-                
+
                 if (valA === valB || Number.isNaN(valA) && Number.isNaN(valB)) return 0;
 
                 if (valA == null || Number.isNaN(valA) || valA > valB) return desc ? -1 : 1;
@@ -387,7 +388,7 @@ class WatchListPageController {
     }
 
     saveSettings() {
-        // this.chartConfig is already mapped to this.watchList.data.chartConfig and so is saved too 
+        // this.chartConfig is already mapped to this.watchList.data.chartConfig and so is saved too
         this.watchList.data.paramValues = angular.copy(this.watchListParams);
 
         if (this.watchList.isNew()) {
@@ -410,12 +411,12 @@ class WatchListPageController {
             const pointsToRemove = [point];
             const watchListConfig = point.watchListConfig;
             delete point.watchListConfig;
-            
+
             const configIndex = pointConfigs.indexOf(watchListConfig);
             if (configIndex >= 0) {
                 pointConfigs.splice(configIndex, 1);
             }
-            
+
             // remove other selected points which were selected using the same config
             this.selected = this.selected.filter(pt => {
                 if (pt.watchListConfig !== watchListConfig) {
@@ -424,7 +425,7 @@ class WatchListPageController {
                 pointsToRemove.push(pt);
                 delete pt.watchListConfig;
             });
-            
+
             this.removeStatsForPoints(pointsToRemove);
         } else {
             pointConfigs.push(this.newPointConfig(point, tagKeys));
@@ -433,13 +434,13 @@ class WatchListPageController {
 
         this.rebuildChartDebounced();
     }
-    
+
     rebuildChartDebounced() {
         if (this.rebuildChartPromise) {
             this.$timeout.cancel(this.rebuildChartPromise);
             delete this.rebuildChartPromise;
         }
-        
+
         this.rebuildChartPromise = this.$timeout(() => {
             delete this.rebuildChartPromise;
             this.$scope.$applyAsync(() => {
@@ -447,11 +448,11 @@ class WatchListPageController {
             });
         }, 1000, false);
     }
-    
+
     newPointConfig(point, selectedTags) {
         const pointConfig = {};
         point.watchListConfig = pointConfig;
-        
+
         if (this.chartOptions.configNextPoint) {
             if (this.chartOptions.pointColor)
                 pointConfig.lineColor = this.chartOptions.pointColor;
@@ -460,7 +461,7 @@ class WatchListPageController {
             if (this.chartOptions.pointAxis)
                 pointConfig.valueAxis = this.chartOptions.pointAxis;
         }
-        
+
         pointConfig.xid = point.xid;
         pointConfig.tags = {};
         selectedTags.forEach(tagKey => pointConfig.tags[tagKey] = point.tags[tagKey]);
@@ -476,7 +477,7 @@ class WatchListPageController {
             }
         });
     }
-    
+
     updateStats(point) {
         if (!this.selected) {
             return;
@@ -524,14 +525,14 @@ class WatchListPageController {
                 ptStats.lastValue = parseFloat(stats.last && stats.last.value);
             });
         });
-        
+
         let seenXids = {};
         this.selectedStats.forEach(s =>  {
             if (seenXids[s.xid]) throw new Error();
             seenXids[s.xid] = true;
         });
     }
-    
+
     columnIsSelected(name) {
         return !!this.selectedColumns.find(c => c.name === name);
     }
@@ -598,20 +599,20 @@ class WatchListPageController {
                     value: 'UTC',
                     id: 'utc'
                 }];
-                
+
                 this.loadSettings = function() {
                     const settings = localStorageService.get('watchlistDownload') || {};
-                    
+
                     this.allPoints = settings.allPoints != null ? settings.allPoints : !this.selected.length;
                     this.rollupType = settings.rollupType || 'NONE';
                     this.timeFormat = settings.timeFormat || this.timeFormats[0].format;
                     this.timezone = settings.timezone && this.timezones.find(t => t.id === settings.timezone) || this.timezones[0];
-                    
+
                     this.customTimeFormat = !this.timeFormats.find(f => f.format === this.timeFormat);
                 };
-                
+
                 this.loadSettings();
-                
+
                 this.saveSettings = function() {
                     localStorageService.set('watchlistDownload', {
                         allPoints: this.allPoints,
@@ -620,7 +621,7 @@ class WatchListPageController {
                         timezone: this.timezone.id
                     });
                 };
-                
+
                 this.customTimeFormatChanged = function() {
                     if (!this.customTimeFormat) {
                         if (!this.timeFormats.find(f => f.format === this.timeFormat)) {
@@ -637,7 +638,7 @@ class WatchListPageController {
                     const mimeType = downloadType.indexOf('CSV') === 0 ? 'text/csv' : 'application/json';
                     const extension = downloadType.indexOf('CSV') === 0 ? 'csv' : 'json';
                     const fileName = this.watchList.name + '_' + maUiDateBar.from.toISOString() + '_' + maUiDateBar.to.toISOString() + '.' + extension;
-                    
+
                     let fields;
                     if (downloadType === 'CSV_COMBINED') {
                         fields = ['TIMESTAMP', 'VALUE'];
@@ -677,7 +678,7 @@ class WatchListPageController {
                 this.cancel = function cancel() {
                     $mdDialog.cancel();
                 };
-                
+
             }],
             template: downloadDialogTemplate,
             parent: angular.element(document.body),
