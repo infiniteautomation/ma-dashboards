@@ -21,7 +21,7 @@ class scriptingEditorController {
    }
 
     $onInit() {
-        this.ngModelCtrl.$render = () => this.render(); 
+        this.ngModelCtrl.$render = () => this.render();
         this.highlightLines = [];
         this.initOptions();
 
@@ -75,11 +75,11 @@ class scriptingEditorController {
                 annotations.push({
                     row: error.lineNumber - 1,
                     column: error.columnNumber,
-                    text: 'Error Message', // Or the Json reply from the parser 
+                    text: 'Error Message', // Or the Json reply from the parser
                     type: 'error' // also warning and information
                 });
             });
-            
+
             this.editor.session.setAnnotations(annotations);
         }
     }
@@ -192,7 +192,7 @@ export default {
         logLevel: '=?',
         logCount: '=?',
         logSize: '=?',
-        logFilePath: '<?',
+        logFileName: '<?',
         contextVarXidName: '<?',
         showLogFileInputs: '<?'
     },
