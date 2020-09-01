@@ -30,19 +30,19 @@ const defaultColumns = [
 class DataPointSelectorController extends TableController {
 
     static get $inject() { return ['maPoint', 'maDataPointTags', '$scope', '$element', '$injector']; }
-    
+
     constructor(maPoint, maDataPointTags, $scope, $element, $injector) {
         super({
             $scope,
             $element,
             $injector,
-            
+
             resourceService: maPoint,
             localStorageKey: 'dataPointSelector',
             defaultColumns,
             defaultSort: [{columnName: 'deviceName'}, {columnName: 'name'}]
         });
-        
+
         this.maDataPointTags = maDataPointTags;
     }
 
@@ -67,6 +67,18 @@ class DataPointSelectorController extends TableController {
             this.columns = this.columns.concat(this.tagColumns);
         });
     }
+
+    customizeQuery(queryBuilder) {
+        if (this.settable != null) {
+            queryBuilder.eq('settable', this.settable);
+        }
+        if (Array.isArray(this.dataTypes)) {
+            queryBuilder.in('dataType', this.dataTypes);
+        }
+        if (typeof this.customizeQuery === 'function') {
+            this.customizeQuery({$queryBuilder: queryBuilder});
+        }
+    }
 }
 
 export default {
@@ -80,6 +92,9 @@ export default {
         localStorageKey: '<?',
         selectMultiple: '<?',
         showClear: '<?',
-        rowClicked: '&?'
+        rowClicked: '&?',
+        settable: '<?',
+        dataTypes: '<?types',
+        customizeQuery: '&?'
     }
 };
