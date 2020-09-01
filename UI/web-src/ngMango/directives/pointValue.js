@@ -7,7 +7,7 @@ import pointValueTemplate from './pointValue.html';
 import moment from 'moment-timezone';
 
 /**
- * @ngdoc directive 
+ * @ngdoc directive
  * @name ngMango.directive:maPointValue
  *
  * @description
@@ -61,7 +61,7 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
             if ($injector.has('$state')) {
                 this.$state = $injector.get('$state');
             }
-            
+
             this.valueStyle = {};
             this.valueClasses = {};
         }
@@ -72,22 +72,22 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
                     this.isOpen = true;
                 });
             });
-            
+
             this.$element.on('mouseleave', event => {
                 this.$scope.$apply(() => {
                     this.isOpen = false;
                 });
             });
         }
-    
+
         $onChanges(changes) {
             super.$onChanges(...arguments);
-            
+
             if (changes.displayType && !changes.displayType.isFirstChange() || changes.dateTimeFormat && !changes.dateTimeFormat.isFirstChange() ||
                     changes.timezone && !changes.timezone.isFirstChange()) {
                 this.updateText();
             }
-            
+
             if (changes.labelAttr || changes.labelExpression) {
                 if (this.labelExpression) {
                     this.label = this.labelExpression({$point: this.point});
@@ -101,31 +101,43 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
             super.valueChangeHandler(...arguments);
 
             this.updateText();
-            
+
             if (isPointChange) {
                 const oldDeregister = this.eventsDeregister;
 
+                delete this.prevHasActiveEvent;
+                this.$element.removeClass('ma-active-event');
                 if (!this.hideEventIndicator && this.point) {
                     this.eventsDeregister = this.point.subscribeToEvents(this.$scope);
                 }
-                
+
                 // deregister old subscription after registering the new one to prevent closing and opening websocket
                 if (oldDeregister) {
                     oldDeregister();
                 }
             }
         }
-        
+
         activeEvents() {
             if (!this.point || !Array.isArray(this.point.activeEvents)) {
+                delete this.prevHasActiveEvent;
+                this.$element.removeClass('ma-active-event');
                 return;
             }
 
             const activeEvents = this.point.activeEvents;
             const minLevel = maEvents.levelsMap[this.minEventLevel] || maEvents.levelsMap['NONE'];
             const minLevelValue = minLevel.value;
-            
-            return activeEvents.filter(e => e.getAlarmLevel().value >= minLevelValue);
+
+            const eventsAboveLevel = activeEvents.filter(e => e.getAlarmLevel().value >= minLevelValue);
+
+            const hasActiveEvent = !!eventsAboveLevel.length;
+            if (this.prevHasActiveEvent !== hasActiveEvent) {
+                this.$element.toggleClass('ma-active-event', hasActiveEvent);
+                this.prevHasActiveEvent = hasActiveEvent;
+            }
+
+            return eventsAboveLevel;
         }
 
         updateText() {
@@ -134,10 +146,10 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
             if (!this.point || this.point.time == null) {
                 this.displayValue = '';
                 this.resolvedDisplayType = this.displayType || 'rendered';
-                
+
                 this.noValue = this.point && this.point.time == null;
                 this.emptyValue = false;
-                
+
                 this.updateValueClasses();
                 return;
             }
@@ -149,7 +161,7 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
 
             this.resolvedDisplayType = this.displayType || (this.point.pointLocator && this.point.pointLocator.dataType === 'IMAGE' ? 'image' : 'rendered');
             delete this.valueStyle.color;
-    
+
             switch(this.resolvedDisplayType) {
             case 'converted':
                 this.displayValue = String(this.point.convertedValue);
@@ -176,7 +188,7 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
             this.emptyValue = this.displayValue === '';
             this.updateValueClasses();
         }
-        
+
         updateValueClasses() {
             this.valueClasses['ma-point-value-no-value'] = this.noValue;
             this.valueClasses['ma-point-value-empty-value'] = this.emptyValue;
@@ -185,7 +197,7 @@ function pointValue(PointValueController, MA_DATE_FORMATS, maEvents, $injector) 
 
     const dateOptions = ['dateTime', 'shortDateTime', 'dateTimeSeconds', 'shortDateTimeSeconds', 'date', 'shortDate', 'time',
         'timeSeconds', 'monthDay', 'month', 'year', 'iso'];
-    
+
     return {
         restrict: 'E',
         template: pointValueTemplate,
