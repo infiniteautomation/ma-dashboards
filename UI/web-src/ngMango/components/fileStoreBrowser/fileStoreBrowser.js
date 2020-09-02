@@ -215,9 +215,7 @@ class FileStoreBrowserController {
             }, error => listErrorHandler());
         } else {
             delete this.fileStore;
-            this.listPromise = this.maFileStore.buildQuery()
-                .sort('name')
-                .query().then(fileStores => {
+            this.listPromise = this.maFileStore.query().then(fileStores => {
                     this.files = fileStores.map(store => {
                         return {
                             store: store,
