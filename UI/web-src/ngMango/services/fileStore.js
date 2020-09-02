@@ -42,10 +42,6 @@ function fileStore($http, maUtil, $q, RestResource) {
             return userFileStoreUrl;
         }
 
-        static get idProperty() {
-            return 'storeName';
-        }
-
         static toUrl(pathArray, isDirectory) {
             const parts = pathArray.map(function(part) {
                 return encodeURIComponent(part);

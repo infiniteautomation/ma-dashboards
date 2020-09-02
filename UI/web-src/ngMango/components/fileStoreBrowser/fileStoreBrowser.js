@@ -201,9 +201,9 @@ class FileStoreBrowserController {
         delete this.lastIndex;
 
         if (this.path.length) {
-            const storeName = this.path[0];
-            if (!this.fileStore || this.fileStore.storeName !== storeName) {
-                this.maFileStore.get(this.path[0]).then(store => {
+            const storeXid = this.path[0];
+            if (!this.fileStore || this.fileStore.xid !== storeXid) {
+                this.maFileStore.get(storeXid).then(store => {
                     this.fileStore = store;
                 }, error => delete this.fileStore);
             }
@@ -216,13 +216,11 @@ class FileStoreBrowserController {
         } else {
             delete this.fileStore;
             this.listPromise = this.maFileStore.buildQuery()
-                .sort('storeName')
+                .sort('name')
                 .query().then(fileStores => {
-                    const fileStoreNames = this.fileStoreNames = {};
                     this.files = fileStores.map(store => {
-                        fileStoreNames[store.storeName] = true;
                         return {
-                            filename: store.storeName,
+                            filename: store.xid,
                             directory: true
                         };
                     });
