@@ -277,7 +277,11 @@ class FileStoreBrowserController {
 
     filterAndReorderFiles(file) {
         const files = this.files.filter(this.filterFiles, this);
-        this.filteredFiles = this.$filter('orderBy')(files, this.tableOrder);
+        let tableOrder = typeof this.tableOrder === 'string' ? this.tableOrder.split(',') : this.tableOrder;
+        if (!this.path.length && Array.isArray(tableOrder)) {
+            tableOrder = tableOrder.map(key => key.replace(/\bfilename\b/g, 'store.name'));
+        }
+        this.filteredFiles = this.$filter('orderBy')(files, tableOrder);
     }
 
     pathClicked(event, index) {
