@@ -220,6 +220,7 @@ class FileStoreBrowserController {
                 .query().then(fileStores => {
                     this.files = fileStores.map(store => {
                         return {
+                            store: store,
                             filename: store.xid,
                             directory: true
                         };

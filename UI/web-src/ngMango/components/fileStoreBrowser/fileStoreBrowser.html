@@ -4,7 +4,9 @@
 		<span ng-if="$ctrl.path.length"><md-icon>chevron_right</md-icon></span>
 	</span>
 	<span ng-repeat="directory in $ctrl.path track by $index" layout layout-align="start center">
-		<span ng-bind="directory" ng-click="!$ctrl.editFile && $ctrl.pathClicked($event, $index)" ng-disabled="$ctrl.editFile"></span>
+		<span ng-click="!$ctrl.editFile && $ctrl.pathClicked($event, $index)" ng-disabled="$ctrl.editFile">
+			<span ng-bind="$ctrl.fileStore && $index === 0 ? $ctrl.fileStore.name : directory"></span>
+		</span>
 		<span ng-if="!$last || $ctrl.editFile"><md-icon>chevron_right</md-icon></span>
 	</span>
 	<span ng-if="$ctrl.editFile" layout layout-align="start center">
@@ -84,7 +86,7 @@
 		        	<md-icon ng-if="file.directory">folder</md-icon>
 		        	<md-icon ng-if="!file.directory">attachment</md-icon>
 		        </td>
-		        <td md-cell ng-bind="file.filename"></td>
+		        <td md-cell ng-bind="file.store ? file.store.name : file.filename"></td>
 		        <td md-cell><span ng-if="!file.directory" ng-bind="file.size | maBytes"></span></td>
 		        <td md-cell ng-bind="file.mimeType"></td>
 		        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
