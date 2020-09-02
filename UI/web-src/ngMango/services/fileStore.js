@@ -6,8 +6,9 @@
 import angular from 'angular';import moment from 'moment-timezone';
 import JSZip from 'jszip';
 
-fileStore.$inject = ['$http', 'maUtil', '$q'];
-function fileStore($http, maUtil, $q) {
+fileStore.$inject = ['$http', 'maUtil', '$q', 'maRestResource'];
+function fileStore($http, maUtil, $q, RestResource) {
+    const userFileStoreUrl = '/rest/latest/user-file-stores';
     const fileStoreUrl = '/rest/latest/file-stores';
     const fileStoreUrlSplit = fileStoreUrl.split('/');
 
@@ -21,7 +22,7 @@ function fileStore($http, maUtil, $q) {
         'application/xml': 'xml',
         'text/markdown': 'markdown'
     };
-    
+
     const editModesByExtension = {
         'groovy': 'groovy',
         'java': 'java',
@@ -35,8 +36,17 @@ function fileStore($http, maUtil, $q) {
         'md': 'markdown'
     };
 
-    class FileStore {
-        toUrl(pathArray, isDirectory) {
+    class FileStore extends RestResource {
+
+        static get baseUrl() {
+            return userFileStoreUrl;
+        }
+
+        static get idProperty() {
+            return 'storeName';
+        }
+
+        static toUrl(pathArray, isDirectory) {
             const parts = pathArray.map(function(part) {
                 return encodeURIComponent(part);
             });
@@ -46,8 +56,8 @@ function fileStore($http, maUtil, $q) {
             }
             return url;
         }
-    
-        fromUrl(url) {
+
+        static fromUrl(url) {
             const path = [];
             url.split('/').forEach(function(part, i) {
                 if (i < fileStoreUrlSplit.length) {
@@ -58,31 +68,21 @@ function fileStore($http, maUtil, $q) {
                     path.push(decodeURIComponent(part));
                 }
             });
-            
+
             if (path.length < 1) {
                 throw new Error('Must specify the file store name');
             }
-            
+
             if (!path[path.length - 1]) {
                 path.pop();
                 path.directory = true;
             }
-            
+
             return path;
         }
-        
-        // lists the available file stores
-        list() {
-            return $http({
-                method: 'GET',
-                url: fileStoreUrl
-            }).then(function(response) {
-                return response.data;
-            });
-        }
-        
+
         // lists files inside a file store directory
-        listFiles(path) {
+        static listFiles(path) {
             if (path.length < 1) {
                 throw new Error('Must specify the file store name');
             }
@@ -96,8 +96,8 @@ function fileStore($http, maUtil, $q) {
                 });
             });
         }
-        
-        remove(path, recursive) {
+
+        static remove(path, recursive) {
             if (path.length < 1) {
                 throw new Error('Must specify the file store name');
             }
@@ -112,24 +112,24 @@ function fileStore($http, maUtil, $q) {
                 return response.data;
             });
         }
-        
-        uploadFiles(path, files, overwrite) {
+
+        static uploadFiles(path, files, overwrite) {
             if (path.length < 1) {
                 throw new Error('Must specify the file store name');
             }
-            
+
             const formData = new FormData();
             for (let i = 0; i < files.length; i++) {
                 formData.append('files[]', files[i]);
             }
-    
+
             return this.uploadFormData(path, formData, overwrite);
         }
-    
-        uploadZipFile(path, file, overwrite) {
+
+        static uploadZipFile(path, file, overwrite) {
             return $q.when(JSZip.loadAsync(file)).then(zip => {
                 const formData = new FormData();
-                
+
                 const promises = Object.keys(zip.files).map(fileName => zip.files[fileName])
                 .filter(file => !file.dir)
                 .map(file => {
@@ -137,16 +137,16 @@ function fileStore($http, maUtil, $q) {
                         formData.append('files[]', blob, file.name);
                     });
                 });
-                
+
                 return $q.all(promises).then(() => formData);
              }).then(formData => {
                  return this.uploadFormData(path, formData, overwrite);
              });
         }
-    
-        uploadFormData(path, formData, overwrite) {
+
+        static uploadFormData(path, formData, overwrite) {
             const folderUrl = this.toUrl(path, true);
-    
+
             return $http({
                 method: 'POST',
                 url: folderUrl,
@@ -165,13 +165,13 @@ function fileStore($http, maUtil, $q) {
                 });
             });
         }
-        
-        createNewFolder(path, name) {
+
+        static createNewFolder(path, name) {
             if (path.length < 1) {
                 throw new Error('Must specify the file store name');
             }
             const folderUrl = this.toUrl(path.concat(name), true);
-    
+
             return $http({
                 method: 'POST',
                 url: folderUrl
@@ -179,19 +179,19 @@ function fileStore($http, maUtil, $q) {
                 return new FileStoreFile(path[0], response.data);
             });
         }
-        
-        createNewFile(path, name) {
+
+        static createNewFile(path, name) {
             return this.uploadFiles(path, [new File([], name)], false).then(function(files) {
                 return files[0];
             });
         }
-        
-        renameFile(path, oldFile, newName) {
+
+        static renameFile(path, oldFile, newName) {
             if (path.length < 1) {
                 throw new Error('Must specify the file store name');
             }
             const fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
-    
+
             return $http({
                 method: 'POST',
                 url: fileUrl,
@@ -202,13 +202,13 @@ function fileStore($http, maUtil, $q) {
                 return new FileStoreFile(path[0], response.data);
             });
         }
-        
-        copyFile(path, oldFile, newName) {
+
+        static copyFile(path, oldFile, newName) {
             if (path.length < 1) {
                 throw new Error('Must specify the file store name');
             }
             const fileUrl = this.toUrl(path.concat(oldFile.filename), oldFile.directory);
-    
+
             return $http({
                 method: 'POST',
                 url: fileUrl,
@@ -219,8 +219,8 @@ function fileStore($http, maUtil, $q) {
                 return new FileStoreFile(path[0], response.data);
             });
         }
-        
-        downloadFile(file, blob) {
+
+        static downloadFile(file, blob) {
             return $http({
                 method: 'GET',
                 url: file.url,
@@ -234,8 +234,8 @@ function fileStore($http, maUtil, $q) {
                 return response.data;
             });
         }
-    
-        downloadFiles(path) {
+
+        static downloadFiles(path) {
             const zip = new JSZip();
             return this.addPathToZip(path, zip).then(() => {
                 return zip.generateAsync({type : 'blob'});
@@ -244,20 +244,20 @@ function fileStore($http, maUtil, $q) {
                 maUtil.downloadBlob(data, zipName);
             });
         }
-        
-        addPathToZip(path, zip) {
+
+        static addPathToZip(path, zip) {
             return this.listFiles(path).then(files => {
                 const promises = files.map(file => {
                     if (file.directory) {
                         const folder = zip.folder(file.filename);
                         return this.addPathToZip(path.concat(file.filename), folder);
                     }
-                    
+
                     return this.downloadFile(file, true).then(content => {
                         zip.file(file.filename, content, {
                             // jszip handles this incorrectly see #369, but better than nothing
                             date: moment(file.lastModified).toDate()
-                            
+
                             // compression is a little slow and we have to download the full files anyway
     //                        compression: 'DEFLATE',
     //                        compressionOptions: {
@@ -269,25 +269,25 @@ function fileStore($http, maUtil, $q) {
                 return $q.all(promises);
             });
         }
-        
-        newFileStoreFile(...args) {
+
+        static newFileStoreFile(...args) {
             return new FileStoreFile(...args);
         }
-        
-        getEditMode(filename, mimeType) {
+
+        static getEditMode(filename, mimeType) {
             let editMode;
-            
+
             if (filename) {
                 const matches = /\.(.+?)$/.exec(filename);
                 if (matches) {
                     editMode = editModesByExtension[matches[1]];
                 }
             }
-            
+
             if (!editMode && mimeType) {
                 editMode = editModesByMime[mimeType];
             }
-            
+
             return editMode;
         }
     }
@@ -296,7 +296,7 @@ function fileStore($http, maUtil, $q) {
         constructor(fileStore, file) {
             angular.extend(this, file);
             this.fileStore = fileStore;
-            
+
             const urlArray = [fileStore];
             if (this.folderPath) {
                 urlArray.push(this.folderPath);
@@ -306,17 +306,17 @@ function fileStore($http, maUtil, $q) {
             this.filePath = urlArray.join('/');
             this.url = [fileStoreUrl, this.filePath].join('/');
             this.evalUrl = ['/rest/latest/script', 'eval-file-store', this.filePath].join('/');
-    
+
             this.editMode = this.getEditMode();
-            
+
             const lastDot = this.filename.lastIndexOf('.');
             this.extension = lastDot >=0 ? this.filename.substring(lastDot + 1) : null;
         }
-        
+
         getEditMode() {
-            return FileStore.prototype.getEditMode(this.filename, this.mimeType);
+            return FileStore.getEditMode(this.filename, this.mimeType);
         }
-        
+
         createFile(content) {
             return new File([content], this.filename, {
                 type: this.mimeType,
@@ -344,7 +344,7 @@ function fileStore($http, maUtil, $q) {
         }
     }
 
-    return new FileStore();
+    return FileStore;
 }
 
 export default fileStore;

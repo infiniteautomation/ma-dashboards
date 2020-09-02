@@ -12,9 +12,11 @@ const localStorageKey = 'fileStoreBrowser';
 
 class FileStoreBrowserController {
     static get $$ngIsClass() { return true; }
-    
-    static get $inject() { return ['maFileStore', '$element', 'maDialogHelper', '$q', '$filter', '$injector', 'localStorageService', '$scope', 'maScript', 'maDiscardCheck']; }
-    constructor(maFileStore, $element, maDialogHelper, $q, $filter, $injector, localStorageService, $scope, maScript, maDiscardCheck) {
+
+    static get $inject() { return ['maFileStore', '$element', 'maDialogHelper', '$q', '$filter', '$injector',
+        'localStorageService', '$scope', 'maScript', 'maDiscardCheck', 'maUser']; }
+    constructor(maFileStore, $element, maDialogHelper, $q, $filter, $injector, localStorageService,
+                $scope, maScript, maDiscardCheck, maUser) {
         this.maFileStore = maFileStore;
         this.$element = $element;
         this.maDialogHelper = maDialogHelper;
@@ -24,12 +26,13 @@ class FileStoreBrowserController {
         this.$scope = $scope;
         this.maScript = maScript;
         this.maDiscardCheck = maDiscardCheck;
-        
+        this.maUser = maUser;
+
         if ($injector.has('$state')) {
             this.$state = $injector.get('$state');
             this.$stateParams = $injector.get('$stateParams');
         }
-        
+
         this.tableOrder = ['-directory', 'filename'];
         this.filterAndReorderFilesBound = (...args) => {
             return this.filterAndReorderFiles(...args);
@@ -48,12 +51,12 @@ class FileStoreBrowserController {
                 e.extensions.forEach(e => this.scriptExtensions.add(e));
             });
         }, error => this.scriptEngines = []);
-        
+
         this.path = [this.restrictToStore || this.defaultStore || 'default'];
         this.ngModelCtrl.$render = (...args) => {
             return this.render(...args);
         };
-        
+
         this.discardCheck = new this.maDiscardCheck({
             $scope: this.$scope,
             isDirty: () => this.editFile && this.editFileModified()
@@ -80,48 +83,48 @@ class FileStoreBrowserController {
                 });
             }
         }
-        
+
         if (changes.extensions || changes.mimeTypes) {
             const accept = [];
-            
+
             Object.keys(this.extensionMap).forEach(ext => {
                 accept.push('.' + ext);
             });
-    
+
             Object.keys(this.mimeTypeMap).forEach(mime => {
                 accept.push(mime);
             });
-            
+
             this.acceptAttribute = accept.join(',');
         }
     }
-    
+
     // ng-model value changed outside of this directive
     render() {
         let urls = this.ngModelCtrl.$viewValue;
         if (!Array.isArray(urls)) {
             urls = urls ? [urls] : [];
         }
-    
+
         const defaultStore = this.restrictToStore || this.defaultStore || 'default';
         this.path = [defaultStore];
-        
+
         const settings = this.localStorageService.get(localStorageKey) || {};
         if (settings.fileStore === defaultStore) {
             this.path = Array.isArray(settings.folderPath) ? settings.folderPath : [];
             this.path.unshift(settings.fileStore);
         }
-        
+
         if (this.$stateParams) {
             const fileStore = this.$stateParams.fileStore;
             const folderPath = this.$stateParams.folderPath ? this.$stateParams.folderPath.split('/') : [];
-            
+
             if (fileStore === defaultStore) {
                 folderPath.unshift(fileStore);
                 this.path = folderPath;
             }
         }
-        
+
         const filenames = {};
         urls.forEach((url, index) => {
             let path;
@@ -130,30 +133,30 @@ class FileStoreBrowserController {
             } catch (e) {
                 return;
             }
-    
+
             if (!path.directory) {
                 const filename = path.pop(); // remove filename from path
                 filenames[filename] = true;
             }
-            
+
             if (index === 0) {
                 this.path = path;
             }
         });
-    
+
         this.listFiles().then(files => {
             this.filenames = filenames;
             let firstSelected = true;
-            
+
             this.selectedFiles = files.filter((file, index) => {
                 if (filenames[file.filename]) {
                     if (firstSelected) {
                         // set the preview file to the first file in filenames
                         this.previewFile = file;
-                        
+
                         // set the lastIndex for shift clicking to the first selected file
                         this.lastIndex = index;
-                        
+
                         firstSelected = false;
                     }
                     return true;
@@ -169,7 +172,12 @@ class FileStoreBrowserController {
             }
         });
     }
-    
+
+    hasFileStoreWritePermission() {
+        return this.fileStore && this.maUser.current &&
+            this.maUser.current.hasPermission(this.fileStore.writePermission);
+    }
+
     listFiles() {
         const listErrorHandler = () => {
             this.files = [];
@@ -178,7 +186,7 @@ class FileStoreBrowserController {
             this.filenames = {};
             this.selectedFiles = [];
             delete this.lastIndex;
-    
+
             const defaultStore = this.restrictToStore || this.defaultStore || 'default';
             if (!(this.path.length === 1 && this.path[0] === defaultStore)) {
                 this.path = [defaultStore];
@@ -186,41 +194,50 @@ class FileStoreBrowserController {
             }
             return this.filteredFiles;
         };
-        
+
         this.previewFile = null;
         this.filenames = {};
         this.selectedFiles = [];
         delete this.lastIndex;
-        
+
         if (this.path.length) {
+            const storeName = this.path[0];
+            if (!this.fileStore || this.fileStore.storeName !== storeName) {
+                this.maFileStore.get(this.path[0]).then(store => {
+                    this.fileStore = store;
+                }, error => delete this.fileStore);
+            }
+
             this.listPromise = this.maFileStore.listFiles(this.path).then(files => {
                 this.files = files;
                 this.filterAndReorderFiles();
                 return this.filteredFiles;
-            }, listErrorHandler);
+            }, error => listErrorHandler());
         } else {
-            this.listPromise = this.maFileStore.list().then(fileStores => {
-                const fileStoreNames = this.fileStoreNames = {};
-                this.files = fileStores.map(store => {
-                    fileStoreNames[store] = true;
-                    
-                    return {
-                        filename: store,
-                        directory: true
-                    };
-                });
-                this.filterAndReorderFiles();
-                return this.filteredFiles;
+            delete this.fileStore;
+            this.listPromise = this.maFileStore.buildQuery()
+                .sort('storeName')
+                .query().then(fileStores => {
+                    const fileStoreNames = this.fileStoreNames = {};
+                    this.files = fileStores.map(store => {
+                        fileStoreNames[store.storeName] = true;
+                        return {
+                            filename: store.storeName,
+                            directory: true
+                        };
+                    });
+                    this.filterAndReorderFiles();
+                    return this.filteredFiles;
             }, listErrorHandler);
         }
-    
+
         this.listPromise['finally'](() => {
             delete this.listPromise;
         });
-        
+
         const folderPath = this.path.slice();
         const fileStore = folderPath.shift() || null;
-        
+
         if (this.$state) {
             const params = {
                 fileStore,
@@ -228,7 +245,7 @@ class FileStoreBrowserController {
             };
             this.$state.go('.', params, {location: 'replace', notify: false});
         }
-        
+
         const settings = this.localStorageService.get(localStorageKey) || {};
         settings.fileStore = fileStore;
         settings.folderPath = folderPath;
@@ -236,7 +253,7 @@ class FileStoreBrowserController {
 
         return this.listPromise;
     }
-    
+
     filterFiles(file) {
         if (this.path.length) {
             const currentFolderPath = this.path.slice(1).join('/');
@@ -244,9 +261,9 @@ class FileStoreBrowserController {
                 return false;
             }
         }
-        
+
         if (file.directory) return true;
-    
+
         if (this.extensions) {
             const match = /\.([^\.]+)$/.exec(file.filename);
             if (match && this.extensionMap[match[1].toLowerCase()]) return true;
@@ -257,44 +274,44 @@ class FileStoreBrowserController {
             if (this.mimeTypeMap[file.mimeType.toLowerCase()]) return true;
             if (this.mimeTypeMap[file.mimeType.toLowerCase().replace(/\/.+$/, '/*')]) return true;
         }
-        
+
         return !this.extensions && !this.mimeTypes;
     }
-    
+
     filterAndReorderFiles(file) {
         const files = this.files.filter(this.filterFiles, this);
         this.filteredFiles = this.$filter('orderBy')(files, this.tableOrder);
     }
-    
+
     pathClicked(event, index) {
         let popNum = this.path.length - index - 1;
         while(popNum-- > 0) {
             this.path.pop();
         }
-    
+
         this.listFiles();
-        
+
         if (!this.multiple && this.selectDirectories && this.path.length) {
             this.ngModelCtrl.$setViewValue(this.maFileStore.toUrl(this.path, true));
         }
     }
-    
+
     fileClicked(event, file, index) {
         this.previewFile = file;
-        
+
         if (file.directory) {
             this.path.push(file.filename);
             this.listFiles();
-            
+
             if (!this.multiple && this.selectDirectories) {
                 this.ngModelCtrl.$setViewValue(file.url);
             }
             return;
         }
-        
+
         if (this.multiple && (event.ctrlKey || event.metaKey)) {
             this.lastIndex = index;
-            
+
             if (this.filenames[file.filename]) {
                 this.removeFileFromSelection(file);
             } else {
@@ -302,7 +319,7 @@ class FileStoreBrowserController {
             }
         } else if (this.multiple && event.shiftKey && isFinite(this.lastIndex)) {
             event.preventDefault();
-            
+
             let fromIndex, toIndex;
             if (this.lastIndex < index) {
                 fromIndex = this.lastIndex;
@@ -311,24 +328,24 @@ class FileStoreBrowserController {
                 fromIndex = index;
                 toIndex = this.lastIndex;
             }
-            
+
             this.setSelection(this.filteredFiles.slice(fromIndex, toIndex + 1));
         } else {
             this.lastIndex = index;
             this.setSelection([file]);
         }
-        
+
         this.setViewValueToSelection();
     }
-    
+
     setViewValueToSelection() {
         const urls = this.selectedFiles.map(file => {
             return file.url;
         });
-        
+
         this.ngModelCtrl.$setViewValue(this.multiple ? urls : urls[0]);
     }
-    
+
     setSelection(files) {
         this.selectedFiles = [];
         this.filenames = {};
@@ -336,29 +353,29 @@ class FileStoreBrowserController {
             this.addFileToSelection(files[i]);
         }
     }
-    
+
     addFileToSelection(file) {
         this.filenames[file.filename] = true;
         this.selectedFiles.push(file);
     }
-    
+
     removeFileFromSelection(file) {
         delete this.filenames[file.filename];
         const index = this.selectedFiles.indexOf(file);
         if (index >= 0)
             return this.selectedFiles.splice(index, 1);
     }
-    
+
     cancelClick(event) {
         event.stopPropagation();
     }
-    
+
     deleteFile(event, file) {
         event.stopPropagation();
-    
+
         const confirmPromise = this.maDialogHelper.confirm(event,
                 file.directory ? 'ui.app.areYouSureDeleteFolder' : 'ui.app.areYouSureDeleteFile');
-    
+
         confirmPromise.then(() => {
             return this.maFileStore.remove(this.path.concat(file.filename), true);
         }).then(() => {
@@ -380,19 +397,19 @@ class FileStoreBrowserController {
             this.maDialogHelper.toast(['ui.fileBrowser.errorDeleting', file.filename, msg], 'md-warn');
         });
     }
-    
+
     uploadFilesButtonClicked(event) {
         this.$element.maFind('input[type=file]')
             .val(null)
             .maClick();
     }
-    
+
     uploadFilesChanged(event, allowZip = true) {
         const files = event.target.files;
         if (!files.length) return;
         this.uploadFiles(files, allowZip);
     }
-    
+
     fileDropped(data) {
         const types = data.getDataTransferTypes();
         if (types.includes('Files')) {
@@ -402,13 +419,13 @@ class FileStoreBrowserController {
             }
         }
     }
-    
+
     uploadFiles(files, allowZip = true) {
         this.uploadPromise = this.$q.when().then(() => {
             if (allowZip && files.length === 1) {
                 const file = files[0];
                 if (file.type === 'application/x-zip-compressed' || file.type === 'application/zip' || file.name.substr(-4) === '.zip') {
-    
+
                     return this.maDialogHelper.confirm(event, 'ui.fileBrowser.confirmExtractZip').then(() => {
                         return this.maFileStore.uploadZipFile(this.path, file, this.overwrite);
                     }, angular.noop);
@@ -419,7 +436,7 @@ class FileStoreBrowserController {
             if (uploaded) {
                 return uploaded;
             }
-            
+
             return this.maFileStore.uploadFiles(this.path, files, this.overwrite);
         }).then((uploaded) => {
             // this code block is a little complicated, could just refresh the current folder?
@@ -437,11 +454,11 @@ class FileStoreBrowserController {
                     // file is in a subdirectory
                     const uploadedFilePath = file.folderPath.split('/');
                     const folderName = uploadedFilePath[this.path.length - 1];
-                    
+
                     const existingSubFolder = this.files.findIndex(f => f.filename === folderName);
                     if (existingSubFolder < 0)  {
                         // file upload created a subdirectory, add it to the view
-                        
+
                         this.files.push(new this.maFileStore.newFileStoreFile(this.path[0], {
                             directory: true,
                             filename: folderName,
@@ -453,14 +470,14 @@ class FileStoreBrowserController {
                     }
                 }
             });
-    
+
             this.filterAndReorderFiles();
-    
+
             if (uploaded.length) {
                 this.setSelection(uploaded.filter(this.filterFiles, this));
                 this.setViewValueToSelection();
                 this.previewFile = this.selectedFiles.length ? this.selectedFiles[0] : null;
-                
+
                 this.maDialogHelper.toast(['ui.fileBrowser.filesUploaded', uploaded.length]);
             }
         }, (error) => {
@@ -476,20 +493,20 @@ class FileStoreBrowserController {
             this.$element.maFind('input[type=file]').val('');
         });
     }
-    
+
     downloadFiles(event) {
         this.downloadPromise = this.maFileStore.downloadFiles(this.path).finally(() => {
             delete this.downloadPromise;
         });
     }
-    
+
     createNewFolder(event) {
         let folderName;
         this.maDialogHelper.prompt(event, 'ui.app.createNewFolder', null, 'ui.app.folderName').then(_folderName => {
             if (!_folderName) {
                 return this.$q.reject();
             }
-            
+
             folderName = _folderName;
             return this.maFileStore.createNewFolder(this.path, folderName);
         }).then(folder => {
@@ -506,14 +523,14 @@ class FileStoreBrowserController {
             }
         });
     }
-    
+
     createNewFile(event) {
         let fileName;
         this.maDialogHelper.prompt(event, 'ui.app.createNewFile', null, 'ui.app.fileName').then(_fileName => {
             if (!_fileName) {
                 return this.$q.reject();
             }
-            
+
             fileName = _fileName;
             return this.maFileStore.createNewFile(this.path, fileName);
         }).then(file => {
@@ -532,7 +549,7 @@ class FileStoreBrowserController {
             }
         });
     }
-    
+
     doEditFile(event, file) {
         if (event) {
             event.stopPropagation();
@@ -542,11 +559,11 @@ class FileStoreBrowserController {
             this.editFile = file;
             this.editText = textContent;
             this.editHash = sha512.sha512(textContent);
-            
+
             if (this.$state) {
                 this.$state.go('.', {editFile: file.filename}, {location: 'replace', notify: false});
             }
-            
+
             this.scriptEnginesPromise.then(() => {
                 this.supportedEngines = this.scriptEngines.filter(e => {
                     return e.mimeTypes.includes(file.mimeType) || e.extensions.includes(file.extension);
@@ -567,55 +584,55 @@ class FileStoreBrowserController {
             this.maDialogHelper.toast(['ui.fileBrowser.errorDownloading', file.filename, msg], 'md-warn');
         });
     }
-    
+
     saveEditFile(event) {
         const currentHash = sha512.sha512(this.editText);
         if (this.editHash === currentHash) {
             this.maDialogHelper.toast(['ui.fileBrowser.fileNotChanged', this.editFile.filename]);
             return this.$q.resolve();
         }
-        
+
         const files = [this.editFile.createFile(this.editText)];
         return this.maFileStore.uploadFiles(this.path, files, true).then(uploaded => {
             const index = this.files.indexOf(this.editFile);
-            
+
             this.editHash = currentHash;
             this.editFile = uploaded[0];
-            
+
             this.files.splice(index, 1, this.editFile);
             this.filterAndReorderFiles();
-            
+
             this.maDialogHelper.toast(['ui.fileBrowser.savedSuccessfully', this.editFile.filename]);
         }, error => {
             const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
             this.maDialogHelper.toast(['ui.fileBrowser.errorUploading', this.editFile.filename, msg], 'md-warn');
         });
     }
-    
+
     cancelEditFile(event) {
         if (!this.discardCheck.canDiscard()) {
             return;
         }
-        
+
         this.editFile = null;
         this.editText = null;
         this.editHash = null;
         this.supportedEngines = [];
         delete this.selectedEngine;
         delete this.aceEditor;
-        
+
         if (this.$state) {
             this.$state.go('.', {editFile: null}, {location: 'replace', notify: false});
         }
-        
+
         if (this.editingFile) {
             this.editingFile({$file: null, $save: null});
         }
     }
-    
+
     renameFile(event, file) {
         event.stopPropagation();
-    
+
         let newName;
         this.maDialogHelper.prompt(event, 'ui.app.renameOrMoveTo', null, 'ui.app.fileName', file.filename).then(_newName => {
             newName = _newName;
@@ -632,7 +649,7 @@ class FileStoreBrowserController {
                 this.files.splice(index, 1);
             }
             this.filterAndReorderFiles();
-            
+
             if (renamedFile.filename === file.filename) {
                 this.maDialogHelper.toast(['ui.fileBrowser.fileMoved', renamedFile.filename, renamedFile.fileStore + '/' + renamedFile.folderPath]);
             } else {
@@ -648,10 +665,10 @@ class FileStoreBrowserController {
             }
         });
     }
-    
+
     copyFile(event, file) {
         event.stopPropagation();
-    
+
         let newName;
         this.maDialogHelper.prompt(event, 'ui.app.copyFileTo', null, 'ui.app.fileName', file.filename).then(_newName => {
             newName = _newName;
@@ -674,7 +691,7 @@ class FileStoreBrowserController {
             }
         });
     }
-    
+
     selectionKeyDown(event) {
         if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey || ![38, 40].includes(event.keyCode)) return;
         if (this.selectedFiles.length > 1) return;
@@ -690,9 +707,9 @@ class FileStoreBrowserController {
             // down
             nextIndex = selectedFileIndex + 1;
         }
-        
+
         event.preventDefault();
-        
+
         const newSelectedFile = this.filteredFiles[nextIndex];
         if (newSelectedFile) {
             this.previewFile = newSelectedFile;
@@ -722,19 +739,19 @@ class FileStoreBrowserController {
             };
         }
     }
-    
+
     evalScript(event) {
         event.stopPropagation();
-        
+
         if (this.editFileModified()) {
             this.maDialogHelper.errorToast(['ui.fileBrowser.saveScriptBeforeEval']);
             return;
         }
-        
+
         this.scriptResult = {
             file: this.editFile
         };
-        
+
         if (this.aceEditor) {
             this.aceEditor.session.clearAnnotations();
         }
@@ -746,14 +763,14 @@ class FileStoreBrowserController {
             transformResponse: blob => blob
         }).then(response => {
             const result = response.data;
-            
+
             this.scriptResult.success = true;
             this.scriptResult.outputBlob = result;
             this.scriptResult.outputBlobUrl = URL.createObjectURL(result);
-            
+
             const isText = result.type.indexOf('text/') === 0;
             const isJson = result.type === 'application/json';
-            
+
             if (response.filename) {
                 this.scriptResult.outputFilename = response.filename;
             } else {
@@ -770,7 +787,7 @@ class FileStoreBrowserController {
                 }
                 this.scriptResult.outputFilename = outputFilename;
             }
-            
+
             if (isText || isJson) {
                 result.text().then(text => {
                     this.scriptResult.output = text;
@@ -778,7 +795,7 @@ class FileStoreBrowserController {
             }
         }, error => {
             this.scriptResult.error = error;
-            
+
             let filesMatch = false;
             if (error.data.fileName) {
                 const normalized = error.data.fileName.replace(/\\/g, '/');
@@ -788,7 +805,7 @@ class FileStoreBrowserController {
                     filesMatch = error.data.fileName === this.editFile.filename;
                 }
             }
-            
+
             if (this.aceEditor && error.data && error.data.lineNumber != null && filesMatch) {
                 this.aceEditor.session.setAnnotations([{
                     row: error.data.lineNumber - 1,
@@ -799,11 +816,11 @@ class FileStoreBrowserController {
             }
         }).finally(() => delete this.scriptResult.evalPromise);
     }
-    
+
     canEvalScript(file) {
         return file.mimeType != null && this.scriptMimes.has(file.mimeType) || file.extension != null && this.scriptExtensions.has(file.extension);
     }
-    
+
     editFileModified() {
         const currentHash = sha512.sha512(this.editText);
         return this.editHash !== currentHash;

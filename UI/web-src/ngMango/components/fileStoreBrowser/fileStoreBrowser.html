@@ -11,7 +11,7 @@
 		<span ng-bind="$ctrl.editFile.filename"></span>
 	</span>
 	<span flex></span>
-    
+
     <md-input-container class="ma-engine-selector" ng-if-start="$ctrl.editFile && $ctrl.canEvalScript($ctrl.editFile)">
         <md-select name="scriptEngine" ng-model="$ctrl.selectedEngine" required>
             <md-option ng-repeat="engine in $ctrl.supportedEngines" ng-value="engine" ng-bind="engine.engineName"></md-option>
@@ -29,8 +29,8 @@
 		<md-icon>save</md-icon>
 		<md-tooltip md-autohide ma-tr="common.save"></md-tooltip>
 	</md-button>
-    
-    <div ng-if-start="!$ctrl.editFile">
+
+    <div ng-if-start="!$ctrl.editFile && $ctrl.hasFileStoreWritePermission()">
         <md-checkbox ng-model="$ctrl.overwrite" class="ma-checkbox-top-label ma-checkbox-centered">
             <span ma-tr="ui.fileBrowser.overwrite"></span>
         </md-checkbox>
@@ -131,11 +131,11 @@
         <span ng-if="$ctrl.scriptResult.success" ma-tr="ui.fileBrowser.scriptSuccess" ma-tr-args="[$ctrl.scriptResult.file.filename]"></span>
         <span ng-if="$ctrl.scriptResult.error" ma-tr="ui.fileBrowser.errorEvaluatingScript" ma-tr-args="[$ctrl.scriptResult.file.filename]"></span>
     </span>
-    
+
     <div ng-if="$ctrl.scriptResult.evalPromise">
         <md-progress-linear md-mode="indeterminate"></md-progress-linear>
     </div>
-    
+
     <div ng-if="$ctrl.scriptResult.success">
         <div layout layout-align="start center">
             <md-button class="md-raised" ng-if="$ctrl.scriptResult.outputBlob.size"
@@ -147,7 +147,7 @@
         </div>
         <pre class="ma-script-response-text" ng-bind="$ctrl.scriptResult.output"></pre>
     </div>
-    
+
     <div ng-if="$ctrl.scriptResult.error" class="ma-color-warn">
         <pre ng-bind="$ctrl.scriptResult.error.mangoStatusText"></pre>
         <pre ng-bind="$ctrl.scriptResult.error.data.scriptStackTrace"></pre>
