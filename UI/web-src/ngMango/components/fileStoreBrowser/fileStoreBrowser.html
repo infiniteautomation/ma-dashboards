@@ -27,7 +27,7 @@
 		<md-icon>cancel</md-icon>
 		<md-tooltip md-autohide ma-tr="common.cancel"></md-tooltip>
 	</md-button>
-	<md-button ng-if-end class="md-icon-button md-primary md-raised" ng-click="$ctrl.saveEditFile($event)">
+	<md-button ng-if-end ng-if="$ctrl.hasFileStoreWritePermission()" class="md-icon-button md-primary md-raised" ng-click="$ctrl.saveEditFile($event)">
 		<md-icon>save</md-icon>
 		<md-tooltip md-autohide ma-tr="common.save"></md-tooltip>
 	</md-button>
@@ -92,14 +92,15 @@
 		        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
 		        <td md-cell layout layout-align="end center">
 		        	<md-button ng-if="!$ctrl.disableEdit && file.editMode" class="md-icon-button" ng-click="$ctrl.doEditFile($event, file)">
-		        		<md-icon>edit</md-icon>
-		        		<md-tooltip md-autohide ma-tr="common.edit"></md-tooltip>
+		        		<md-icon>{{$ctrl.hasFileStoreWritePermission() ? 'edit' : 'visibility'}}</md-icon>
+		        		<md-tooltip md-autohide ma-tr="{{$ctrl.hasFileStoreWritePermission() ? 'common.edit' : 'common.view'}}"></md-tooltip>
 		        	</md-button>
 		        	<md-button ng-if="!file.directory" download ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)">
 		        		<md-icon>file_download</md-icon>
 		        		<md-tooltip md-autohide ma-tr="common.download"></md-tooltip>
 		        	</md-button>
-		        	<md-button ng-if="!file.directory" class="md-icon-button" ng-click="$ctrl.copyFile($event, file)">
+
+		        	<md-button ng-if-start="$ctrl.hasFileStoreWritePermission()" class="md-icon-button" ng-click="$ctrl.copyFile($event, file)">
 		        		<md-icon>content_copy</md-icon>
 		        		<md-tooltip md-autohide ma-tr="common.copy"></md-tooltip>
 		        	</md-button>
@@ -107,7 +108,7 @@
 		        		<md-icon>arrow_forward</md-icon>
 		        		<md-tooltip md-autohide ma-tr="ui.app.renameOrMove"></md-tooltip>
 		        	</md-button>
-		        	<md-button class="md-icon-button md-warn" ng-click="$ctrl.deleteFile($event, file)">
+		        	<md-button ng-if-end class="md-icon-button md-warn" ng-click="$ctrl.deleteFile($event, file)">
 		        		<md-icon>delete</md-icon>
 		        		<md-tooltip md-autohide ma-tr="common.delete"></md-tooltip>
 		        	</md-button>
