@@ -3,16 +3,16 @@
 		<span ng-click="!$ctrl.editFile && $ctrl.pathClicked($event, -1)" ng-disabled="$ctrl.editFile" ma-tr="ui.app.fileStores"></span>
 		<span ng-if="$ctrl.path.length"><md-icon>chevron_right</md-icon></span>
 	</span>
-	<span ng-repeat="directory in $ctrl.path track by $index" layout layout-align="start center">
+    <span ng-repeat="directory in $ctrl.path track by $index" layout layout-align="start center">
 		<span ng-click="!$ctrl.editFile && $ctrl.pathClicked($event, $index)" ng-disabled="$ctrl.editFile">
 			<span ng-bind="$ctrl.fileStore && $index === 0 ? $ctrl.fileStore.name : directory"></span>
 		</span>
 		<span ng-if="!$last || $ctrl.editFile"><md-icon>chevron_right</md-icon></span>
 	</span>
-	<span ng-if="$ctrl.editFile" layout layout-align="start center">
+    <span ng-if="$ctrl.editFile" layout layout-align="start center">
 		<span ng-bind="$ctrl.editFile.filename"></span>
 	</span>
-	<span flex></span>
+    <span flex></span>
 
     <md-input-container class="ma-engine-selector" ng-if-start="$ctrl.editFile && $ctrl.canEvalScript($ctrl.editFile)">
         <md-select name="scriptEngine" ng-model="$ctrl.selectedEngine" required>
@@ -23,14 +23,14 @@
         <md-icon>play_arrow</md-icon>
         <md-tooltip md-autohide ma-tr="script.evaluateScript"></md-tooltip>
     </md-button>
-	<md-button ng-if-start="$ctrl.editFile" class="md-icon-button md-warn md-raised" ng-click="$ctrl.cancelEditFile($event)">
-		<md-icon>cancel</md-icon>
-		<md-tooltip md-autohide ma-tr="common.cancel"></md-tooltip>
-	</md-button>
-	<md-button ng-if-end ng-if="$ctrl.hasFileStoreWritePermission()" class="md-icon-button md-primary md-raised" ng-click="$ctrl.saveEditFile($event)">
-		<md-icon>save</md-icon>
-		<md-tooltip md-autohide ma-tr="common.save"></md-tooltip>
-	</md-button>
+    <md-button ng-if-start="$ctrl.editFile" class="md-icon-button md-warn md-raised" ng-click="$ctrl.cancelEditFile($event)">
+        <md-icon>cancel</md-icon>
+        <md-tooltip md-autohide ma-tr="common.cancel"></md-tooltip>
+    </md-button>
+    <md-button ng-if-end ng-if="$ctrl.hasFileStoreWritePermission()" class="md-icon-button md-primary md-raised" ng-click="$ctrl.saveEditFile($event)">
+        <md-icon>save</md-icon>
+        <md-tooltip md-autohide ma-tr="common.save"></md-tooltip>
+    </md-button>
 
     <div ng-if-start="!$ctrl.editFile && $ctrl.hasFileStoreWritePermission()">
         <md-checkbox ng-model="$ctrl.overwrite" class="ma-checkbox-top-label ma-checkbox-centered">
@@ -38,94 +38,94 @@
         </md-checkbox>
         <md-tooltip ma-tr="ui.fileBrowser.overwriteWhenUploading"></md-tooltip>
     </div>
-	<md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.createNewFolder($event)" ng-disabled="!$ctrl.path.length">
-		<md-icon>create_new_folder</md-icon>
-		<md-tooltip md-autohide ma-tr="ui.app.createNewFolder"></md-tooltip>
-	</md-button>
-	<md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.createNewFile($event)" ng-disabled="!$ctrl.path.length">
-		<md-icon>add</md-icon>
-		<md-tooltip md-autohide ma-tr="ui.app.createNewFile"></md-tooltip>
-	</md-button>
-	<md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.uploadFilesButtonClicked($event)" ng-disabled="!$ctrl.path.length">
-		<md-icon>file_upload</md-icon>
-		<md-tooltip md-autohide ma-tr="ui.app.uploadFiles"></md-tooltip>
-	</md-button>
+    <md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.createNewFolder($event)" ng-disabled="!$ctrl.path.length">
+        <md-icon>create_new_folder</md-icon>
+        <md-tooltip md-autohide ma-tr="ui.app.createNewFolder"></md-tooltip>
+    </md-button>
+    <md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.createNewFile($event)" ng-disabled="!$ctrl.path.length">
+        <md-icon>add</md-icon>
+        <md-tooltip md-autohide ma-tr="ui.app.createNewFile"></md-tooltip>
+    </md-button>
+    <md-button class="md-icon-button md-primary md-raised" ng-click="$ctrl.uploadFilesButtonClicked($event)" ng-disabled="!$ctrl.path.length">
+        <md-icon>file_upload</md-icon>
+        <md-tooltip md-autohide ma-tr="ui.app.uploadFiles"></md-tooltip>
+    </md-button>
     <md-button ng-if-end class="md-icon-button md-primary md-raised" ng-click="$ctrl.downloadFiles($event)" ng-disabled="!$ctrl.path.length || !$ctrl.filteredFiles.length || $ctrl.downloadPromise">
         <md-icon ng-if="!$ctrl.downloadPromise">archive</md-icon>
         <md-progress-circular ng-if="$ctrl.downloadPromise" md-mode="indeterminate" md-diameter="24"></md-progress-circular>
         <md-tooltip md-autohide ma-tr="ui.app.downloadFiles"></md-tooltip>
     </md-button>
-	<input style="display:none" type="file" multiple ng-model="dummy" ma-change="$ctrl.uploadFilesChanged($event)" ng-attr-accept="{{$ctrl.acceptAttribute}}">
+    <input style="display:none" type="file" multiple ng-model="dummy" ma-change="$ctrl.uploadFilesChanged($event)" ng-attr-accept="{{$ctrl.acceptAttribute}}">
 </div>
 
 <md-progress-linear ng-show="$ctrl.listPromise || $ctrl.uploadPromise" class="md-primary" md-mode="indeterminate"></md-progress-linear>
 
 <div flex layout="row" layout-xs="column" layout-sm="column" ng-if="!$ctrl.editFile"
-        ma-dropzone ma-drag-enter="dragOver = true" ma-drag-leave="dragOver = false" ma-drop="dragOver = false; $ctrl.fileDropped($data)"
-        ng-class="{'ma-drag-over': dragOver}"
-        ng-keydown="$ctrl.selectionKeyDown($event)">
-	<md-content flex class="ma-file-store-browser-files">
-		<md-table-container>
-		  <table md-table md-row-select="false">
-		    <thead md-head md-order="$ctrl.tableOrder" md-on-reorder="$ctrl.filterAndReorderFilesBound">
-		      <tr md-row>
-		        <th md-column md-order-by="directory"></th>
-		        <th md-column md-order-by="filename" ma-tr="ui.app.filename"></th>
-		        <th md-column md-order-by="size" ma-tr="ui.app.fileSize"></th>
-		        <th md-column md-order-by="mimeType" ma-tr="ui.app.fileType"></th>
-		        <th md-column md-order-by="lastModified" ma-tr="ui.app.lastModified"></th>
-		        <th md-column></th>
-		      </tr>
-		    </thead>
-		    <tbody md-body>
-		      <tr md-row ng-repeat="file in $ctrl.filteredFiles track by file.filename"
-		      		ng-click="$ctrl.fileClicked($event, file, $index)"
-		      		ng-class="{'ma-file-selected': $ctrl.filenames[file.filename]}"
-		      		class="ma-no-user-select">
-		        <td md-cell>
-		        	<md-icon ng-if="file.directory">folder</md-icon>
-		        	<md-icon ng-if="!file.directory">attachment</md-icon>
-		        </td>
-		        <td md-cell ng-bind="file.store ? file.store.name : file.filename"></td>
-		        <td md-cell><span ng-if="!file.directory" ng-bind="file.size | maBytes"></span></td>
-		        <td md-cell ng-bind="file.mimeType"></td>
-		        <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
-		        <td md-cell layout layout-align="end center">
-		        	<md-button ng-if="!$ctrl.disableEdit && file.editMode" class="md-icon-button" ng-click="$ctrl.doEditFile($event, file)">
-		        		<md-icon>{{$ctrl.hasFileStoreWritePermission() ? 'edit' : 'visibility'}}</md-icon>
-		        		<md-tooltip md-autohide ma-tr="{{$ctrl.hasFileStoreWritePermission() ? 'common.edit' : 'common.view'}}"></md-tooltip>
-		        	</md-button>
-		        	<md-button ng-if="!file.directory" download ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)">
-		        		<md-icon>file_download</md-icon>
-		        		<md-tooltip md-autohide ma-tr="common.download"></md-tooltip>
-		        	</md-button>
+     ma-dropzone ma-drag-enter="dragOver = true" ma-drag-leave="dragOver = false" ma-drop="dragOver = false; $ctrl.fileDropped($data)"
+     ng-class="{'ma-drag-over': dragOver}"
+     ng-keydown="$ctrl.selectionKeyDown($event)">
+    <md-content flex class="ma-file-store-browser-files">
+        <md-table-container>
+            <table md-table md-row-select="false">
+                <thead md-head md-order="$ctrl.tableOrder" md-on-reorder="$ctrl.filterAndReorderFilesBound">
+                <tr md-row>
+                    <th md-column md-order-by="directory"></th>
+                    <th md-column md-order-by="filename" ma-tr="ui.app.filename"></th>
+                    <th md-column md-order-by="size" ma-tr="ui.app.fileSize"></th>
+                    <th md-column md-order-by="mimeType" ma-tr="ui.app.fileType"></th>
+                    <th md-column md-order-by="lastModified" ma-tr="ui.app.lastModified"></th>
+                    <th md-column></th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="file in $ctrl.filteredFiles track by file.filename"
+                    ng-click="$ctrl.fileClicked($event, file, $index)"
+                    ng-class="{'ma-file-selected': $ctrl.filenames[file.filename]}"
+                    class="ma-no-user-select">
+                    <td md-cell>
+                        <md-icon ng-if="file.directory">folder</md-icon>
+                        <md-icon ng-if="!file.directory">attachment</md-icon>
+                    </td>
+                    <td md-cell ng-bind="file.store ? file.store.name : file.filename"></td>
+                    <td md-cell><span ng-if="!file.directory" ng-bind="file.size | maBytes"></span></td>
+                    <td md-cell ng-bind="file.mimeType"></td>
+                    <td md-cell><span ng-if="file.lastModified" ng-bind="file.lastModified | maDate"></span></td>
+                    <td md-cell layout layout-align="end center">
+                        <md-button ng-if="!$ctrl.disableEdit && file.editMode" class="md-icon-button" ng-click="$ctrl.doEditFile($event, file)">
+                            <md-icon>{{$ctrl.hasFileStoreWritePermission() ? 'edit' : 'visibility'}}</md-icon>
+                            <md-tooltip md-autohide ma-tr="{{$ctrl.hasFileStoreWritePermission() ? 'common.edit' : 'common.view'}}"></md-tooltip>
+                        </md-button>
+                        <md-button ng-if="!file.directory" download ng-href="{{file.url}}" class="md-icon-button" ng-click="$ctrl.cancelClick($event)">
+                            <md-icon>file_download</md-icon>
+                            <md-tooltip md-autohide ma-tr="common.download"></md-tooltip>
+                        </md-button>
 
-		        	<md-button ng-if-start="$ctrl.hasFileStoreWritePermission()" class="md-icon-button" ng-click="$ctrl.copyFile($event, file)">
-		        		<md-icon>content_copy</md-icon>
-		        		<md-tooltip md-autohide ma-tr="common.copy"></md-tooltip>
-		        	</md-button>
-		        	<md-button class="md-icon-button" ng-click="$ctrl.renameFile($event, file)">
-		        		<md-icon>arrow_forward</md-icon>
-		        		<md-tooltip md-autohide ma-tr="ui.app.renameOrMove"></md-tooltip>
-		        	</md-button>
-		        	<md-button ng-if-end class="md-icon-button md-warn" ng-click="$ctrl.deleteFile($event, file)">
-		        		<md-icon>delete</md-icon>
-		        		<md-tooltip md-autohide ma-tr="common.delete"></md-tooltip>
-		        	</md-button>
-		        </td>
-		      </tr>
-		    </tbody>
-		  </table>
-		</md-table-container>
-	</md-content>
-	<div ng-if="$ctrl.preview" flex-order-xs="-1" flex-order-sm="-1" class="ma-file-store-browser-preview" layout layout-align="center center">
-		<img ng-if="$ctrl.previewFile.mimeType.indexOf('image/') === 0" ng-src="{{$ctrl.previewFile.url}}">
-		<div ng-if="$ctrl.previewFile.mimeType.indexOf('image/') !== 0" class="ma-no-preview" layout layout-align="center center" ma-tr="ui.fileBrowser.noPreviewAvailable"></div>
-	</div>
+                        <md-button ng-if-start="$ctrl.hasFileStoreWritePermission()" class="md-icon-button" ng-click="$ctrl.copyFile($event, file)">
+                            <md-icon>content_copy</md-icon>
+                            <md-tooltip md-autohide ma-tr="common.copy"></md-tooltip>
+                        </md-button>
+                        <md-button class="md-icon-button" ng-click="$ctrl.renameFile($event, file)">
+                            <md-icon>arrow_forward</md-icon>
+                            <md-tooltip md-autohide ma-tr="ui.app.renameOrMove"></md-tooltip>
+                        </md-button>
+                        <md-button ng-if-end class="md-icon-button md-warn" ng-click="$ctrl.deleteFile($event, file)">
+                            <md-icon>delete</md-icon>
+                            <md-tooltip md-autohide ma-tr="common.delete"></md-tooltip>
+                        </md-button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div ng-if="$ctrl.preview" flex-order-xs="-1" flex-order-sm="-1" class="ma-file-store-browser-preview" layout layout-align="center center">
+        <img ng-if="$ctrl.previewFile.mimeType.indexOf('image/') === 0" ng-src="{{$ctrl.previewFile.url}}">
+        <div ng-if="$ctrl.previewFile.mimeType.indexOf('image/') !== 0" class="ma-no-preview" layout layout-align="center center" ma-tr="ui.fileBrowser.noPreviewAvailable"></div>
+    </div>
 </div>
 
 <div flex layout="column" ng-if="$ctrl.editFile">
-	<ma-ace-editor flex ng-model="$ctrl.editText" mode="{{$ctrl.editFile.editMode}}" show-gutter="true" editor-loaded="$ctrl.aceEditor = $editor"></ma-ace-editor>
+    <ma-ace-editor flex ng-model="$ctrl.editText" mode="{{$ctrl.editFile.editMode}}" show-gutter="true" editor-loaded="$ctrl.aceEditor = $editor"></ma-ace-editor>
 </div>
 
 <ma-dialog show-dialog="$ctrl.scriptResult">
@@ -142,8 +142,8 @@
     <div ng-if="$ctrl.scriptResult.success">
         <div layout layout-align="start center">
             <md-button class="md-raised" ng-if="$ctrl.scriptResult.outputBlob.size"
-                    ng-href="{{$ctrl.scriptResult.outputBlobUrl}}"
-                    download="{{$ctrl.scriptResult.outputFilename}}">
+                       ng-href="{{$ctrl.scriptResult.outputBlobUrl}}"
+                       download="{{$ctrl.scriptResult.outputFilename}}">
                 <span ma-tr="common.download"></span>
             </md-button>
             <span ma-tr="script.responseSizeAndType" ma-tr-args="[$ctrl.scriptResult.outputBlob.type, ($ctrl.scriptResult.outputBlob.size | maBytes)]"></span>
