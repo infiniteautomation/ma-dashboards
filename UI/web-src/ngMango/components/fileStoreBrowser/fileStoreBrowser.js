@@ -826,6 +826,29 @@ class FileStoreBrowserController {
         const currentHash = sha512.sha512(this.editText);
         return this.editHash !== currentHash;
     }
+
+    deleteFileStore(event, file) {
+        event.stopPropagation();
+
+        this.maDialogHelper.confirm(event, 'ui.app.filestore.confirmDelete').then(() => {
+            // TODO Mango 4.0 recursive param
+            return file.store.delete();
+        }).then(() => {
+            const index = this.files.indexOf(file);
+            if (index >= 0) {
+                this.files.splice(index, 1);
+            }
+            this.filterAndReorderFiles();
+            if (this.removeFileFromSelection(file)) {
+                this.setViewValueToSelection();
+            }
+            this.maDialogHelper.toast(['ui.fileBrowser.deletedSuccessfully', file.filename]);
+        }, error => {
+            if (!error) return; // dialog cancelled
+            const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
+            this.maDialogHelper.toast(['ui.fileBrowser.errorDeleting', file.filename, msg], 'md-warn');
+        });
+    }
 }
 
 const fileStoreBrowser = {

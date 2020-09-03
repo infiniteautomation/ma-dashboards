@@ -58,7 +58,7 @@
     <input style="display:none" type="file" multiple ng-model="dummy" ma-change="$ctrl.uploadFilesChanged($event)" ng-attr-accept="{{$ctrl.acceptAttribute}}">
 </div>
 
-<md-progress-linear ng-show="$ctrl.listPromise || $ctrl.uploadPromise" class="md-primary" md-mode="indeterminate"></md-progress-linear>
+<md-progress-linear ng-class="{'ma-hide': !($ctrl.listPromise || $ctrl.uploadPromise)}" class="md-primary" md-mode="indeterminate"></md-progress-linear>
 
 <div flex layout="row" layout-xs="column" layout-sm="column" ng-if="!$ctrl.editFile"
      ma-dropzone ma-drag-enter="dragOver = true" ma-drag-leave="dragOver = false" ma-drop="dragOver = false; $ctrl.fileDropped($data)"
@@ -99,7 +99,6 @@
                             <md-icon>file_download</md-icon>
                             <md-tooltip md-autohide ma-tr="common.download"></md-tooltip>
                         </md-button>
-
                         <md-button ng-if-start="$ctrl.hasFileStoreWritePermission()" class="md-icon-button" ng-click="$ctrl.copyFile($event, file)">
                             <md-icon>content_copy</md-icon>
                             <md-tooltip md-autohide ma-tr="common.copy"></md-tooltip>
@@ -109,6 +108,10 @@
                             <md-tooltip md-autohide ma-tr="ui.app.renameOrMove"></md-tooltip>
                         </md-button>
                         <md-button ng-if-end class="md-icon-button md-warn" ng-click="$ctrl.deleteFile($event, file)">
+                            <md-icon>delete</md-icon>
+                            <md-tooltip md-autohide ma-tr="common.delete"></md-tooltip>
+                        </md-button>
+                        <md-button ng-if="!$ctrl.path.length && !file.store.fromDefinition" class="md-icon-button md-warn" ng-click="$ctrl.deleteFileStore($event, file)">
                             <md-icon>delete</md-icon>
                             <md-tooltip md-autohide ma-tr="common.delete"></md-tooltip>
                         </md-button>
