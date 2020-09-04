@@ -42,6 +42,17 @@ function fileStore($http, maUtil, $q, RestResource) {
             return userFileStoreUrl;
         }
 
+        static get xidPrefix() {
+            return 'FS_';
+        }
+
+        static get defaultProperties() {
+            return {
+                readPermission: [],
+                writePermission: []
+            };
+        }
+
         static toUrl(pathArray, isDirectory) {
             const parts = pathArray.map(function(part) {
                 return encodeURIComponent(part);
