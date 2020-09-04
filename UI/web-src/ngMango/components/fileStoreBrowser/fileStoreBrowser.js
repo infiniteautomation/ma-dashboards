@@ -374,10 +374,17 @@ class FileStoreBrowserController {
     deleteFile(event, file) {
         event.stopPropagation();
 
-        const confirmPromise = this.maDialogHelper.confirm(event,
-                file.directory ? 'ui.app.areYouSureDeleteFolder' : 'ui.app.areYouSureDeleteFile');
-
-        confirmPromise.then(() => {
+        let messageKey;
+        if (file.store) {
+            messageKey = 'ui.app.filestore.confirmDelete';
+        } else {
+            messageKey = file.directory ? 'ui.app.areYouSureDeleteFolder' : 'ui.app.areYouSureDeleteFile';
+        }
+        this.maDialogHelper.confirm(event, messageKey).then(() => {
+            if (file.store) {
+                // TODO Mango 4.0 recursive param
+                return file.store.delete();
+            }
             return this.maFileStore.remove(this.path.concat(file.filename), true);
         }).then(() => {
             const index = this.files.indexOf(file);
@@ -825,29 +832,6 @@ class FileStoreBrowserController {
     editFileModified() {
         const currentHash = sha512.sha512(this.editText);
         return this.editHash !== currentHash;
-    }
-
-    deleteFileStore(event, file) {
-        event.stopPropagation();
-
-        this.maDialogHelper.confirm(event, 'ui.app.filestore.confirmDelete').then(() => {
-            // TODO Mango 4.0 recursive param
-            return file.store.delete();
-        }).then(() => {
-            const index = this.files.indexOf(file);
-            if (index >= 0) {
-                this.files.splice(index, 1);
-            }
-            this.filterAndReorderFiles();
-            if (this.removeFileFromSelection(file)) {
-                this.setViewValueToSelection();
-            }
-            this.maDialogHelper.toast(['ui.fileBrowser.deletedSuccessfully', file.filename]);
-        }, error => {
-            if (!error) return; // dialog cancelled
-            const msg = 'HTTP ' + error.status + ' - ' + error.data.localizedMessage;
-            this.maDialogHelper.toast(['ui.fileBrowser.errorDeleting', file.filename, msg], 'md-warn');
-        });
     }
 }
 

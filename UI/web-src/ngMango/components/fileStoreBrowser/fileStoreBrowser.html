@@ -111,7 +111,7 @@
                             <md-icon>delete</md-icon>
                             <md-tooltip md-autohide ma-tr="common.delete"></md-tooltip>
                         </md-button>
-                        <md-button ng-if="!$ctrl.path.length && !file.store.fromDefinition" class="md-icon-button md-warn" ng-click="$ctrl.deleteFileStore($event, file)">
+                        <md-button ng-if="!$ctrl.path.length && !file.store.builtIn" class="md-icon-button md-warn" ng-click="$ctrl.deleteFile($event, file)">
                             <md-icon>delete</md-icon>
                             <md-tooltip md-autohide ma-tr="common.delete"></md-tooltip>
                         </md-button>
