@@ -41,8 +41,8 @@ class FileStoreEditorController {
             this.form.$setSubmitted();
         }
 
-        this.fileStore.save().then(() => {
-            this.ngModelCtrl.$setViewValue(this.fileStore);
+        this.fileStore.save().then(fileStore => {
+            this.ngModelCtrl.$setViewValue(fileStore);
             this.render();
         }).catch(error => {
             if (error) {

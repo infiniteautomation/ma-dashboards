@@ -217,11 +217,7 @@ class FileStoreBrowserController {
             delete this.fileStore;
             this.listPromise = this.maFileStore.query().then(fileStores => {
                     this.files = fileStores.map(store => {
-                        return {
-                            store: store,
-                            filename: store.xid,
-                            directory: true
-                        };
+                        return this.storeToFile(store);
                     });
                     this.filterAndReorderFiles();
                     return this.filteredFiles;
@@ -835,14 +831,54 @@ class FileStoreBrowserController {
     }
 
     createNewFileStore(event) {
-        this.fileStoreToEdit = new this.maFileStore();
-        this.showFileStoreEditDialog = {targetEvent: event};
+        this.showFileStoreEditDialog = {
+            targetEvent: event,
+            fileStore: new this.maFileStore()
+        };
     }
 
-    editFileStore(event, fileStore) {
+    editFileStore(event, file) {
         event.stopPropagation();
-        this.fileStoreToEdit = fileStore;
-        this.showFileStoreEditDialog = {targetEvent: event};
+        this.showFileStoreEditDialog = {
+            targetEvent: event,
+            file,
+            fileStore: file.store
+        };
+    }
+
+    fileStoreSaved() {
+        const file = this.showFileStoreEditDialog.file;
+        const fileStore = this.showFileStoreEditDialog.fileStore;
+
+        if (file && !fileStore) {
+            // deleted
+            const index = this.files.indexOf(file);
+            if (index >= 0) {
+                this.files.splice(index, 1);
+            }
+        } else if (file && fileStore) {
+            // updated, ensure filename updated
+            file.filename = fileStore.xid;
+            file.store = fileStore;
+        } else if (fileStore) {
+            // created
+            this.files.push(this.storeToFile(fileStore));
+        }
+        this.filterAndReorderFiles();
+
+        delete this.showFileStoreEditDialog;
+    }
+
+    fileStoreEditorCancelled() {
+        delete this.showFileStoreEditDialog;
+    }
+
+    storeToFile(store) {
+        return {
+            store: store,
+            filename: store.xid,
+            directory: true
+        };
     }
 }
 

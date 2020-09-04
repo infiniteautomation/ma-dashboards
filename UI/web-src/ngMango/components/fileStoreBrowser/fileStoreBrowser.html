@@ -115,7 +115,7 @@
                             <md-icon>delete</md-icon>
                             <md-tooltip md-autohide ma-tr="common.delete"></md-tooltip>
                         </md-button>
-                        <md-button ng-if-start="!$ctrl.path.length && !file.store.builtIn" class="md-icon-button" ng-click="$ctrl.editFileStore($event, file.store)">
+                        <md-button ng-if-start="!$ctrl.path.length && !file.store.builtIn" class="md-icon-button" ng-click="$ctrl.editFileStore($event, file)">
                             <md-icon>edit</md-icon>
                             <md-tooltip md-autohide ma-tr="common.edit"></md-tooltip>
                         </md-button>
@@ -168,11 +168,11 @@
     </div>
 </ma-dialog>
 
-<ma-dialog show-dialog="$ctrl.showFileStoreEditDialog" on-close="$ctrl.showFileStoreEditDialog = null; $ctrl.fileStoreToEdit = null">
+<ma-dialog show-dialog="$ctrl.showFileStoreEditDialog" on-hide="$ctrl.fileStoreSaved()" on-cancel="$ctrl.fileStoreEditorCancelled()">
     <span class="ma-dialog-title">
-        <span ng-if="$ctrl.fileStoreToEdit.isNew()" ma-tr="filestore.new"></span>
-        <span ng-if="!$ctrl.fileStoreToEdit.isNew()" ma-tr="filestore.edit"></span>
+        <span ng-if="$ctrl.showFileStoreEditDialog.fileStore.isNew()" ma-tr="filestore.new"></span>
+        <span ng-if="!$ctrl.showFileStoreEditDialog.fileStore.isNew()" ma-tr="filestore.edit"></span>
     </span>
 
-    <ma-file-store-editor ng-model="$ctrl.fileStoreToEdit" ng-change="$dialog.hide()"></ma-file-store-editor>
+    <ma-file-store-editor ng-model="$ctrl.showFileStoreEditDialog.fileStore" ng-change="$dialog.hide()"></ma-file-store-editor>
 </ma-dialog>
