@@ -1,0 +1,45 @@
+<div ng-form="$ctrl.form" ma-validation-messages="$ctrl.validationMessages" novalidate>
+    <div layout="row" layout-align="space-between start" layout-wrap class="ma-inputs-container">
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>label</md-icon>
+            <label ma-tr="common.name"></label>
+            <input name="name" ng-model="$ctrl.fileStore.name" required>
+            <div ng-messages="$ctrl.form.name.$error">
+                <div ng-message="required" ma-tr="validate.required"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.form.name.validationMessage"></div>
+            </div>
+        </md-input-container>
+
+        <md-input-container flex="100" flex-gt-md="50">
+            <md-icon>label</md-icon>
+            <label ma-tr="common.xid"></label>
+            <input name="xid" ng-model="$ctrl.fileStore.xid" required>
+            <div ng-messages="$ctrl.form.xid.$error">
+                <div ng-message="required" ma-tr="validate.required"></div>
+                <div ng-message="validationMessage" ng-bind="$ctrl.form.xid.validationMessage"></div>
+            </div>
+        </md-input-container>
+    </div>
+
+    <ma-permission-editor-container>
+        <ma-permission-editor name="readPermission" ng-model="$ctrl.fileStore.readPermission">
+            <span ma-tr="filestore.readPermission"></span>
+        </ma-permission-editor>
+        <ma-permission-editor name="writePermission" ng-model="$ctrl.fileStore.writePermission">
+            <span ma-tr="filestore.writePermission"></span>
+        </ma-permission-editor>
+    </ma-permission-editor-container>
+
+    <div class="ma-action-buttons">
+        <md-button class="md-raised md-primary" type="submit" ng-click="$ctrl.save($event)">
+            <md-icon>save</md-icon> <span ma-tr="common.save"></span>
+        </md-button>
+        <md-button class="md-raised" ng-click="$ctrl.revert($event)" ng-disabled="$ctrl.form.$pristine">
+            <md-icon>undo</md-icon>
+            <span ma-tr="ui.app.revert"></span>
+        </md-button>
+        <md-button class="md-raised md-warn" ng-click="$ctrl.delete($event)">
+            <md-icon>delete</md-icon> <span ma-tr="common.delete"></span>
+        </md-button>
+    </div>
+</div>

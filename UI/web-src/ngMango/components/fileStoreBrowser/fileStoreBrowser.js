@@ -376,7 +376,7 @@ class FileStoreBrowserController {
 
         let messageKey;
         if (file.store) {
-            messageKey = 'ui.app.filestore.confirmDelete';
+            messageKey = 'ui.filestore.confirmDelete';
         } else {
             messageKey = file.directory ? 'ui.app.areYouSureDeleteFolder' : 'ui.app.areYouSureDeleteFile';
         }
@@ -832,6 +832,17 @@ class FileStoreBrowserController {
     editFileModified() {
         const currentHash = sha512.sha512(this.editText);
         return this.editHash !== currentHash;
+    }
+
+    createNewFileStore(event) {
+        this.fileStoreToEdit = new this.maFileStore();
+        this.showFileStoreEditDialog = {targetEvent: event};
+    }
+
+    editFileStore(event, fileStore) {
+        event.stopPropagation();
+        this.fileStoreToEdit = fileStore;
+        this.showFileStoreEditDialog = {targetEvent: event};
     }
 }
 
