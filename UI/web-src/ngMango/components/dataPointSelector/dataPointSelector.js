@@ -75,8 +75,8 @@ class DataPointSelectorController extends TableController {
         if (Array.isArray(this.dataTypes)) {
             queryBuilder.in('dataType', this.dataTypes);
         }
-        if (typeof this.customizeQuery === 'function') {
-            this.customizeQuery({$queryBuilder: queryBuilder});
+        if (typeof this.userCustomize === 'function') {
+            this.userCustomize({$queryBuilder: queryBuilder});
         }
     }
 }
@@ -95,6 +95,6 @@ export default {
         rowClicked: '&?',
         settable: '<?',
         dataTypes: '<?types',
-        customizeQuery: '&?'
+        userCustomize: '&?customizeQuery'
     }
 };
