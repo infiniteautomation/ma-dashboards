@@ -6,7 +6,7 @@
             <h2 flex>
                 <span ma-tr="ui.app.eventsTable"></span>
             </h2>
-            
+
             <h2 style="padding-right: 5px;" ng-if="$ctrl.$mdMedia('gt-xs')">
                 <span><span ma-tr="ui.app.dateFilter"></span>: </span>
             </h2>
@@ -28,7 +28,7 @@
             <md-button class="md-raised md-primary md-hue-1" ng-class="{ 'active md-accent': $ctrl.values.eventType === 'SYSTEM' }"
                     ng-click="$ctrl.values.eventType='SYSTEM'; $ctrl.inputChanged('eventType')" ma-tr="ui.app.system">
             </md-button>
-            
+
             <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.toggleAdvancedOptions()">
                 <md-icon>{{$ctrl.advancedOptionsOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>
                 <md-tooltip>
@@ -37,7 +37,7 @@
             </md-button>
         </div>
     </md-toolbar>
-      
+
     <md-toolbar class="md-hue-2" ng-if="$ctrl.advancedOptionsOpen">
         <div class="md-toolbar-tools" layout>
             <ma-event-type-filter flex ng-model="$ctrl.eventType" ng-change="$ctrl.eventTypeChanged()"></ma-event-type-filter>
@@ -49,13 +49,13 @@
             <label ma-tr="ui.app.alarmLvl"></label>
             <md-select ng-model="$ctrl.values.alarmLevel" ng-change="$ctrl.inputChanged('alarmLevel')">
                 <md-option value="any"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-all"></md-icon><span ma-tr="ui.app.any"></span></md-option>
-                <md-option value="NONE"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-none"></md-icon><span ma-tr="ui.app.none"></span></md-option>
-                <md-option value="INFORMATION"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-information"></md-icon><span ma-tr="ui.app.information"></span></md-option>
-                <md-option value="IMPORTANT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-important"></md-icon><span ma-tr="ui.app.important"></span></md-option>
-            	<md-option value="WARNING"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-warning"></md-icon><span ma-tr="ui.app.warning"></span></md-option>
-                <md-option value="URGENT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-urgent"></md-icon><span ma-tr="ui.app.urgent"></span></md-option>
-                <md-option value="CRITICAL"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-critical"></md-icon><span ma-tr="ui.app.critical"></span></md-option>
-                <md-option value="LIFE_SAFETY"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-life-safety"></md-icon><span ma-tr="ui.app.safety"></span></md-option>
+                <md-option value="NONE"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-none"></md-icon><span ma-tr="common.alarmLevel.none"></span></md-option>
+                <md-option value="INFORMATION"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-information"></md-icon><span ma-tr="common.alarmLevel.info"></span></md-option>
+                <md-option value="IMPORTANT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-important"></md-icon><span ma-tr="common.alarmLevel.important"></span></md-option>
+            	<md-option value="WARNING"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-warning"></md-icon><span ma-tr="common.alarmLevel.warning"></span></md-option>
+                <md-option value="URGENT"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-urgent"></md-icon><span ma-tr="common.alarmLevel.urgent"></span></md-option>
+                <md-option value="CRITICAL"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-critical"></md-icon><span ma-tr="common.alarmLevel.critical"></span></md-option>
+                <md-option value="LIFE_SAFETY"><md-icon class="fa fa-flag fa-lg ma-alarm-flag ma-alarm-level-life-safety"></md-icon><span ma-tr="common.alarmLevel.lifeSafety"></span></md-option>
             </md-select>
         </md-input-container>
         <md-input-container flex>
