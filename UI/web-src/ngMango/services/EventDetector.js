@@ -22,6 +22,12 @@ import rateOfChangeTemplate from '../components/eventDetectorEditor/detectorType
 function eventDetectorProvider() {
     const eventDetectorTypes = [
         {
+            type: 'UPDATE',
+            description: 'pointEdit.detectors.update',
+            pointEventDetector: true,
+            dataTypes: new Set(['BINARY', 'MULTISTATE', 'NUMERIC', 'ALPHANUMERIC', 'IMAGE'])
+        },
+        {
             type: 'POINT_CHANGE',
             description: 'pointEdit.detectors.change',
             pointEventDetector: true,
