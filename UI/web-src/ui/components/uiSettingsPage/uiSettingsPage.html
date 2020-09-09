@@ -4,7 +4,7 @@
         <md-button class="md-raised" ng-click="$ctrl.revert($event)" ng-disabled="$ctrl.promise || !$ctrl.store || $ctrl.form.$pristine"><md-icon>undo</md-icon> <span ma-tr="ui.app.revert"></span></md-button>
         <md-button class="md-raised md-warn" ng-click="$ctrl.resetToDefault($event)" ng-disabled="$ctrl.promise || !$ctrl.store"><md-icon>delete</md-icon> <span ma-tr="ui.app.resetToDefault"></span></md-button>
     </div>
-    
+
     <md-card>
         <md-card-title>
             <md-card-title-text>
@@ -18,7 +18,7 @@
                     <md-tooltip><span ma-tr="ui.app.usePreferredColorSchemeHint"></span></md-tooltip>
                 </md-checkbox>
             </div>
-            
+
             <div layout layout-wrap>
                 <div flex="100" flex-gt-md="50" layout layout-align="start center">
                     <md-button class="ma-preview-theme md-icon-button ma-small-button ma-no-margin" ng-click="$ctrl.previewTheme($ctrl.data.defaultTheme)" ng-disabled="$ctrl.uiSettings.activeTheme === $ctrl.data.defaultTheme">
@@ -51,7 +51,7 @@
     				  	<md-tooltip ma-tr="common.chooseFile"></md-tooltip>
     				</md-button>
                 </md-input-container>
-                
+
                  <div flex="100" flex-gt-md="50" layout layout-align="start center" ng-if-start="$ctrl.data.usePreferredColorScheme">
                     <md-button class="ma-preview-theme md-icon-button ma-small-button ma-no-margin" ng-click="$ctrl.previewTheme($ctrl.data.alternateTheme)" ng-disabled="$ctrl.uiSettings.activeTheme === $ctrl.data.alternateTheme">
                         <md-icon>visibility</md-icon>
@@ -71,7 +71,7 @@
                         </md-select>
                     </md-input-container>
                 </div>
-                        
+
                 <md-input-container flex="100" flex-gt-md="50" ng-if-end>
                     <label ma-tr="{{$ctrl.data.themes[$ctrl.data.defaultTheme].dark ? 'ui.app.alternateLogoLight' : 'ui.app.alternateLogoDark'}}"></label>
                     <input name="alternateLogo" ng-model="$ctrl.data.alternateLogo" ma-empty-input ng-model-options="{debounce: 500}">
@@ -86,6 +86,34 @@
             </div>
             <div>
                 <md-button class="md-raised" ng-click="$ctrl.addNewTheme($event)"><span ma-tr="ui.app.addTheme"></span></md-button>
+            </div>
+        </md-card-content>
+    </md-card>
+
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline" ma-tr="ui.settings.fonts"></span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <div layout="row" layout-align="space-between center" layout-wrap class="ma-inputs-container">
+                <md-input-container flex="100" flex-gt-md="50">
+                    <label ma-tr="ui.settings.fonts.default"></label>
+                    <input ng-model="$ctrl.data.fonts.default" ma-empty-input>
+                </md-input-container>
+                <md-input-container flex="100" flex-gt-md="50">
+                    <label ma-tr="ui.settings.fonts.heading"></label>
+                    <input ng-model="$ctrl.data.fonts.heading" ma-empty-input>
+                </md-input-container>
+                <md-input-container flex="100" flex-gt-md="50">
+                    <label ma-tr="ui.settings.fonts.paragraph"></label>
+                    <input ng-model="$ctrl.data.fonts.paragraph" ma-empty-input>
+                </md-input-container>
+                <md-input-container flex="100" flex-gt-md="50">
+                    <label ma-tr="ui.settings.fonts.code"></label>
+                    <input ng-model="$ctrl.data.fonts.code" ma-empty-input>
+                </md-input-container>
             </div>
         </md-card-content>
     </md-card>
@@ -145,7 +173,7 @@
             </div>
         </md-card-content>
     </md-card>
-    
+
     <md-card>
         <md-card-title>
             <md-card-title-text>
@@ -193,7 +221,7 @@
             </md-table-container>
         </md-card-content>
     </md-card>
-    
+
     <md-card>
         <md-card-title>
             <md-card-title-text>
@@ -201,7 +229,7 @@
             </md-card-title-text>
         </md-card-title>
         <md-card-content>
-            <div layout layout-align="start center" layout-wrap>
+            <div layout="row" layout-align="space-between center" layout-wrap class="ma-inputs-container">
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.mapsApiKey"></label>
                     <input ng-model="$ctrl.data.googleMapsApiKey" ma-empty-input>
@@ -217,7 +245,7 @@
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.userModuleUrl"></label>
                     <input name="userModule" ng-model="$ctrl.data.userModule" ma-empty-input>
-    
+
                     <md-button class="ma-input-button md-icon-button"
                     		ma-choose-file="$ctrl.data.userModule = $url; $ctrl.form.userModule.$setDirty()"
                     		ma-choose-file-selected="$ctrl.data.userModule"
@@ -229,7 +257,7 @@
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.userCssUrl"></label>
                     <input name="userCss" ng-model="$ctrl.data.userCss" ma-empty-input>
-    
+
                     <md-button class="ma-input-button md-icon-button"
                     		ma-choose-file="$ctrl.data.userCss = $url; $ctrl.form.userCss.$setDirty()"
                     		ma-choose-file-selected="$ctrl.data.userCss"
@@ -245,7 +273,7 @@
             </div>
         </md-card-content>
     </md-card>
-    
+
     <md-card>
         <md-card-title>
             <md-card-title-text>
@@ -253,7 +281,7 @@
             </md-card-title-text>
         </md-card-title>
         <md-card-content>
-            <div layout layout-align="space-between center" layout-wrap class="ma-inputs-container">
+            <div layout="row" layout-align="space-between center" layout-wrap class="ma-inputs-container">
                 <md-input-container flex="100" flex-gt-md="50">
                     <label ma-tr="ui.app.timeouts.xhr"></label>
                     <input ng-model="$ctrl.data.timeouts.xhr" type="number" min="0" step="1"
@@ -287,7 +315,7 @@
             </div>
         </md-card-content>
     </md-card>
-    
+
     <md-card>
         <md-card-title>
             <md-card-title-text>
@@ -311,7 +339,7 @@
             </div>
         </md-card-content>
     </md-card>
-    
+
     <md-card>
         <md-card-title>
             <md-card-title-text>
@@ -344,14 +372,14 @@
                     <input ng-model="$ctrl.data.pwaManifest.short_name">
                 </md-input-container>
                 <div ng-if-start="!$ctrl.data.pwaUseThemeColors" flex="100" flex-gt-md="50" layout layout-align="start center">
-                    <ma-color-picker ng-model="$ctrl.data.pwaManifest.theme_color" ng-change="$ctrl.data.addThemeColorMetaTags()"></ma-color-picker> 
+                    <ma-color-picker ng-model="$ctrl.data.pwaManifest.theme_color" ng-change="$ctrl.data.addThemeColorMetaTags()"></ma-color-picker>
                     <md-input-container flex>
                         <label ma-tr="ui.app.pwaSettings.themeColor"></label>
                         <input ng-model="$ctrl.data.pwaManifest.theme_color" ng-change="$ctrl.data.addThemeColorMetaTags()">
                     </md-input-container>
                 </div>
                 <div ng-if-end flex="100" flex-gt-md="50" layout layout-align="start center">
-                    <ma-color-picker ng-model="$ctrl.data.pwaManifest.background_color" ng-change="$ctrl.data.addThemeColorMetaTags()"></ma-color-picker> 
+                    <ma-color-picker ng-model="$ctrl.data.pwaManifest.background_color" ng-change="$ctrl.data.addThemeColorMetaTags()"></ma-color-picker>
                     <md-input-container flex>
                         <label ma-tr="ui.app.pwaSettings.backgroundColor"></label>
                         <input ng-model="$ctrl.data.pwaManifest.background_color" ng-change="$ctrl.data.addThemeColorMetaTags()">
@@ -363,7 +391,7 @@
             </p>
         </md-card-content>
     </md-card>
-    
+
     <md-card>
         <md-card-title>
             <md-card-title-text>
@@ -408,7 +436,7 @@
                     </md-switch>
                 </div>
             </md-toolbar>
-    
+
             <md-dialog-content class="md-padding" ng-form="theme" ma-get-ctrl="$ctrl.form.$addControl($ngForm)">
                 <div>
                     <md-checkbox ng-model="$ctrl.theme.dark" ng-change="$ctrl.previewTheme()">
