@@ -154,7 +154,7 @@ function eventDetectorProvider() {
             }
         }
     ];
-    
+
     this.registerEventDetectorType = function(type) {
         const existing = eventDetectorTypes.find(t => t.type === type.type);
         if (existing) {
@@ -163,59 +163,63 @@ function eventDetectorProvider() {
         }
         eventDetectorTypes.push(type);
     };
-    
+
     this.$get = eventDetectorFactory;
 
     eventDetectorFactory.$inject = ['maRestResource', '$injector', '$q', '$templateCache', 'maPoint'];
     function eventDetectorFactory(RestResource, $injector, $q, $templateCache, Point) {
-    
+
         const eventDetectorBaseUrl = '/rest/latest/event-detectors';
         const eventDetectorWebSocketUrl = '/rest/latest/websocket/event-detectors';
         const eventDetectorXidPrefix = 'ED_';
-        
+
         const eventDetectorTypesByName = Object.create(null);
         eventDetectorTypes.forEach(eventDetectorType => {
             eventDetectorTypesByName[eventDetectorType.type] = eventDetectorType;
-            
+
             // put the templates in the template cache so we can ng-include them
             if (eventDetectorType.template && !eventDetectorType.templateUrl) {
                 eventDetectorType.templateUrl = `eventDetectors.${eventDetectorType.type}.html`;
                 $templateCache.put(eventDetectorType.templateUrl, eventDetectorType.template);
             }
-            
+
             Object.freeze(eventDetectorType);
         });
 
         Object.freeze(eventDetectorTypes);
         Object.freeze(eventDetectorTypesByName);
-        
+
         let maDialogHelper;
         if ($injector.has('maDialogHelper')) {
             maDialogHelper = $injector.get('maDialogHelper');
         }
-        
+
         const defaultProperties = {
             detectorType: 'POINT_CHANGE',
-            alarmLevel: 'NONE'
+            alarmLevel: 'NONE',
+            duration: {
+                periods: 0,
+                type: 'SECONDS'
+            }
         };
-    
+
         class EventDetector extends RestResource {
             static get defaultProperties() {
                 return defaultProperties;
             }
-            
+
             static get baseUrl() {
                 return eventDetectorBaseUrl;
             }
-            
+
             static get webSocketUrl() {
                 return eventDetectorWebSocketUrl;
             }
-            
+
             static get xidPrefix() {
                 return eventDetectorXidPrefix;
             }
-            
+
             static deleteAllForPoint(xid, opts = {}) {
                 return this.http({
                     url: this.baseUrl + '/data-point/' + encodeURIComponent(xid),
@@ -224,17 +228,17 @@ function eventDetectorProvider() {
                     return response.data;
                 });
             }
-            
+
             static findPointDetector(options = {}) {
                 if (!(isFinite(options.sourceId) && options.sourceId > 0)) {
                     return $q.reject(new Error('Invalid data point ID'));
                 }
-                
+
                 const queryPromise = this.buildQuery()
                     .eq('sourceTypeName', 'DATA_POINT')
                     .eq('dataPointId', options.sourceId)
                     .query();
-                
+
                 return queryPromise.then(eventDetectors => {
                     let detector = eventDetectors.find(ed => {
                        const typeMatches = ed.detectorType === options.detectorType;
@@ -243,7 +247,7 @@ function eventDetectorProvider() {
                        }
                        return typeMatches;
                     });
-                    
+
                     if (!detector) {
                         detector = new this({
                             alarmLevel: 'WARNING',
@@ -251,11 +255,11 @@ function eventDetectorProvider() {
                             rtnApplicable: true
                         });
                     }
-                    
+
                     return Object.assign(detector, options);
                 });
             }
-            
+
             static findAndUpdate(detector = {}, notify = false) {
                 return this.findPointDetector(detector).then(detector => {
                     const type = detector.detectorType;
@@ -264,7 +268,7 @@ function eventDetectorProvider() {
                         if (detector.isNew()) return;
                         return detector.delete();
                     }
-                    
+
                     if (notify) {
                         return detector.saveAndNotify();
                     } else {
@@ -272,7 +276,7 @@ function eventDetectorProvider() {
                     }
                 });
             }
-            
+
             static saveAndNotify(detector) {
                 return $q.when(detector).then(detector => {
                     return detector.save();
@@ -290,18 +294,18 @@ function eventDetectorProvider() {
                     });
                 });
             }
-            
+
             static detectorTypes() {
                 return eventDetectorTypes;
             }
-            
+
             static detectorTypesByName() {
                 return eventDetectorTypesByName;
             }
-            
+
             static forDataPoint(point) {
                 if (!point) return null;
-                
+
                 const detector = new this();
                 detector.sourceTypeName = 'DATA_POINT';
                 detector.dataPoint = point;
@@ -312,13 +316,13 @@ function eventDetectorProvider() {
             saveAndNotify() {
                 return this.constructor.saveAndNotify(this);
             }
-            
+
             initialize(reason) {
                 if (this.dataPoint && !(this.dataPoint instanceof Point)) {
                     this.dataPoint = Object.assign(Object.create(Point.prototype), this.dataPoint);
                 }
             }
-            
+
             get analogChangeType() {
                 if (this.checkIncrease && this.checkDecrease) {
                     return 'CHANGE';
@@ -328,7 +332,7 @@ function eventDetectorProvider() {
                     return 'DECREASE';
                 }
             }
-            
+
             set analogChangeType(type) {
                 switch(type) {
                 case 'CHANGE': this.checkIncrease = true; this.checkDecrease = true; break;
@@ -337,7 +341,7 @@ function eventDetectorProvider() {
                 }
             }
         }
-        
+
         return EventDetector;
     }
 }
