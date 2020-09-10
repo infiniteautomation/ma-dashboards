@@ -13,15 +13,55 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
     const READY_STATE_OPEN = 1;
     //const READY_STATE_CLOSING = 2;
     //const READY_STATE_CLOSED = 3;
-    
+
     const mapEventType = {
         add: 'create'
     };
 
+    class CrudOperationAttributes {
+        constructor(options) {
+            Object.assign(this, options);
+        }
+
+        updateArray(array, filterFn) {
+            if (!Array.isArray(array)) return;
+
+            const item = this.item;
+            const originalXid = this.originalXid;
+            const eventType = this.eventType;
+
+            const filterMatches = typeof filterFn === 'function' ? filterFn(item) : true;
+            const idProp = item.hasOwnProperty('id') ? 'id' : 'xid';
+            const itemId = idProp === 'xid' && originalXid || item[idProp];
+
+            if (filterMatches && Number.isFinite(array.$total)) {
+                if (eventType === 'create') {
+                    array.$total += 1;
+                } else if (eventType === 'delete') {
+                    array.$total -= 1;
+                }
+            }
+
+            const index = array.findIndex(o => o[idProp] === itemId);
+            if (index >= 0) {
+                if (!filterMatches || eventType === 'delete') {
+                    array.splice(index, 1);
+                    return true;
+                } else if (eventType === 'update' || eventType === 'create') {
+                    Object.assign(array[index], item);
+                    return true;
+                }
+            } else if (filterMatches && (eventType === 'update' || eventType === 'create')) {
+                array.push(item);
+                return true;
+            }
+        }
+    }
+
     class NotificationManager {
         constructor(options) {
             angular.extend(this, options);
-            
+
             this.listeners = 0;
             this.subscribedXids = {};
             this.subscribedToAllXidsCount = 0;
@@ -56,7 +96,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             if (!this.webSocketUrl) {
                 return $q.reject('No websocket URL');
             }
-            
+
             const socketDeferred = this.socketDeferred = $q.defer();
 
             let host = document.location.host;
@@ -80,12 +120,12 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 socketDeferred.reject('Timeout opening socket');
                 this.closeSocket();
             }, MA_TIMEOUTS.websocket);
-            
+
             socket.onclose = event => {
                 socketDeferred.reject('Socket closed');
                 this.closeSocket(event);
             };
-            
+
             socket.onerror = event => {
                 socketDeferred.reject('Socket error');
                 this.closeSocket(event);
@@ -94,10 +134,10 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             socket.onopen = event => {
                 $timeout.cancel(this.connectTimer);
                 delete this.connectTimer;
-                
+
                 this.pendingRequests = {};
                 this.sequenceNumber = 0;
-                
+
                 $q.resolve(this.onOpen()).then(() => {
                     this.notify('webSocketOpen');
                     this.sendSubscription();
@@ -106,11 +146,11 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                     this.closeSocket(error);
                 });
             };
-            
+
             socket.onmessage = event => {
                 try {
                     const message = angular.fromJson(event.data);
-                    
+
                     if (message.status === 'ERROR') {
                         const error = new Error('Web socket status ERROR');
                         error.message = message;
@@ -133,7 +173,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
         onOpen() {
             // do nothing
         }
-        
+
         /**
          * Processes the websocket payload and calls notify() with the appropriate event type.
          * Default notifier for CRUD type websocket payloads, they have a action and object property.
@@ -143,46 +183,21 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 const eventType = mapEventType[payload.action] || payload.action;
                 if (eventType) {
                     const item = this.transformObject(payload.object);
-                    const originalXid = payload.originalXid;
-                    
-                    const attributes = {
-                        originalXid,
-                        initiatorId: payload.initiatorId,
-                        updateArray(array, filterFn) {
-                            if (!Array.isArray(array)) return;
-                            const filterMatches = typeof filterFn === 'function' ? filterFn(item) : true;
-                            const idProp = item.hasOwnProperty('id') ? 'id' : 'xid';
-                            const itemId = idProp === 'xid' && originalXid || item[idProp];
-
-                            if (filterMatches && Number.isFinite(array.$total)) {
-                                if (eventType === 'create') {
-                                    array.$total += 1;
-                                } else if (eventType === 'delete') {
-                                    array.$total -= 1;
-                                }
-                            }
-                            
-                            const index = array.findIndex(o => o[idProp] === itemId);
-                            if (index >= 0) {
-                                if (!filterMatches || eventType === 'delete') {
-                                    array.splice(index, 1);
-                                    return true;
-                                } else if (eventType === 'update' || eventType === 'create') {
-                                    Object.assign(array[index], item);
-                                    return true;
-                                }
-                            } else if (filterMatches && (eventType === 'update' || eventType === 'create')) {
-                                array.push(item);
-                                return true;
-                            }
-                        }
-                    };
-                    
+                    const attributes = new CrudOperationAttributes({
+                        eventType,
+                        item,
+                        originalXid: payload.originalXid,
+                        initiatorId: payload.initiatorId
+                    });
                     this.notify(eventType, item, attributes);
                 }
             }
         }
-        
+
+        createCrudOperationAttributes(options) {
+            return new CrudOperationAttributes(options);
+        }
+
         /**
          * Processes a V2 websocket message and calls notify()
          */
@@ -220,7 +235,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 this.socket.close();
                 delete this.socket;
             }
-            
+
             Object.keys(this.pendingRequests).forEach(sequenceNumber => {
                 const request = this.pendingRequests[sequenceNumber];
                 request.deferred.reject('Socket closed');
@@ -234,16 +249,16 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 maWatchdog.checkStatus();
             }
         }
-        
+
         socketConnected() {
             return this.socket && this.socket.readyState === READY_STATE_OPEN;
         }
 
         sendSubscription(eventTypes = ['create', 'update', 'delete']) {
             if (!this.supportsSubscribe) return;
-            
+
             const xids = this.subscribedToAllXidsCount > 0 ? null : Object.keys(this.subscribedXids);
-            
+
             return this.sendRequest({
                 requestType: 'SUBSCRIPTION',
                 notificationTypes: eventTypes,
@@ -256,7 +271,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 this.socket.send(angular.toJson(message));
             }
         }
-        
+
         sendRequest(message, timeout = MA_TIMEOUTS.websocketRequest) {
             if (this.socketConnected()) {
                 const deferred = $q.defer();
@@ -264,14 +279,14 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                     deferred.reject('Timeout');
                 }, timeout);
                 const sequenceNumber = this.sequenceNumber++;
-                
+
                 message.messageType = 'REQUEST';
                 message.sequenceNumber = sequenceNumber;
                 this.pendingRequests[sequenceNumber] = {
                     deferred,
                     timeoutPromise
                 };
-                
+
                 this.socket.send(angular.toJson(message));
                 return deferred.promise;
             } else {
@@ -288,7 +303,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 xids = options.xids || null;
                 localOnly = options.localOnly || false;
             }
-            
+
             if (!localOnly) {
                 this.listeners++;
 
@@ -307,7 +322,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 } else {
                     subscriptionChanged = this.subscribedToAllXidsCount++ === 0;
                 }
-                
+
                 if (this.socketConnected()) {
                     if (subscriptionChanged) {
                         this.sendSubscription();
@@ -323,7 +338,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 if (Array.isArray(xids) && !xids.includes(item.xid)) {
                     return;
                 }
-                
+
                 if ($scope) {
                     $scope.$applyAsync(() => {
                         handler(...args);
@@ -338,13 +353,13 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 const eventDeregister = this.eventScope.$on(eventType, applyThenHandle);
                 eventDeregisters.push(eventDeregister);
             });
-            
+
             let deregistered = false;
             const deregisterEvents = () => {
                 if (!deregistered) {
                     eventDeregisters.forEach(eventDeregister => eventDeregister());
                     deregistered = true;
-                    
+
                     if (!localOnly) {
                         const lastListener = --this.listeners === 0;
 
@@ -372,19 +387,19 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                     }
                 }
             };
-            
+
             const deregisterDestroy = $scope && $scope.$on('$destroy', deregisterEvents);
-            
+
             const manualDeregister = () => {
                 if (deregisterDestroy) {
                     deregisterDestroy();
                 }
                 deregisterEvents();
             };
-            
+
             return manualDeregister;
         }
-        
+
         // TODO remove
         subscribeToXids(xids, handler, $scope, eventTypes = ['create', 'update', 'delete']) {
             return this.subscribe((...args) => {
@@ -394,14 +409,14 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 }
             }, $scope, eventTypes, xids);
         }
-        
+
         /**
          * Notifies the event listeners of an event
          */
         notify(type, ...args) {
             this.eventScope.$broadcast(type, ...args);
         }
-        
+
         /**
          * Notifies the event listeners only if the websocket is not connected. This is so the listener is not notified twice of the same change.
          */
@@ -410,12 +425,12 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 this.notify(type, ...args);
             }
         }
-        
+
         transformObject(obj) {
             return obj;
         }
     }
-    
+
     return NotificationManager;
 }
 
