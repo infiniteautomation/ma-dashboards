@@ -9,7 +9,7 @@
 *
 * @description
 * Provides a service for retrieving, adding, and acknowledging events/alarms
-* - Used by <a ui-sref="ui.docs.ngMango.maEventsTable">`<ma-events-table>`</a> 
+* - Used by <a ui-sref="ui.docs.ngMango.maEventsTable">`<ma-events-table>`</a>
 *
 *
 *
@@ -133,8 +133,8 @@
 *
 */
 
-eventsFactory.$inject = ['$resource', 'maUtil', 'maEventTypeInfo', 'maRqlBuilder', '$rootScope'];
-function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
+eventsFactory.$inject = ['$resource', 'maUtil', 'maEventTypeInfo', 'maRqlBuilder', '$rootScope', '$http'];
+function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope, $http) {
     const Events = $resource('/rest/latest/events', {
         id: '@id'
     }, {
@@ -259,7 +259,7 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
         webSocketUrl: '/rest/latest/websocket/events',
         sendSubscription(levels = ['LIFE_SAFETY', 'CRITICAL', 'URGENT', 'WARNING', 'IMPORTANT', 'INFORMATION', 'NONE'],
                 actions = ['RAISED', 'ACKNOWLEDGED', 'RETURN_TO_NORMAL', 'DEACTIVATED']) {
-            
+
             return this.sendRequest({
                 requestType: 'SUBSCRIPTION',
                 actions,
@@ -333,18 +333,33 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
                 }
             };
             return builder;
+        },
+
+        buildCountQuery() {
+            const builder = this.buildQuery();
+            builder.query = periodBoundaries => this.queryCounts(builder.build(), periodBoundaries);
+            return builder;
+        },
+
+        queryCounts(queryNode, periodBoundaries) {
+            return $http({
+                method: 'POST',
+                url: '/rest/latest/events/counts',
+                params: {rqlQuery: queryNode.toString()},
+                data: periodBoundaries
+            }).then(r => r.data);
         }
     });
 
     Object.defineProperty(Events.prototype, 'duration', {
         get: function() {
             if (!this.rtnApplicable) return null;
-            
+
             if (this.rtnTimestamp != null) {
                 return this.rtnTimestamp - this.activeTimestamp;
             } else {
                 // event is still active, return an ongoing duration
-                
+
                 // round to prevent infinite digests
                 const time = Math.floor(new Date().valueOf() / 1000) * 1000;
                 return time - this.activeTimestamp;
@@ -357,7 +372,7 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
             return this.eventType && this.getEventType().typeId;
         }
     });
-    
+
     Object.assign(Events.prototype, {
         getEventType() {
             if (this.eventType && !(this.eventType instanceof EventTypeInfo.EventType)) {
@@ -365,7 +380,7 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope) {
             }
             return this.eventType;
         },
-        
+
         getAlarmLevel() {
             return levelsMap[this.alarmLevel];
         }
