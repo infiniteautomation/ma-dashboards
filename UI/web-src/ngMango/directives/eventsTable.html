@@ -18,6 +18,8 @@
             <tr md-row>
                 <th md-column md-order-by="alarmLevel" ma-tr="ui.app.alarmLvl" class="ma-narrow-column ma-text-centered"></th>
                 <th md-column md-order-by="activeTimestamp" ma-tr="ui.app.time" class="ma-medium-column"></th>
+                <th ng-repeat="tagKey in $ctrl.tagColumns" md-column md-order-by="tags.{{tagKey}}"
+                    class="ma-medium-column" ma-tr="ui.app.tag" ma-tr-args="::[tagKey]"></th>
                 <th md-column md-order-by="message" ma-tr="ui.app.msg" class="ma-message-column"></th>
                 <th md-column md-order-by="activeRtn" ma-tr="ui.app.activeStatus" class="ma-medium-column"></th>
                 <th md-column ma-tr="ui.app.duration" class="ma-medium-column"></th>
@@ -27,7 +29,7 @@
         </thead>
         <tbody md-body ng-hide="$ctrl.total">
             <tr md-row>
-                <td md-cell colspan="6" style="height:60px; font-weight: bold;" ma-tr="ui.app.noEventsFound"></td>
+                <td md-cell colspan="1000" style="height:60px; font-weight: bold;" ma-tr="ui.app.noEventsFound"></td>
             </tr>
         </tbody>
         <tbody md-body ng-show="$ctrl.total">
@@ -42,7 +44,11 @@
                         </md-tooltip>
                     </md-icon>
                 </td>
+
                 <td md-cell class="ma-medium-column" ng-bind="$ctrl.formatDate(event.activeTimestamp)"></td>
+
+                <td ng-repeat="tagKey in $ctrl.tagColumns" md-cell class="ma-medium-column"
+                    ng-bind="event.eventType.reference1.tags[tagKey]"></td>
 
                 <td md-cell class="ma-message-column" ng-class="{'ma-truncated' : !toggle}" ng-click="toggle = !toggle"
                         ng-init="linkInfo = $ctrl.linkInfo[event.eventType.eventType] || $ctrl.linkInfo[event.eventType.systemEventType]">

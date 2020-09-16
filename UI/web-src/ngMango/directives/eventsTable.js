@@ -207,6 +207,11 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 }
             }
 
+            if (changes.tagColumns && numChanges === 1) {
+                // dont re-query
+                return;
+            }
+
             this.doQuery();
         }
 
@@ -545,7 +550,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             hideCsvButton: '<?',
             sourceId: '<?',
             dateFormat: '@?',
-            hideEventHandlers: '<?'
+            hideEventHandlers: '<?',
+            tagColumns: '<?'
         },
         designerInfo: {
             translation: 'ui.app.eventsTable',
