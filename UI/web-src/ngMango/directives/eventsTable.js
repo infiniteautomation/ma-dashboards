@@ -43,7 +43,8 @@ import moment from 'moment-timezone';
  * @param {boolean=} [date-filter=false] Turn on date filtering of events. Set value to `true` and use with from/to attribute to use.
  * @param {string=} timezone Display the timestamps in this timezone
  * @param {string=} date-format Moment.js format string used to format dates/times
-
+ * @param {boolean=} [hide-event-handlers=false] Hide the event handlers column
+ * @param {string[]=} tag-columns Will display a column for each of the supplied tag keys. Cell will be blank for non-datapoint events.
  *
  * @usage
  * <!-- Example Using filters on Table Attributes -->
