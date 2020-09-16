@@ -22,8 +22,9 @@ import moment from 'moment-timezone';
  * - <a ui-sref="ui.examples.utilities.eventsTable">View Demo</a>
  *
  * @param {number=} limit Set the initial limit of the pagination.
- * @param {number=} point-id Filter on the Id property of a point, use with `single-point="true"`.
- * @param {boolean=} single-point Set to `true` and use with point-id attribute to return events related to just a single Data Point.
+ * @param {number[]=} point-ids Only show events for these data point IDs
+ * @param {object=} point-tags Only show events for data points which match these tags.
+ * @param {number=} point-id Filter on the id property of a single point
  * @param {number=} event-id Filter on a specific Event Id, should return a single event.
  * @param {expression=} alarm-level Expression which should evaluate to a string. Filter on Alarm Level. Possible values are:
  *     `'NONE'`, `'INFORMATION'`, `'IMPORTANT'`, `'WARNING'`, `'URGENT'`, `'CRITICAL'`, `'LIFE_SAFETY'` or `'any'`.
@@ -46,11 +47,14 @@ import moment from 'moment-timezone';
  * @usage
  * <!-- Example Using filters on Table Attributes -->
  * <ma-events-table event-type="'SYSTEM'" alarm-level="'URGENT'" acknowledged="'any'"
- * active-status="'active' date-filter="true" from="fromTime" to="toTime" limit="50" 
+ * active-status="'active' date-filter="true" from="fromTime" to="toTime" limit="50"
  * sort="'-alarmLevel'"></ma-events-table>
  *
  * <!-- Example For Restricting Events to those Related to a Data Point -->
- * <ma-events-table single-point="true" point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
+ * <ma-events-table point-id="myPoint.id" limit="5" from="fromTime" to="toTime"></ma-events-table>
+ *
+ * <!-- Show only events for data points with a set of tags -->
+ * <ma-events-table point-tags="{site: 'my site'}" limit="10"></ma-events-table>
  */
 
 eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO', '$timeout',
@@ -71,31 +75,31 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 return true;
             return this.testOp();
         }
-        
+
         testOp() {
             return this.value === this.filter;
         }
     }
-    
+
     class EqualsIgnoreZero extends Equals {
         test() {
             if (this.filter === 0) return true;
             return super.test();
         }
     }
-    
+
     class GreaterThanEquals extends Equals {
         testOp() {
             return this.value >= this.filter;
         }
     }
-    
+
     class LessThan extends Equals {
         testOp() {
             return this.value < this.filter;
         }
     }
-    
+
     class InArray extends Equals {
         testOp() {
             return Array.isArray(this.filter) && this.filter.includes(this.value);
@@ -105,13 +109,13 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
     class EventsTableController {
         static get $$ngIsClass() { return true; }
         static get $inject() { return ['$scope', '$attrs', '$element', 'maEventTypeInfo', '$filter']; }
-        
+
         constructor($scope, $attrs, $element, EventTypeInfo, $filter) {
             this.$scope = $scope;
             this.$attrs = $attrs;
             this.$element = $element;
             this.maDate = $filter('maDate');
-            
+
             this.$mdMedia = $mdMedia;
             this.start = 0;
             this.page = 1;
@@ -121,10 +125,10 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             this.sort = '-activeTimestamp';
             this.totalUnAcknowledged = 0;
             this.linkInfo = MA_EVENT_LINK_INFO;
-            
+
             this.onPaginateBound = (...args) => this.onPaginate(...args);
             this.onReorderBound = (...args) => this.onReorder(...args);
-            
+
             this.handlersForType = new EventTypeInfo.EventTypeMap();
         }
 
@@ -134,12 +138,12 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 if (mangoEvent.id < 0) {
                     return;
                 }
-                
+
                 if (event.name === 'ACKNOWLEDGED' && (!this.acknowledged || this.acknowledged === ANY_KEYWORD) &&
                         this.totalUnAcknowledged > 0 && this.eventMatchesFilters(mangoEvent, true)) {
                     this.totalUnAcknowledged--;
                 }
-                
+
                 if (this.eventMatchesFilters(mangoEvent)) {
                     // if event is already in current page replace it
                     this.removeEvent(mangoEvent.id, mangoEvent);
@@ -152,12 +156,12 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                             // sorted by ascending time and on the last page
                             this.events.push(mangoEvent);
                         }
-                        
+
                         // ensure that we don't have more items than items per page
                         if (this.events.length > this.limit) {
                             this.events.pop();
                         }
-                        
+
                         this.total++;
                         this.totalUnAcknowledged++;
                     }
@@ -181,7 +185,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 this.rebuildHandlersMap();
             });
         }
-        
+
         $onChanges(changes) {
             const numChanges = Object.keys(changes).length;
 
@@ -192,10 +196,10 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                     return;
                 }
             }
-            
+
             this.doQuery();
         }
-        
+
         rebuildHandlersMap() {
             this.handlersForType.clear();
             this.handlers.forEach(handler => {
@@ -204,7 +208,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 });
             });
         }
-        
+
         baseQuery() {
             const queryBuilder = Events.buildQuery();
             queryBuilder.addToRql = function(propertyName, op, propertyValue) {
@@ -214,19 +218,24 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             };
             queryBuilder.addToRql('alarmLevel', 'eq', this.alarmLevel);
             queryBuilder.addToRql('id', 'eq', this.eventId);
-            
+
             if (this.pointId != null && this.pointId !== ANY_KEYWORD) {
                 queryBuilder.addToRql('eventType', 'eq', 'DATA_POINT');
                 queryBuilder.addToRql('referenceId1', 'eq', this.pointId);
             } else if (Array.isArray(this.pointIds)) {
                 queryBuilder.addToRql('eventType', 'eq', 'DATA_POINT');
                 queryBuilder.addToRql('referenceId1', 'in', this.pointIds);
+            } else if (this.pointTags) {
+                queryBuilder.addToRql('eventType', 'eq', 'DATA_POINT');
+                Object.entries(this.pointTags).forEach(([key, value]) => {
+                    queryBuilder.addToRql(`tags.${key}`, 'eq', value);
+                });
             } else if (this.sourceId != null && this.sourceId !== ANY_KEYWORD) {
                 queryBuilder.addToRql('eventType', 'eq', 'DATA_SOURCE');
                 queryBuilder.addToRql('referenceId1', 'eq', this.sourceId);
             } else {
                 const {eventType, subType, referenceId1, referenceId2} = this.eventTypeObject || this;
-                
+
                 queryBuilder.addToRql('eventType', 'eq', eventType);
                 queryBuilder.addToRql('subtypeName', 'eq', subType);
                 if (!Number.isFinite(referenceId1) || referenceId1 > 0) {
@@ -236,7 +245,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                     queryBuilder.addToRql('referenceId2', 'eq', referenceId2);
                 }
             }
-            
+
             if (this.activeStatus === 'active') {
                 queryBuilder.addToRql('active', 'eq', true);
             } else if (this.activeStatus === 'noRtn') {
@@ -244,20 +253,20 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             } else if (this.activeStatus === 'normal') {
                 queryBuilder.addToRql('active', 'eq', false);
             }
-            
+
             if (this.dateFilter) {
                 queryBuilder.addToRql('activeTimestamp', 'ge', this.from != null && this.from.valueOf());
                 queryBuilder.addToRql('activeTimestamp', 'lt', this.to != null && this.to.valueOf());
             }
-            
+
             return queryBuilder;
         }
-        
+
         displayQuery() {
             const queryBuilder = this.baseQuery();
 
             queryBuilder.addToRql('acknowledged', 'eq', this.acknowledged);
-            
+
             if (this.sort === 'activeRtn') {
                 queryBuilder.sort('rtnTimestamp', 'rtnApplicable');
             } else if (this.sort === '-activeRtn') {
@@ -269,11 +278,11 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                     queryBuilder.sort(this.sort);
                 }
             }
-            
+
             if (this.limit != null) {
                 queryBuilder.limit(this.limit, this.start || 0);
             }
-            
+
             return queryBuilder;
         }
 
@@ -294,7 +303,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             const rqlQuery = this.displayQuery().toString();
             const separator = rqlQuery.length ? '&' : '';
             this.csvUrl = `/rest/latest/events?${rqlQuery}${separator}format=csv2`;
-            
+
             this.queryResource = Events.query({rqlQuery});
 
             this.tableQueryPromise = this.queryResource.$promise.then(data => {
@@ -315,13 +324,13 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             if (this.countUnacknowledgedResource) {
                 this.countUnacknowledgedResource.$cancelRequest();
             }
-            
+
             if (!this.acknowledged || this.acknowledged === ANY_KEYWORD) {
                 const rqlQuery = this.baseQuery()
                     .eq('acknowledged', false)
                     .limit(0)
                     .toString();
-                
+
                 this.countUnacknowledgedResource = Events.query({rqlQuery}, null);
                 this.countUnacknowledgedResource.$promise.then(data => {
                     this.totalUnAcknowledged = data.$total;
@@ -330,7 +339,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 this.totalUnAcknowledged = 0;
             }
         }
-        
+
         addNote($event, event) {
             return UserNotes.addNote($event, 'Event', event.id).then((note) => {
                 event.comments.push(note);
@@ -341,15 +350,15 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             this.start = (page - 1) * limit;
             this.doQuery();
         }
-        
+
         onReorder() {
             this.doQuery();
         }
-        
+
         parseHTML(text) {
             return $sanitize(text);
         }
-        
+
         formatDate(date) {
             return this.maDate(date, this.dateFormat || 'shortDateTimeSeconds', this.timezone);
         }
@@ -366,39 +375,39 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 return removed[0];
             }
         }
-        
+
         // Acknowledge single event
         acknowledgeEvent(event) {
             const didMatchFilters = this.eventMatchesFilters(event);
-            
+
             event.$acknowledge().then(() => {
                 event.acknowledged = true;
-                
+
                 if (!Events.notificationManager.socketConnected()) {
                     if (didMatchFilters && this.totalUnAcknowledged > 0) {
                         this.totalUnAcknowledged--;
                     }
-                    
+
                     if (!this.eventMatchesFilters(event)) {
                         this.removeEvent(event);
                     }
                 }
             });
         }
-        
+
         // Acknowledge multiple events
         acknowledgeEvents(events) {
             events.forEach((event) => {
                 this.acknowledgeEvent(event);
             });
         }
-        
+
         // Acknowledge all matching RQL with button
         acknowledgeAll() {
             const rqlQuery = this.baseQuery()
                 .eq('acknowledged', false)
                 .toString();
-            
+
             Events.acknowledgeViaRql({rqlQuery}, null).$promise.then((data) => {
                 if (data.count) {
                     // re-query
@@ -409,7 +418,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
 
         eventMatchesFilters(event, ignoreAckFilter) {
             const tests = [];
-            
+
             if (this.$attrs.hasOwnProperty('pointId')) {
                 if (this.pointId == null) {
                     return false;
@@ -422,9 +431,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 }
                 tests.push(new Equals(event.eventType.eventType, 'DATA_SOURCE'));
             }
-            
+
             const {eventType, subType, referenceId1, referenceId2} = this.eventTypeObject || this;
-            
+
             let active, rtnApplicable;
             switch(this.activeStatus) {
             case 'noRtn':
@@ -450,25 +459,38 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 new Equals(event.rtnApplicable, rtnApplicable),
                 new Equals(event.eventType.referenceId1, this.pointId),
                 new Equals(event.eventType.referenceId1, this.sourceId),
-                new InArray(event.eventType.referenceId1, this.pointIds),
                 new Equals(event.id, this.eventId));
-            
+
+            if (Array.isArray(this.pointIds)) {
+                tests.push(
+                    new Equals(event.eventType.eventType, 'DATA_POINT'),
+                    new InArray(event.eventType.referenceId1, this.pointIds));
+            } else if (this.pointTags) {
+                tests.push(new Equals(event.eventType.eventType, 'DATA_POINT'));
+
+                const point = event.eventType.reference1;
+                const tags = point && point.tags || {};
+                Object.entries(this.pointTags).forEach(([key, value]) => {
+                    tests.push(new Equals(tags[key], value));
+                });
+            }
+
             if (!ignoreAckFilter) {
                 tests.push(new Equals(event.acknowledged, this.acknowledged));
             }
-            
+
             if (this.dateFilter) {
                 tests.push(
                     new GreaterThanEquals(event.activeTimestamp, this.from != null && this.from.valueOf()),
                     new LessThan(event.activeTimestamp, this.to != null && this.to.valueOf())
                 );
             }
-            
+
             return tests.reduce((accum, test) => {
                 return accum && test.test();
             }, true);
         }
-        
+
         formatDuration(duration) {
             if (duration < 1000) {
                 return Translate.trSync('ui.time.milliseconds', [duration]);
@@ -480,7 +502,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             return moment.duration(duration).humanize();
         }
     }
-    
+
     return {
         restrict: 'E',
         template: eventsTableTemplate,
@@ -490,6 +512,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         bindToController: {
             pointId: '<?',
             pointIds: '<?',
+            pointTags: '<?',
             eventId: '<?',
             alarmLevel: '<?',
             eventTypeObject: '<?',
