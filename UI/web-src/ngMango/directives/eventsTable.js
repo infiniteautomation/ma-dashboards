@@ -186,13 +186,14 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 }, 5000);
             });
 
-            // TODO update with websocket
-            // TODO this is a unbounded query
-            EventHandler.buildQuery()
-            .query().then(handlers => {
-                this.handlers = handlers;
-                this.rebuildHandlersMap();
-            });
+            if (!this.hideEventHandlers) {
+                // TODO update with websocket
+                // TODO this is a unbounded query
+                EventHandler.buildQuery().query().then(handlers => {
+                    this.handlers = handlers;
+                    this.rebuildHandlersMap();
+                });
+            }
         }
 
         $onChanges(changes) {
@@ -543,7 +544,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             hideAckButton: '<?',
             hideCsvButton: '<?',
             sourceId: '<?',
-            dateFormat: '@?'
+            dateFormat: '@?',
+            hideEventHandlers: '<?'
         },
         designerInfo: {
             translation: 'ui.app.eventsTable',

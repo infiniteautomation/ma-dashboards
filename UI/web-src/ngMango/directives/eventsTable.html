@@ -21,7 +21,7 @@
                 <th md-column md-order-by="message" ma-tr="ui.app.msg" class="ma-message-column"></th>
                 <th md-column md-order-by="activeRtn" ma-tr="ui.app.activeStatus" class="ma-medium-column"></th>
                 <th md-column ma-tr="ui.app.duration" class="ma-medium-column"></th>
-                <th md-column ma-tr="ui.app.eventHandlers" class="ma-narrow-column ma-text-centered"></th>
+                <th ng-if="!$ctrl.hideEventHandlers" md-column ma-tr="ui.app.eventHandlers" class="ma-narrow-column ma-text-centered"></th>
                 <th md-column md-order-by="acknowledgedTimestamp" ma-tr="ui.app.acknowledge" class="ma-narrow-column ma-text-centered"></th>
             </tr>
         </thead>
@@ -43,7 +43,7 @@
                     </md-icon>
                 </td>
                 <td md-cell class="ma-medium-column" ng-bind="$ctrl.formatDate(event.activeTimestamp)"></td>
-                
+
                 <td md-cell class="ma-message-column" ng-class="{'ma-truncated' : !toggle}" ng-click="toggle = !toggle"
                         ng-init="linkInfo = $ctrl.linkInfo[event.eventType.eventType] || $ctrl.linkInfo[event.eventType.systemEventType]">
                     <a class="ma-no-border" ng-if="linkInfo && (!$ctrl.hideLink || $ctrl.hideLink !== event.eventType.eventType && $ctrl.hideLink !== event.eventType.systemEventType)"
@@ -60,14 +60,14 @@
                     </md-icon>
 
                     <span ng-bind-html="$ctrl.parseHTML(event.message)"></span>
-                    
+
                     <div ng-if="toggle" class="ma-user-comments">
                         <div ng-repeat="userComment in event.comments track by userComment.xid">
                             <em>{{userComment.comment}}</em> ({{userComment.username}} &mdash; {{$ctrl.formatDate(userComment.timestamp)}})
                         </div>
                     </div>
                 </td>
-                
+
                 <!-- Status column -->
                 <td md-cell ng-switch="event.rtnApplicable">
                     <span ng-switch-when="true">
@@ -81,14 +81,14 @@
                         <span ma-tr="common.nortn"></span>
                     </span>
                 </td>
-                
+
                 <!-- Duration column -->
                 <td md-cell class="ma-medium-column" ng-switch="event.rtnApplicable">
                     <span ng-switch-when="true" ng-bind="$ctrl.formatDuration(event.duration)"></span>
                     <span ng-switch-default ma-tr="ui.app.instantaneous"></span>
                 </td>
-                
-                <td md-cell class="ma-narrow-column ma-text-centered" ng-init="handlerCount = $ctrl.handlersForType.count(event.eventType); handlerLink = $ctrl.linkInfo.EVENT_HANDLERS_LINK; handlerParams = handlerLink.stateParams(event);">
+
+                <td ng-if="!$ctrl.hideEventHandlers" md-cell class="ma-narrow-column ma-text-centered" ng-init="handlerCount = $ctrl.handlersForType.count(event.eventType); handlerLink = $ctrl.linkInfo.EVENT_HANDLERS_LINK; handlerParams = handlerLink.stateParams(event);">
                     <a ui-state="handlerLink.stateName" ui-state-params="handlerParams" class="ma-no-border">
                         <md-icon>
                             {{handlerCount > 0 ? 'assignment_turned_in' : 'link'}}
@@ -96,7 +96,7 @@
                         </md-icon>
                     </a>
                 </td>
-                
+
                 <td md-cell class="ma-narrow-column ma-text-centered">
                     <md-icon class="ma-acknowledged-checkbox" ng-click="$ctrl.acknowledgeEvent(event);" ng-if="!$ctrl.hideAckButton && !event.acknowledged">
                         done
