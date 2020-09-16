@@ -24,6 +24,7 @@ import moment from 'moment-timezone';
  * @param {number=} limit Set the initial limit of the pagination.
  * @param {number[]=} point-ids Only show events for these data point IDs
  * @param {object=} point-tags Only show events for data points which match these tags.
+ * Undefined tag values are ignored but null tag values can be queried on.
  * @param {number=} point-id Filter on the id property of a single point
  * @param {number=} event-id Filter on a specific Event Id, should return a single event.
  * @param {expression=} alarm-level Expression which should evaluate to a string. Filter on Alarm Level. Possible values are:
