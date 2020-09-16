@@ -88,6 +88,14 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
         }
     }
 
+    class StrictEquals extends Equals {
+        test() {
+            if (this.filter === undefined || this.filter === ANY_KEYWORD)
+                return true;
+            return this.testOp();
+        }
+    }
+
     class GreaterThanEquals extends Equals {
         testOp() {
             return this.value >= this.filter;
@@ -228,7 +236,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             } else if (this.pointTags) {
                 queryBuilder.addToRql('eventType', 'eq', 'DATA_POINT');
                 Object.entries(this.pointTags).forEach(([key, value]) => {
-                    queryBuilder.addToRql(`tags.${key}`, 'eq', value);
+                    if (value !== undefined && value !== ANY_KEYWORD) {
+                        queryBuilder.eq(`tags.${key}`, value);
+                    }
                 });
             } else if (this.sourceId != null && this.sourceId !== ANY_KEYWORD) {
                 queryBuilder.addToRql('eventType', 'eq', 'DATA_SOURCE');
@@ -471,7 +481,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 const point = event.eventType.reference1;
                 const tags = point && point.tags || {};
                 Object.entries(this.pointTags).forEach(([key, value]) => {
-                    tests.push(new Equals(tags[key], value));
+                    tests.push(new StrictEquals(tags[key], value));
                 });
             }
 
