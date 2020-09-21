@@ -60,10 +60,12 @@ import moment from 'moment-timezone';
  */
 
 eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO', '$timeout',
-    'maEventHandler', 'maTranslate'];
+    'maEventHandler', 'maTranslate', 'localStorageService'];
 function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO, $timeout,
-        EventHandler, Translate) {
+        EventHandler, Translate, localStorageService) {
 
+    const localStorageKey = 'maEventsTable';
+    const localStorageDefaults = {csvLimit: 1000};
     const ANY_KEYWORD = 'any';
 
     class Equals {
@@ -140,6 +142,10 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             this.onReorderBound = (...args) => this.onReorder(...args);
 
             this.handlersForType = new EventTypeInfo.EventTypeMap();
+            this.fixedCsvLimit = $attrs.hasOwnProperty('csvLimit');
+
+            this.settings = localStorageService.get(localStorageKey) || Object.assign({}, localStorageDefaults);
+            this.csvLimit = this.settings.csvLimit;
         }
 
         $onInit() {
@@ -280,7 +286,7 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             return queryBuilder;
         }
 
-        displayQuery() {
+        displayQuery(limit = this.limit, offset = this.start) {
             const queryBuilder = this.baseQuery();
 
             queryBuilder.addToRql('acknowledged', 'eq', this.acknowledged);
@@ -297,8 +303,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
                 }
             }
 
-            if (this.limit != null) {
-                queryBuilder.limit(this.limit, this.start || 0);
+            if (limit != null) {
+                queryBuilder.limit(limit, offset || 0);
             }
 
             return queryBuilder;
@@ -319,8 +325,9 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             }
 
             const rqlQuery = this.displayQuery().toString();
-            const separator = rqlQuery.length ? '&' : '';
-            this.csvUrl = `/rest/latest/events?${rqlQuery}${separator}format=csv2`;
+            const csvQuery = this.displayQuery(this.csvLimit).toString();
+            const separator = csvQuery.length ? '&' : '';
+            this.csvUrl = `/rest/latest/events?${csvQuery}${separator}format=csv2`;
 
             this.queryResource = Events.query({rqlQuery});
 
@@ -519,6 +526,11 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             }
             return moment.duration(duration).humanize();
         }
+
+        saveCsvLimit() {
+            this.settings.csvLimit = this.csvLimit;
+            localStorageService.set(localStorageKey, this.settings);
+        }
     }
 
     return {
@@ -552,7 +564,8 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
             sourceId: '<?',
             dateFormat: '@?',
             hideEventHandlers: '<?',
-            tagColumns: '<?'
+            tagColumns: '<?',
+            csvLimit: '<?'
         },
         designerInfo: {
             translation: 'ui.app.eventsTable',

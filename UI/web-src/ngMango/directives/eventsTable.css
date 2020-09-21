@@ -34,3 +34,19 @@ ma-events-table table.md-table td.md-cell.ma-message-column.ma-truncated {
 	max-height: 20px;
 	line-height: 20px;
 }
+
+ma-events-table .ma-events-table-controls {
+	padding: 0 16px;
+}
+
+ma-events-table .ma-events-table-controls > .md-button {
+	margin-left: 16px;
+}
+
+ma-events-table md-table-pagination {
+	margin: 0;
+}
+
+ma-events-table .ma-events-table-csv-buttons > .md-button {
+	margin: 0;
+}

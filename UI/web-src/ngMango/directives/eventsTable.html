@@ -1,15 +1,21 @@
-<div layout="column" layout-gt-sm="row" flex layout-align="end end">
-    <md-table-pagination flex flex-order="3" flex-order-gt-sm="1" class="ma-pagination-underline" md-limit="$ctrl.limit"
+<div layout="column" layout-gt-sm="row" layout-align="start end" class="ma-events-table-controls">
+    <div layout="row" layout-align="start end" class="ma-events-table-csv-buttons">
+        <md-button ng-if-start="!$ctrl.hideCsvButton" class="md-icon-button ma-small-button" ng-href="{{$ctrl.csvUrl}}" download="events.csv">
+            <md-icon>file_download</md-icon>
+            <md-tooltip><span ma-tr="ui.app.downloadCSV"></span></md-tooltip>
+        </md-button>
+        <md-button ng-if-end ng-if="!$ctrl.fixedCsvLimit" class="md-icon-button ma-small-button" ng-click="$ctrl.configureCsv = {targetEvent: $event}">
+            <md-icon>settings</md-icon>
+            <md-tooltip><span ma-tr="ui.app.configureCSVDownload"></span></md-tooltip>
+        </md-button>
+    </div>
+    <md-table-pagination flex class="ma-pagination-underline" md-limit="$ctrl.limit"
             md-limit-options="[5, 10, 15, 25, 50, 100, 200]" md-page="$ctrl.page" md-total="{{$ctrl.total}}"
             md-page-select md-on-paginate="$ctrl.onPaginateBound">
     </md-table-pagination>
-    <md-button ng-if="!$ctrl.hideAckButton" flex-order="2" class="md-raised md-primary md-hue-2" ng-click="$ctrl.acknowledgeAll()" ng-disabled="!$ctrl.totalUnAcknowledged">
+    <md-button ng-if="!$ctrl.hideAckButton" class="md-raised md-primary md-hue-2" ng-click="$ctrl.acknowledgeAll()" ng-disabled="!$ctrl.totalUnAcknowledged">
         <md-icon>done_all</md-icon>
         <span ma-tr="ui.app.acknowledgeXEvents" ma-tr-args="[$ctrl.totalUnAcknowledged]"></span>
-    </md-button>
-    <md-button ng-if="!$ctrl.hideCsvButton" class="md-icon-button" ng-href="{{$ctrl.csvUrl}}" download="events.csv">
-        <md-icon>file_download</md-icon>
-        <md-tooltip><span ma-tr="ui.app.downloadCSV"></span></md-tooltip>
     </md-button>
 </div>
 <md-table-container>
@@ -117,3 +123,28 @@
         </tbody>
     </table>
 </md-table-container>
+
+<ma-dialog show-dialog="$ctrl.configureCsv" ng-if="!$ctrl.fixedCsvLimit">
+    <md-dialog>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span ma-tr="ui.app.configureCSVDownload"></span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-padding" layout>
+                <md-input-container flex>
+                    <label ma-tr="ui.app.csvLimit"></label>
+                    <input type="number" ng-model="$ctrl.csvLimit" ng-model-options="{debounce: 1000}"
+                           ng-change="$ctrl.saveCsvLimit()" ma-form-exclude>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+    </md-dialog>
+</ma-dialog>
