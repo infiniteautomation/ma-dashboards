@@ -92,7 +92,7 @@ uiApp.constant('MA_UI_INSTALL_PROMPT', {
     canPrompt() {
         return !!this.event;
     },
-    
+
     prompt(userEvent) {
         this.event.prompt();
         return this.event.userChoice.then(choice => {
@@ -122,11 +122,11 @@ function(MA_UI_NG_DOCS, $urlRouterProvider,
     $compileProvider.debugInfoEnabled(false);
     $compileProvider.commentDirectivesEnabled(false);
     $compileProvider.cssClassDirectivesEnabled(false);
-    
+
     $mdAriaProvider.disableWarnings();
 
     $httpProvider.useApplyAsync(true);
-    
+
     $anchorScrollProvider.disableAutoScrolling();
 
     $mdGestureProvider.skipClickHijack();
@@ -172,7 +172,7 @@ function(MA_UI_NG_DOCS, $urlRouterProvider,
 
         let menuProperty = 'menuTr';
         let menuValue;
-        
+
         if (item === 'ngMango') {
             menuValue = 'ui.dox.components';
         } else if (item === 'ngMangoFilters') {
@@ -205,9 +205,9 @@ function(MA_UI_NG_DOCS, $urlRouterProvider,
             let directiveName;
             if (matches.length > 3)
                 directiveName = matches[3];
-            
+
             const name = directiveName || serviceName;
-            
+
             let dashCaseUrl = name.replace(/[A-Z]/g, c => '-' + c.toLowerCase());
             while (dashCaseUrl.charAt(0) === '-') {
                 dashCaseUrl = dashCaseUrl.slice(1);
@@ -228,7 +228,7 @@ function(MA_UI_NG_DOCS, $urlRouterProvider,
             apiDocsMenuItems.push(menuItem);
         }
     });
-    
+
     maUiMenuProvider.registerMenuItems(apiDocsMenuItems);
 
     cfpLoadingBarProvider.includeSpinner = false;
@@ -293,15 +293,25 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.$log = $log;
     $rootScope.installPrompt = installPrompt;
 
+    const templateToTemplateUrl = function(state, template) {
+        const templateUrl = `${state.name}.tmpl.html`;
+        $templateCache.put(templateUrl, template);
+        return templateUrl;
+    };
+
     // Resolve all the promises returned by values of the state.resolve object, get the first view template,
     // add it to the template cache and return the template url. Note: the self passed to resolve() is different
     // to what the UI Router uses but it works fine for our resolve functions.
     const getTemplateUrl = function(state) {
-        return $resolve.resolve(state.resolve, {}, null, state).then(result => {
-            const templateUrl = `${state.name}.tmpl.html`;
-            $templateCache.put(templateUrl, result.template_0.default);
-            return templateUrl;
-        });
+        if (state.templateUrl) {
+            return $q.resolve(state.templateUrl);
+        } else if (state.template) {
+            return $q.resolve(templateToTemplateUrl(state, state.template));
+        } else {
+            return $resolve.resolve(state.resolve, {}, null, state).then(result => {
+                return templateToTemplateUrl(state, result.template_0.default);
+            });
+        }
     };
 
     $rootScope.openHelp = function(helpPageState) {
@@ -311,12 +321,12 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
         if (!helpPageState && $state.params.helpPage) {
             helpPageState = $state.get($state.params.helpPage);
         }
-        
+
         if (!helpPageState) {
             $rootScope.closeHelp();
             return;
         }
-        
+
         $rootScope.pageOpts.newWindowHelpUrl = $state.href(helpPageState, {helpOpen: null});
 
         // put the template in the cache and then set the help url
@@ -325,18 +335,18 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             $state.go('.', {helpOpen: helpPageState.name}, {location: 'replace', notify: false});
         });
     };
-    
+
     $rootScope.closeHelp = function() {
         $rootScope.pageOpts.helpUrl = null;
-        
+
         $state.go('.', {helpOpen: null}, {location: 'replace', notify: false});
     };
-    
+
     $rootScope.scrollHelp = function() {
         const helpMdContent = document.querySelector('.ma-help-sidebar md-content');
         if (helpMdContent) {
             helpMdContent.scrollTop = 0;
-            
+
             // if help pane contains the hash element scroll to it
             const hash = $location.hash();
             if (hash && helpMdContent.querySelector('#' + hash)) {
@@ -358,7 +368,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             this.titleText = uiSettings.titleSuffix;
         }
     };
-    
+
     $rootScope.goToState = function($event, stateName, stateParams) {
         // ignore if it was a middle click, i.e. new tab
         if ($event.which !== 2) {
@@ -392,17 +402,17 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             $window.open(toState.href, toState.target || '_self');
             return;
         }
-        
+
         if (toState.redirectTo) {
             event.preventDefault();
             $state.go(toState.redirectTo, toParams);
             return;
         }
-        
+
         if ($state.includes('ui') && !$rootScope.navLockedOpen) {
             $rootScope.closeMenu();
         }
-        
+
         if (toState.name === 'logout') {
             event.preventDefault();
             // consume error
@@ -420,7 +430,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             event.preventDefault();
             $state.go('ui.settings.systemStatus.loggingConsole', toParams);
         }
-        
+
         if (toState.name === 'changePassword' && toParams.resetToken) {
             event.preventDefault();
             $state.go('resetPassword', toParams);
@@ -442,13 +452,13 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             }
         }
     });
-    
+
     $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
         const crumbs = [];
         let state = $state.$current;
         do {
             if (state.name === 'ui') continue;
-            
+
             if (state.menuTr) {
                 crumbs.unshift({stateName: state.name, maTr: state.menuTr});
             } else if (state.menuText) {
@@ -456,10 +466,10 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             }
         } while ((state = state.parent));
         $rootScope.crumbs = crumbs;
-        
+
         $rootScope.setTitleText();
         maUiDateBar.rollupTypesFilter = {};
-        
+
         $rootScope.stateNameClass = toState.name.replace(/\./g, '_');
 
         // if help is already open or the helpOpen param is true the new page's help
@@ -487,7 +497,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
                     $rootScope.openMenu();
                 }
             }
-            
+
             // ensure the sidenav is in in the DOM (it should be)
             if (document.querySelector('[md-component-id=left]')) {
                 // the closeMenu() function already does this but we need this for when the ESC key is pressed
@@ -498,7 +508,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             }
 
         }
-        
+
         const mainContent = document.querySelector('.main-content');
         if (mainContent) {
             mainContent.scrollTop = 0;
@@ -519,10 +529,10 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.$watch($mdMedia.bind($mdMedia, 'gt-sm'), (gtSm, prev) => {
         if (gtSm === prev) return; // ignore first "change"
         if (!$state.includes('ui')) return; // nothing to do if menu not visible
-        
+
         const sideNav = $mdSidenav('left');
         const uiPrefs = localStorageService.get('uiPreferences') || {};
-        
+
         // window expanded
         if (gtSm && !uiPrefs.menuClosed && !sideNav.isOpen()) {
             $rootScope.openMenu();
@@ -536,7 +546,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.toggleMenu = function() {
         const sideNav = $mdSidenav('left');
         const uiPrefs = localStorageService.get('uiPreferences') || {};
-        
+
         if (sideNav.isOpen()) {
             uiPrefs.menuClosed = true;
             this.closeMenu();
@@ -544,7 +554,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             uiPrefs.menuClosed = false;
             this.openMenu();
         }
-        
+
         // we dont update the preferences when on a small screen as the nav is never locked open or closed
         if ($mdMedia('gt-sm')) {
             localStorageService.set('uiPreferences', uiPrefs);
@@ -569,7 +579,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             $mdSidenav('left').open();
         }
     };
-    
+
     if (User.current && User.current.hasRole('superadmin')) {
         maModules.startAvailableUpgradeCheck();
     }
@@ -583,7 +593,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             maModules.cancelAvailableUpgradeCheck();
         }
     });
-    
+
     /**
      * Watchdog timer alert and re-connect/re-login code
      */
@@ -649,12 +659,12 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             $mdToast.show(toast);
         }
     });
-    
+
     // stops window to navigating to a file when dropped on root document
     $document.on('dragover drop', $event => false);
 
     $rootScope.appLoading = false;
-    
+
     $rootScope.developmentConfig = developmentConfig;
     $rootScope.clearTranslations = () => {
         Translate.clearCache().then(() => {
