@@ -157,7 +157,13 @@
                        download="{{$ctrl.scriptResult.outputFilename}}">
                 <span ma-tr="common.download"></span>
             </md-button>
+            <md-button class="md-raised" ng-if="$ctrl.scriptResult.canShowText" ng-click="$ctrl.getScriptResultText()">
+                <span ma-tr="ui.fileBrowser.showScriptOutput"></span>
+            </md-button>
             <span ma-tr="script.responseSizeAndType" ma-tr-args="[$ctrl.scriptResult.outputBlob.type, ($ctrl.scriptResult.outputBlob.size | maBytes)]"></span>
+        </div>
+        <div ng-if="$ctrl.scriptResult.textLoading" layout layout-align="center center">
+            <md-progress-circular></md-progress-circular>
         </div>
         <pre class="ma-script-response-text" ng-bind="$ctrl.scriptResult.output"></pre>
     </div>

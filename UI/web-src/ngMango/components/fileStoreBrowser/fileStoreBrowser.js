@@ -793,9 +793,11 @@ class FileStoreBrowserController {
             }
 
             if (isText || isJson) {
-                result.text().then(text => {
-                    this.scriptResult.output = text;
-                });
+                this.scriptResult.canShowText = true;
+                // automatically show text if the size is less than 100 KiB
+                if (result.size < 100 * 1024) {
+                    this.getScriptResultText();
+                }
             }
         }, error => {
             this.scriptResult.error = error;
@@ -819,6 +821,15 @@ class FileStoreBrowserController {
                 }]);
             }
         }).finally(() => delete this.scriptResult.evalPromise);
+    }
+
+    getScriptResultText() {
+        this.scriptResult.canShowText = false;
+        this.scriptResult.textLoading = true;
+        this.$q.resolve(this.scriptResult.outputBlob.text()).then(text => {
+            delete this.scriptResult.textLoading;
+            this.scriptResult.output = text;
+        });
     }
 
     canEvalScript(file) {
