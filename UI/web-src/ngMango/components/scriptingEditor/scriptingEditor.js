@@ -110,6 +110,11 @@ class scriptingEditorController {
 
     validate() {
         this.scriptData.context = angular.copy(this.context);
+        if (this.additionalContext) {
+            this.scriptData.additionalContext = Object.assign({}, this.additionalContext);
+        } else {
+            delete this.scriptData.additionalContext;
+        }
 
         if(this.contextVarXidName) {
             this.scriptData.context.forEach(item => {
@@ -194,7 +199,8 @@ export default {
         logSize: '=?',
         logFileName: '<?',
         contextVarXidName: '<?',
-        showLogFileInputs: '<?'
+        showLogFileInputs: '<?',
+        additionalContext: '<?'
     },
     require: {
         ngModelCtrl: 'ngModel'
