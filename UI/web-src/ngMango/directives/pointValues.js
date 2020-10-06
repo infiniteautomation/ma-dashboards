@@ -125,7 +125,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
         },
         controller: ['$scope', function($scope) {
             $scope.refreshCount = 0;
-            
+
             this.$onChanges = function(changes) {
                 if (changes.refresh) {
                     $scope.refreshCount++;
@@ -180,7 +180,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                 };
             }, (newValue, oldValue) => {
                 let changedXids;
-                
+
                 // check initialization scenario
                 if (newValue === oldValue) {
                     changedXids = {
@@ -232,7 +232,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                 } else {
                     $scope.actualRollupInterval = $scope.rollupInterval;
                 }
-                
+
                 const promises = [];
 
                 // cancel existing requests if there are any
@@ -240,7 +240,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                     pendingRequest.cancel();
                     pendingRequest = null;
                 }
-                
+
                 for (let i = 0; i < points.length; i++) {
                     if (!points[i] || !points[i].xid) continue;
                     let queryPromise;
@@ -251,7 +251,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                     }
                     promises.push(queryPromise);
                 }
-                
+
                 pendingRequest = $q.all(promises).then(results => {
                     if (!results.length) return;
 
@@ -282,14 +282,14 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                 }).then(() => {
                     pendingRequest = null;
                 });
-                
+
             }, true);
 
             if (singlePoint) {
                 let pointPromise;
                 $scope.$watch('pointXid', (newXid, oldXid) => {
                     if (newXid === oldXid && newXid === undefined) return;
-                    
+
                     delete $scope.point;
                     if (pointPromise) {
                         pointPromise.reject();
@@ -306,7 +306,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
 
                 $scope.$watch('point.xid', (newValue, oldValue) => {
                     if (newValue === oldValue && newValue === undefined) return;
-                    
+
                     if (newValue) {
                         $scope.points = [$scope.point];
                     } else {
@@ -317,10 +317,10 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
 
             function combineValues() {
                 const combined = {};
-                
+
                 for (const xid in values) {
                     const seriesValues = values[xid];
-                    combineInto(combined, seriesValues, 'value_' + xid);
+                    combineInto(combined, seriesValues, xid);
                 }
 
                 // convert object into array
@@ -337,7 +337,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                     $scope.onValuesUpdated({$values: $scope.values});
             }
 
-            function combineInto(output, newValues, valueField) {
+            function combineInto(output, newValues, xid) {
                 if (!newValues) return;
 
                 for (let i = 0; i < newValues.length; i++) {
@@ -348,9 +348,23 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                         output[timestamp] = {timestamp: timestamp};
                     }
 
-                    output[timestamp][valueField] = value.value;
-                    if (value.rendered) {
-                        output[timestamp][valueField + '_rendered'] = value.rendered;
+                    if ($scope.rollup === 'ALL') {
+                        for (const rollupType of Object.keys(value)) {
+                            const rollupValue = value[rollupType];
+                            if (rollupValue != null && typeof rollupValue === 'object') {
+                                const valueField = `${rollupType}_${xid}`;
+                                output[timestamp][valueField] = rollupValue.value;
+                                if (rollupValue.rendered) {
+                                    output[timestamp][valueField + '_rendered'] = rollupValue.rendered;
+                                }
+                            }
+                        }
+                    } else {
+                        const valueField = `value_${xid}`;
+                        output[timestamp][valueField] = value.value;
+                        if (value.rendered) {
+                            output[timestamp][valueField + '_rendered'] = value.rendered;
+                        }
                     }
                 }
             }
@@ -383,7 +397,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                 const payload = event.payload;
                 $scope.$applyAsync(() => {
                     if (!payload.value) return;
-                    
+
                     let xid = payload.xid;
                     let point;
                     if (singlePoint) {
@@ -414,7 +428,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                         timestamp : payload.value.timestamp,
                         annotation : payload.value.annotation
                     };
-                    
+
                     if ($scope.rendered) {
                         item.rendered = payload.renderedValue;
                     }
@@ -478,7 +492,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
 
                     if (options.rollup === 'POINT_DEFAULT') {
                         options.rollup = point.rollup;
-                        
+
                         if (point.simplifyType === 'TARGET') {
                             options.simplifyTarget = point.simplifyTarget;
                         } else if (point.simplifyType === 'TOLERANCE') {
@@ -486,7 +500,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                         }
                     } else if (options.rollup === 'SIMPLIFY') {
                         delete options.rollup;
-                        
+
                         if (isFinite($scope.simplifyTolerance) && $scope.simplifyTolerance > 0) {
                             options.simplifyTolerance = $scope.simplifyTolerance;
                         } else if (isFinite($scope.simplifyTarget) && $scope.simplifyTarget > 0) {
@@ -495,7 +509,7 @@ function pointValues($http, pointEventManager, Point, $q, Util, pointValues) {
                             options.simplifyTarget = 1000;
                         }
                     }
-                    
+
                     return pointValues.getPointValuesForXid(point.xid, options).then(values => {
                         if (dataType === 'IMAGE') {
                             values.forEach(value => {
