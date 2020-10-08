@@ -179,10 +179,13 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope, $
             this.updateCounts();
 
             this.queryFilter = queryBuilder.createFilter();
+            this.loading = true;
             queryBuilder.query().then(events => {
                 events.forEach(e => this.eventUpdated(e));
                 this.updateCounts();
                 this.notifySubscribers();
+            }).finally(() => {
+                this.loading = false;
             });
 
             this.deregister = Events.notificationManager.subscribe({
