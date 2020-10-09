@@ -4,6 +4,7 @@
  */
 
 import multistateStateTemplate from '../components/eventDetectorEditor/detectorTypes/multistateState.html';
+import multistateBitTemplate from '../components/eventDetectorEditor/detectorTypes/multistateBit.html';
 import regexStateTemplate from '../components/eventDetectorEditor/detectorTypes/regexState.html';
 import alphanumericStateTemplate from '../components/eventDetectorEditor/detectorTypes/alphanumericState.html';
 import analogChangeTemplate from '../components/eventDetectorEditor/detectorTypes/analogChange.html';
@@ -101,7 +102,20 @@ function eventDetectorProvider() {
             description: 'pointEdit.detectors.state',
             template: multistateStateTemplate,
             pointEventDetector: true,
-            dataTypes: new Set(['MULTISTATE'])
+            dataTypes: new Set(['MULTISTATE']),
+            defaultProperties: {
+                inverted: false
+            }
+        },
+        {
+            type: 'MULTISTATE_BIT',
+            description: 'pointEdit.detectors.bit',
+            template: multistateBitTemplate,
+            pointEventDetector: true,
+            dataTypes: new Set(['MULTISTATE']),
+            defaultProperties: {
+                inverted: false
+            }
         },
         {
             type: 'NEGATIVE_CUSUM',

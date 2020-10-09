@@ -186,6 +186,21 @@ class EventDetectorEditorController {
                 return Number.parseInt(v);
             }).filter(v => Number.isFinite(v));
         }
+        return array;
+    }
+
+    formatHex(value) {
+        if (Number.isFinite(value) && Number.isInteger(value)) {
+            return '0x' + value.toString(16);
+        }
+        return value;
+    }
+
+    parseHex(value) {
+        if (typeof value === 'string') {
+            return Number.parseInt(value, 16);
+        }
+        return value;
     }
 }
 

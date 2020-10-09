@@ -1,0 +1,25 @@
+<div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
+    <div flex="100" layout="column" layout-align="start start">
+        <md-radio-group ng-model="$ctrl.eventDetector.inverted" layout class="ma-margin-bottom-large">
+            <md-radio-button ng-value="::false"><span ma-tr="pointEdit.detectors.bitIs"></span></md-radio-button>
+            <md-radio-button ng-value="::true"><span ma-tr="pointEdit.detectors.bitIsNot"></span></md-radio-button>
+        </md-radio-group>
+    </div>
+
+    <md-input-container flex="100" flex-gt-md="50">
+        <label ma-tr="pointEdit.detectors.bitmask"></label>
+        <input name="bitmask" ng-model="$ctrl.eventDetector.bitmask" required pattern="0x[\dA-Fa-f]+"
+               ma-parse-value="$ctrl.parseHex($value)" ma-format-value="$ctrl.formatHex($value)">
+        <div ng-messages="$ctrl.form.bitmask.$error">
+            <div ng-message="required" ma-tr="validate.required"></div>
+            <div ng-message="pattern" ma-tr="validate.hexNumber"></div>
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.bitmask.validationMessage"></div>
+        </div>
+    </md-input-container>
+
+    <ma-duration-editor flex="100" flex-gt-md="50" name="duration" ng-model="$ctrl.eventDetector.duration"
+            allowed-types="::['SECONDS', 'MINUTES', 'HOURS', 'DAYS']">
+        <ma-periods-label ma-tr="pointEdit.detectors.duration"></ma-periods-label>
+        <ma-type-label ma-tr="pointEdit.detectors.durationUnit"></ma-type-label>
+    </ma-duration-editor>
+</div>

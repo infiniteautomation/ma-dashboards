@@ -4,7 +4,7 @@
                      ng-change="$ctrl.eventDetector.states = $ctrl.eventDetector.multipleStates ? [$ctrl.eventDetector.state] : null">
             <span ma-tr="pointEdit.detectors.detectMultipleStates"></span>
         </md-checkbox>
-        <md-radio-group ng-model="$ctrl.eventDetector.inverted" layout class="ma-margin-bottom">
+        <md-radio-group ng-model="$ctrl.eventDetector.inverted" layout class="ma-margin-bottom-large">
             <md-radio-button ng-value="::false"><span ma-tr="pointEdit.detectors.stateIs"></span></md-radio-button>
             <md-radio-button ng-value="::true"><span ma-tr="pointEdit.detectors.stateIsNot"></span></md-radio-button>
         </md-radio-group>
