@@ -17,10 +17,10 @@ class EventDetectorEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['maEventDetector', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
         'MA_TIME_PERIOD_TYPES', 'maEvents']; }
-    
+
     constructor(maEventDetector, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse,
             MA_TIME_PERIOD_TYPES, maEvents) {
-        
+
         this.maEventDetector = maEventDetector;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
@@ -30,7 +30,7 @@ class EventDetectorEditorController {
 
         this.detectorTypes = maEventDetector.detectorTypes();
         this.detectorTypesByName = maEventDetector.detectorTypesByName();
-        
+
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
             this.dynamicHeight = $parse($attrs.dynamicHeight)($scope.$parent);
@@ -39,13 +39,13 @@ class EventDetectorEditorController {
         this.alarmLevels = maEvents.levels.slice();
         this.timePeriodTypes = MA_TIME_PERIOD_TYPES.slice();
     }
-    
+
     $onInit() {
         this.ngModelCtrl.$render = () => this.render(true);
-        
+
         this.$scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
             if (event.defaultPrevented) return;
-            
+
             if (!this.confirmDiscard('stateChange')) {
                 event.preventDefault();
                 return;
@@ -60,23 +60,23 @@ class EventDetectorEditorController {
                 return text;
             }
         };
-        
+
         this.$scope.$on('$destroy', () => {
             this.$window.onbeforeunload = oldUnload;
         });
     }
-    
+
     $onChanges(changes) {
     }
-    
+
     render(confirmDiscard = false) {
         if (confirmDiscard && !this.confirmDiscard('modelChange')) {
             this.setViewValue();
             return;
         }
-        
+
         this.validationMessages = [];
-        
+
         const viewValue = this.ngModelCtrl.$viewValue;
         if (viewValue) {
             if (viewValue instanceof this.maEventDetector) {
@@ -91,7 +91,7 @@ class EventDetectorEditorController {
         if (this.eventDetector && this.eventDetector.isNew()) {
             this.activeTab = 0;
         }
-        
+
         this.updateDetectorType();
 
         if (this.form) {
@@ -99,20 +99,20 @@ class EventDetectorEditorController {
             this.form.$setUntouched();
         }
     }
-    
+
     setViewValue() {
         this.ngModelCtrl.$setViewValue(this.eventDetector);
     }
 
     saveItem(event) {
         this.form.$setSubmitted();
-        
+
         if (!this.form.$valid) {
             this.form.activateTabWithClientError();
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
-        
+
         this.validationMessages = [];
 
         const notifyName = this.eventDetector.description || this.eventDetector.getOriginalId() || this.eventDetector.xid;
@@ -122,18 +122,18 @@ class EventDetectorEditorController {
             this.maDialogHelper.toast(['ui.eventDetectors.saved', item.description]);
         }, error => {
             let statusText = error.mangoStatusText;
-            
+
             if (error.status === 422) {
                 statusText = error.mangoStatusTextShort;
                 this.validationMessages = error.data.result.messages;
             }
-            
+
             this.maDialogHelper.errorToast(['ui.app.saveError', notifyName, statusText]);
         });
-        
+
         this.savePromise.finally(() => delete this.savePromise);
     }
-    
+
     revertItem(event) {
         if (this.confirmDiscard('revert')) {
             this.render();
@@ -154,29 +154,37 @@ class EventDetectorEditorController {
                 this.maDialogHelper.errorToast(['ui.app.deleteError', notifyName, error.mangoStatusText]);
             }
         });
-        
+
         this.deletePromise.finally(() => delete this.deletePromise);
     }
-    
+
     checkDiscardOption(type) {
         return this.discardOptions === true || (this.discardOptions && this.discardOptions[type]);
     }
-    
+
     confirmDiscard(type) {
         if (this.form && this.form.$dirty && this.checkDiscardOption(type)) {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
     }
-    
+
     updateDetectorType() {
         this.detectorType = this.eventDetector && this.detectorTypesByName[this.eventDetector.detectorType];
     }
-    
+
     typeChanged() {
         this.updateDetectorType();
         if (this.detectorType && this.detectorType.defaultProperties) {
             Object.assign(this.eventDetector, this.detectorType.defaultProperties);
+        }
+    }
+
+    parseIntArray(array) {
+        if (typeof array === 'string') {
+            return array.split(/\s*,\s*/g).map(v => {
+                return Number.parseInt(v);
+            }).filter(v => Number.isFinite(v));
         }
     }
 }

@@ -1,5 +1,26 @@
 <div layout="row" layout-wrap layout-align="space-between start" class="ma-inputs-container">
-    <md-input-container flex="100" flex-gt-md="50">
+    <div flex="100" layout="column" layout-align="start start">
+        <md-checkbox ng-model="$ctrl.eventDetector.multipleStates"
+                     ng-change="$ctrl.eventDetector.states = $ctrl.eventDetector.multipleStates ? [$ctrl.eventDetector.state] : null">
+            <span ma-tr="pointEdit.detectors.detectMultipleStates"></span>
+        </md-checkbox>
+        <md-radio-group ng-model="$ctrl.eventDetector.inverted" layout class="ma-margin-bottom">
+            <md-radio-button ng-value="::false"><span ma-tr="pointEdit.detectors.stateIs"></span></md-radio-button>
+            <md-radio-button ng-value="::true"><span ma-tr="pointEdit.detectors.stateIsNot"></span></md-radio-button>
+        </md-radio-group>
+    </div>
+
+    <md-input-container flex="100" flex-gt-md="50" ng-if="$ctrl.eventDetector.multipleStates">
+        <label ma-tr="pointEdit.detectors.states"></label>
+        <input name="states" ng-model="$ctrl.eventDetector.states" required
+               ma-parse-value="$ctrl.parseIntArray($value)" ma-format-value="$value.join(', ')">
+        <div ng-messages="$ctrl.form.states.$error">
+            <div ng-message="required" ma-tr="validate.required"></div>
+            <div ng-message="validationMessage" ng-bind="$ctrl.form.states.validationMessage"></div>
+        </div>
+    </md-input-container>
+
+    <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.eventDetector.multipleStates">
         <label ma-tr="pointEdit.detectors.state"></label>
         <input name="state" ng-model="$ctrl.eventDetector.state" type="number" required step="1">
         <div ng-messages="$ctrl.form.state.$error">
@@ -8,6 +29,7 @@
             <div ng-message="validationMessage" ng-bind="$ctrl.form.state.validationMessage"></div>
         </div>
     </md-input-container>
+
     <ma-duration-editor flex="100" flex-gt-md="50" name="duration" ng-model="$ctrl.eventDetector.duration"
             allowed-types="::['SECONDS', 'MINUTES', 'HOURS', 'DAYS']">
         <ma-periods-label ma-tr="pointEdit.detectors.duration"></ma-periods-label>
