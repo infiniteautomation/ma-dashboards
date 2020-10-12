@@ -26,7 +26,7 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, MA_TIMEOUTS, $q, $injector) {
 
         responseError(error) {
             // TODO error.xhrStatus abort might be a cancel, but could also be a timeout
-            if (this.isApiCall(error.config) &&
+            if (error.config && this.isApiCall(error.config) &&
                 !error.config.ignoreError && // ignoreError is set true by maWatchdog service
                 (error.status < 0 && ['timeout', 'error'].includes(error.xhrStatus) || error.status === 401)) {
 
