@@ -179,15 +179,16 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
          * Default notifier for CRUD type websocket payloads, they have a action and object property.
          */
         notifyFromPayload(payload) {
-            if (typeof payload.action === 'string' && payload.object != null) {
+            if (typeof payload.action === 'string') {
                 const eventType = mapEventType[payload.action] || payload.action;
                 if (eventType) {
-                    const item = this.transformObject(payload.object);
+                    const item = payload.object != null ? this.transformObject(payload.object) : null;
                     const attributes = new CrudOperationAttributes({
                         eventType,
                         item,
-                        originalXid: payload.originalXid,
-                        initiatorId: payload.initiatorId
+                        originalXid: payload.originalXid || payload.xid,
+                        itemXid: payload.xid,
+                        itemId: payload.id
                     });
                     this.notify(eventType, item, attributes);
                 }

@@ -33,10 +33,10 @@ const defaultColumns = [
 
 class BulkDataPointEditorController {
     static get $$ngIsClass() { return true; }
-    
+
     static get $inject() { return ['maPoint', 'maDataSource', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout',
             'localStorageService', 'maUtil', '$q', '$scope', '$element', '$filter', '$interval', 'maEventDetector']; }
-    
+
     constructor(maPoint, maDataSource, maDataPointTags, maDialogHelper, maTranslate, $timeout,
             localStorageService, maUtil, $q, $scope, $element, $filter, $interval, EventDetector) {
 
@@ -53,7 +53,7 @@ class BulkDataPointEditorController {
         this.$element = $element;
         this.$interval = $interval;
         this.EventDetector = EventDetector;
-        
+
         this.sortFilter = $filter('orderBy');
         this.filterFilter = $filter('filter');
 
@@ -77,10 +77,11 @@ class BulkDataPointEditorController {
         });
 
         this.updateQueue = [];
-        this.deregister = this.maPoint.notificationManager.subscribe((event, point) => {
+        this.deregister = this.maPoint.notificationManager.subscribe((event, point, attributes) => {
             this.updateQueue.push({
                 eventName: event.name,
-                point
+                point,
+                pointId: attributes.itemId
             });
         });
 
@@ -88,11 +89,11 @@ class BulkDataPointEditorController {
         this.prevUpdateQueueSize = 0;
         this.intervalPromise = this.$interval(() => {
             if (!this.updateQueue.length) return;
-            
+
             this.ticks++;
             if (this.ticks >= 20 || this.updateQueue.length === this.prevUpdateQueueSize) {
                 this.ticks = 0;
-                
+
                 let changeMade = false;
                 let update;
                 while ((update = this.updateQueue.shift()) != null) {
@@ -101,10 +102,10 @@ class BulkDataPointEditorController {
                     } else if (update.eventName === 'update') {
                         changeMade |= this.pointUpdated(update.point);
                     } else if (update.eventName === 'delete') {
-                        changeMade |= this.pointDeleted(update.point);
+                        changeMade |= this.pointDeleted(update.pointId);
                     }
                 }
-                
+
                 if (changeMade) {
                     this.$scope.$apply(() => {
                         this.checkAvailableTags();
@@ -112,16 +113,16 @@ class BulkDataPointEditorController {
                     });
                 }
             }
-            
+
             this.prevUpdateQueueSize = this.updateQueue.length;
         }, 500, null, false);
     }
-    
+
     $onDestroy() {
         this.deregister();
         this.$interval.cancel(this.intervalPromise);
     }
-    
+
     $onChanges(changes) {
         if (changes.query || changes.dataSource || changes.refresh || changes.watchList || changes.watchListParams || changes.queryingDisabled) {
             if (!this.queryingDisabled) {
@@ -132,14 +133,14 @@ class BulkDataPointEditorController {
             this.editPointsFromAttr();
         }
     }
-    
+
     loadSettings() {
         this.settings = this.localStorageService.get(localStorageKey) || {};
         if (this.settings.hasOwnProperty('showFilters')) {
             this.showFilters = !!this.settings.showFilters;
         }
     }
-    
+
     saveSettings() {
         this.localStorageService.set(localStorageKey, this.settings);
     }
@@ -152,7 +153,7 @@ class BulkDataPointEditorController {
         this.selectedPoints = new Map();
         this.checkboxEvents = new Map();
         this.prevPoint = null;
-        
+
         if (typeof this.selectedPointsAttr === 'function') {
             this.selectedPointsAttr({$selected: this.selectedPoints});
         }
@@ -160,14 +161,14 @@ class BulkDataPointEditorController {
         this.pageNumber = 1;
         this.sortString = 'deviceName';
         this.sortArray = ['deviceName', 'name'];
-        
+
         this.selectAll = false;
         this.selectAllIndeterminate = false;
-        
+
         this.resetColumns();
         this.clearFilters();
     }
-    
+
     resetColumns() {
         this.columns = defaultColumns.slice();
 
@@ -178,7 +179,7 @@ class BulkDataPointEditorController {
                 this.columns.push(...dataSourceColumns);
             }
         }
-        
+
         this.columns.forEach((column, i) => {
             column.order = i;
             column.property = column.name.split('.');
@@ -187,7 +188,7 @@ class BulkDataPointEditorController {
         const selected = Array.isArray(this.settings.selectedColumns) ? this.settings.selectedColumns : [];
         const deselected = Array.isArray(this.settings.deselectedColumns) ? this.settings.deselectedColumns : [];
         this.selectedColumns = this.columns.filter(c => selected.includes(c.name) || c.selectedByDefault && !deselected.includes(c.name));
-        
+
         this.showPointValueColumn = !!this.selectedColumns.find(c => c.name === 'value');
     }
 
@@ -199,11 +200,11 @@ class BulkDataPointEditorController {
     getPoints() {
         this.reset();
         this.cancelGetPoints();
-        
+
         if (!this.query && !this.dataSource && !this.watchList) {
             return;
         }
-        
+
         let p;
         if (this.watchList) {
             p = this.wlPointsPromise = this.watchList.getPoints(this.watchListParams);
@@ -231,22 +232,22 @@ class BulkDataPointEditorController {
                 // request cancelled, ignore error
                 return;
             }
-            
+
             const message = error.mangoStatusText || (error + '');
             this.maDialogHelper.errorToast(['ui.app.errorGettingPoints', message]);
         }).finally(() => {
             //delete this.wlPointsPromise;
             //delete this.pointsPromiseQuery;
-            
+
             // check we are deleting our own promise, not one for a new query
             if (this.pointsPromise === pointsPromise) {
                 delete this.pointsPromise;
             }
         });
-        
+
         return this.pointsPromise;
     }
-    
+
     cancelGetPoints() {
         if (this.pointsPromiseQuery) {
             this.maPoint.cancelRequest(this.pointsPromiseQuery);
@@ -255,7 +256,7 @@ class BulkDataPointEditorController {
             this.wlPointsPromise.cancel();
         }
     }
-    
+
     filterPoints() {
         this.filteredPoints = this.filterFilter(Array.from(this.points.values()), this.filterObject);
         this.updateSelectAllStatus();
@@ -265,7 +266,7 @@ class BulkDataPointEditorController {
     sortStringChanged() {
         const newSort = this.sortString;
         const property = newSort.startsWith('-') ? newSort.slice(1) : newSort;
-        
+
         this.sortArray = this.sortArray.filter(sort => {
             const prevProperty = sort.startsWith('-') ? sort.slice(1) : sort;
             return prevProperty !== property;
@@ -277,12 +278,12 @@ class BulkDataPointEditorController {
         }
         this.sortPoints();
     }
-    
+
     sortPoints() {
         this.sortedPoints = this.sortFilter(this.filteredPoints, this.sortArray);
         this.slicePoints();
     }
-    
+
     slicePoints() {
         const start = (this.pageNumber - 1) * this.numberOfRows;
         this.slicedPoints = this.sortedPoints.slice(start, start + this.numberOfRows);
@@ -294,29 +295,29 @@ class BulkDataPointEditorController {
         if (tagKey === 'device' || tagKey === 'name') {
             return;
         }
-        
+
         const existingOption = this.availableTagsByKey[tagKey];
         if (existingOption) {
             return existingOption;
         }
-        
+
         const option = {
             name: tagKey,
             label: this.maTranslate.trSync('ui.app.tag', [tagKey])
         };
-        
+
         this.availableTags.push(option);
         this.availableTagsByKey[tagKey] = option;
 
         return option;
     }
-    
+
     selectTag(option) {
         if (option && !this.selectedTags.includes(option)) {
             this.selectedTags.push(option);
         }
     }
-    
+
     confirmDeleteSelected(event) {
         if (!this.selectedPoints.size) {
             this.maDialogHelper.toastOptions({
@@ -325,17 +326,17 @@ class BulkDataPointEditorController {
             });
             return;
         }
-        
+
         this.maDialogHelper.confirm(event, ['ui.app.bulkEditConfirmDelete', this.selectedPoints.size]).then(() => {
             this.deleteSelected();
         }, () => null);
     }
-    
+
     deleteSelected() {
         // WS can modify this so make copy so we can retrieve point by index later
         const selected = Array.from(this.selectedPoints.values());
         const requests = selected.map(pt => ({xid: pt.xid}));
-        
+
         this.bulkTask = new this.maPoint.bulk({
             action: 'DELETE',
             requests
@@ -369,10 +370,10 @@ class BulkDataPointEditorController {
             classes: 'md-warn'
         });
     }
-    
+
     notifyBulkEditComplete(resource) {
         const numErrors = resource.result.responses.reduce((accum, response) => response.error ? accum + 1 : accum, 0);
-        
+
         const toastOptions = {
             textTr: [null, resource.position, resource.maximum, numErrors],
             hideDelay: 10000,
@@ -402,14 +403,14 @@ class BulkDataPointEditorController {
 
         this.maDialogHelper.toastOptions(toastOptions);
     }
-    
+
     cancel(event) {
         this.bulkTask.cancel();
     }
 
     checkAvailableTags() {
         const seenTagKeys = {};
-        
+
         for (let pt of this.points.values()) {
             if (pt.tags) {
                 for (let key of Object.keys(pt.tags)) {
@@ -417,7 +418,7 @@ class BulkDataPointEditorController {
                 }
             }
         }
-        
+
         this.selectedTags = this.manuallySelectedTags.slice();
         Object.keys(seenTagKeys).forEach(tagKey => {
             const option = this.addTagToAvailable(tagKey);
@@ -428,7 +429,7 @@ class BulkDataPointEditorController {
 
     updateSelectAllStatus() {
         const selectedFiltered = this.filteredPoints.filter(pt => this.selectedPoints.has(pt.id));
-        
+
         if (selectedFiltered.length === this.filteredPoints.length) {
             this.selectAllIndeterminate = false;
             // seems to be a bug changing md-checkbox indeterminate and checked at same time
@@ -443,13 +444,13 @@ class BulkDataPointEditorController {
             this.selectAllIndeterminate = selectedFiltered.length > 0;
         }
     }
-    
+
     selectAllChanged() {
         if (this.selectAllIndeterminate) {
             this.selectAll = false;
         }
         this.selectAllIndeterminate = false;
-        
+
         if (this.selectAll) {
             this.filteredPoints.forEach(pt => {
                 this.selectedPoints.set(pt.id, pt);
@@ -463,45 +464,45 @@ class BulkDataPointEditorController {
 
     selectedColumnsChanged() {
         this.showPointValueColumn = !!this.selectedColumns.find(c => c.name === 'value');
-        
+
         this.settings.deselectedColumns = this.columns
             .filter(c => c.selectedByDefault && !this.selectedColumns.includes(c))
             .map(c => c.name);
-        
+
         this.settings.selectedColumns = this.selectedColumns
             .filter(c => !c.selectedByDefault)
             .map(c => c.name);
-        
+
         this.saveSettings();
     }
-    
+
     selectedTagsChanged() {
         const removed = this.prevSelectedTags.filter(t => !this.selectedTags.includes(t));
         const added = this.selectedTags.filter(t => !this.prevSelectedTags.includes(t));
-        
+
         removed.forEach(option => {
             const index = this.manuallySelectedTags.indexOf(option);
             if (index >= 0) {
                 this.manuallySelectedTags.splice(index, 1);
             }
         });
-        
+
         added.forEach(option => {
             if (!this.manuallySelectedTags.includes(option)) {
                 this.manuallySelectedTags.push(option);
             }
         });
-        
+
         this.prevSelectedTags = this.selectedTags.slice();
     }
-    
+
     downloadCSV(event) {
         if (this.csvCancel) {
             this.csvCancel.resolve();
         }
 
         this.csvCancel = this.$q.defer();
-        
+
         const httpOptions = {
             cancel: this.csvCancel.promise,
             headers: {
@@ -510,10 +511,10 @@ class BulkDataPointEditorController {
             responseType: 'blob',
             timeout: 0
         };
-        
+
         let downloadPromise;
         let filename = 'Query';
-        
+
         if (this.watchList) {
             filename = this.watchList.name;
             if (this.watchList.type === 'static') {
@@ -552,10 +553,10 @@ class BulkDataPointEditorController {
         if (!event.target.files.length) return;
         this.startFromCsv(event.target.files[0]);
     }
-    
+
     fileDropped(data) {
         if (this.bulkTaskPromise || this.pointsPromise) return;
-        
+
         const types = data.getDataTransferTypes();
         if (types.includes('Files')) {
             const files = Array.from(data.getDataTransfer()).filter(f => f.name.endsWith('.csv') || f.type === 'text/csv');
@@ -564,7 +565,7 @@ class BulkDataPointEditorController {
             }
         }
     }
-    
+
     startFromCsv(csvFile) {
         this.csvFile = csvFile;
         this.showPointDialog = {};
@@ -572,23 +573,23 @@ class BulkDataPointEditorController {
 
     createDataPoint(event) {
         const dsType = this.maDataSource.typesByName[this.dataSource.modelType];
-        
+
         if (!dsType || typeof dsType.createDataPoint !== 'function') {
             this.maDialogHelper.toast(['ui.components.createPointNotSupported', this.dataSource.modelType]);
             return;
         }
-        
+
         this.editTarget = dsType.createDataPoint();
         this.editTarget.dataSourceXid = this.dataSource.originalId;
         this.editTarget.deviceName = this.dataSource.name;
         this.showPointDialog = {};
     }
-    
+
     editDataPoint(event, item) {
         this.editTarget = item;
         this.showPointDialog = {};
     }
-    
+
     copyDataPoint(event, item) {
         this.editTarget = item.copy(true);
         this.showPointDialog = {};
@@ -605,7 +606,7 @@ class BulkDataPointEditorController {
             });
         }, angular.noop);
     }
-    
+
     editSelectedPoints(event) {
         if (!this.selectedPoints.size) {
             this.maDialogHelper.toastOptions({
@@ -614,9 +615,9 @@ class BulkDataPointEditorController {
             });
             return;
         }
-        
+
         const selectedPointsArray = Array.from(this.selectedPoints.values());
-        
+
         if (selectedPointsArray.length === 1) {
             this.editTarget = selectedPointsArray[0];
         } else {
@@ -624,7 +625,7 @@ class BulkDataPointEditorController {
         }
         this.showPointDialog = {};
     }
-    
+
     pointMatchesQuery(point) {
         // TODO check the point matches this.queryObj
         if (this.dataSource && point.dataSourceXid === this.dataSource.xid) {
@@ -638,7 +639,7 @@ class BulkDataPointEditorController {
             return true;
         }
     }
-    
+
     pointUpdated(point) {
         const found = this.points.get(point.id);
         if (found) {
@@ -646,10 +647,10 @@ class BulkDataPointEditorController {
             return true;
         }
     }
-    
-    pointDeleted(point) {
-        const inPoints = this.points.delete(point.id);
-        const inSelected = this.selectedPoints.delete(point.id);
+
+    pointDeleted(pointId) {
+        const inPoints = this.points.delete(pointId);
+        const inSelected = this.selectedPoints.delete(pointId);
 
         if (inPoints || inSelected) {
             return true;
@@ -661,18 +662,18 @@ class BulkDataPointEditorController {
 
         this.settings.showFilters = this.showFilters;
         this.saveSettings();
-        
+
         if (!this.showFilters) {
             this.clearFilters();
             this.filterChanged();
         }
     }
-    
+
     filterChanged() {
         this.columns.forEach(column => {
             this.deepSetValue(this.filterObject, column.property, column.filter);
         });
-        
+
         this.clearEmptyKeys(this.filterObject);
         this.filterPoints();
     }
@@ -682,7 +683,7 @@ class BulkDataPointEditorController {
 
         for (let i = 0; i < property.length; i++) {
             const propertyName = property[i];
-            
+
             if (i === lastIndex) {
                 obj[propertyName] = value;
             } else if (obj[propertyName] == null) {
@@ -692,7 +693,7 @@ class BulkDataPointEditorController {
             }
         }
     }
-    
+
     clearEmptyKeys(obj) {
         Object.keys(obj).forEach(key => {
             const val = obj[key];
@@ -706,7 +707,7 @@ class BulkDataPointEditorController {
             }
         });
     }
-    
+
     /**
      * Getter / setter for the checkbox model
      */
@@ -715,11 +716,11 @@ class BulkDataPointEditorController {
             if (val === undefined) {
                 return this.selectedPoints.has(point.id);
             }
-            
+
             const event = this.checkboxEvents.get(point);
             const pointIndex = this.slicedPoints.indexOf(point);
             const prevPointIndex = this.slicedPoints.indexOf(this.prevPoint);
-            
+
             if (event && event.shiftKey && pointIndex >= 0 && prevPointIndex >= 0 && pointIndex !== prevPointIndex) {
                 const minIndex = Math.min(pointIndex, prevPointIndex);
                 const maxIndex = Math.max(pointIndex, prevPointIndex);
@@ -738,11 +739,11 @@ class BulkDataPointEditorController {
                     this.selectedPoints.delete(point.id);
                 }
             }
-            
+
             this.updateSelectAllStatus();
         };
     }
-    
+
     checkBoxClicked(point, event) {
         this.checkboxEvents.set(point, event);
     }
@@ -775,34 +776,34 @@ class BulkDataPointEditorController {
             });
             return;
         }
-        
+
         this.showPurgeDialog();
     }
-    
+
     cancelPurge() {
         this.cancelPurgeObj = {};
         delete this.showPurgeDialogObj;
         delete this.purgePoints;
     }
-    
+
     showPurgeDialog() {
         this.purgePoints = Array.from(this.selectedPoints.values());
         this.showPurgeDialogObj = {};
     }
-    
+
     editPointsFromAttr() {
         const pointsToEdit = this.editDataPoints;
-        
+
         if (!Array.isArray(pointsToEdit) || this.editTarget || this.csvFile) {
             return;
         }
-        
+
         if (this.dataSource) {
             if (pointsToEdit.some(dp => dp.dataSourceXid !== this.dataSource.xid)) {
                 return;
             }
         }
-        
+
         if (pointsToEdit.length === 1) {
             this.editTarget = pointsToEdit[0];
         } else {
