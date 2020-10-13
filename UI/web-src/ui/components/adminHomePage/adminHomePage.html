@@ -96,19 +96,14 @@
             </div>
             <div class="ma-ui-home-page-graph">
                 <ma-get-point-value point-xid="internal_cpu_system_load" point="cpuLoad"></ma-get-point-value>
-                <ma-get-point-value point-xid="internal_jvm_used_memory" point="freeRam"></ma-get-point-value>
-                <ma-point-values point="cpuLoad" values="cpuLoadValues" from="$ctrl.maUiDateBar.from"
-                    to="$ctrl.maUiDateBar.to" rollup="{{$ctrl.maUiDateBar.rollupType}}"
+                <ma-get-point-value point-xid="internal_jvm_used_memory" point="usedRam"></ma-get-point-value>
+                <ma-point-values points="[cpuLoad, usedRam]" values="$ctrl.sparkChartValues" from="$ctrl.maUiDateBar.from"
+                    to="$ctrl.maUiDateBar.to" rollup="{{$ctrl.maUiDateBar.rollupType}}" rendered="::true"
                     rollup-interval="{{$ctrl.maUiDateBar.rollupIntervals}} {{$ctrl.maUiDateBar.rollupIntervalPeriod}}">
                 </ma-point-values>
-                <ma-point-values point="freeRam" values="freeRamValues" from="$ctrl.maUiDateBar.from"
-                    to="$ctrl.maUiDateBar.to" rollup="{{$ctrl.maUiDateBar.rollupType}}"
-                    rollup-interval="{{$ctrl.maUiDateBar.rollupIntervals}} {{$ctrl.maUiDateBar.rollupIntervalPeriod}}">
-                </ma-point-values>
-                <ma-serial-chart class="ma-sparkline-chart"
-                    series-1-values="cpuLoadValues" series-1-point="cpuLoad" series-1-type="smoothedLine"
-                    series-1-color="#6effa3" series-2-values="freeRamValues" series-2-point="freeRam"
-                    series-2-type="smoothedLine" series-2-color="#49abd0" series-2-axis="right" balloon="true"
+                <ma-serial-chart class="ma-sparkline-chart" points="[cpuLoad, usedRam]"
+                    values="$ctrl.sparkChartValues" balloon="::true" point-title="$point.name"
+                    series-1-color="#6effa3" series-2-color="#49abd0" series-2-axis="right"
                     options="{autoMargins: false, categoryAxis:{labelsEnabled:false, gridAlpha: 0, axisAlpha: 0}}">
                 </ma-serial-chart>
             </div>
