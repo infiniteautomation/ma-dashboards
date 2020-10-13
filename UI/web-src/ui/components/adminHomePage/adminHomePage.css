@@ -44,8 +44,15 @@ ma-ui-admin-home-page .ma-server-status-contents > :nth-child(2n) {
     color: var(--ma-background-hue-2-contrast);
 }
 
+ma-ui-admin-home-page .ma-ui-home-page-label {
+    color: var(--ma-foreground-3);
+    font-size: 1.4rem;
+    text-transform: lowercase;
+}
+
 ma-ui-admin-home-page .ma-ui-home-page-sub-text {
     color: var(--ma-foreground-3);
+    font-weight: bold;
 }
 
 ma-ui-admin-home-page .ma-server-status-contents svg {
