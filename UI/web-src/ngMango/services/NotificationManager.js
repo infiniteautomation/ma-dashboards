@@ -28,12 +28,10 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
 
             const item = this.item;
             const originalXid = this.originalXid;
+            const itemId = this.itemId || item && item.id;
             const eventType = this.eventType;
 
             const filterMatches = typeof filterFn === 'function' ? filterFn(item) : true;
-            const idProp = item.hasOwnProperty('id') ? 'id' : 'xid';
-            const itemId = idProp === 'xid' && originalXid || item[idProp];
-
             if (filterMatches && Number.isFinite(array.$total)) {
                 if (eventType === 'create') {
                     array.$total += 1;
@@ -42,7 +40,10 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 }
             }
 
-            const index = array.findIndex(o => o[idProp] === itemId);
+            const index = array.findIndex(o => {
+                return o.hasOwnProperty('id') && o.id === itemId ||
+                    o.hasOwnProperty('xid') && o.xid === originalXid;
+            });
             if (index >= 0) {
                 if (!filterMatches || eventType === 'delete') {
                     array.splice(index, 1);
