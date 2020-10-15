@@ -41,8 +41,8 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             }
 
             const index = array.findIndex(o => {
-                return o.hasOwnProperty('id') && o.id === itemId ||
-                    o.hasOwnProperty('xid') && o.xid === originalXid;
+                return itemId && o.id === itemId ||
+                    originalXid && o.xid === originalXid;
             });
             if (index >= 0) {
                 if (!filterMatches || eventType === 'delete') {
