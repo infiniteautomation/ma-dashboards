@@ -1,10 +1,10 @@
 {
   "titleSuffix": "Mango",
-  "logoSrc": "../img/logo.svg",
+  "logoSrc": "../img/Mango_logo_4c_inverted-01.svg",
   "defaultTheme": "mangoDark2020",
   "usePreferredColorScheme": true,
   "alternateTheme": "mangoLight2020",
-  "alternateLogo": "../img/logo-light.svg",
+  "alternateLogo": "../img/Mango_logo_4c-01.svg",
   "codeTheme": "monokai",
   "googleMapsApiKey": "",
   "mapboxAccessToken": "",
