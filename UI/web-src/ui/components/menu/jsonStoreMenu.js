@@ -5,17 +5,17 @@
 
 class JsonStoreMenuController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$scope', 'maUiMenu']; }
+    static get $inject() { return ['maUiMenu', 'maEventBus']; }
 
-    constructor($scope, maUiMenu) {
-        this.$scope = $scope;
+    constructor(maUiMenu, maEventBus) {
         this.maUiMenu = maUiMenu;
+        this.maEventBus = maEventBus;
     }
 
     $onInit() {
         this.retrieveMenu();
-        
-        this.$scope.$on('maUIMenuChanged', (event, menuHierarchy) => {
+
+        this.maEventBus.subscribe('maUiMenu/menuChanged', (event, menuHierarchy) => {
             this.createMenuItemArray(menuHierarchy);
         });
     }
@@ -25,11 +25,11 @@ class JsonStoreMenuController {
             this.createMenuItemArray(menuHierarchy);
         });
     }
-    
+
     createMenuItemArray(menuHierarchy) {
         // slice array so we dont modify the original
         const rootArray = menuHierarchy.children.slice();
-        
+
         // combine root menu items and items under ui into a top level menu array
         const i = rootArray.findIndex(item => item.name === 'ui');
         const ui = rootArray[i];

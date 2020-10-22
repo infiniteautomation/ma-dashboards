@@ -144,8 +144,8 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
         registerStates(store.jsonData.menuItems);
     };
 
-    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'maPermission', 'maUtil'];
-    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, Permission, Util) {
+    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'maPermission', 'maUtil', 'maEventBus'];
+    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, Permission, Util, maEventBus) {
 
         const originalMenuItems = Object.freeze(Util.createMapObject(MA_UI_MENU_ITEMS, 'name'));
         MA_UI_MENU_ITEMS.forEach(item => Object.freeze(item));
@@ -205,7 +205,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
 
                 if (changed) {
                     this.updateMenuItems();
-                    $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
+                    maEventBus.publish('maUiMenu/menuChanged', this.menuHierarchy);
                 }
             }
 
@@ -270,7 +270,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 this.storeObject.jsonData.menuItems = [];
                 return this.storeObject.$save().then(() => {
                     this.updateMenuItems();
-                    $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
+                    maEventBus.publish('maUiMenu/menuChanged', this.menuHierarchy);
                     return this.menuHierarchy;
                 });
             }
@@ -300,7 +300,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 this.storeObject.jsonData.menuItems = different;
                 return this.storeObject.$save().then(() => {
                     this.updateMenuItems();
-                    $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
+                    maEventBus.publish('maUiMenu/menuChanged', this.menuHierarchy);
                     return this.menuHierarchy;
                 });
             }
@@ -330,7 +330,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
 
                     return this.storeObject.$save().then(() => {
                         this.updateMenuItems();
-                        $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
+                        maEventBus.publish('maUiMenu/menuChanged', this.menuHierarchy);
                         return this.menuItems;
                     });
                 });
@@ -348,7 +348,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                     if (found) {
                         return this.storeObject.$save().then(() => {
                             this.updateMenuItems();
-                            $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
+                            maEventBus.publish('maUiMenu/menuChanged', this.menuHierarchy);
                             return this.menuItems;
                         });
                     } else {
