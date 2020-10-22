@@ -1,5 +1,5 @@
 /**
- * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
+ * @copyright 2020 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
  * @author Jared Wiltshire
  */
 
@@ -35,74 +35,98 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
         });
     };
 
-    resolveUserHasPermission.$inject = ['maUser'];
-    function resolveUserHasPermission(User) {
+    const resolveUserHasPermission = function(User) {
+        // get the updated menuItem/state which may have properties combined from JSON store
+        const menuItem = registeredStates[this.name];
+        if (!menuItem) throw new Error('State/page no longer exists');
+
         const user = User.current || User.anonymous;
-        if (!(user.hasPermission(this.permission) || user.hasSystemPermission(...this.systemPermission))) {
+        if (!(user.hasPermission(menuItem.permission) || user.hasSystemPermission(...menuItem.systemPermission))) {
             if (user instanceof User.AnonymousUser) {
                 throw new User.NoUserError('No user logged in');
             } else {
                 throw new User.UnauthorizedError('User does not have access');
             }
         }
-    }
+    };
+    resolveUserHasPermission.$inject = ['maUser'];
 
-    const registerStates = function(menuItems) {
-        menuItems.forEach(menuItem => {
-            if (!menuItem.name || registeredStates[menuItem.name]) return;
-
-            // ensure resolve object available, used to add template resolve and permission resolve
-            if (!menuItem.resolve) {
-                menuItem.resolve = {};
+    const setMenuItemDefaults = (menuItem) => {
+        menuItem.menuHidden = !!menuItem.menuHidden;
+        if (menuItem.weight == null) {
+            menuItem.weight = 1000;
+        }
+        if (menuItem.systemPermission == null) {
+            menuItem.systemPermission = [];
+        }
+        if (menuItem.permission == null) {
+            if (menuItem.systemPermission.length) {
+                menuItem.permission = [];
+            } else {
+                menuItem.permission = ['user'];
             }
+        }
+        // transform old style permission into an array, required for permissions retrieved from JSON store
+        if (typeof menuItem.permission === 'string') {
+            menuItem.permission = menuItem.permission.split(',').map(r => r.trim()).filter(r => r.length);
+        }
 
-            menuItem.resolve.resolveUserHasPermission = resolveUserHasPermission;
-            templatePromiseToProvider(menuItem);
+        // ensure resolve object available, used to add template resolve and permission resolve
+        if (!menuItem.resolve) {
+            menuItem.resolve = {};
+        }
 
-            if (menuItem.linkToPage) {
-                delete menuItem.templateUrl;
-                menuItem.template = '<ma-ui-page-view xid="' + menuItem.pageXid + '" flex layout="column"></ma-ui-page-view>';
-            }
+        menuItem.resolve.resolveUserHasPermission = resolveUserHasPermission;
+        templatePromiseToProvider(menuItem);
 
-            if (menuItem.templateUrl) {
-                delete menuItem.template;
-                delete menuItem.templateProvider;
-            }
+        if (menuItem.linkToPage) {
+            delete menuItem.templateUrl;
+            menuItem.template = `<ma-ui-page-view xid="${menuItem.pageXid}" flex layout="column"></ma-ui-page-view>`;
+        }
 
-            if (!menuItem.templateUrl && !menuItem.template && !menuItem.templateProvider && !menuItem.views && !menuItem.href && !menuItem.redirectTo) {
-                menuItem.template = '<div ui-view flex="noshrink" layout="column"></div>';
-                menuItem.abstract = true;
-            }
+        if (menuItem.templateUrl) {
+            delete menuItem.template;
+            delete menuItem.templateProvider;
+        }
 
-            if (Array.isArray(menuItem.requiredTranslations)) {
-                if (!menuItem.resolve) menuItem.resolve = {};
+        if (!menuItem.templateUrl && !menuItem.template && !menuItem.templateProvider && !menuItem.views && !menuItem.href && !menuItem.redirectTo) {
+            menuItem.template = '<div ui-view flex="noshrink" layout="column"></div>';
+            menuItem.abstract = true;
+        }
 
-                menuItem.resolve.requiredTranslations = function(maTranslate) {
-                    return maTranslate.loadNamespaces(menuItem.requiredTranslations);
-                };
-                menuItem.resolve.requiredTranslations.$inject = ['maTranslate'];
-            }
-            
-            if (menuItem.name.indexOf('ui.examples.') === 0) {
-                if (!menuItem.params) menuItem.params = {};
-                menuItem.params.dateBar = {
-                    rollupControls: true
-                };
-            }
+        if (Array.isArray(menuItem.requiredTranslations)) {
+            menuItem.resolve.requiredTranslations = function(maTranslate) {
+                return maTranslate.loadNamespaces(menuItem.requiredTranslations);
+            };
+            menuItem.resolve.requiredTranslations.$inject = ['maTranslate'];
+        }
 
-            try {
-                $stateProvider.state(menuItem);
-                registeredStates[menuItem.name] = true;
-            } catch (error) {
-                const endsWith = 'is already defined';
-                if (error.message && error.message.substr(-endsWith.length) === endsWith) {
-                    // state already exists, this happens during normal operation
-                    //console.log(error);
-                } else {
-                    console.error(error);
+        if (menuItem.name.indexOf('ui.examples.') === 0) {
+            if (!menuItem.params) menuItem.params = {};
+            menuItem.params.dateBar = {
+                rollupControls: true
+            };
+        }
+
+        return menuItem;
+    };
+
+    const registerStates = (menuItems) => {
+        for (const menuItem of menuItems) {
+            const existing = registeredStates[menuItem.name];
+            if (existing) {
+                Object.assign(existing, menuItem);
+            } else {
+                const copy = Object.assign({}, menuItem);
+                setMenuItemDefaults(copy);
+                try {
+                    $stateProvider.state(copy);
+                    registeredStates[menuItem.name] = copy;
+                } catch (error) {
+                    console.error('Error registering menu item / state', error);
                 }
             }
-        });
+        }
     };
 
     // register the built in MA_UI_MENU_ITEMS
@@ -113,57 +137,23 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
         Array.prototype.push.apply(MA_UI_MENU_ITEMS, menuItems);
         registerStates(menuItems);
     };
-    
-    function builtInItemsByName() {
-        return MA_UI_MENU_ITEMS.reduce((map, item) => {
-            map[item.name] = item;
-            return map;
-        }, {});
-    }
-    
-    function registerCustomMenuItems(customMenuItems) {
-        const menuItemsByName = builtInItemsByName();
 
-        const onlyCustomMenuItems = customMenuItems.filter(item => {
-            return !menuItemsByName[item.name];
-        });
-
-        // register the custom menu items retrieved at bootstrap
-        registerStates(onlyCustomMenuItems);
-    }
-    
     let customMenuStore;
     this.setCustomMenuStore = function setCustomMenuStore(store) {
         customMenuStore = store;
-        registerCustomMenuItems(store.jsonData.menuItems);
+        registerStates(store.jsonData.menuItems);
     };
 
-    this.$get = MenuFactory;
+    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'maPermission', 'maUtil'];
+    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, Permission, Util) {
 
-    MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'maPermission'];
-    function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, Permission) {
-
-        const compareMenuItems = (a, b) => {
-            if (a.weight < b.weight) return -1;
-            if (a.weight > b.weight) return 1;
-            if (a.name < b.name) return -1;
-            if (a.name > b.name) return 1;
-            return 0;
-        };
+        const originalMenuItems = Object.freeze(Util.createMapObject(MA_UI_MENU_ITEMS, 'name'));
+        MA_UI_MENU_ITEMS.forEach(item => Object.freeze(item));
+        Object.freeze(MA_UI_MENU_ITEMS);
 
         class Menu {
             constructor() {
-                this.defaultMenuItems = MA_UI_MENU_ITEMS;
-                this.defaultMenuItemsByName = {};
-        
-                this.defaultMenuItems.forEach(item => {
-                    setDefaults(item);
-                    item.builtIn = true;
-                    this.defaultMenuItemsByName[item.name] = item;
-                });
-    
                 this.firstRefresh = true;
-                
                 if (customMenuStore) {
                     this.storeObject = new JsonStore(customMenuStore);
                     delete this.storeObject.$promise;
@@ -171,29 +161,31 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 } else {
                     this.storeObject = this.defaultMenuStore();
                 }
-                
+
                 JsonStore.notificationManager.subscribe({
                     handler: this.updateHandler.bind(this),
                     xids: [MA_UI_MENU_XID],
                     scope: $rootScope
                 });
             }
-    
-            // TODO Mango 4.0 no longer needed?
+
+            /**
+             * Not really needed anymore as the JSON store item should always pre-exist. Keep in case someone
+             * deletes their JSON store item.
+             * @returns {*}
+             */
             defaultMenuStore() {
-                const storeObject = new JsonStore();
-                
-                storeObject.xid = MA_UI_MENU_XID;
-                storeObject.name = 'UI Menu';
-                storeObject.editPermission = [];
-                storeObject.readPermission = ['user'];
-                storeObject.jsonData = {
-                    menuItems: []
-                };
-                
-                return storeObject;
+                return new JsonStore({
+                    xid: MA_UI_MENU_XID,
+                    name: 'UI Menu',
+                    editPermission: [],
+                    readPermission: ['user'],
+                    jsonData: {
+                        menuItems: []
+                    }
+                });
             }
-    
+
             updateHandler(event, item) {
                 let changed = false;
                 if (event.name === 'delete') {
@@ -210,22 +202,20 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                     this.storeObject.editPermission = item.editPermission;
                     this.storeObject.name = item.name;
                 }
-                
+
                 if (changed) {
-                    this.combineMenuItems();
-                    // register the custom menu items which may have been added
-                    registerStates(this.customMenuItems);
+                    this.updateMenuItems();
                     $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
                 }
             }
-    
-            refresh(forceRefresh, registerItems) {
+
+            refresh(forceRefresh) {
                 // if the websocket is connected then we can assume we always have the latest menu items
                 // just return our current store item
                 if (!forceRefresh && this.storePromise && JsonStore.notificationManager.socketConnected()) {
                     return this.storePromise;
                 }
-                
+
                 // custom menu items are retrieved on bootstrap, don't get them twice on app startup
                 // after first run use the standard JsonStore http request
                 if (customMenuStore && this.firstRefresh) {
@@ -237,103 +227,84 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                         }
                         delete this.storePromise;
                         return $q.reject(error);
-                    }).then(store => {
-                        this.storeObject = store;
-                        return store;
                     });
                 }
-                
+
                 this.firstRefresh = false;
-                
                 return this.storePromise.then(store => {
-                    if (registerItems) {
-                        registerStates(store.jsonData.menuItems);
-                    }
-                    
-                    return store;
+                    this.storeObject = store;
+                    this.updateMenuItems();
                 });
             }
-    
-            combineMenuItems() {
-                const jsonMenuItems = angular.copy(this.storeObject.jsonData.menuItems);
-                this.menuItems = angular.copy(this.defaultMenuItems);
-                this.menuItemsByName = {};
-                
-                // contains only menu items that arent built in
-                this.customMenuItems = [];
-        
-                this.menuItems.forEach(item => {
-                    this.menuItemsByName[item.name] = item;
-                });
-                
-                jsonMenuItems.forEach(item => {
-                    if (this.menuItemsByName[item.name]) {
-                        Object.assign(this.menuItemsByName[item.name], item);
-                    } else {
-                        this.menuItems.push(item);
-                        // need to copy it as unflattenMenu() will add a parent/children to it below
-                        this.customMenuItems.push(angular.copy(item));
+
+            updateMenuItems() {
+                // remove all deleted custom states
+                const customStates = this.storeObject.jsonData.menuItems;
+                const customStateNames = Util.createMapObject(customStates, 'name');
+                for (const state of Object.values(registeredStates)) {
+                    if (!originalMenuItems[state.name] && !customStateNames[state.name]) {
+                        delete registeredStates[state.name];
                     }
-                });
-                
-                // set defaults
-                this.menuItems.forEach(setDefaults);
-                
-                this.menuHierarchy = unflattenMenu(this.menuItems);
+                }
+
+                registerStates(customStates);
+                this.menuItemsByName = registeredStates;
+                this.menuItems = Object.values(registeredStates);
+                this.menuHierarchy = this.unflattenMenu(this.menuItems);
                 return this.menuItems;
             }
-    
+
             getMenu() {
-                return this.refresh().then(store => {
-                    return this.combineMenuItems();
+                return this.refresh().then(() => {
+                    return this.menuItems;
                 });
             }
-            
+
             getMenuHierarchy() {
-                return this.getMenu().then(() => {
+                return this.refresh().then(() => {
                     return this.menuHierarchy;
                 });
             }
-            
+
             deleteMenu() {
                 this.storeObject.jsonData.menuItems = [];
                 return this.storeObject.$save().then(() => {
-                    this.combineMenuItems();
+                    this.updateMenuItems();
                     $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
                     return this.menuHierarchy;
                 });
             }
-            
+
             saveMenu(menuHierarchy) {
-                const newMenuItems = flattenMenu(menuHierarchy.children);
-                
+                const newMenuItems = this.flattenMenu(menuHierarchy.children);
+
                 const different = [];
                 newMenuItems.forEach(item => {
                     // all states are cleaned (remove parents and children, non-circular structure) so that
                     // a) If they are pushed to the different[] array and saved into menuItems they can be JSON serialized
                     // a) registerStates() works, $stateProvider.state(menuItem) fails if item has parent property set
-                    cleanMenuItemForSave(item);
-                    
-                    const originalItem = this.defaultMenuItemsByName[item.name];
-                    if (!originalItem) {
+                    this.cleanMenuItemForSave(item);
+
+                    if (!originalMenuItems[item.name]) {
+                        // item is a custom menu item
                         different.push(item);
                     } else {
-                        const difference = calculateDifference(item, originalItem);
+                        // find any changes to the original menu item and save difference
+                        const difference = this.calculateDifference(item);
                         if (difference) {
                             different.push(difference);
                         }
                     }
                 });
-        
+
                 this.storeObject.jsonData.menuItems = different;
                 return this.storeObject.$save().then(() => {
-                    registerStates(newMenuItems);
-                    this.combineMenuItems();
+                    this.updateMenuItems();
                     $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
                     return this.menuHierarchy;
                 });
             }
-    
+
             saveMenuItem(menuItem, originalName) {
                 return this.refresh().then(() => {
                     // removes the original item, takes care of renaming
@@ -345,28 +316,26 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                             }
                         });
                     }
-        
-                    cleanMenuItemForSave(menuItem);
-                    
-                    const originalItem = this.defaultMenuItemsByName[menuItem.name];
-                    if (!originalItem) {
+
+                    this.cleanMenuItemForSave(menuItem);
+
+                    if (!originalMenuItems[menuItem.name]) {
                         this.storeObject.jsonData.menuItems.push(menuItem);
                     } else {
-                        const difference = calculateDifference(menuItem, originalItem);
+                        const difference = this.calculateDifference(menuItem);
                         if (difference) {
                             this.storeObject.jsonData.menuItems.push(difference);
                         }
                     }
-        
+
                     return this.storeObject.$save().then(() => {
-                        registerStates([menuItem]);
-                        this.combineMenuItems();
+                        this.updateMenuItems();
                         $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
                         return this.menuItems;
                     });
                 });
             }
-            
+
             removeMenuItem(stateName) {
                 return this.refresh().then(() => {
                     const found = this.storeObject.jsonData.menuItems.some((item, i, array) => {
@@ -375,10 +344,10 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                             return true;
                         }
                     });
-                    
+
                     if (found) {
                         return this.storeObject.$save().then(() => {
-                            this.combineMenuItems();
+                            this.updateMenuItems();
                             $rootScope.$broadcast('maUIMenuChanged', this.menuHierarchy);
                             return this.menuItems;
                         });
@@ -387,7 +356,10 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                     }
                 });
             }
-            
+
+            /**
+             * Used by menu editor.
+             */
             forEach(menuItems, fn) {
                 if (!menuItems) return;
                 for (let i = 0; i < menuItems.length; i++) {
@@ -399,136 +371,128 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 }
             }
 
+            /**
+             * Used by menu editor.
+             */
             sortMenuItems(menuItems) {
-                return menuItems.sort(compareMenuItems);
+                return menuItems.sort(this.menuItemComparator);
             }
-        }
-    
-        function flattenMenu(menuItems, flatMenuItems) {
-            if (!flatMenuItems) flatMenuItems = [];
-            
-            menuItems.forEach(item => {
-                flatMenuItems.push(item);
-                if (item.children) {
-                    flattenMenu(item.children, flatMenuItems);
-                }
-            });
-            
-            return flatMenuItems;
-        }
-        
-        function unflattenMenu(flatMenuItems) {
-            const hierarchyRoot = {
-                children: {},
-                item: {
-                    menuTr: 'ui.app.root'
-                }
-            };
-            
-            // turns the flat menu item array into a hierarchical structure
-            // according to the state names
-            flatMenuItems.forEach(item => {
-                if (!item.name) return;
-                const path = item.name.split('.');
-                buildMenuHierarchy(hierarchyRoot, item, path);
-            });
-    
-            // turns the hierarchical structure into actual menu items
-            return createMenuItem(hierarchyRoot);
-        }
-    
-        function buildMenuHierarchy(item, toAdd, path) {
-            const segmentName = path.shift();
-            let child = item.children[segmentName];
-            if (!child) {
-                child = item.children[segmentName] = {
-                    children: {}
+
+            flattenMenu(menuItems, flatMenuItems = []) {
+                menuItems.forEach(item => {
+                    flatMenuItems.push(item);
+                    if (item.children) {
+                        this.flattenMenu(item.children, flatMenuItems);
+                    }
+                });
+                return flatMenuItems;
+            }
+
+            unflattenMenu(flatMenuItems) {
+                const hierarchyRoot = {
+                    children: {},
+                    item: {
+                        menuTr: 'ui.app.root'
+                    }
                 };
-            }
-            if (!path.length) {
-                child.item = toAdd;
-            } else {
-                buildMenuHierarchy(child, toAdd, path);
-            }
-        }
-        
-        function createMenuItem(item) {
-            const childArray = [];
-            for (const key in item.children) {
-                const transformedChild = createMenuItem(item.children[key]);
-                transformedChild.parent = item.item;
-                childArray.push(transformedChild);
-            }
-            if (childArray.length) {
-                // sort items by weight then name
-                item.item.children = childArray.sort(compareMenuItems);
-            }
-            return item.item;
-        }
 
-        const diffKeys = ['menuHidden', 'weight', 'menuIcon', 'menuTr', 'menuText'];
-        function calculateDifference(newItem, originalItem) {
-            const difference = {};
-            for (const k of diffKeys) {
-                if (newItem[k] !== originalItem[k]) {
-                    difference[k] = newItem[k];
+                // turns the flat menu item array into a hierarchical structure
+                // according to the state names
+                flatMenuItems.forEach(item => {
+                    if (!item.name) return;
+                    const path = item.name.split('.');
+                    this.buildMenuHierarchy(hierarchyRoot, item, path);
+                });
+
+                // turns the hierarchical structure into actual menu items
+                return this.createMenuItem(hierarchyRoot);
+            }
+
+            buildMenuHierarchy(item, toAdd, path) {
+                const segmentName = path.shift();
+                let child = item.children[segmentName];
+                if (!child) {
+                    child = item.children[segmentName] = {
+                        children: {}
+                    };
                 }
-            }
-
-            if (!angular.equals(newItem.params, originalItem.params)) {
-                difference.params = newItem.params;
-            }
-
-            const newPermission = new Permission(newItem.permission);
-            const originalPermission = new Permission(originalItem.permission);
-            if (!newPermission.equals(originalPermission)) {
-                difference.permission = newPermission.toArray();
-            }
-
-            if (!setsEqual(newItem.systemPermission, originalItem.systemPermission)) {
-                difference.systemPermission = newItem.systemPermission;
-            }
-
-            if (Object.keys(difference).length) {
-                difference.name = originalItem.name;
-                return difference;
-            }
-        }
-
-        function setsEqual(a, b) {
-            return a.length === b.length && a.every(v => b.includes(v));
-        }
-        
-        function setDefaults(item) {
-            item.menuHidden = !!item.menuHidden;
-            if (item.weight == null) {
-                item.weight = 1000;
-            }
-            if (item.systemPermission == null) {
-                item.systemPermission = [];
-            }
-            if (item.permission == null) {
-                if (item.systemPermission.length) {
-                    item.permission = [];
+                if (!path.length) {
+                    child.item = toAdd;
                 } else {
-                    item.permission = ['user'];
+                    this.buildMenuHierarchy(child, toAdd, path);
                 }
             }
-            // transform old style permission into an array, required for permissions retrieved from JSON store
-            if (typeof item.permission === 'string') {
-                item.permission = item.permission.split(',').map(r => r.trim()).filter(r => r.length);
+
+            createMenuItem(item) {
+                const childArray = [];
+                const menuItem = Object.assign({}, item.item);
+
+                for (const child of Object.values(item.children)) {
+                    const transformedChild = this.createMenuItem(child);
+                    transformedChild.parent = menuItem;
+                    childArray.push(transformedChild);
+                }
+
+                // builtIn property is used by menu editor
+                menuItem.builtIn = !!originalMenuItems[menuItem.name];
+                if (childArray.length) {
+                    // sort items by weight then name
+                    menuItem.children = childArray.sort(this.menuItemComparator);
+                }
+                return menuItem;
+            }
+
+            calculateDifference(newItem) {
+                // get the original item, setting defaults on it
+                const originalItem = setMenuItemDefaults(Object.assign({}, originalMenuItems[newItem.name]));
+
+                const difference = {};
+                for (const k of ['menuHidden', 'weight', 'menuIcon', 'menuTr', 'menuText']) {
+                    if (newItem[k] !== originalItem[k]) {
+                        difference[k] = newItem[k];
+                    }
+                }
+
+                if (!angular.equals(newItem.params, originalItem.params)) {
+                    difference.params = newItem.params;
+                }
+
+                const newPermission = new Permission(newItem.permission);
+                const originalPermission = new Permission(originalItem.permission);
+                if (!newPermission.equals(originalPermission)) {
+                    difference.permission = newPermission.toArray();
+                }
+
+                if (!this.setsEqual(newItem.systemPermission, originalItem.systemPermission)) {
+                    difference.systemPermission = newItem.systemPermission;
+                }
+
+                if (Object.keys(difference).length) {
+                    difference.name = originalItem.name;
+                    return difference;
+                }
+            }
+
+            setsEqual(a, b) {
+                return a.length === b.length && a.every(v => b.includes(v));
+            }
+
+            cleanMenuItemForSave(item) {
+                delete item.parent;
+                delete item.children;
+                return item;
+            }
+
+            menuItemComparator(a, b) {
+                if (a.weight < b.weight) return -1;
+                if (a.weight > b.weight) return 1;
+                if (a.name < b.name) return -1;
+                if (a.name > b.name) return 1;
+                return 0;
             }
         }
-        
-        function cleanMenuItemForSave(item) {
-            delete item.parent;
-            delete item.children;
-            return item;
-        }
-    
         return new Menu();
     }
-
+    this.$get = MenuFactory;
 }
-
 export default MenuProvider;
