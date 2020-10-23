@@ -51,7 +51,9 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
     };
     resolveUserHasPermission.$inject = ['maUser'];
 
-    const setMenuItemDefaults = (menuItem) => {
+    const setMenuItemDefaults = (originalMenuItem, forDiff = false) => {
+        const menuItem = Object.assign({}, originalMenuItem);
+
         menuItem.menuHidden = !!menuItem.menuHidden;
         if (menuItem.weight == null) {
             menuItem.weight = 1000;
@@ -71,34 +73,37 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
             menuItem.permission = menuItem.permission.split(',').map(r => r.trim()).filter(r => r.length);
         }
 
-        // ensure resolve object available, used to add template resolve and permission resolve
-        if (!menuItem.resolve) {
-            menuItem.resolve = {};
-        }
+        // dont create all the resolve functions and templates if we are just using this for diff
+        if (!forDiff) {
+            // ensure resolve object available, used to add template resolve and permission resolve
+            if (!menuItem.resolve) {
+                menuItem.resolve = {};
+            }
 
-        menuItem.resolve.resolveUserHasPermission = resolveUserHasPermission;
-        templatePromiseToProvider(menuItem);
+            menuItem.resolve.resolveUserHasPermission = resolveUserHasPermission;
+            templatePromiseToProvider(menuItem);
 
-        if (menuItem.linkToPage) {
-            delete menuItem.templateUrl;
-            menuItem.template = `<ma-ui-page-view xid="${menuItem.pageXid}" flex layout="column"></ma-ui-page-view>`;
-        }
+            if (menuItem.linkToPage) {
+                delete menuItem.templateUrl;
+                menuItem.template = `<ma-ui-page-view xid="${menuItem.pageXid}" flex layout="column"></ma-ui-page-view>`;
+            }
 
-        if (menuItem.templateUrl) {
-            delete menuItem.template;
-            delete menuItem.templateProvider;
-        }
+            if (menuItem.templateUrl) {
+                delete menuItem.template;
+                delete menuItem.templateProvider;
+            }
 
-        if (!menuItem.templateUrl && !menuItem.template && !menuItem.templateProvider && !menuItem.views && !menuItem.href && !menuItem.redirectTo) {
-            menuItem.template = '<div ui-view flex="noshrink" layout="column"></div>';
-            menuItem.abstract = true;
-        }
+            if (!menuItem.templateUrl && !menuItem.template && !menuItem.templateProvider && !menuItem.views && !menuItem.href && !menuItem.redirectTo) {
+                menuItem.template = '<div ui-view flex="noshrink" layout="column"></div>';
+                menuItem.abstract = true;
+            }
 
-        if (Array.isArray(menuItem.requiredTranslations)) {
-            menuItem.resolve.requiredTranslations = function(maTranslate) {
-                return maTranslate.loadNamespaces(menuItem.requiredTranslations);
-            };
-            menuItem.resolve.requiredTranslations.$inject = ['maTranslate'];
+            if (Array.isArray(menuItem.requiredTranslations)) {
+                menuItem.resolve.requiredTranslations = function (maTranslate) {
+                    return maTranslate.loadNamespaces(menuItem.requiredTranslations);
+                };
+                menuItem.resolve.requiredTranslations.$inject = ['maTranslate'];
+            }
         }
 
         if (menuItem.name.indexOf('ui.examples.') === 0) {
@@ -117,8 +122,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
             if (existing) {
                 Object.assign(existing, menuItem);
             } else {
-                const copy = Object.assign({}, menuItem);
-                setMenuItemDefaults(copy);
+                const copy = setMenuItemDefaults(menuItem);
                 try {
                     $stateProvider.state(copy);
                     registeredStates[menuItem.name] = copy;
@@ -147,6 +151,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
     MenuFactory.$inject = ['maJsonStore', 'MA_UI_MENU_XID', '$q', '$rootScope', 'maPermission', 'maUtil', 'maEventBus'];
     function MenuFactory(JsonStore, MA_UI_MENU_XID, $q, $rootScope, Permission, Util, maEventBus) {
 
+        // ensure the original JSON items can't be modified
         const originalMenuItems = Object.freeze(Util.createMapObject(MA_UI_MENU_ITEMS, 'name'));
         MA_UI_MENU_ITEMS.forEach(item => Object.freeze(item));
         Object.freeze(MA_UI_MENU_ITEMS);
@@ -246,11 +251,12 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                         delete registeredStates[state.name];
                     }
                 }
-
                 registerStates(customStates);
-                this.menuItemsByName = registeredStates;
-                this.menuItems = Object.values(registeredStates);
-                this.menuHierarchy = this.unflattenMenu(this.menuItems);
+
+                // create hierarchy objects with children and parent properties
+                this.menuHierarchy = this.unflattenMenu(Object.values(registeredStates));
+                this.menuItems = this.flattenMenu(this.menuHierarchy.children);
+                this.menuItemsByName = Util.createMapObject(this.menuItems, 'name');
                 return this.menuItems;
             }
 
@@ -280,14 +286,9 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
 
                 const different = [];
                 newMenuItems.forEach(item => {
-                    // all states are cleaned (remove parents and children, non-circular structure) so that
-                    // a) If they are pushed to the different[] array and saved into menuItems they can be JSON serialized
-                    // a) registerStates() works, $stateProvider.state(menuItem) fails if item has parent property set
-                    this.cleanMenuItemForSave(item);
-
                     if (!originalMenuItems[item.name]) {
                         // item is a custom menu item
-                        different.push(item);
+                        different.push(this.cleanMenuItemForSave(item));
                     } else {
                         // find any changes to the original menu item and save difference
                         const difference = this.calculateDifference(item);
@@ -307,9 +308,10 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
 
             saveMenuItem(menuItem, originalName) {
                 return this.refresh().then(() => {
+                    const menuItems = this.storeObject.jsonData.menuItems;
                     // removes the original item, takes care of renaming
                     if (originalName) {
-                        this.storeObject.jsonData.menuItems.some((item, i, array) => {
+                        menuItems.some((item, i, array) => {
                             if (item.name === originalName) {
                                 array.splice(i, 1);
                                 return true;
@@ -317,14 +319,12 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                         });
                     }
 
-                    this.cleanMenuItemForSave(menuItem);
-
                     if (!originalMenuItems[menuItem.name]) {
-                        this.storeObject.jsonData.menuItems.push(menuItem);
+                        menuItems.push(this.cleanMenuItemForSave(menuItem));
                     } else {
                         const difference = this.calculateDifference(menuItem);
                         if (difference) {
-                            this.storeObject.jsonData.menuItems.push(difference);
+                            menuItems.push(difference);
                         }
                     }
 
@@ -444,7 +444,7 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
 
             calculateDifference(newItem) {
                 // get the original item, setting defaults on it
-                const originalItem = setMenuItemDefaults(Object.assign({}, originalMenuItems[newItem.name]));
+                const originalItem = setMenuItemDefaults(originalMenuItems[newItem.name]);
 
                 const difference = {};
                 for (const k of ['menuHidden', 'weight', 'menuIcon', 'menuTr', 'menuText']) {
@@ -477,9 +477,15 @@ function MenuProvider($stateProvider, MA_UI_MENU_ITEMS, $injector) {
                 return a.length === b.length && a.every(v => b.includes(v));
             }
 
+            /**
+             * Custom states are cleaned (remove parents and children, non-circular structure) so that
+             * they can be JSON serialized. Also remove any properties which arent applicable.
+             */
             cleanMenuItemForSave(item) {
                 delete item.parent;
                 delete item.children;
+                delete item.resolve;
+                delete item.builtIn;
                 return item;
             }
 
