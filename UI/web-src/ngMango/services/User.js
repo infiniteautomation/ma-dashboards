@@ -178,12 +178,12 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     this.setSystemTimezone = function(timezone) {
         systemTimezone = timezone;
     };
-    
+
     moment.tz.setDefault(MA_DEFAULT_TIMEZONE || moment.tz.guess());
     moment.locale(MA_DEFAULT_LOCALE || window.navigator.languages || window.navigator.language);
 
     this.$get = UserFactory;
-    
+
     /*
      * Provides service for getting list of users and create, update, delete
      */
@@ -200,7 +200,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 return 'BULK_USER';
             }
         }
-        
+
         let currentUser;
         const authTokenBaseUrl = '/rest/latest/auth-tokens';
         const passwordResetUrl = '/rest/latest/password-reset';
@@ -321,23 +321,23 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 if (!angular.equals(user, currentUser)) {
                     const previousUser = currentUser;
                     currentUser = user || null;
-                    
+
                     this.configureLocale();
                     this.configureTimezone();
 
                     maEventBus.publish('maUser/currentUserChanged', currentUser, previousUser);
                 }
             },
-    
+
             configureLocale(locale = this.getLocale()) {
                 if (locale !== this.locale) {
                     const prevLocale = this.locale;
                     this.locale = locale;
-    
+
                     // moment doesn't support locales with a script, just supply it with language and region
                     const cldrAttributes = new Cldr(locale).attributes;
                     moment.locale(cldrAttributes.minLanguageId);
-    
+
                     const localeId = locale.toLowerCase();
                     const $locale = $injector.get('$locale');
                     if (localeId !== $locale.id) {
@@ -358,36 +358,36 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     maEventBus.publish('maUser/localeChanged', locale, prevLocale);
                 }
             },
-    
+
             configureTimezone(timezone = this.getTimezone()) {
                 if (timezone !== this.timezone) {
                     const prevTimezone = this.timezone;
                     this.timezone = timezone;
-                    
+
                     moment.tz.setDefault(timezone);
 
                     maEventBus.publish('maUser/timezoneChanged', timezone, prevTimezone);
                 }
             },
-            
+
             getLocale() {
                 if (currentUser) {
                     return currentUser.getLocale();
                 }
                 return this.getSystemLocale();
             },
-            
+
             getSystemLocale() {
                 return systemLocale || MA_DEFAULT_LOCALE || (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language;
             },
-    
+
             getTimezone() {
                 if (currentUser) {
                     return currentUser.getTimezone();
                 }
                 return this.getSystemTimezone();
             },
-            
+
             getSystemTimezone() {
                 return systemTimezone || MA_DEFAULT_TIMEZONE || moment.tz.guess();
             },
@@ -398,30 +398,30 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     password: password
                 });
             },
-            
+
             storedUsername() {
                 const credentials = localStorageService.get('storedCredentials');
                 return credentials ? credentials.username : null;
             },
-            
+
             getCredentialsFromUrl() {
                 const params = new URL(window.location.href).searchParams;
                 if (!params) return;
-                
+
                 const credentials = {
                     username: params.get('autoLoginUsername'),
                     password: params.get('autoLoginPassword') || ''
                 };
-                
+
                 if (params.get('autoLoginDeleteCredentials') != null) {
                     User.clearStoredCredentials();
                 } else if (params.get('autoLoginStoreCredentials') != null && credentials.username) {
                     User.storeCredentials(credentials.username, credentials.password);
                 }
-                
+
                 return credentials.username && credentials;
             },
-            
+
             autoLogin(maUiSettings) {
                 let credentials = User.getCredentialsFromUrl() || localStorageService.get('storedCredentials');
                 if (!credentials && (maUiSettings || $injector.has('maUiSettings'))) {
@@ -438,11 +438,11 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 }
                 return this.login.call(this, credentials).$promise;
             },
-            
+
             clearStoredCredentials() {
                 localStorageService.remove('storedCredentials');
             },
-            
+
             sendPasswordResetEmail(username, email) {
                 return $http({
                     url: `${passwordResetUrl}/send-email`,
@@ -453,7 +453,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     }
                 });
             },
-            
+
             createPasswordResetLink(username, lockPassword, sendEmail, expiry) {
                 return $http({
                     url: `${passwordResetUrl}/create`,
@@ -466,7 +466,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     }
                 }).then(response => response.data);
             },
-            
+
             passwordReset(token, newPassword) {
                 return $http({
                     url: `${passwordResetUrl}/reset`,
@@ -477,7 +477,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     }
                 });
             },
-    
+
             createAuthToken(expiry, username) {
                 return $http({
                     url: `${authTokenBaseUrl}/create`,
@@ -490,13 +490,13 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     return response.data.token;
                 });
             },
-    
+
             revokeAuthTokens(username) {
                 let url = `${authTokenBaseUrl}/revoke`;
                 if (username != null && username !== (this.current && this.current.username)) {
                     url += `/${encodeURIComponent(username)}`;
                 }
-    
+
                 return $http({
                     url,
                     method: 'POST'
@@ -504,7 +504,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     return response.data;
                 });
             },
-    
+
             revokeAllAuthTokens() {
                 let url = `${authTokenBaseUrl}/reset-keys`;
                 return $http({
@@ -514,7 +514,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     return response.data;
                 });
             },
-            
+
             publicVerifyEmail(email) {
                 return $http({
                     url: `${emailVerificationUrl}/public/send-email`,
@@ -524,7 +524,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     }
                 });
             },
-            
+
             publicUpdateEmail(token) {
                 return $http({
                     url: `${emailVerificationUrl}/public/update-email`,
@@ -536,7 +536,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     return Object.assign(Object.create(this.prototype), response.data);
                 });
             },
-            
+
             sendEmailVerification(data) {
                 return $http({
                     url: `${emailVerificationUrl}/send-email`,
@@ -544,7 +544,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     data
                 });
             },
-            
+
             createEmailVerificationToken(data) {
                 return $http({
                     url: `${emailVerificationUrl}/create-token`,
@@ -552,7 +552,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     data
                 }).then(response => response.data);
             },
-            
+
             publicRegisterUser(token, user) {
                 return $http({
                     url: `${emailVerificationUrl}/public/register`,
@@ -564,7 +564,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     return Object.assign(Object.create(this.prototype), response.data);
                 });
             },
-            
+
             ensureXsrfToken() {
                 // ensures there is a CSRF protection cookie set before logging in
                 const xsrfCookie = $cookies.get($http.defaults.xsrfCookieName);
@@ -617,7 +617,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
              * @returns {boolean} true if the user has any of the system permissions
              */
             hasSystemPermission(permissionName) {
-                return Array.prototype.some.call(arguments, p => this.grantedPermissions.includes(p));
+                return Array.prototype.some.call(arguments, p => this.systemPermissions.includes(p));
             },
 
             getTimezone() {
@@ -627,7 +627,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             sendTestEmail(toEmail, usernameInEmail) {
                 return maServer.sendTestEmail(toEmail || this.email, usernameInEmail || this.username);
             },
-            
+
             getLocale() {
                 return this.locale || this.constructor.getSystemLocale();
             },
@@ -635,42 +635,42 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             createAuthToken(expiry) {
                 return this.constructor.createAuthToken(expiry);
             },
-            
+
             revokeAuthTokens() {
                 return this.constructor.revokeAuthTokens();
             },
-            
+
             createdDuration(now = new Date()) {
                 const nowM = moment(now);
                 const created = moment(this.created);
                 return moment.duration(created.diff(nowM));
             },
-            
+
             emailVerifiedDuration(now = new Date()) {
                 const nowM = moment(now);
                 const emailVerified = moment(this.emailVerified);
                 return moment.duration(emailVerified.diff(nowM));
             },
-            
+
             lastLoginDuration(now = new Date()) {
                 const nowM = moment(now);
                 const lastLogin = moment(this.lastLogin);
                 return moment.duration(lastLogin.diff(nowM));
             },
-            
+
             lastPasswordChangeDuration(now = new Date()) {
                 const nowM = moment(now);
                 const lastPasswordChange = moment(this.lastPasswordChange);
                 return moment.duration(lastPasswordChange.diff(nowM));
             },
-            
+
             sendEmailVerification(emailAddress = this.email) {
                 return this.constructor.sendEmailVerification({
                     username: this.username,
                     emailAddress
                 });
             },
-            
+
             createEmailVerificationToken(emailAddress = this.email) {
                 return this.constructor.createEmailVerificationToken({
                     username: this.username,
@@ -737,7 +737,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 this.roles = ['anonymous'];
                 this.inheritedRoles = ['anonymous'];
                 // TODO currently no way to obtain granted permissions for anonymous user
-                this.grantedPermissions = [];
+                this.systemPermissions = [];
                 Object.freeze(this);
             }
         }
