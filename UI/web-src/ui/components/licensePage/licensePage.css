@@ -1,8 +1,13 @@
+ma-ui-license-page .ma-license-header {
+	width: 100%;
+	max-width: 1024px;
+}
+
 ma-ui-license-page .ma-license {
-  overflow-y: scroll;
-  width: 100%;
-  max-width: 1024px;
-  margin-bottom: 8px;
+	overflow-y: scroll;
+	width: 100%;
+	max-width: 1024px;
+	margin-bottom: 8px;
 }
 
 ma-ui-license-page .md-button.md-icon-button {

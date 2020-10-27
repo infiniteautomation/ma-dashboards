@@ -68,6 +68,16 @@ module.exports = readPom().then(pom => {
                     }]
                 },
                 {
+                    test: /\.pdf$/,
+                    use: [{
+                        loader: 'file-loader',
+                        options: {
+                            name: 'resources2/[name].[ext]?v=[hash]',
+                            esModule: false
+                        }
+                    }]
+                },
+                {
                     test: /[\\/]ui[\\/]uiSettings\.json$/,
                     type: 'javascript/auto',
                     rules: [
