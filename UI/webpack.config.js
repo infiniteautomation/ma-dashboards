@@ -72,7 +72,7 @@ module.exports = readPom().then(pom => {
                     use: [{
                         loader: 'file-loader',
                         options: {
-                            name: 'resources2/[name].[ext]?v=[hash]',
+                            name: 'documents/[name].[ext]?v=[hash]',
                             esModule: false
                         }
                     }]
