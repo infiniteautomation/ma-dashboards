@@ -4,7 +4,10 @@
   &copy;<span ng-bind="::$ctrl.year"></span>
   <a ng-href="{{::$ctrl.maUiServerInfo.postLoginData.vendorUrl}}" target="_blank" rel="noopener"
      ng-bind="::$ctrl.maUiServerInfo.postLoginData.vendor"></a>
-<span ma-tr="footer.rightsReserved"></span>.</div>
+<span ma-tr="footer.rightsReserved"></span>.
+<a ma-tr="ui.app.downloadEulaShort" ng-href="{{$ctrl.eulaPdf}}" target="_blank"></a>.
+</div>
 <div flex></div>
-<!--TODO-->
-<em md-colors="::{color: 'warn'}" ng-if="::$ctrl.maUiServerInfo.postLoginData && !$ctrl.maUiServerInfo.postLoginData.coreLicenseType" ma-tr="footer.coreUnlicenced"></em>
+<em md-colors="::{color: 'warn'}"
+    ng-if="::$ctrl.maUiServerInfo.postLoginData && !$ctrl.maUiServerInfo.postLoginData.coreLicenseType"
+    ma-tr="footer.coreUnlicenced"></em>

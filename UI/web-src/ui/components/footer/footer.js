@@ -4,6 +4,7 @@
  */
 
 import footerTemplate from './footer.html';
+import eulaPdf from '../licensePage/EULA.pdf';
 import moment from 'moment-timezone';
 
 class FooterController {
@@ -13,6 +14,7 @@ class FooterController {
     constructor(maUiServerInfo) {
         this.maUiServerInfo = maUiServerInfo;
         this.year = moment().year();
+        this.eulaPdf = eulaPdf;
     }
 }
 
