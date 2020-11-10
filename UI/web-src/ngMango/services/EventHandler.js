@@ -3,14 +3,35 @@
  * @author Jared Wiltshire
  */
 
+import angular from 'angular';
+
 eventHandlerProvider.$inject = [];
 function eventHandlerProvider() {
-    
+
     const eventHandlerTypes = [
         {
             type: 'EMAIL',
             description: 'eventHandlers.type.email',
-            template: `<ma-event-handler-email-editor></ma-event-handler-email-editor>`
+            template: `<ma-event-handler-email-editor></ma-event-handler-email-editor>`,
+            defaultProperties: {
+                activeRecipients: [],
+                additionalContext: [],
+                customTemplate: '',
+                sendEscalation: false,
+                escalationDelay: 1,
+                escalationDelayType: 'HOURS',
+                escalationRecipients: [],
+                sendInactive: false,
+                activeProcessTimeout: 15,
+                inactiveProcessTimeout: 15,
+                inactiveOverride: false,
+                inactiveRecipients: [],
+                includeLogfile: false,
+                includePointValueCount: 10,
+                includeSystemInfo: false,
+                scriptContext: [],
+                subject: 'INCLUDE_EVENT_MESSAGE'
+            }
         },
         {
             type: 'PROCESS',
@@ -20,7 +41,11 @@ function eventHandlerProvider() {
         {
             type: 'SET_POINT',
             description: 'eventHandlers.type.setPoint',
-            template: `<ma-event-handler-set-point-editor></ma-event-handler-set-point-editor>`
+            template: `<ma-event-handler-set-point-editor></ma-event-handler-set-point-editor>`,
+            defaultProperties: {
+                activeAction: 'NONE',
+                inactiveAction: 'NONE'
+            }
         },
         {
             type: 'SCRIPT',
@@ -28,7 +53,7 @@ function eventHandlerProvider() {
             template: `<ma-event-handler-script-editor event-handler="$ctrl.eventHandler"></ma-event-handler-script-editor>`
         }
     ];
-    
+
     this.registerEventHandlerType = function(type) {
         const existing = eventHandlerTypes.find(t => t.type === type.type);
         if (existing) {
@@ -37,9 +62,9 @@ function eventHandlerProvider() {
         }
         eventHandlerTypes.push(type);
     };
-    
+
     this.$get = eventHandlerFactory;
-    
+
     eventHandlerFactory.$inject = ['maRestResource', '$templateCache', '$injector', '$rootScope', 'maEventTypeInfo'];
     function eventHandlerFactory(RestResource, $templateCache, $injector, $rootScope, EventTypeInfo) {
 
@@ -47,78 +72,50 @@ function eventHandlerProvider() {
         const eventHandlerWebSocketUrl = '/rest/latest/websocket/event-handlers';
         const eventHandlerXidPrefix = 'EH_';
 
-        const eventHandlerTypesByName = Object.create(null);
-        eventHandlerTypes.forEach(eventHandlerType => {
-            eventHandlerTypesByName[eventHandlerType.type] = eventHandlerType;
-            
-            // put the templates in the template cache so we can ng-include them
-            if (eventHandlerType.template && !eventHandlerType.templateUrl) {
-                eventHandlerType.templateUrl = `eventHandlers.${eventHandlerType.type}.html`;
-                $templateCache.put(eventHandlerType.templateUrl, eventHandlerType.template);
-            }
-            
-            Object.freeze(eventHandlerType);
-        });
-        
-        Object.freeze(eventHandlerTypes);
-        Object.freeze(eventHandlerTypesByName);
-        
-        
         const defaultProperties = {
             name: '',
+            xid: '',
             eventTypes: [],
-            handlerType: 'EMAIL',
-            activeRecipients: [],
-            additionalContext: [],
-            customTemplate: '',
             disabled: false,
-            sendEscalation: false,
-            escalationDelay: 1,
-            escalationDelayType: 'HOURS',
-            escalationRecipients: [],
-            sendInactive: false,
-            activeProcessTimeout: 15,
-            inactiveProcessTimeout: 15,
-            inactiveOverride: false,
-            inactiveRecipients: [],
-            includeLogfile: false,
-            includePointValueCount: 10,
-            includeSystemInfo: false,
-            scriptContext: [],
-            activeAction: 'NONE',
-            inactiveAction: 'NONE',
-            subject: 'INCLUDE_EVENT_MESSAGE'
+            readPermission: [],
+            editPermission: []
         };
-        
+
+        const eventHandlerTypesByName = Object.create(null);
+
         class EventHandler extends RestResource {
             static get defaultProperties() {
                 return defaultProperties;
             }
-            
+
             static get baseUrl() {
                 return eventHandlerBaseUrl;
             }
-            
+
             static get webSocketUrl() {
                 return eventHandlerWebSocketUrl;
             }
-            
+
             static get xidPrefix() {
                 return eventHandlerXidPrefix;
             }
-            
+
             static handlerTypes() {
                 return eventHandlerTypes;
             }
-            
+
             static handlerTypesByName() {
                 return eventHandlerTypesByName;
             }
-            
+
+            static create(typeName) {
+                return eventHandlerTypesByName[typeName].create();
+            }
+
             static forEventType(eventType, subType, ref1, ref2) {
                 const queryBuilder = this.buildQuery()
                     .eq('eventTypeName', eventType);
-                
+
                 if (subType !== undefined) {
                     queryBuilder.eq('eventSubtypeName', subType);
                 }
@@ -147,13 +144,13 @@ function eventHandlerProvider() {
                     return response.data;
                 });
             }
-            
+
             initialize() {
                 if (Array.isArray(this.eventTypes)) {
                     this.eventTypes = this.eventTypes.map(et => new EventTypeInfo.EventType(et));
                 }
             }
-            
+
             addEventType(eventType) {
                 if (!(eventType instanceof EventTypeInfo.EventType)) {
                     eventType = new EventTypeInfo.EventType(eventType);
@@ -165,7 +162,34 @@ function eventHandlerProvider() {
                 return this.eventTypes.some(et => et.typeId === eventTypeId);
             }
         }
-    
+
+        class EventHandlerType {
+            constructor(defaults = {}) {
+                Object.assign(this, defaults);
+
+                // put the templates in the template cache so we can ng-include them
+                if (this.template && !this.templateUrl) {
+                    this.templateUrl = `eventHandlers.${this.type}.html`;
+                    $templateCache.put(this.templateUrl, this.template);
+                }
+            }
+
+            create() {
+                return new EventHandler(Object.assign({}, this.defaultProperties && angular.copy(this.defaultProperties), {
+                    handlerType: this.type
+                }));
+            }
+        }
+
+        eventHandlerTypes.forEach((type, i) => {
+            const eventHandlerType = new EventHandlerType(type);
+            eventHandlerTypesByName[eventHandlerType.type] = eventHandlerType;
+            eventHandlerTypes[i] = eventHandlerType;
+            Object.freeze(eventHandlerType);
+        });
+        Object.freeze(eventHandlerTypes);
+        Object.freeze(eventHandlerTypesByName);
+
         return EventHandler;
     }
 }

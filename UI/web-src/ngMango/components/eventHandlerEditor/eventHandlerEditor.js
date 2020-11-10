@@ -16,31 +16,37 @@ import './eventHandlerEditor.css';
 
 class EventHandlerEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse']; }
-    
-    constructor(maEventHandler, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse) {
+    static get $inject() { return ['maEventHandler', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse', 'maUtil']; }
+
+    constructor(maEventHandler, $q, maDialogHelper, $scope, $window, maTranslate, $attrs, $parse, maUtil) {
         this.maEventHandler = maEventHandler;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
         this.$scope = $scope;
         this.$window = $window;
         this.maTranslate = maTranslate;
-        
-        this.handlerTypes = maEventHandler.handlerTypes();
-        this.handlerTypesByName = maEventHandler.handlerTypesByName();
-        
+
+        this.handlerTypes = maEventHandler.handlerTypes().map(t => {
+            const item = angular.copy(t);
+            maTranslate.tr(item.description).then(translated => {
+                item.descriptionTranslated = translated;
+            });
+            return item;
+        });
+        this.handlerTypesByName = maUtil.createMapObject(this.handlerTypes, 'type');
+
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
             this.dynamicHeight = $parse($attrs.dynamicHeight)($scope.$parent);
         }
     }
-    
+
     $onInit() {
         this.ngModelCtrl.$render = () => this.render(true);
-        
+
         this.$scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
             if (event.defaultPrevented) return;
-            
+
             if (!this.confirmDiscard('stateChange')) {
                 event.preventDefault();
                 return;
@@ -55,29 +61,29 @@ class EventHandlerEditorController {
                 return text;
             }
         };
-        
+
         this.$scope.$on('$destroy', () => {
             this.$window.onbeforeunload = oldUnload;
         });
     }
-    
+
     $onChanges(changes) {
     }
-    
+
     render(confirmDiscard = false) {
         if (confirmDiscard && !this.confirmDiscard('modelChange')) {
             this.setViewValue();
             return;
         }
-        
+
         this.validationMessages = [];
-        
+
         const viewValue = this.ngModelCtrl.$viewValue;
         if (viewValue) {
             if (viewValue instanceof this.maEventHandler) {
                 this.eventHandler = viewValue.copy();
             } else {
-                this.eventHandler = new this.maEventHandler(viewValue);
+                this.eventHandler = this.maEventHandler.create('EMAIL');
             }
         } else {
             this.eventHandler = null;
@@ -92,41 +98,41 @@ class EventHandlerEditorController {
             this.form.$setUntouched();
         }
     }
-    
+
     setViewValue() {
         this.ngModelCtrl.$setViewValue(this.eventHandler);
     }
 
     saveItem(event) {
         this.form.$setSubmitted();
-        
+
         // allow resubmitting a form with validationMessage errors by setting them all back to valid
         this.form.setValidationMessageValidity(true);
-        
+
         if (!this.form.$valid) {
             this.form.activateTabWithClientError();
             this.maDialogHelper.errorToast('ui.components.fixErrorsOnForm');
             return;
         }
-        
+
         this.validationMessages = [];
-        
+
         this.eventHandler.save().then(item => {
             this.setViewValue();
             this.render();
             this.maDialogHelper.toast(['ui.components.eventHandlerSaved', this.eventHandler.alias || this.eventHandler.xid]);
         }, error => {
             let statusText = error.mangoStatusText;
-            
+
             if (error.status === 422) {
                 statusText = error.mangoStatusTextShort;
                 this.validationMessages = error.data.result.messages;
             }
-            
+
             this.maDialogHelper.errorToast(['ui.components.eventHandlerSaveError', statusText]);
         });
     }
-    
+
     revertItem(event) {
         if (this.confirmDiscard('revert')) {
             this.render();
@@ -144,16 +150,26 @@ class EventHandlerEditorController {
             });
         }, angular.noop);
     }
-    
+
     checkDiscardOption(type) {
         return this.discardOptions === true || (this.discardOptions && this.discardOptions[type]);
     }
-    
+
     confirmDiscard(type) {
         if (this.form && this.form.$dirty && this.checkDiscardOption(type)) {
             return this.$window.confirm(this.maTranslate.trSync('ui.app.discardUnsavedChanges'));
         }
         return true;
+    }
+
+    typeChanged() {
+        const previous = this.eventHandler;
+        this.eventHandler = this.handlerTypesByName[previous.handlerType].create();
+
+        // copy only a select set of properties over
+        for (const key of Object.keys(this.maEventHandler.defaultProperties)) {
+            this.eventHandler[key] = previous[key];
+        }
     }
 }
 

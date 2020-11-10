@@ -15,19 +15,19 @@ import eventHandlerSelectTemplate from './eventHandlerSelect.html';
 class EventHandlerSelectController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['maEventHandler', '$scope']; }
-    
+
     constructor(maEventHandler, $scope) {
         this.maEventHandler = maEventHandler;
         this.$scope = $scope;
-        
+
         this.newValue = {};
     }
-    
+
     $onInit() {
         this.ngModelCtrl.$render = () => this.render();
-        
+
         this.doQuery();
-        
+
         this.maEventHandler.subscribe({
             scope: this.$scope,
             handler: (event, item, attributes) => {
@@ -35,13 +35,13 @@ class EventHandlerSelectController {
             }
         });
     }
-    
+
     $onChanges(changes) {
         if (changes.eventType && !changes.eventType.isFirstChange()) {
             this.doQuery();
         }
     }
-    
+
     doQuery() {
         const queryBuilder = this.maEventHandler.buildQuery(); // TODO this is a unbounded query
         return queryBuilder.query().then(eventHandlers => {
@@ -54,18 +54,18 @@ class EventHandlerSelectController {
             return this.eventHandlers;
         });
     }
-    
+
     setViewValue() {
         this.ngModelCtrl.$setViewValue(this.selected);
     }
-    
+
     render() {
         this.selected = this.ngModelCtrl.$viewValue;
     }
-    
+
     selectEventHandler() {
         if (this.selected === this.newValue) {
-            this.selected = new this.maEventHandler();
+            this.selected = this.maEventHandler.create('EMAIL');
             if (this.eventType) {
                 this.selected.addEventType(this.eventType);
             }
