@@ -8,17 +8,17 @@ import eventHandlerPageTemplate from './eventHandlerPage.html';
 class EventHandlerPageController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['maEventHandler', '$state', '$mdMedia', 'maEventTypeInfo']; }
-    
+
     constructor(maEventHandler, $state, $mdMedia, EventTypeInfo) {
         this.maEventHandler = maEventHandler;
         this.$state = $state;
         this.$mdMedia = $mdMedia;
         this.EventTypeInfo = EventTypeInfo;
     }
-    
+
     $onInit() {
         this.eventTypeFromParams();
-        
+
         if (this.$state.params.xid) {
             this.maEventHandler.get(this.$state.params.xid).then(item => {
                 this.eventHandler = item;
@@ -43,7 +43,7 @@ class EventHandlerPageController {
             this.eventType = null;
         }
     }
-    
+
     eventTypeChanged() {
         const params = {
             eventType: null,
@@ -51,35 +51,35 @@ class EventHandlerPageController {
             referenceId1: null,
             referenceId2: null
         };
-        
+
         if (this.eventType) {
             params.eventType = this.eventType.eventType || null;
             params.subType = this.eventType.subType || null;
             params.subType = this.eventType.referenceId1 || null;
             params.subType = this.eventType.referenceId2 || null;
         }
-        
+
         this.$state.go('.', params, {location: 'replace', notify: false});
     }
-    
+
     newEventHandler() {
-        this.eventHandler = new this.maEventHandler();
+        this.eventHandler = this.maEventHandler.create('EMAIL');
         if (this.eventType) {
             this.eventHandler.addEventType(this.eventType);
         }
         this.eventHandlerChanged();
     }
-    
+
     eventHandlerSaved() {
         if (this.eventHandler == null) {
             // user deleted the event handler
             this.eventHandler = new this.maEventHandler();
         }
-        
+
         // always update the state params, xids can change
         this.eventHandlerChanged();
     }
-    
+
     eventHandlerChanged() {
         this.$state.params.xid = this.eventHandler && this.eventHandler.getOriginalId() || null;
         this.$state.go('.', this.$state.params, {location: 'replace', notify: false});
