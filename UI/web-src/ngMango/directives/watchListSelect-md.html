@@ -3,7 +3,7 @@
     <ma-drop-down-button ng-disabled="$ctrl.ngDisabled">
         <span ng-bind="$ctrl.watchList.name"></span>
         <ma-drop-down auto-focus="::false">
-            <ma-option-list ng-model="$ctrl.watchList" ng-disabled="$ctrl.ngDisabled"
+            <ma-option-list ng-model="$ctrl.watchList" ng-disabled="$ctrl.ngDisabled" ng-change="$ctrl.setViewValue($ctrl.watchList)"
                             items="$ctrl.filterWatchLists($filter)" ma-configure-input-container>
                 <ma-option ng-if="$ctrl.watchList && !$filter" ng-value="null"><em ma-tr="ui.app.clear"></em></ma-option>
                 <ma-option ng-repeat="wl in $ctrl.watchLists track by wl.xid" ng-value="wl">
