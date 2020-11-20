@@ -365,7 +365,9 @@ function eventsFactory($resource, Util, EventTypeInfo, RqlBuilder, $rootScope, $
 
                 // round to prevent infinite digests
                 const time = Math.floor(new Date().valueOf() / 1000) * 1000;
-                return time - this.activeTimestamp;
+                const duration = time - this.activeTimestamp;
+                // duration can be negative if there is a clock mismatch between backend and browser
+                return duration < 0 ? 0 : duration;
             }
         }
     });
