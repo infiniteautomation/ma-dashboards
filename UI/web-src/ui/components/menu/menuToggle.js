@@ -5,6 +5,9 @@
 
 import menuToggleTemplate from './menuToggle.html';
 
+// in pixels, this used to be calculated using clientHeight but it stopped working in Chrome 87 so its now hardcoded
+const menuItemHeight = 40;
+
 class MenuToggleController {
 
     static get $$ngIsClass() { return true; }
@@ -71,23 +74,14 @@ class MenuToggleController {
 
     $postLink() {
         this.$ul = this.$element.maFind('ul');
-        
-        // use timeout to calc our height after ul has been populated by ng-repeat
-        this.$timeout(() => {
-            this.calcHeight();
-            
-            if (this.$state.includes(this.item.name) && !this.isOpen) {
-                this.open();
-            }
-        }, 0);
+        this.calcHeight();
+        if (this.$state.includes(this.item.name) && !this.isOpen) {
+            this.open();
+        }
     }
     
     open() {
         if (this.isOpen) return;
-        
-        //if (this.height === 0) {
-        //    this.calcHeight();
-        //}
         
         this.isOpen = true;
         if (this.parentToggle) {
@@ -119,45 +113,13 @@ class MenuToggleController {
     }
 
     /**
-     * calculates the height of ul and sets its height style so transition works correctly.
-     * absolute positioning means it is taken out of usual flow so doesn't affect surrounding
-     * elements while calculating height, however briefly
+     * calculates the height of ul and sets its height style so transition works correctly
      */
     calcHeight() {
-        this.preMeasureHeight();
-        this.height = this.$ul.prop('clientHeight');
-        this.postMeasureHeight();
-    }
-    
-    preMeasureHeight() {
-        if (this.parentToggle) {
-            this.parentToggle.preMeasureHeight();
-        }
+        this.height = this.menu.visibleMap[this.item.name].visibleChildren * menuItemHeight;
         this.$ul.css({
-            height: '',
-            visibility: 'hidden',
-            position: 'absolute',
-            transition: 'none !important'
+            height: (this.height + this.addedHeight) + 'px'
         });
-        if ((this.wasHidden = this.$ul.hasClass('ng-hide')))
-            this.$ul.removeClass('ng-hide');
-    }
-    
-    postMeasureHeight(wasHidden) {
-        if (this.wasHidden)
-            this.$ul.addClass('ng-hide');
-        delete this.wasHidden;
-        
-        this.$ul.css({
-            height: (this.height + this.addedHeight) + 'px',
-            visibility: '',
-            position: '',
-            transition: ''
-        });
-
-        if (this.parentToggle) {
-            this.parentToggle.postMeasureHeight();
-        }
     }
 
     /**
