@@ -25,7 +25,7 @@ class MenuToggleController {
         this.menuLevel = this.parentToggle ? this.parentToggle.menuLevel + 1 : 1;
         this.height = 0;
         this.addedHeight = 0;
-        
+
         // close/open menus when changing states
         this.$scope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
             if (this.$state.includes(this.item.name)) {
@@ -34,8 +34,9 @@ class MenuToggleController {
                 //this.close();
             }
         });
+    }
 
-    this.$onChanges = function(changes) {
+    $onChanges(changes) {
         if (changes.openMenu) {
             if (this.isOpen && (!this.openMenu || this.openMenu.name.indexOf(this.item.name) !== 0)) {
                 this.close();
