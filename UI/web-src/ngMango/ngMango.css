@@ -1608,3 +1608,14 @@ md-switch.ma-text-left .md-container {
 .md-tooltip.md-panel.md-origin-bottom {
     margin-top: 8px;
 }
+
+.ma-hide-visibility.ng-hide:not(.ng-hide-animate) {
+    display: block !important;
+    visibility: hidden !important;
+}
+
+md-progress-linear.ma-small-progress,
+md-progress-linear.ma-small-progress .md-container,
+md-progress-linear.ma-small-progress .md-container .md-bar {
+    height: 3px;
+}
