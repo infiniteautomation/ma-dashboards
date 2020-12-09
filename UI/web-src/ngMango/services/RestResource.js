@@ -342,11 +342,14 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
                 if (!opts.cancel && timeout > 0) {
                     httpConfig.timeout = timeout;
                 } else if (opts.cancel && timeout <= 0) {
-                    httpConfig.timeout = opts.cancel;
+                    httpConfig.timeout = opts.cancel.finally(() => {
+                        httpConfig.timeout.cancelled = true;
+                    });
                 } else {
                     const timeoutPromise = $timeout(angular.noop, timeout, false);
-                    const userCancelledPromise = opts.cancel.then(() => {
+                    const userCancelledPromise = opts.cancel.finally(() => {
                         $timeout.cancel(timeoutPromise);
+                        httpConfig.timeout.cancelled = true;
                     });
                     httpConfig.timeout = $q.race([userCancelledPromise, timeoutPromise.catch(angular.noop)]);
                 }
@@ -361,6 +364,11 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             }
 
             return $http(httpConfig);
+        }
+
+        static wasCancelled(error) {
+            return error && error.xhrStatus === 'abort' &&
+                error.config && error.config.timeout && error.config.timeout.cancelled;
         }
 
         static defer() {
