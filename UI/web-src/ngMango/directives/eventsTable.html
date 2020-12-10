@@ -116,7 +116,10 @@
                     </md-icon>
                     <md-icon class="ma-acknowledged-checkbox ma-acknowledged" ng-if="event.acknowledged">
                         check_circle
-                        <md-tooltip ma-tr="ui.app.acknowledgedByAt" ma-tr-args="[event.acknowledgedByUsername, (event.acknowledgedTimestamp | maDate:'shortDateTime')]"></md-tooltip>
+                        <md-tooltip>
+                            <span ng-if="event.alternateAckSource" ng-bind="event.alternateAckSource"></span>
+                            <span ng-if="!event.alternateAckSource" ma-tr="ui.app.acknowledgedByAt" ma-tr-args="[event.acknowledgedByUsername, (event.acknowledgedTimestamp | maDate:'shortDateTime')]"></span>
+                        </md-tooltip>
                     </md-icon>
                 </td>
             </tr>
