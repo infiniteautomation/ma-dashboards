@@ -1,5 +1,11 @@
-<div layout="column" layout-align="start start">
-    <label for="httpSessionTimeoutPeriods" ma-tr="systemSettings.httpSessionTimeout"></label>
-    <ma-system-setting-editor name="httpSessionTimeoutPeriods" key="httpSessionTimeoutPeriods" type="INTEGER" input-type="number"></ma-system-setting-editor>
-    <ma-system-setting-editor key="httpSessionTimeoutPeriodType" input-type="timeperiodtype" available-options="['SECONDS','MINUTES','HOURS','DAYS','WEEKS','MONTHS','YEARS']"></ma-system-setting-editor>
+<div layout layout-wrap layout-align="start center">
+    <div flex="100" flex-gt-md="50" layout>
+        <ma-system-setting-editor flex label-tr="systemSettings.httpSessionTimeout"
+                                  key="httpSessionTimeoutPeriods" type="INTEGER" input-type="number">
+        </ma-system-setting-editor>
+        <ma-system-setting-editor flex label-tr="systemSettings.httpSessionTimeout"
+                                  key="httpSessionTimeoutPeriodType" input-type="timeperiodtype"
+                                  available-options="::['SECONDS','MINUTES','HOURS','DAYS','WEEKS','MONTHS','YEARS']">
+        </ma-system-setting-editor>
+    </div>
 </div>
