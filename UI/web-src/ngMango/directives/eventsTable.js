@@ -59,9 +59,9 @@ import moment from 'moment-timezone';
  * <ma-events-table point-tags="{site: 'my site'}" limit="10"></ma-events-table>
  */
 
-eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', '$sanitize', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO', '$timeout',
+eventsTable.$inject = ['maEvents', 'maUserNotes', '$mdMedia', '$injector', 'MA_DATE_FORMATS', 'MA_EVENT_LINK_INFO', '$timeout',
     'maEventHandler', 'maTranslate', 'localStorageService'];
-function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDateFormats, MA_EVENT_LINK_INFO, $timeout,
+function eventsTable(Events, UserNotes, $mdMedia, $injector, mangoDateFormats, MA_EVENT_LINK_INFO, $timeout,
         EventHandler, Translate, localStorageService) {
 
     const localStorageKey = 'maEventsTable';
@@ -378,10 +378,6 @@ function eventsTable(Events, UserNotes, $mdMedia, $injector, $sanitize, mangoDat
 
         onReorder() {
             this.doQuery();
-        }
-
-        parseHTML(text) {
-            return $sanitize(text);
         }
 
         formatDate(date) {

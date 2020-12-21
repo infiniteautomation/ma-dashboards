@@ -71,7 +71,7 @@
                         <md-tooltip md-delay="250" md-direction="right" md-autohide ma-tr="ui.app.hasNotes"></md-tooltip>
                     </md-icon>
 
-                    <span ng-bind-html="$ctrl.parseHTML(event.message)"></span>
+                    <span ng-bind="event.message"></span>
 
                     <div ng-if="toggle" class="ma-user-comments">
                         <div ng-repeat="userComment in event.comments track by userComment.xid">
