@@ -250,6 +250,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 isArray: false,
                 interceptor: {
                     request: function(config) {
+                        delete config.params.username;
                         User.ensureXsrfToken();
                         return config;
                     },
