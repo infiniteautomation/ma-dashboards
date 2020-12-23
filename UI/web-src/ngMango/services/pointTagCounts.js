@@ -61,7 +61,7 @@ function pointTagCountsFactory($q, $injector, RestResource) {
         }
     }
 
-    return PointTagCountsMock;
+    return PointTagCounts;
 }
 
 export default pointTagCountsFactory;
