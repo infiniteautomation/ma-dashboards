@@ -3,12 +3,14 @@
  * @author Pier Puccini
  */
 
-pointTagCountsFactory.$inject = ['$q', '$injector', 'maRestResource'];
-function pointTagCountsFactory($q, $injector, RestResource) {
+const MOCK = false;
+
+pointTagCountsFactory.$inject = ['maRestResource'];
+function pointTagCountsFactory(RestResource) {
     class PointTagCounts extends RestResource {
-        static get defaultProperties() {
-            return {};
-        }
+        // static get defaultProperties() {
+        //     return {};
+        // }
 
         static get baseUrl() {
             // return '/rest/latest/active-events';
@@ -20,9 +22,9 @@ function pointTagCountsFactory($q, $injector, RestResource) {
         //     // return '/rest/latest/events/data-point-tag-counts';
         // }
 
-        static get xidPrefix() {
-            return 'AE_';
-        }
+        // static get xidPrefix() {
+        //     return 'AE_';
+        // }
     }
 
     class PointTagCountsMock extends PointTagCounts {
@@ -61,7 +63,7 @@ function pointTagCountsFactory($q, $injector, RestResource) {
         }
     }
 
-    return PointTagCounts;
+    return MOCK ? PointTagCountsMock : PointTagCounts;
 }
 
 export default pointTagCountsFactory;
