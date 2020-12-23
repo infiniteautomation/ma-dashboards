@@ -199,7 +199,7 @@ import roleSelector from './components/roleSelector/roleSelector';
 import optionList from './components/optionList/optionList';
 import roleEditor from './components/roleEditor/roleEditor';
 import fileStoreEditor from './components/fileStoreEditor/fileStoreEditor';
-import activeEventsTable from './components/activeEventsTable/activeEventsTable';
+import pointTagCountsTable from './components/pointTagCountsTable/pointTagCountsTable';
 
 import slideUp from './animations/slideUp';
 import angular from 'angular';
@@ -413,7 +413,7 @@ ngMango.component('maRoleSelector', roleSelector);
 ngMango.component('maOptionList', optionList);
 ngMango.component('maRoleEditor', roleEditor);
 ngMango.component('maFileStoreEditor', fileStoreEditor);
-ngMango.component('maActiveEventsTable', activeEventsTable);
+ngMango.component('maPointTagCountsTable', pointTagCountsTable);
 
 ngMango.animation('.ma-slide-up', slideUp);
 

@@ -1,0 +1,59 @@
+ma-point-tag-counts-table {
+    flex-grow: 1;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+ma-point-tag-counts-table .ma-virtual-repeat-table-container {
+    flex: 1 0 auto;
+    display: flex;
+    overflow-x: auto;
+}
+
+ma-point-tag-counts-table .ma-virtual-repeat-table {
+    flex: 1 0 auto;
+}
+
+ma-point-tag-counts-table .ma-empty-null {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+ma-point-tag-counts-table .ma-virtual-repeat-table-header md-input-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+ma-point-tag-counts-table .ma-virtual-repeat-table .ma-checkbox-column {
+    flex: 0 0 32px;
+    display: flex;
+    justify-content: center;
+}
+
+ma-point-tag-counts-table .ma-virtual-repeat-table .ma-checkbox-column md-checkbox {
+    width: 20px;
+    margin: 0;
+}
+
+ma-point-tag-counts-table .ma-data-point-row {
+    user-select: none;
+}
+
+ma-point-tag-counts-table .ma-virtual-repeat-table-row md-checkbox {
+    pointer-events: none;
+}
+
+ma-point-tag-counts-table md-menu-bar {
+    width: 32px;
+    padding: 0;
+}
+
+ma-md-me-tu--conten-t.md-menu-bar-menu.md-dense.pointTagCountsTable {
+    padding: 8px 0;
+}
+
+ma-md-me-tu--conten-t.md-menu-bar-menu.pointTagCountsTable.ma-checkbox-menu md-checkbox {
+    margin: 0;
+}
