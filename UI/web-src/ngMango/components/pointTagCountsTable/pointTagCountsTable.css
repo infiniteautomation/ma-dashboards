@@ -50,10 +50,10 @@ ma-point-tag-counts-table md-menu-bar {
     padding: 0;
 }
 
-ma-md-me-tu--conten-t.md-menu-bar-menu.md-dense.pointTagCountsTable {
+md-menu-content.md-menu-bar-menu.md-dense.ma-data-point-selector {
     padding: 8px 0;
 }
 
-ma-md-me-tu--conten-t.md-menu-bar-menu.pointTagCountsTable.ma-checkbox-menu md-checkbox {
+md-menu-content.md-menu-bar-menu.ma-data-point-selector.ma-checkbox-menu md-checkbox {
     margin: 0;
 }
