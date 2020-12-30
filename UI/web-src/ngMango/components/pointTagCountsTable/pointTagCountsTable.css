@@ -57,3 +57,23 @@ md-menu-content.md-menu-bar-menu.md-dense.ma-data-point-selector {
 md-menu-content.md-menu-bar-menu.ma-data-point-selector.ma-checkbox-menu md-checkbox {
     margin: 0;
 }
+
+ma-point-tag-counts-table span:not(.ma-message-column) {
+    white-space: nowrap;
+}
+
+ma-point-tag-counts-table span.ma-message-column {
+    max-width: 380px;
+}
+
+@media (max-width: 959px) {
+    ma-point-tag-counts-table span.ma-message-column {
+        max-width: 200px;
+    }
+}
+
+ma-point-tag-counts-table span.ma-message-column.ma-truncated {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

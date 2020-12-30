@@ -39,7 +39,12 @@ function pointTagCountsFactory(RestResource, RqlBuilder) {
                 {
                     url: this.baseUrl,
                     method: 'POST',
-                    params: params
+                    // TODO: ADD PROPER BODY FROM DATEBAR
+                    params: params,
+                    data: {
+                        from: '2000-01-01T00:00:00.000-10:00',
+                        to: null
+                    }
                 },
                 opts
             ).then((response) => {
