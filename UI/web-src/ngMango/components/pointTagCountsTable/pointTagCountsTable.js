@@ -33,7 +33,8 @@ class PointTagCountsTableController extends TableController {
 
             resourceService: maPointTagCounts,
             localStorageKey: 'pointTagCountsTable',
-            defaultColumns: DEFAULT_COLUMNS
+            defaultColumns: DEFAULT_COLUMNS,
+            disableSortById: true
             // defaultSort: [{ columnName: 'deviceName' }, { columnName: 'name' }]
         });
 
