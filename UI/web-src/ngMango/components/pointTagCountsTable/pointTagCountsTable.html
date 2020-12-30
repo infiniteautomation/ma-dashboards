@@ -111,14 +111,17 @@
                         ng-checked="$ctrl.selectedItems.has(item.xid)" md-no-ink="true"></md-checkbox>
                 </div>
 
-                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name">
+                <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
+                    ng-class="{'ma-message-column': column.name == 'message'}">
                     <span ng-if="column.name !== 'value' && column.name !== 'message'"
                         ng-class="{'ma-empty-null': $ctrl.getCellValue(item, column) == null}"
                         ng-bind="$ctrl.getCellValue(item, column) | maDisplayNull"></span>
-                    <span ng-if="column.name === 'message'" class="ma-message-column"
+
+                    <span ng-if="column.name === 'message'" class="ma-message-cell"
                         ng-class="{'ma-truncated' : !toggle}" ng-click="toggle = !toggle">
                         <span ng-bind="item.message"></span>
                     </span>
+
                     <!-- TODO: Remove point value query by xid -->
                     <ma-point-value ng-if="column.name === 'value'" point-xid="{{item.xid}}" hide-event-indicator="true"
                         enable-popup="right">

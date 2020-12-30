@@ -58,7 +58,21 @@ md-menu-content.md-menu-bar-menu.ma-data-point-selector.ma-checkbox-menu md-chec
     margin: 0;
 }
 
-ma-point-tag-counts-table span:not(.ma-message-column) {
+ma-point-tag-counts-table .ma-virtual-repeat-table .ma-virtual-repeat-table-row > *.ma-message-column {
+    white-space: unset;
+}
+
+ma-point-tag-counts-table span.ma-message-cell.ma-truncated {
+    white-space: nowrap;
+}
+
+/* ma-point-tag-counts-table span:not(.ma-truncated) > span {
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    hyphens: auto;
+}
+
+ma-point-tag-counts-table span:not(.ma-message-column) > span {
     white-space: nowrap;
 }
 
@@ -76,4 +90,4 @@ ma-point-tag-counts-table span.ma-message-column.ma-truncated {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
+} */
