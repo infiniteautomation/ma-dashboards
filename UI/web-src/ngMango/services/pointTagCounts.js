@@ -5,8 +5,8 @@
 
 const MOCK = false;
 
-pointTagCountsFactory.$inject = ['maRestResource'];
-function pointTagCountsFactory(RestResource) {
+pointTagCountsFactory.$inject = ['maRestResource', 'maRqlBuilder'];
+function pointTagCountsFactory(RestResource, RqlBuilder) {
     class PointTagCounts extends RestResource {
         // static get defaultProperties() {
         //     return {};
@@ -14,17 +14,54 @@ function pointTagCountsFactory(RestResource) {
 
         static get baseUrl() {
             // return '/rest/latest/active-events';
-            return '/rest/latest/events/data-point-tag-counts';
+            return '/rest/latest/events/data-point-event-counts';
         }
 
         // static get webSocketUrl() {
         //     // return '/rest/latest/websocket/active-events';
-        //     // return '/rest/latest/events/data-point-tag-counts';
+        //     // return '/rest/latest/events/data-point-event-counts';
         // }
 
         // static get xidPrefix() {
         //     return 'AE_';
         // }
+
+        static query(queryObject, opts = {}) {
+            opts.resourceInfo = { resourceMethod: 'query' };
+            const params = {};
+            if (queryObject) {
+                const rqlQuery = queryObject.toString();
+                if (rqlQuery) {
+                    params.rqlQuery = rqlQuery;
+                }
+            }
+            return this.http(
+                {
+                    url: this.baseUrl,
+                    method: 'POST',
+                    params: params
+                },
+                opts
+            ).then((response) => {
+                if (opts.responseType != null) {
+                    return response.data;
+                }
+                const items = response.data.items.map((item) => {
+                    return new this(item);
+                });
+                items.$total = response.data.total;
+                return items;
+            });
+        }
+
+        static buildQuery() {
+            const builder = new RqlBuilder();
+            builder.query = (opts) => {
+                const queryNode = builder.build();
+                return this.query(queryNode, opts);
+            };
+            return builder;
+        }
     }
 
     class PointTagCountsMock extends PointTagCounts {
