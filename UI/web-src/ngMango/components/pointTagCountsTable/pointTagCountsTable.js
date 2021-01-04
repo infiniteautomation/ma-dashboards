@@ -42,7 +42,7 @@ class PointTagCountsTableController extends TableController {
     }
 
     $onChanges(changes) {
-        if (changes.localStorageKey && changes.localStorageKey.currentValue) {
+        if ((changes.localStorageKey && changes.localStorageKey.currentValue) || (changes.defaultSort && changes.defaultSort.currentValue)) {
             this.loadSettings();
         }
     }
@@ -54,9 +54,7 @@ class PointTagCountsTableController extends TableController {
     loadColumns() {
         return super
             .loadColumns()
-            .then(() => {
-                return this.maDataPointTags.keys();
-            })
+            .then(() => this.maDataPointTags.keys())
             .then((keys) => {
                 const filters = this.settings.filters || {};
                 this.tagColumns = keys
@@ -94,6 +92,7 @@ export default {
     bindings: {
         localStorageKey: '<?',
         defaultColumns: '<?',
+        defaultSort: '<?',
         // selectMultiple: '<?',
         // showClear: '<?',
         // rowClicked: '&?',
