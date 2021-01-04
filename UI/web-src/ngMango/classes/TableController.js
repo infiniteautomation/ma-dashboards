@@ -286,9 +286,16 @@ class TableController {
 
     markCacheAsStale() {
         for (let page of this.pages.values()) {
-            if (page.queryPromise) {
+            if (typeof page.cancel === 'function') {
+                page.cancel();
+            }
+
+            // resource service can extend RestResource or $resource
+            // cancelRequest is only available on our extended $resource
+            if (typeof this.resourceService.cancelRequest === 'function' && page.queryPromise) {
                 this.resourceService.cancelRequest(page.queryPromise);
             }
+
             page.stale = true;
         }
     }
@@ -332,8 +339,8 @@ class TableController {
     customizeQuery(queryBuilder) {
     }
 
-    doQuery(queryBuilder) {
-        return queryBuilder.query();
+    doQuery(queryBuilder, opts) {
+        return queryBuilder.query(opts);
     }
 
     getPage(startIndex = 0, evictCache = true) {
@@ -352,7 +359,11 @@ class TableController {
         const queryBuilder = this.createQueryBuilder();
         queryBuilder.limit(this.pageSize, startIndex);
 
-        page.queryPromise = this.doQuery(queryBuilder);
+        const cancel = this.$q.defer();
+        page.cancel = cancel.resolve;
+        page.queryPromise = this.doQuery(queryBuilder, {
+            cancel: cancel.promise
+        });
 
         page.promise = page.queryPromise.then(result => {
             pages.$total = result.$total;
@@ -362,7 +373,7 @@ class TableController {
         }, error => {
             page.error = error;
 
-            if (error.status === -1 && error.resource && error.resource.cancelled) {
+            if (this.resourceService.wasCancelled(error)) {
                 // request cancelled, ignore error
                 pages.delete(startIndex);
                 return;
