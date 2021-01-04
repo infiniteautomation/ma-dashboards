@@ -332,6 +332,10 @@ class TableController {
     customizeQuery(queryBuilder) {
     }
 
+    doQuery(queryBuilder) {
+        return queryBuilder.query();
+    }
+
     getPage(startIndex = 0, evictCache = true) {
         // keep a reference to pages, don't want to update a new pages map with the results from an old query
         const pages = this.pages;
@@ -348,7 +352,7 @@ class TableController {
         const queryBuilder = this.createQueryBuilder();
         queryBuilder.limit(this.pageSize, startIndex);
 
-        page.queryPromise = queryBuilder.query();
+        page.queryPromise = this.doQuery(queryBuilder);
 
         page.promise = page.queryPromise.then(result => {
             pages.$total = result.$total;
