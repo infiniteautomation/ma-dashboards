@@ -94,6 +94,10 @@ function resourceDecorator($delegate, RqlBuilder, maUtil, NotificationManager, $
                 }
             },
 
+            wasCancelled(error) {
+                return error && error.xhrStatus === 'abort' && error.resource && error.resource.cancelled;
+            },
+
             notificationManager: new NotificationManager({
                 transformObject: (item) => {
                     const resource = Object.assign(Object.create(ExtendedResource.prototype), item);
