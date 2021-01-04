@@ -153,6 +153,14 @@ ngMangoServices.factory('maEventBus', eventBusFactory);
 ngMangoServices.factory('maResourceCache', resourceCacheFactory);
 ngMangoServices.provider('maTemplateHooks', templateHooksProvider);
 
+const classesImports = require.context('./classes', false, /\.js$/);
+for (const fileName of classesImports.keys()) {
+    const clazz = classesImports(fileName).default;
+    if (typeof clazz === 'function') {
+        ngMangoServices.factory('ma' + clazz.name, () => clazz);
+    }
+}
+
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUTS', {
     // NOTE: update uiSettings.json as well! These timeouts are overridden by the timeouts in the UI Settings
