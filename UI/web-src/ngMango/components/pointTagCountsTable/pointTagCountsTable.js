@@ -79,6 +79,10 @@ class PointTagCountsTableController extends TableController {
             });
     }
 
+    doQuery(queryBuilder) {
+        return queryBuilder.query({ to: this.to, from: this.from });
+    }
+
     customizeQuery(queryBuilder) {
         if (typeof this.userCustomize === 'function') {
             this.userCustomize({ $queryBuilder: queryBuilder });
@@ -97,6 +101,8 @@ export default {
         defaultColumns: '<?',
         defaultSort: '<?',
         refreshTable: '<?',
+        to: '<?',
+        from: '<?',
         // selectMultiple: '<?',
         // showClear: '<?',
         // rowClicked: '&?',

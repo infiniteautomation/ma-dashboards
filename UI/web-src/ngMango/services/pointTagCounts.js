@@ -26,7 +26,7 @@ function pointTagCountsFactory(RestResource, RqlBuilder) {
         //     return 'AE_';
         // }
 
-        static query(queryObject, opts = {}) {
+        static query(postBody, queryObject, opts = {}) {
             opts.resourceInfo = { resourceMethod: 'query' };
             const params = {};
             if (queryObject) {
@@ -39,21 +39,15 @@ function pointTagCountsFactory(RestResource, RqlBuilder) {
                 {
                     url: this.baseUrl,
                     method: 'POST',
-                    // TODO: ADD PROPER BODY FROM DATEBAR
-                    params: params,
-                    data: {
-                        from: '2000-01-01T00:00:00.000-10:00',
-                        to: null
-                    }
+                    params,
+                    data: postBody
                 },
                 opts
             ).then((response) => {
                 if (opts.responseType != null) {
                     return response.data;
                 }
-                const items = response.data.items.map((item) => {
-                    return new this(item);
-                });
+                const items = response.data.items.map((item) => new this(item));
                 items.$total = response.data.total;
                 return items;
             });
@@ -61,9 +55,9 @@ function pointTagCountsFactory(RestResource, RqlBuilder) {
 
         static buildQuery() {
             const builder = new RqlBuilder();
-            builder.query = (opts) => {
+            builder.query = (postBody, opts) => {
                 const queryNode = builder.build();
-                return this.query(queryNode, opts);
+                return this.query(postBody, queryNode, opts);
             };
             return builder;
         }
