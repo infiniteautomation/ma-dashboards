@@ -45,6 +45,9 @@ class PointTagCountsTableController extends TableController {
         if ((changes.localStorageKey && changes.localStorageKey.currentValue) || (changes.defaultSort && changes.defaultSort.currentValue)) {
             this.loadSettings();
         }
+        if (changes.refreshTable && changes.refreshTable.currentValue) {
+            this.filterChanged();
+        }
     }
 
     loadSettings() {
@@ -93,6 +96,7 @@ export default {
         localStorageKey: '<?',
         defaultColumns: '<?',
         defaultSort: '<?',
+        refreshTable: '<?',
         // selectMultiple: '<?',
         // showClear: '<?',
         // rowClicked: '&?',
