@@ -79,8 +79,8 @@ class PointTagCountsTableController extends TableController {
             });
     }
 
-    doQuery(queryBuilder) {
-        return queryBuilder.query({ to: this.to, from: this.from });
+    doQuery(queryBuilder, opts) {
+        return queryBuilder.query({ to: this.to, from: this.from }, opts);
     }
 
     customizeQuery(queryBuilder) {
