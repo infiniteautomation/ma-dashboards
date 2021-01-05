@@ -103,11 +103,6 @@ export default {
         refreshTable: '<?',
         to: '<?',
         from: '<?',
-        // selectMultiple: '<?',
-        // showClear: '<?',
-        // rowClicked: '&?',
-        // settable: '<?',
-        // dataTypes: '<?types',
         userCustomize: '&?customizeQuery'
     }
 };
