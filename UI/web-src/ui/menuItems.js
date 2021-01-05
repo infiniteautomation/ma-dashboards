@@ -243,39 +243,7 @@ export default [
         templatePromise() {
             return import(/* webpackMode: "lazy", webpackChunkName: "ui.main" */
                     './views/serverError.html');
-        },
-        controller: ['$scope', '$http', function($scope, $http) {
-            $http({url: '/rest/latest/exception/latest'}).then(response => {
-                const exception = $scope.exception = response.data.MANGO_USER_LAST_EXCEPTION;
-                if (exception) {
-                    $scope.fullStack = printException(exception).join('\n');
-                    $scope.rootCause = printException(exception, true).join('\n');
-                } else {
-                    $scope.noException = true;
-                }
-            });
-            
-            function printException(e, rootCauseOnly = false, lines = [], depth = 0) {
-                if (rootCauseOnly) {
-                    while(e.cause != null) {
-                        e = e.cause;
-                    }
-                }
-                
-                lines.push(depth > 0 ? `Caused by: ${e.localizedMessage}` : e.localizedMessage);
-                if (Array.isArray(e.stackTrace)) {
-                    e.stackTrace.forEach(frame => {
-                        lines.push(`\tat ${frame.className}.${frame.methodName} (${frame.fileName}:${frame.lineNumber})`);
-                    });
-                }
-                
-                if (e.cause) {
-                    printException(e.cause, false, lines, depth + 1);
-                }
-                
-                return lines;
-            }
-        }]
+        }
     },
     {
         name: 'ui.watchList',

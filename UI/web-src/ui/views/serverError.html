@@ -1,17 +1,7 @@
-<h1 ma-tr="ui.app.serverError"></h1>
-
-<div ng-if="noException">
-    <p ma-tr="ui.app.noExceptionFound"></p>
-</div>
-
-<div ng-if="exception" ng-init="data = {}">
-    <div ng-if="!data.showStack">
-        <p ng-bind="exception.localizedMessage"></p>
-        
-        <div ng-if="fullStack">
-            <md-button ng-click="data.showStack = true"><span ma-tr="ui.app.showStackTrace"></span></md-button>
-        </div>
-    </div>
-
-    <pre ng-if="data.showStack" ng-bind="fullStack"></pre>
+<h1 ma-tr="ui.app.serverErrorOccurred"></h1>
+<p ma-tr="ui.app.serverErrorOccurred.details"></p>
+<div>
+    <md-button ng-if="User.current.hasRole('superadmin')" ui-sref="ui.settings.systemStatus.loggingConsole({filename: 'ma.log'})" class="md-raised">
+        <span ma-tr="ui.settings.systemStatus.viewCurrentMaLog"></span>
+    </md-button>
 </div>
