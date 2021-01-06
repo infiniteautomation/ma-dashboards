@@ -47,6 +47,7 @@ function mangoHttpInterceptorFactory(mangoBaseUrl, MA_TIMEOUTS, $q, $injector) {
 
         augmentError(error) {
             let message = error.data && typeof error.data === 'object' && (error.data.message || error.data.localizedMessage);
+            // TODO error.data.cause is now the only place containing the exception message, display this if it is available
 
             // try the 'errors' header
             if (!message) {
