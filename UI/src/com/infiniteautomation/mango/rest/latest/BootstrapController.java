@@ -12,7 +12,6 @@ import javax.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,7 +39,7 @@ import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.vo.User;
 import com.serotonin.m2m2.vo.json.JsonDataVO;
 import com.serotonin.m2m2.vo.permission.PermissionHolder;
-import com.serotonin.m2m2.web.mvc.spring.security.permissions.AnonymousAccessAllowed;
+import com.serotonin.m2m2.web.mvc.spring.security.permissions.AnonymousAccess;
 import com.serotonin.provider.Providers;
 
 import io.swagger.annotations.Api;
@@ -84,6 +83,7 @@ public class BootstrapController {
 
     @ApiOperation(value = "Get the PWA (Progressive Web App) manifest")
     @RequestMapping(method = RequestMethod.GET, path = "/pwa-manifest")
+    @AnonymousAccess
     public ObjectNode manifest(@AuthenticationPrincipal PermissionHolder user, UriComponentsBuilder builder) throws IOException {
 
         JsonNodeFactory nodeFactory = objectMapper.getNodeFactory();
@@ -140,7 +140,7 @@ public class BootstrapController {
 
     @ApiOperation(value = "Get the data needed before logging in")
     @RequestMapping(method = RequestMethod.GET, path = "/pre-login")
-    @AnonymousAccessAllowed
+    @AnonymousAccess
     public PreLoginData preLogin(@AuthenticationPrincipal PermissionHolder user) {
         PreLoginData data = new PreLoginData();
 
@@ -178,9 +178,7 @@ public class BootstrapController {
 
     @ApiOperation(value = "Get the data needed after logging in")
     @RequestMapping(method = RequestMethod.GET, path = "/post-login")
-    @PreAuthorize("isAuthenticated()")
     public PostLoginData postLogin(@AuthenticationPrincipal PermissionHolder user) {
-
         Module coreModule = ModuleRegistry.getModule(ModuleRegistry.CORE_MODULE_NAME);
 
         PostLoginData data = new PostLoginData();
