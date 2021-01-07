@@ -1,7 +1,23 @@
 /*
- * Copyright (C) 2018 Infinite Automation Software. All rights reserved.
+ * Copyright (C) 2021 Radix IoT LLC. All rights reserved.
  */
 package com.infiniteautomation.mango.rest.latest;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.TimeZone;
+
+import javax.servlet.ServletContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.env.Environment;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -23,23 +39,12 @@ import com.serotonin.m2m2.module.Module;
 import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.vo.User;
 import com.serotonin.m2m2.vo.json.JsonDataVO;
+import com.serotonin.m2m2.vo.permission.PermissionHolder;
+import com.serotonin.m2m2.web.mvc.spring.security.permissions.AnonymousAccessAllowed;
 import com.serotonin.provider.Providers;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.env.Environment;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.servlet.ServletContext;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.TimeZone;
 
 /**
  * Returns a conglomeration of data for use in the UI module AngularJS application bootstrap process.
@@ -79,7 +84,7 @@ public class BootstrapController {
 
     @ApiOperation(value = "Get the PWA (Progressive Web App) manifest")
     @RequestMapping(method = RequestMethod.GET, path = "/pwa-manifest")
-    public ObjectNode manifest(@AuthenticationPrincipal User user, UriComponentsBuilder builder) throws IOException {
+    public ObjectNode manifest(@AuthenticationPrincipal PermissionHolder user, UriComponentsBuilder builder) throws IOException {
 
         JsonNodeFactory nodeFactory = objectMapper.getNodeFactory();
 
@@ -135,7 +140,8 @@ public class BootstrapController {
 
     @ApiOperation(value = "Get the data needed before logging in")
     @RequestMapping(method = RequestMethod.GET, path = "/pre-login")
-    public PreLoginData preLogin(@AuthenticationPrincipal User user) {
+    @AnonymousAccessAllowed
+    public PreLoginData preLogin(@AuthenticationPrincipal PermissionHolder user) {
         PreLoginData data = new PreLoginData();
 
         boolean devEnabled = env.getProperty("development.enabled", Boolean.class, false);
@@ -152,9 +158,9 @@ public class BootstrapController {
         data.setPublicRegistrationEnabled(systemSettingsDao.getBooleanValue(SystemSettingsDao.USERS_PUBLIC_REGISTRATION_ENABLED));
         data.setDevelopmentMode(devEnabled);
 
-        if (user != null) {
-            data.setUser(new UserModel(user));
-            data.setTranslations(TranslationsController.getTranslations(PUBLIC_TRANSLATIONS, user.getLocaleObject()));
+        if (user instanceof User) {
+            data.setUser(new UserModel((User) user));
+            data.setTranslations(TranslationsController.getTranslations(PUBLIC_TRANSLATIONS, ((User) user).getLocaleObject()));
         } else {
             data.setTranslations(TranslationsController.getTranslations(PUBLIC_TRANSLATIONS, Common.getLocale()));
         }
@@ -173,7 +179,7 @@ public class BootstrapController {
     @ApiOperation(value = "Get the data needed after logging in")
     @RequestMapping(method = RequestMethod.GET, path = "/post-login")
     @PreAuthorize("isAuthenticated()")
-    public PostLoginData postLogin(@AuthenticationPrincipal User user) {
+    public PostLoginData postLogin(@AuthenticationPrincipal PermissionHolder user) {
 
         Module coreModule = ModuleRegistry.getModule(ModuleRegistry.CORE_MODULE_NAME);
 
@@ -196,7 +202,11 @@ public class BootstrapController {
             data.setPages(new JsonDataModel(pageData));
         }
 
-        data.setTranslations(TranslationsController.getTranslations(PRIVATE_TRANSLATIONS, user.getLocaleObject()));
+        if (user instanceof User) {
+            data.setTranslations(TranslationsController.getTranslations(PRIVATE_TRANSLATIONS, ((User) user).getLocaleObject()));
+        } else {
+            data.setTranslations(TranslationsController.getTranslations(PRIVATE_TRANSLATIONS, Common.getLocale()));
+        }
 
         return data;
     }
