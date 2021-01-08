@@ -13,7 +13,7 @@ const DEFAULT_COLUMNS = [
     { name: 'name', label: 'common.name', selectedByDefault: true },
     { name: 'message', label: 'ui.app.msg', filterable: false, sortable: false, selectedByDefault: true },
     { name: 'alarmLevel', label: 'ui.app.alarmLvl', filterable: false, selectedByDefault: true },
-    { name: 'latestActive', label: 'ui.app.activeStatus', sortable: false, selectedByDefault: true },
+    { name: 'latestActive', label: 'ui.app.activeStatus', filterable: false, selectedByDefault: true },
     { name: 'value', label: 'ui.app.pointValue', filterable: false, sortable: false, selectedByDefault: true },
     { name: 'count', label: 'ui.app.alarmCounts', type: 'number', filterable: false, selectedByDefault: true }
 ];
