@@ -14,16 +14,17 @@ const DEFAULT_COLUMNS = [
     { name: 'message', label: 'ui.app.msg', filterable: false, sortable: false, selectedByDefault: true },
     { name: 'alarmLevel', label: 'ui.app.alarmLvl', filterable: false, selectedByDefault: true },
     { name: 'latestActive', label: 'ui.app.activeStatus', filterable: false, selectedByDefault: true },
+    { name: 'latestActiveDuration', label: 'ui.app.duration', type: 'duration', filterable: false, sortable: false, selectedByDefault: true },
     { name: 'value', label: 'ui.app.pointValue', filterable: false, sortable: false, selectedByDefault: true },
     { name: 'count', label: 'ui.app.alarmCounts', type: 'number', filterable: false, selectedByDefault: true }
 ];
 
 class PointTagCountsTableController extends TableController {
     static get $inject() {
-        return ['maPointTagCounts', 'maDataPointTags', '$scope', '$element', '$injector'];
+        return ['$scope', '$element', '$injector', 'maPointTagCounts', 'maDataPointTags'];
     }
 
-    constructor(maPointTagCounts, maDataPointTags, $scope, $element, $injector) {
+    constructor($scope, $element, $injector, maPointTagCounts, maDataPointTags) {
         super({
             $scope,
             $element,
@@ -32,8 +33,8 @@ class PointTagCountsTableController extends TableController {
             resourceService: maPointTagCounts,
             localStorageKey: 'pointTagCountsTable',
             defaultColumns: DEFAULT_COLUMNS,
-            disableSortById: true
-            // defaultSort: [{ columnName: 'deviceName' }, { columnName: 'name' }]
+            disableSortById: true,
+            defaultSort: [{ columnName: 'latestActive', descending: true }]
         });
 
         this.maDataPointTags = maDataPointTags;

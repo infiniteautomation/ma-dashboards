@@ -112,8 +112,8 @@
                 </div>
 
                 <div ng-repeat="column in $ctrl.selectedColumns | orderBy:'order' track by column.name"
-                    ng-class="{'ma-message-column': column.name == 'message'}">
-                    <span ng-if="column.name !== 'value' && column.name !== 'message'"
+                    ng-class="{'ma-message-column': column.name == 'message', 'ma-active-status-column': column.name == 'latestActive'}">
+                    <span ng-if="column.name !== 'value' && column.name !== 'message' && column.name !== 'latestActive'"
                         ng-class="{'ma-empty-null': $ctrl.getCellValue(item, column) == null}"
                         ng-bind="$ctrl.getCellValue(item, column) | maDisplayNull"></span>
 
@@ -127,6 +127,13 @@
                             </md-icon>
                         </a>
                         <span ng-bind="item.message"></span>
+                    </span>
+
+                    <span ng-if="column.name === 'latestActive'" class="ma-active-status-cell">
+                        <span ng-if="!item.active" ma-tr="common.active"></span>
+                        <span ng-if="item.active">
+                            <span ma-tr="ui.app.inactive"></span>
+                        </span>
                     </span>
 
                     <!-- TODO: Remove point value query by xid -->
