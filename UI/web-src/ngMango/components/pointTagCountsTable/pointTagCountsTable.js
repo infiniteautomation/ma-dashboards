@@ -34,7 +34,7 @@ class PointTagCountsTableController extends TableController {
             localStorageKey: 'pointTagCountsTable',
             defaultColumns: DEFAULT_COLUMNS,
             disableSortById: true,
-            defaultSort: [{ columnName: 'latestActive', descending: true }]
+            defaultSort: [{ columnName: 'latestActive' }]
         });
 
         this.maDataPointTags = maDataPointTags;
