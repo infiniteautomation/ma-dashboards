@@ -8,12 +8,13 @@ import moment from 'moment-timezone';
 
 class Column {
 
-    constructor(options) {
+    constructor(options, Translate) {
         Object.assign(this, options);
 
         this.property = this.name.split('.');
         this.filterable = options.hasOwnProperty('filterable') ? !!options.filterable : true;
         this.sortable = options.hasOwnProperty('sortable') ? !!options.sortable : true;
+        this.Translate = Translate;
     }
 
     parseBoolean(value) {
@@ -105,6 +106,8 @@ class Column {
             formatted = null;
         } else if (this.type === 'date') {
             formatted = this.maDateFormat(value, this.dateFormat);
+        } else if (this.type === 'duration') {
+            formatted = this.formatDuration(value);
         } else {
             formatted = value;
         }
@@ -117,6 +120,19 @@ class Column {
             return;
         }
         return this.formatValue(value);
+    }
+
+    formatDuration(duration) {
+        if (duration < 1000) {
+            return this.Translate.trSync('ui.time.milliseconds', [duration]);
+        }
+        if (duration < 5000) {
+            return this.Translate.trSync('ui.time.seconds', [Math.round(duration / 100) / 10]);
+        }
+        if (duration < 60000) {
+            return this.Translate.trSync('ui.time.seconds', [Math.round(duration / 1000)]);
+        }
+        return moment.duration(duration).humanize();
     }
 }
 
@@ -136,6 +152,7 @@ class TableController {
         this.$q = $injector.get('$q');
         this.$interval = $injector.get('$interval');
         this.maDateFormat = $injector.get('$filter')('maDate');
+        this.Translate = $injector.get('maTranslate');
 
         this.idProperty = this.resourceService.idProperty;
         this.showFilters = true;
@@ -647,7 +664,7 @@ class TableController {
     }
 
     createColumn(options) {
-        return new Column(options);
+        return new Column(options, this.Translate);
     }
 }
 
