@@ -4,8 +4,8 @@
  */
 
 import TableController from '../../classes/TableController';
-import pointTagCountsTableTemplate from './pointTagCountsTable.html';
-import './pointTagCountsTable.css';
+import dataPointEventCountsTableTemplate from './dataPointEventCountsTable.html';
+import './dataPointEventCountsTable.css';
 
 const DEFAULT_COLUMNS = [
     { name: 'xid', label: 'ui.app.xidShort' },
@@ -19,7 +19,7 @@ const DEFAULT_COLUMNS = [
     { name: 'count', label: 'ui.app.alarmCounts', type: 'number', filterable: false, selectedByDefault: true }
 ];
 
-class PointTagCountsTableController extends TableController {
+class DataPointEventCountsTableController extends TableController {
     static get $inject() {
         return ['$scope', '$element', '$injector', 'maPointTagCounts', 'maDataPointTags'];
     }
@@ -31,7 +31,7 @@ class PointTagCountsTableController extends TableController {
             $injector,
 
             resourceService: maPointTagCounts,
-            localStorageKey: 'pointTagCountsTable',
+            localStorageKey: 'dataPointEventCountsTable',
             defaultColumns: DEFAULT_COLUMNS,
             disableSortById: true,
             defaultSort: [{ columnName: 'latestActive' }]
@@ -90,8 +90,8 @@ class PointTagCountsTableController extends TableController {
 }
 
 export default {
-    template: pointTagCountsTableTemplate,
-    controller: PointTagCountsTableController,
+    template: dataPointEventCountsTableTemplate,
+    controller: DataPointEventCountsTableController,
     require: {
         ngModelCtrl: 'ngModel'
     },
