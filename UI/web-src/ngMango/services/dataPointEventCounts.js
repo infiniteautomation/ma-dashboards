@@ -3,9 +3,9 @@
  * @author Pier Puccini
  */
 
-pointTagCountsFactory.$inject = ['maRestResource', 'maRqlBuilder'];
-function pointTagCountsFactory(RestResource, RqlBuilder) {
-    class PointTagCounts extends RestResource {
+dataPointEventCountsFactory.$inject = ['maRestResource', 'maRqlBuilder'];
+function dataPointEventCountsFactory(RestResource, RqlBuilder) {
+    class PointEventCounts extends RestResource {
         static get baseUrl() {
             return '/rest/latest/events/data-point-event-counts';
         }
@@ -47,7 +47,7 @@ function pointTagCountsFactory(RestResource, RqlBuilder) {
         }
     }
 
-    return PointTagCounts;
+    return PointEventCounts;
 }
 
-export default pointTagCountsFactory;
+export default dataPointEventCountsFactory;

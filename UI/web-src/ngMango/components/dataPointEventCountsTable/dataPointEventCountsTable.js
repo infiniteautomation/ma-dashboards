@@ -21,16 +21,16 @@ const DEFAULT_COLUMNS = [
 
 class DataPointEventCountsTableController extends TableController {
     static get $inject() {
-        return ['$scope', '$element', '$injector', 'maPointTagCounts', 'maDataPointTags'];
+        return ['$scope', '$element', '$injector', 'maPointEventCounts', 'maDataPointTags'];
     }
 
-    constructor($scope, $element, $injector, maPointTagCounts, maDataPointTags) {
+    constructor($scope, $element, $injector, maPointEventCounts, maDataPointTags) {
         super({
             $scope,
             $element,
             $injector,
 
-            resourceService: maPointTagCounts,
+            resourceService: maPointEventCounts,
             localStorageKey: 'dataPointEventCountsTable',
             defaultColumns: DEFAULT_COLUMNS,
             disableSortById: true,

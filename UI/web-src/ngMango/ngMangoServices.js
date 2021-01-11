@@ -67,7 +67,7 @@ import permissionFactory from './services/Permission';
 import eventBusFactory from './services/eventBus';
 import resourceCacheFactory from './services/ResourceCache';
 import templateHooksProvider from './services/TemplateHooks';
-import pointTagCountsFactory from './services/pointTagCounts';
+import dataPointEventCountsFactory from './services/dataPointEventCounts';
 import angular from 'angular';
 import rqlQuery from 'rql/query';
 import 'angular-resource';
@@ -153,7 +153,7 @@ ngMangoServices.factory('maPermission', permissionFactory);
 ngMangoServices.factory('maEventBus', eventBusFactory);
 ngMangoServices.factory('maResourceCache', resourceCacheFactory);
 ngMangoServices.provider('maTemplateHooks', templateHooksProvider);
-ngMangoServices.factory('maPointTagCounts', pointTagCountsFactory);
+ngMangoServices.factory('maPointEventCounts', dataPointEventCountsFactory);
 
 const classesImports = require.context('./classes', false, /\.js$/);
 for (const fileName of classesImports.keys()) {
