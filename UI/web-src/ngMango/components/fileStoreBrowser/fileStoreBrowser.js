@@ -119,7 +119,7 @@ class FileStoreBrowserController {
             const fileStore = this.$stateParams.fileStore;
             const folderPath = this.$stateParams.folderPath ? this.$stateParams.folderPath.split('/') : [];
 
-            if (fileStore === defaultStore) {
+            if (fileStore !== defaultStore) {
                 folderPath.unshift(fileStore);
                 this.path = folderPath;
             }
