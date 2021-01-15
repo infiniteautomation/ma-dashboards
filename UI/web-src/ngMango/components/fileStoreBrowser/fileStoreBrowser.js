@@ -106,23 +106,25 @@ class FileStoreBrowserController {
             urls = urls ? [urls] : [];
         }
 
-        const defaultStore = this.restrictToStore || this.defaultStore || 'default';
-        this.path = [defaultStore];
-
         const settings = this.localStorageService.get(localStorageKey) || {};
-        if (settings.fileStore === defaultStore) {
-            this.path = Array.isArray(settings.folderPath) ? settings.folderPath : [];
-            this.path.unshift(settings.fileStore);
+        let userPath;
+        if (this.$stateParams && this.$stateParams.fileStore) {
+            userPath = [this.$stateParams.fileStore]
+            if (this.$stateParams.folderPath) {
+                userPath.push(...this.$stateParams.folderPath.split('/'));
+            }
+        } else if (settings.fileStore) {
+            userPath = [settings.fileStore];
+            if (Array.isArray(settings.folderPath)) {
+                userPath.push(...settings.folderPath);
+            }
         }
 
-        if (this.$stateParams) {
-            const fileStore = this.$stateParams.fileStore;
-            const folderPath = this.$stateParams.folderPath ? this.$stateParams.folderPath.split('/') : [];
-
-            if (fileStore === defaultStore) {
-                folderPath.unshift(fileStore);
-                this.path = folderPath;
-            }
+        const defaultStore = this.defaultStore || 'default';
+        if (this.restrictToStore) {
+            this.path = userPath && userPath[0] === this.restrictToStore ? userPath : [this.restrictToStore];
+        } else {
+            this.path = userPath || [defaultStore];
         }
 
         const filenames = {};
