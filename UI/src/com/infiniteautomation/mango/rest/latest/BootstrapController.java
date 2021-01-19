@@ -12,7 +12,10 @@ import javax.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,11 +67,13 @@ public class BootstrapController {
     private final ServletContext servletContext;
     private final PublicUrlService publicUrlService;
     private final Environment env;
+    private final AuthenticationTrustResolver trustResolver;
 
     @Autowired
     public BootstrapController(JsonDataDao jsonDataDao, @Qualifier(MangoRuntimeContextConfiguration.REST_OBJECT_MAPPER_NAME) ObjectMapper objectMapper,
-            ServletContext servletContext, PublicUrlService publicUrlService, Environment env) {
+                               ServletContext servletContext, PublicUrlService publicUrlService, Environment env, AuthenticationTrustResolver trustResolver) {
         this.jsonDataDao = jsonDataDao;
+        this.trustResolver = trustResolver;
         this.systemSettingsDao = SystemSettingsDao.instance;
         this.objectMapper = objectMapper;
         this.servletContext = servletContext;
@@ -84,8 +89,7 @@ public class BootstrapController {
     @ApiOperation(value = "Get the PWA (Progressive Web App) manifest")
     @RequestMapping(method = RequestMethod.GET, path = "/pwa-manifest")
     @AnonymousAccess
-    public ObjectNode manifest(@AuthenticationPrincipal PermissionHolder user, UriComponentsBuilder builder) throws IOException {
-
+    public ObjectNode manifest(@CurrentSecurityContext SecurityContext context, UriComponentsBuilder builder) throws IOException {
         JsonNodeFactory nodeFactory = objectMapper.getNodeFactory();
 
         ObjectNode uiSettings;
@@ -113,7 +117,7 @@ public class BootstrapController {
             String host = builder.build().getHost();
 
             if ("AUTO".equals(mode)) {
-                if (user == null) {
+                if (trustResolver.isAnonymous(context.getAuthentication())) {
                     autoName = host;
                 } else {
                     autoName = instanceDescription;
