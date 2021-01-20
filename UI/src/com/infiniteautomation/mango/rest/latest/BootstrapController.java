@@ -12,10 +12,7 @@ import javax.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +28,7 @@ import com.infiniteautomation.mango.rest.latest.model.modules.AngularJSModuleDef
 import com.infiniteautomation.mango.rest.latest.model.user.UserModel;
 import com.infiniteautomation.mango.spring.MangoRuntimeContextConfiguration;
 import com.infiniteautomation.mango.spring.components.PublicUrlService;
+import com.infiniteautomation.mango.spring.service.PermissionService;
 import com.infiniteautomation.ui.UICommon;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.ICoreLicense;
@@ -67,13 +65,13 @@ public class BootstrapController {
     private final ServletContext servletContext;
     private final PublicUrlService publicUrlService;
     private final Environment env;
-    private final AuthenticationTrustResolver trustResolver;
+    private final PermissionService permissionService;
 
     @Autowired
     public BootstrapController(JsonDataDao jsonDataDao, @Qualifier(MangoRuntimeContextConfiguration.REST_OBJECT_MAPPER_NAME) ObjectMapper objectMapper,
-                               ServletContext servletContext, PublicUrlService publicUrlService, Environment env, AuthenticationTrustResolver trustResolver) {
+                               ServletContext servletContext, PublicUrlService publicUrlService, Environment env, PermissionService permissionService) {
         this.jsonDataDao = jsonDataDao;
-        this.trustResolver = trustResolver;
+        this.permissionService = permissionService;
         this.systemSettingsDao = SystemSettingsDao.instance;
         this.objectMapper = objectMapper;
         this.servletContext = servletContext;
@@ -89,7 +87,7 @@ public class BootstrapController {
     @ApiOperation(value = "Get the PWA (Progressive Web App) manifest")
     @RequestMapping(method = RequestMethod.GET, path = "/pwa-manifest")
     @AnonymousAccess
-    public ObjectNode manifest(@CurrentSecurityContext SecurityContext context, UriComponentsBuilder builder) throws IOException {
+    public ObjectNode manifest(@AuthenticationPrincipal PermissionHolder user, UriComponentsBuilder builder) throws IOException {
         JsonNodeFactory nodeFactory = objectMapper.getNodeFactory();
 
         ObjectNode uiSettings;
@@ -117,7 +115,8 @@ public class BootstrapController {
             String host = builder.build().getHost();
 
             if ("AUTO".equals(mode)) {
-                if (trustResolver.isAnonymous(context.getAuthentication())) {
+                // user may be anonymous, dont expose instanceDescription to anonymous users
+                if (!permissionService.hasUserRole(user)) {
                     autoName = host;
                 } else {
                     autoName = instanceDescription;
@@ -162,9 +161,10 @@ public class BootstrapController {
         data.setPublicRegistrationEnabled(systemSettingsDao.getBooleanValue(SystemSettingsDao.USERS_PUBLIC_REGISTRATION_ENABLED));
         data.setDevelopmentMode(devEnabled);
 
-        if (user instanceof User) {
-            data.setUser(new UserModel((User) user));
-            data.setTranslations(TranslationsController.getTranslations(PUBLIC_TRANSLATIONS, ((User) user).getLocaleObject()));
+        User mangoUser = user.getUser();
+        if (mangoUser != null) {
+            data.setUser(new UserModel(mangoUser));
+            data.setTranslations(TranslationsController.getTranslations(PUBLIC_TRANSLATIONS, mangoUser.getLocaleObject()));
         } else {
             data.setTranslations(TranslationsController.getTranslations(PUBLIC_TRANSLATIONS, Common.getLocale()));
         }
