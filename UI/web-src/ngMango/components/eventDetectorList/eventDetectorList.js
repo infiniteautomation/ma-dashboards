@@ -27,10 +27,12 @@ class EventDetectorListController {
         
         this.doQuery();
         
-        this.EventDetector.subscribe((event, item, originalXid) => {
+        this.EventDetector.subscribe((event, item, attributes) => {
             if (!this.eventDetectors) return;
 
-            const index = this.eventDetectors.findIndex(eventDetector => eventDetector.id === item.id);
+            const itemId = attributes.itemId;
+
+            const index = this.eventDetectors.findIndex(eventDetector => eventDetector.id === itemId);
             if (index >= 0) {
                 if (event.name === 'update' || event.name === 'create') {
                     this.eventDetectors[index] = item;
