@@ -204,11 +204,7 @@ public class BootstrapController {
             data.setPages(new JsonDataModel(pageData));
         }
 
-        if (user instanceof User) {
-            data.setTranslations(TranslationsController.getTranslations(PRIVATE_TRANSLATIONS, ((User) user).getLocaleObject()));
-        } else {
-            data.setTranslations(TranslationsController.getTranslations(PRIVATE_TRANSLATIONS, Common.getLocale()));
-        }
+        data.setTranslations(TranslationsController.getTranslations(PRIVATE_TRANSLATIONS, user.getLocaleObject()));
 
         return data;
     }
