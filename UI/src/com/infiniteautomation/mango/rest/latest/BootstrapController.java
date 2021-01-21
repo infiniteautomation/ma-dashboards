@@ -29,12 +29,12 @@ import com.infiniteautomation.mango.rest.latest.model.user.UserModel;
 import com.infiniteautomation.mango.spring.MangoRuntimeContextConfiguration;
 import com.infiniteautomation.mango.spring.components.PublicUrlService;
 import com.infiniteautomation.mango.spring.service.PermissionService;
+import com.infiniteautomation.mango.spring.components.pageresolver.PageResolver;
 import com.infiniteautomation.ui.UICommon;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.ICoreLicense;
 import com.serotonin.m2m2.db.dao.JsonDataDao;
 import com.serotonin.m2m2.db.dao.SystemSettingsDao;
-import com.serotonin.m2m2.module.DefaultPagesDefinition;
 import com.serotonin.m2m2.module.Module;
 import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.vo.User;
@@ -66,12 +66,14 @@ public class BootstrapController {
     private final PublicUrlService publicUrlService;
     private final Environment env;
     private final PermissionService permissionService;
+    private final PageResolver pageResolver;
 
     @Autowired
     public BootstrapController(JsonDataDao jsonDataDao, @Qualifier(MangoRuntimeContextConfiguration.REST_OBJECT_MAPPER_NAME) ObjectMapper objectMapper,
-                               ServletContext servletContext, PublicUrlService publicUrlService, Environment env, PermissionService permissionService) {
+                               ServletContext servletContext, PublicUrlService publicUrlService, Environment env, PermissionService permissionService, PageResolver pageResolver) {
         this.jsonDataDao = jsonDataDao;
         this.permissionService = permissionService;
+        this.pageResolver = pageResolver;
         this.systemSettingsDao = SystemSettingsDao.instance;
         this.objectMapper = objectMapper;
         this.servletContext = servletContext;
@@ -170,8 +172,8 @@ public class BootstrapController {
         }
 
         try {
-            data.setLoginUri(DefaultPagesDefinition.getLoginUri(null, null));
-            data.setNotFoundUri(DefaultPagesDefinition.getNotFoundUri(null, null));
+            data.setLoginUri(pageResolver.getLoginUri(null, null));
+            data.setNotFoundUri(pageResolver.getNotFoundUri(null, null));
         } catch (NullPointerException e) {
             // TODO fix this after https://github.com/infiniteautomation/ma-core-public/issues/1543
             // is resolved
