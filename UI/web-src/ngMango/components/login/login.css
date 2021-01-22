@@ -10,3 +10,13 @@ ma-login button[type=submit] {
 ma-login button[type=submit] > md-progress-circular {
     margin: 0 0 0 8px;
 }
+
+ma-login a.ma-login-sso-button.ma-login-sso-img,
+ma-login a.ma-login-sso-button.ma-login-sso-img:hover {
+    border-bottom: none;
+}
+
+ma-login a.ma-login-sso-button.ma-login-sso-img > img {
+    max-width: 200px;
+    max-height: 50px;
+}
