@@ -18,6 +18,10 @@ class LoginController {
         
         this.errors = {};
         this.publicRegistrationEnabled = this.maUiServerInfo && this.maUiServerInfo.publicRegistrationEnabled || false;
+
+        maUser.getOAuth2Clients().then(clients => {
+             this.oauth2Clients = clients;
+        });
     }
     
     resetServerErrors() {

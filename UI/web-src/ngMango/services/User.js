@@ -165,6 +165,7 @@ User.logout();
 
 UserProvider.$inject = ['MA_DEFAULT_TIMEZONE', 'MA_DEFAULT_LOCALE'];
 function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
+    let oauth2Clients = null;
     let bootstrapUser = null;
     let systemLocale;
     let systemTimezone;
@@ -177,6 +178,9 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
     };
     this.setSystemTimezone = function(timezone) {
         systemTimezone = timezone;
+    };
+    this.setOAuth2Clients = function(clients) {
+        oauth2Clients = clients;
     };
 
     moment.tz.setDefault(MA_DEFAULT_TIMEZONE || moment.tz.guess());
@@ -572,6 +576,19 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 if (!xsrfCookie) {
                     $cookies.put($http.defaults.xsrfCookieName, Util.uuid(), {path: '/'});
                 }
+            },
+
+            getOAuth2Clients(fromCache = false) {
+                if (fromCache && oauth2Clients != null) {
+                    return $q.resolve(oauth2Clients);
+                }
+
+                return $http({
+                    url: `/rest/latest/login/oauth2-clients`,
+                    method: 'GET'
+                }).then(response => {
+                    return (oauth2Clients = response.data);
+                });
             },
 
             bulk: BulkUserTemporaryResource

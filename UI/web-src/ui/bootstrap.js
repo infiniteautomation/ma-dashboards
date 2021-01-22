@@ -179,6 +179,7 @@ Promise.resolve().then(() => {
 
         // store pre-bootstrap user into the User service
         UserProvider.setCurrentUser(user);
+        UserProvider.setOAuth2Clients(preLoginData.oauth2Clients);
         maUiSettingsProvider.setUiSettings(uiSettings);
 
         maUiServerInfoProvider.setPreLoginData(preLoginData);

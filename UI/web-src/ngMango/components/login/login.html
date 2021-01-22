@@ -40,13 +40,8 @@
         </md-button>
     </div>
 
-<!--    <div>-->
-<!--        <div>-->
-<!--            With OneLogin: <a href="/oauth2/authorization/onelogin">click here</a>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            With GitHub: <a href="/oauth2/authorization/github">click here</a>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div ng-repeat="client in $ctrl.oauth2Clients track by client.registrationId">
+        <a ng-href="/oauth2/authorization/{{client.registrationId}}">Login with {{client.clientName}}</a>
+    </div>
 
 </form>
