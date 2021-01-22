@@ -40,7 +40,7 @@
                 <span ma-tr="login.loginButton"></span>
                 <md-progress-circular md-diameter="18" md-mode="indeterminate" ng-if="$ctrl.loggingIn || $ctrl.redirecting"></md-progress-circular>
             </md-button>
-            <md-button ng-repeat="client in $ctrl.oauth2Clients track by client.registrationId" md-no-ink
+            <md-button ng-repeat="client in $ctrl.oauth2Clients track by client.registrationId"
                        ng-href="/oauth2/authorization/{{client.registrationId}}" class="ma-login-sso-button"
                ng-class="[{'ma-login-sso-img': !!client.logoUri}, 'ma-login-sso-id-' + client.registrationId]">
                 <img ng-if="client.logoUri" ng-src="{{client.logoUri}}" ma-tr="login.signInWith" ma-tr-args="[client.clientName]">
