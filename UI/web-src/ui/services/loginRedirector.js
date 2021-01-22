@@ -168,8 +168,17 @@ function loginRedirectorProvider () {
                 return maUiServerInfo.preLoginData.notFoundUri || '/ui/not-found';
             }
 
+            getLogoutSuccessUrl() {
+                return maUiServerInfo.preLoginData.logoutSuccessUri || '/ui/login';
+            }
+
             goToLogin(reload = false) {
                 const url = this.getLoginUrl();
+                this.goToUrl(url, reload);
+            }
+
+            goToLogoutSuccess(reload = false) {
+                const url = this.getLogoutSuccessUrl();
                 this.goToUrl(url, reload);
             }
         }

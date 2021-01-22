@@ -10,7 +10,8 @@ public class UICommon {
     private UICommon() {}
 
     public static final String UI_LOGIN_PAGE = "ui.login.page";
-    public static final String UI_LOGIN_ERROR_PAGE = "ui.login.loginErrorPage";
+    public static final String UI_LOGIN_ERROR_PAGE = "ui.loginError.page";
+    public static final String UI_LOGOUT_SUCCESS_PAGE = "ui.logoutSuccess.page";
     public static final String UI_PASSWORD_RESET_PAGE = "ui.login.passwordReset";
     public static final String UI_FIRST_USER_LOGIN_PAGE = "ui.login.userFirstLogin.page";
     public static final String UI_LOGGED_IN_PAGE = "ui.login.loggedIn.page";
@@ -22,6 +23,7 @@ public class UICommon {
 
     public static final String DEFAULT_UI_LOGIN_PAGE = "/ui/login";
     public static final String DEFAULT_UI_LOGIN_ERROR_PAGE = "/ui/login";
+    public static final String DEFAULT_UI_LOGOUT_SUCCESS_PAGE = "/ui/login";
     public static final String DEFAULT_UI_PASSWORD_RESET_PAGE = "/ui/change-password";
     public static final String DEFAULT_UI_FIRST_USER_LOGIN_PAGE = "/ui/help/getting-started";
     public static final String DEFAULT_UI_LOGGED_IN_PAGE = "/ui/data-point-details/";

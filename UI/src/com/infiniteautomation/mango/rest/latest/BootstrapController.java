@@ -171,13 +171,9 @@ public class BootstrapController {
             data.setTranslations(TranslationsController.getTranslations(PUBLIC_TRANSLATIONS, Common.getLocale()));
         }
 
-        try {
-            data.setLoginUri(pageResolver.getLoginUri(null, null));
-            data.setNotFoundUri(pageResolver.getNotFoundUri(null, null));
-        } catch (NullPointerException e) {
-            // TODO fix this after https://github.com/infiniteautomation/ma-core-public/issues/1543
-            // is resolved
-        }
+        data.setLoginUri(pageResolver.getLoginUri(null, null));
+        data.setNotFoundUri(pageResolver.getNotFoundUri(null, null));
+        data.setLogoutSuccessUri(pageResolver.getLogoutSuccessUri(null, null));
 
         return data;
     }
@@ -224,6 +220,7 @@ public class BootstrapController {
         private String loginUri;
         private String errorUri;
         private String notFoundUri;
+        private String logoutSuccessUri;
 
         public TranslationsModel getTranslations() {
             return translations;
@@ -290,6 +287,14 @@ public class BootstrapController {
         }
         public void setNotFoundUri(String notFoundUri) {
             this.notFoundUri = notFoundUri;
+        }
+
+        public String getLogoutSuccessUri() {
+            return logoutSuccessUri;
+        }
+
+        public void setLogoutSuccessUri(String logoutSuccessUri) {
+            this.logoutSuccessUri = logoutSuccessUri;
         }
     }
 

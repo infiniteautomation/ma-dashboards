@@ -417,7 +417,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
             event.preventDefault();
             // consume error
             User.logout().$promise.then(null, error => null).then(() => {
-                maUiLoginRedirector.goToLogin();
+                maUiLoginRedirector.goToLogoutSuccess();
             });
         }
 

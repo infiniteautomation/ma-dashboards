@@ -31,6 +31,11 @@ public class UIDefaultPagesDefinition extends DefaultPagesDefinition {
     }
 
     @Override
+    public String getLogoutSuccessUri(HttpServletRequest request, HttpServletResponse response) {
+        return SystemSettingsDao.instance.getValue(UICommon.UI_LOGOUT_SUCCESS_PAGE);
+    }
+
+    @Override
     public String getPasswordResetPageUri() {
         return SystemSettingsDao.instance.getValue(UICommon.UI_PASSWORD_RESET_PAGE);
     }
