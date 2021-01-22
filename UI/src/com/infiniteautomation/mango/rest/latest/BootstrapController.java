@@ -5,6 +5,7 @@ package com.infiniteautomation.mango.rest.latest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.TimeZone;
 
 import javax.servlet.ServletContext;
@@ -28,8 +29,8 @@ import com.infiniteautomation.mango.rest.latest.model.modules.AngularJSModuleDef
 import com.infiniteautomation.mango.rest.latest.model.user.UserModel;
 import com.infiniteautomation.mango.spring.MangoRuntimeContextConfiguration;
 import com.infiniteautomation.mango.spring.components.PublicUrlService;
-import com.infiniteautomation.mango.spring.service.PermissionService;
 import com.infiniteautomation.mango.spring.components.pageresolver.PageResolver;
+import com.infiniteautomation.mango.spring.service.PermissionService;
 import com.infiniteautomation.ui.UICommon;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.ICoreLicense;
@@ -40,6 +41,7 @@ import com.serotonin.m2m2.module.ModuleRegistry;
 import com.serotonin.m2m2.vo.User;
 import com.serotonin.m2m2.vo.json.JsonDataVO;
 import com.serotonin.m2m2.vo.permission.PermissionHolder;
+import com.serotonin.m2m2.web.mvc.spring.security.oauth2.OAuth2Information;
 import com.serotonin.m2m2.web.mvc.spring.security.permissions.AnonymousAccess;
 import com.serotonin.provider.Providers;
 
@@ -67,13 +69,17 @@ public class BootstrapController {
     private final Environment env;
     private final PermissionService permissionService;
     private final PageResolver pageResolver;
+    private final OAuth2Information oAuth2Information;
 
     @Autowired
-    public BootstrapController(JsonDataDao jsonDataDao, @Qualifier(MangoRuntimeContextConfiguration.REST_OBJECT_MAPPER_NAME) ObjectMapper objectMapper,
-                               ServletContext servletContext, PublicUrlService publicUrlService, Environment env, PermissionService permissionService, PageResolver pageResolver) {
+    public BootstrapController(JsonDataDao jsonDataDao,
+                               @Qualifier(MangoRuntimeContextConfiguration.REST_OBJECT_MAPPER_NAME) ObjectMapper objectMapper,
+                               ServletContext servletContext, PublicUrlService publicUrlService, Environment env,
+                               PermissionService permissionService, PageResolver pageResolver, OAuth2Information oAuth2Information) {
         this.jsonDataDao = jsonDataDao;
         this.permissionService = permissionService;
         this.pageResolver = pageResolver;
+        this.oAuth2Information = oAuth2Information;
         this.systemSettingsDao = SystemSettingsDao.instance;
         this.objectMapper = objectMapper;
         this.servletContext = servletContext;
@@ -175,6 +181,8 @@ public class BootstrapController {
         data.setNotFoundUri(pageResolver.getNotFoundUri(null, null));
         data.setLogoutSuccessUri(pageResolver.getLogoutSuccessUri(null, null));
 
+        data.setOauth2Clients(oAuth2Information.enabledClients());
+
         return data;
     }
 
@@ -221,6 +229,7 @@ public class BootstrapController {
         private String errorUri;
         private String notFoundUri;
         private String logoutSuccessUri;
+        private List<OAuth2Information.OAuth2ClientInfo> oauth2Clients;
 
         public TranslationsModel getTranslations() {
             return translations;
@@ -295,6 +304,14 @@ public class BootstrapController {
 
         public void setLogoutSuccessUri(String logoutSuccessUri) {
             this.logoutSuccessUri = logoutSuccessUri;
+        }
+
+        public List<OAuth2Information.OAuth2ClientInfo> getOauth2Clients() {
+            return oauth2Clients;
+        }
+
+        public void setOauth2Clients(List<OAuth2Information.OAuth2ClientInfo> oauth2Clients) {
+            this.oauth2Clients = oauth2Clients;
         }
     }
 
