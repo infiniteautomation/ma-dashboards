@@ -8,7 +8,7 @@
             <label ma-tr="login.userId"></label>
             <md-icon>person</md-icon>
             <input name="username" ng-model="$ctrl.username" type="text" autofocus ma-autofocus tabindex="1"
-                    ng-change="$ctrl.resetServerErrors()" required md-no-asterisk>
+                    ng-change="$ctrl.resetErrors()" required md-no-asterisk>
             <div ng-messages="$ctrl.form.username.$error">
                 <div ng-message="required" ma-tr="login.validation.noUsername"></div>
             </div>
@@ -17,14 +17,15 @@
             <label ma-tr="login.password"></label>
             <md-icon>vpn_key</md-icon>
             <input name="password" ng-model="$ctrl.password" type="password" tabindex="2"
-                    ng-change="$ctrl.resetServerErrors()" required md-no-asterisk>
+                    ng-change="$ctrl.resetErrors()" required md-no-asterisk>
             <div ng-messages="$ctrl.form.password.$error">
                 <div ng-message="required" ma-tr="login.validation.noPassword"></div>
             </div>
         </md-input-container>
         <div ng-messages="$ctrl.errors">
-            <div ng-message="invalidLogin" ma-tr="login.ui.loginFailed" ma-tr-args="[$ctrl.invalidLoginMessage]"></div>
+            <div ng-message="invalidLogin" ma-tr="login.ui.loginFailed" ma-tr-args="[$ctrl.errors.invalidLogin]"></div>
             <div ng-message="otherError" ma-tr="login.error" ma-tr-args="[$ctrl.errors.otherError]"></div>
+            <div ng-message="authenticationError" ma-tr="login.ui.authenticationError" ma-tr-args="[$ctrl.errors.authenticationError]"></div>
         </div>
     </div>
     <div layout="row" layout-align="space-between start" class="ma-action-buttons">
@@ -33,19 +34,18 @@
             <a ui-sref="forgotPassword({username: username})" tabindex="4" ma-tr="login.forgotYourPassword"></a>
         </div>
 
-        <div layout="column" layout-align="start end">
+        <div layout="column" layout-align="start end" class="ma-login-buttons">
             <md-button type="submit" ng-click="$ctrl.doLogin()" ng-disabled="$ctrl.loggingIn || $ctrl.redirecting" tabindex="3"
                        class="md-accent md-raised" aria-label="{{'login.loginButton'|maTr}}">
                 <span ma-tr="login.loginButton"></span>
                 <md-progress-circular md-diameter="18" md-mode="indeterminate" ng-if="$ctrl.loggingIn || $ctrl.redirecting"></md-progress-circular>
             </md-button>
-            <div ng-repeat="client in $ctrl.oauth2Clients track by client.registrationId" class="ma-login-sso">
-                <a ng-href="/oauth2/authorization/{{client.registrationId}}" class="ma-login-sso-button"
-                   ng-class="[{'ma-login-sso-img': !!client.logoUri}, 'ma-login-sso-id-' + client.registrationId]">
-                    <img ng-if="client.logoUri" ng-src="{{client.logoUri}}" ma-tr="login.signInWith" ma-tr-args="[client.clientName]">
-                    <span ng-if="!client.logoUri" ma-tr="login.signInWith" ma-tr-args="[client.clientName]"></span>
-                </a>
-            </div>
+            <md-button ng-repeat="client in $ctrl.oauth2Clients track by client.registrationId" md-no-ink
+                       ng-href="/oauth2/authorization/{{client.registrationId}}" class="ma-login-sso-button"
+               ng-class="[{'ma-login-sso-img': !!client.logoUri}, 'ma-login-sso-id-' + client.registrationId]">
+                <img ng-if="client.logoUri" ng-src="{{client.logoUri}}" ma-tr="login.signInWith" ma-tr-args="[client.clientName]">
+                <span ng-if="!client.logoUri" ma-tr="login.signInWith" ma-tr-args="[client.clientName]"></span>
+            </md-button>
         </div>
     </div>
 </form>

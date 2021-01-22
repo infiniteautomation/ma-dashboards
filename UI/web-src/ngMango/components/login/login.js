@@ -13,6 +13,7 @@ class LoginController {
     constructor(maUser, $injector) {
         this.maUser = maUser;
         this.$state = $injector.has('$state') && $injector.get('$state');
+        this.$stateParams = $injector.has('$stateParams') && $injector.get('$stateParams');
         this.maUiLoginRedirector = $injector.has('maUiLoginRedirector') && $injector.get('maUiLoginRedirector');
         this.maUiServerInfo = $injector.has('maUiServerInfo') && $injector.get('maUiServerInfo');
         
@@ -23,12 +24,25 @@ class LoginController {
              this.oauth2Clients = clients;
         });
     }
+
+    $onInit() {
+        if (this.$stateParams) {
+            if (this.$stateParams.username) {
+                this.username = this.$stateParams.username;
+            }
+            if (this.$stateParams.error) {
+                this.errors.authenticationError = this.$stateParams.error;
+            }
+            this.$state.go('.', {username: null, error: null}, {notify: false, reload: false});
+        }
+    }
     
-    resetServerErrors() {
-        delete this.errors.invalidLogin;
+    resetErrors() {
+        this.errors = {};
     }
     
     doLogin() {
+        this.resetErrors();
         this.loggingIn = true;
 
         const credentials = {
@@ -44,18 +58,14 @@ class LoginController {
                 this.redirecting = true;
             }
         }, error => {
-            this.errors.invalidLogin = false;
             if (error.status === 401) {
                 if (this.$state && typeof this.onError !== 'function' && error.data && error.data.mangoStatusName === 'CREDENTIALS_EXPIRED') {
                     this.$state.go('changePassword', Object.assign({credentialsExpired: true}, credentials));
                 } else {
-                    this.errors.invalidLogin = true;
-                    this.errors.otherError = false;
-                    this.invalidLoginMessage = error.mangoStatusText;
+                    this.errors.invalidLogin = error.mangoStatusText;
                 }
             } else {
                 this.errors.otherError = error.mangoStatusText;
-                delete this.invalidLoginMessage;
             }
             
             if (typeof this.onError === 'function') {

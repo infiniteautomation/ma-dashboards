@@ -35,7 +35,7 @@ const examplesTemplate = function(fileName) {
 export default [
     {
         name: 'login',
-        url: '/login',
+        url: '/login?username&error',
         menuHidden: true,
         menuIcon: 'exit_to_app',
         menuTr: 'header.login',
