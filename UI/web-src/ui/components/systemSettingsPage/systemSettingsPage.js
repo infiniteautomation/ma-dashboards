@@ -15,7 +15,7 @@ const actions = {
     purgeAllPointValues: {
         confirmTr: 'systemSettings.purgeDataConfirm',
         descriptionTr: 'ui.app.pointValuePurge',
-        resultsTr: 'systemSettings.excelreports.purgeSuccess'
+        resultsTr: 'ui.app.purgeSuccessPointValues'
     },
     purgeAllEvents: {
         confirmTr: 'systemSettings.purgeAllEventsConfirm',
