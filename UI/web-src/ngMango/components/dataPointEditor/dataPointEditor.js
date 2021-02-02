@@ -501,6 +501,20 @@ class DataPointEditorController {
     typeChanged() {
         this.dataSourceType = this.typesByName[this.dataPoint && this.dataPoint.dataSourceTypeName];
     }
+
+    resetCache() {
+        this.dataPoint
+            .resetCache()
+            .then(() => {
+                this.DialogHelper.toast('ui.components.dataPointResetCache');
+            })
+            .catch((err) => {
+                this.DialogHelper.errorToast([
+                    'ui.components.dataPointResetCacheError',
+                    err.mangoStatusText
+                ]);
+            });
+    }
 }
 
 export default {

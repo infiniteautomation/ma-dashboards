@@ -86,7 +86,7 @@
                 <div ng-message="validationMessage" ng-bind="loggingProperties.cacheSize.validationMessage"></div>
             </div>
         </md-input-container>
-        <md-button>
+        <md-button ng-click="$ctrl.resetCache()">
             <span ma-tr="pointEdit.logging.clearCache"></span>
         </md-button>
     </div>
