@@ -222,7 +222,10 @@ class RoleSelectorController {
             if (this.filter) {
                 builder.match('name', `*${this.filter}*`);
             } else {
-                builder.contains('inheritedBy', null);
+                builder.or()
+                    .contains('inheritedBy', null)
+                    .in('xid', ['anonymous', 'user', 'superadmin'])
+                    .up();
             }
         } else {
             builder.contains('inheritedBy', role.xid);
