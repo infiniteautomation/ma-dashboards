@@ -1,4 +1,7 @@
 <div layout="row" layout-wrap>
+    <div flex="100">
+        <md-checkbox ng-model="editor.eventHandler.interpolateCommands"><span ma-tr="eventHandlers.interpolateCommands"></span></md-checkbox>
+    </div>
     <div flex="100" flex-gt-md="50" layout="row" layout-align="center center">
         <md-input-container flex>
             <label ma-tr="eventHandlers.activeCommand"></label>
@@ -21,9 +24,6 @@
             <div ng-message="validationMessage" ng-bind="editor.form.activeProcessTimeout.validationMessage"></div>
         </div>
     </md-input-container>
-</div>
-
-<div layout="row" layout-wrap>
     <div flex="100" flex-gt-md="50" layout="row" layout-align="center center">
         <md-input-container flex>
             <label ma-tr="eventHandlers.inactiveCommand"></label>
@@ -47,7 +47,6 @@
         </div>
     </md-input-container>
 </div>
-
 
 <div class="command-response" ng-if="$ctrl.commandResponse">
     <pre>{{$ctrl.commandResponse}}</pre>
