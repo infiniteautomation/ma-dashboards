@@ -184,6 +184,8 @@ class UpgradePageController {
         }).then((response) => {
             this.upgradeDeferred = this.$q.defer();
             return this.upgradeDeferred.promise;
+        }, error => {
+            this.maDialogHelper.errorToast(['ui.app.upgradeError', error.mangoStatusText]);
         })['finally'](() => {
             delete this.upgradePromise;
             delete this.upgradeDeferred;
