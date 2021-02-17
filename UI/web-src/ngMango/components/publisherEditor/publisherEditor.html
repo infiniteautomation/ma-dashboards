@@ -171,7 +171,7 @@
                         <div class="ma-virtual-repeat-table-header">
                             <div class="ma-virtual-repeat-table-row">
                                 <div class="ma-buttons-column"></div>
-                                <!--<div ma-tr="ui.app.xid"></div>-->
+                                <div ma-tr="ui.app.xid"></div>
                                 <div ma-tr="common.deviceName"></div>
                                 <div ma-tr="common.name"></div>
                                 <div ma-tr="ui.app.tags"></div>
@@ -187,7 +187,7 @@
                                 <div class="ma-buttons-column">
                                     <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.removePoint($index)"><md-icon>delete</md-icon></md-button>
                                 </div>
-                                <!--<div ng-bind="$ctrl.getPoint(publisherPoint).xid"></div>-->
+                                <div ng-bind="publisherPoint.dataPointXid"></div>
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).deviceName"></div>
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).name"></div>
                                 <div ng-bind="$ctrl.getPoint(publisherPoint).formatTags()"></div>
