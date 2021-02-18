@@ -159,7 +159,7 @@ const classesImports = require.context('./classes', false, /\.js$/);
 for (const fileName of classesImports.keys()) {
     const clazz = classesImports(fileName).default;
     if (typeof clazz === 'function') {
-        ngMangoServices.factory('ma' + clazz.name, () => clazz);
+        ngMangoServices.factory('ma' + clazz.name, function() { return clazz; });
     }
 }
 
