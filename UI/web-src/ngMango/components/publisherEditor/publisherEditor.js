@@ -35,9 +35,7 @@ class PublisherEditorController {
         this.publishTypeCodes = maPublisher.publishTypeCodes;
         this.publisherTypes = maPublisher.types;
         this.publisherTypesByName = maPublisher.typesByName;
-        
-        this.points = new WeakMap();
-        
+
         this.dynamicHeight = true;
         if ($attrs.hasOwnProperty('dynamicHeight')) {
             this.dynamicHeight = $parse($attrs.dynamicHeight)($scope.$parent);
@@ -93,8 +91,6 @@ class PublisherEditorController {
             this.publisher = null;
             this.publisherType = null;
         }
-        
-        this.renderPoints();
 
         if (this.publisher && this.publisher.isNew()) {
             this.activeTab = 0;
@@ -104,32 +100,6 @@ class PublisherEditorController {
             this.form.$setPristine();
             this.form.$setUntouched();
         }
-    }
-
-    renderPoints() {
-        if (!this.publisher) {
-            return;
-        }
-
-        if (!this.publisher.points.length) {
-            return;
-        }
-        
-        const xidToPublisherPoint = this.maUtil.createMapObject(this.publisher.points, 'dataPointXid');
-        const xids = Object.keys(xidToPublisherPoint);
-
-        this.maPoint.buildPostQuery()
-            .in('xid', xids)
-            .limit(xids.length)
-            .query().then(points => {
-                points.forEach(point => {
-                    const publisherPoint = xidToPublisherPoint[point.xid];
-                    this.points.set(publisherPoint, point);
-                });
-                this.publisher.points = this.publisher.points.slice();
-            }, error => {
-                this.publisher.points = this.publisher.points.slice();
-            });
     }
     
     setViewValue() {
@@ -213,7 +183,6 @@ class PublisherEditorController {
                     publisherPoint = this.publisher.createPublisherPoint(point);
                     this.publisher.points.push(publisherPoint);
                 }
-                this.points.set(publisherPoint, point);
             });
             
             return this.publisher.points;
@@ -223,7 +192,7 @@ class PublisherEditorController {
     publisherPointsToPoints(publisherPoints) {
         if (Array.isArray(publisherPoints)) {
             return publisherPoints.map(publisherPoint => {
-                return this.points.get(publisherPoint) || {
+                return {
                     xid: publisherPoint.dataPointXid
                 };
             });
@@ -240,9 +209,32 @@ class PublisherEditorController {
         this.publisher.points = this.publisher.points.slice();
         this.form.$setDirty();
     }
-    
-    getPoint(publisherPoint) {
-        return this.points.get(publisherPoint);
+
+    /**
+     * md-virtual-repeat with md-on-demand interface
+     */
+    getItemAtIndex(index) {
+        const publisherPoint = this.publisher.points[index];
+        if (publisherPoint) {
+            this.loadPoint(publisherPoint);
+        }
+        return publisherPoint;
+    }
+
+    /**
+     * md-virtual-repeat with md-on-demand interface
+     */
+    getLength() {
+        return this.publisher.points.length;
+    }
+
+    loadPoint(publisherPoint) {
+        if (!publisherPoint.dataPointPromise) {
+            publisherPoint.dataPointPromise = this.maPoint.get({xid: publisherPoint.dataPointXid}).$promise;
+            publisherPoint.dataPointPromise.then(point => {
+                publisherPoint.dataPoint = point;
+            });
+        }
     }
 }
 
