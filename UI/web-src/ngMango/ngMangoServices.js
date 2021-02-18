@@ -68,6 +68,12 @@ import eventBusFactory from './services/eventBus';
 import resourceCacheFactory from './services/ResourceCache';
 import templateHooksProvider from './services/TemplateHooks';
 import dataPointEventCountsFactory from './services/dataPointEventCounts';
+
+import BoundedMap from './classes/BoundedMap';
+import EventTarget from './classes/EventTarget';
+import MultiMap from './classes/MultiMap';
+import TableController from './classes/TableController';
+
 import angular from 'angular';
 import rqlQuery from 'rql/query';
 import 'angular-resource';
@@ -155,13 +161,10 @@ ngMangoServices.factory('maResourceCache', resourceCacheFactory);
 ngMangoServices.provider('maTemplateHooks', templateHooksProvider);
 ngMangoServices.factory('maPointEventCounts', dataPointEventCountsFactory);
 
-const classesImports = require.context('./classes', false, /\.js$/);
-for (const fileName of classesImports.keys()) {
-    const clazz = classesImports(fileName).default;
-    if (typeof clazz === 'function') {
-        ngMangoServices.factory('ma' + clazz.name, function() { return clazz; });
-    }
-}
+ngMangoServices.constant('maBoundedMap', BoundedMap);
+ngMangoServices.constant('maEventTarget', EventTarget);
+ngMangoServices.constant('maMultiMap', MultiMap);
+ngMangoServices.constant('maTableController', TableController);
 
 ngMangoServices.constant('MA_BASE_URL', '');
 ngMangoServices.constant('MA_TIMEOUTS', {
