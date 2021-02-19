@@ -40,6 +40,8 @@ class PublisherEditorController {
         if ($attrs.hasOwnProperty('dynamicHeight')) {
             this.dynamicHeight = $parse($attrs.dynamicHeight)($scope.$parent);
         }
+
+        this.points = new WeakMap();
     }
     
     $onInit() {
@@ -50,7 +52,6 @@ class PublisherEditorController {
             
             if (!this.confirmDiscard('stateChange')) {
                 event.preventDefault();
-                return;
             }
         });
 
@@ -174,17 +175,18 @@ class PublisherEditorController {
     
     pointsToPublisherPoints(points) {
         if (Array.isArray(points)) {
-            this.publisher.points = this.publisher.points.slice();
+            // map of XID to existing publisher points
             const xidToPublisherPoint = this.maUtil.createMapObject(this.publisher.points, 'dataPointXid');
 
-            points.forEach(point => {
+            this.publisher.points = points.map(point => {
                 let publisherPoint = xidToPublisherPoint[point.xid];
                 if (!publisherPoint) {
                     publisherPoint = this.publisher.createPublisherPoint(point);
-                    this.publisher.points.push(publisherPoint);
                 }
+                this.points.set(point, publisherPoint);
+                return publisherPoint;
             });
-            
+
             return this.publisher.points;
         }
     }
@@ -192,9 +194,8 @@ class PublisherEditorController {
     publisherPointsToPoints(publisherPoints) {
         if (Array.isArray(publisherPoints)) {
             return publisherPoints.map(publisherPoint => {
-                return {
-                    xid: publisherPoint.dataPointXid
-                };
+                return this.points.get(publisherPoint) ||
+                    new this.maPoint({xid: publisherPoint.dataPointXid});
             });
         }
     }
@@ -229,11 +230,11 @@ class PublisherEditorController {
     }
 
     loadPoint(publisherPoint) {
-        if (!publisherPoint.dataPointPromise) {
-            publisherPoint.dataPointPromise = this.maPoint.get({xid: publisherPoint.dataPointXid}).$promise;
-            publisherPoint.dataPointPromise.then(point => {
-                publisherPoint.dataPoint = point;
-            });
+        if (!this.points.has(publisherPoint)) {
+            const point = new this.maPoint({xid: publisherPoint.dataPointXid});
+            // retrieve the point from the REST API, updates its own fields
+            point.$get();
+            this.points.set(publisherPoint, point);
         }
     }
 }
