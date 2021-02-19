@@ -48,8 +48,8 @@ class DataPointDetailsController {
         
         this.retrievePreferences();
 
-        this.deregister = this.Point.notificationManager.subscribe((event, point) => {
-            if (this.dataPoint && this.dataPoint.id === point.id) {
+        this.deregister = this.Point.notificationManager.subscribe((event, point, attributes) => {
+            if (this.dataPoint && this.dataPoint.id === attributes.itemId) {
                 this.$scope.$apply(() => {
                     if (event.name === 'update') {
                         Object.assign(this.dataPoint, point);
