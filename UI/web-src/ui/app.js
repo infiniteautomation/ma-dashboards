@@ -357,10 +357,16 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
 
     $rootScope.setTitleText = function setTitleText() {
         if ($state.$current.menuText) {
-            this.titleText = $state.$current.menuText + ' - ' + uiSettings.titleSuffix;
+            this.titleText = $state.$current.menuText;
+            if (uiSettings.titleSuffix) {
+                this.titleText += ' - ' + uiSettings.titleSuffix;
+            }
         } else if ($state.$current.menuTr) {
             Translate.tr($state.$current.menuTr).then(text => {
-                this.titleText = text + ' - ' + uiSettings.titleSuffix;
+                this.titleText = text;
+                if (uiSettings.titleSuffix) {
+                    this.titleText += ' - ' + uiSettings.titleSuffix;
+                }
             }, () => {
                 this.titleText = uiSettings.titleSuffix;
             });
