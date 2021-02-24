@@ -1,0 +1,71 @@
+<md-card flex>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline" ma-tr="ui.app.pointValueImport"></span>
+        </md-card-title-text>
+    </md-card-title>
+    
+    <md-card-content layout="column">
+        <div layout="row">
+            <md-input-container flex="30">
+                <label ma-tr="ui.app.pointValueImport.fireEvents"></label>
+                <md-select ng-model="$ctrl.fireEvents" aria-label="Fire Events">
+                    <md-option value="NEVER" ma-tr="ui.app.pointValueImport.never" ng-selected="true"></md-option>
+                    <md-option value="ON_CURRENT_VALUE_UPDATE" ma-tr="ui.app.pointValueImport.onCurrentValueUpdate"></md-option>
+                    <md-option value="ALWAYS" ma-tr="ui.app.pointValueImport.always"></md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+
+        <div class="ma-import-dropzone" ma-dropzone ng-style="{'border-color': dragOver && $ctrl.accentColor}"
+            ma-drag-enter="dragOver = true" ma-drag-leave="dragOver = false" ma-drop="dragOver = false; $ctrl.fileDropped($data)" layout layout-align="center center">
+          <span ma-tr="ui.app.dropCsvFileHere"></span>
+        </div>
+    </md-card-content>
+
+    <md-card-actions layout="row" layout-align="start center">
+        <md-button class="md-raised md-primary ma-label-button" layout="column" layout-align="start stretch">
+            <label for="csv-file-upload" flex><md-icon>file_upload</md-icon> <span ma-tr="ui.app.uploadCsvFile"></span></label>
+        </md-button>
+        <input id="csv-file-upload" type="file" accept=".csv,text/csv,application/csv" ma-change="$ctrl.fileSelected($event)">
+    </md-card-actions>
+</md-card>
+
+<ma-dialog show-dialog="$ctrl.showDialog">
+    <md-dialog flex="100" flex-gt-sm="80" flex-gt-md="65" flex-gt-lg="50" flex-gt-xl="30" class="ma-point-value-import-dialog">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ma-tr="emport.import"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$dialog.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content layout="column" class="md-padding" flex>
+        <!--
+            <div layout layout-align="center center"><span><span ng-bind="$ctrl.progress"></span>%</span></div>
+            <md-progress-linear md-mode="determinate" value="{{$ctrl.progress}}"></md-progress-linear>
+        -->
+            <md-progress-linear ng-show="$ctrl.progress != 100" md-mode="indeterminate"></md-progress-linear>
+            <div flex class="ma-point-value-import-messages" tabindex="1">
+                <div ng-repeat="point in $ctrl.infoMessages track by $index">
+                    <div layout="column" class="md-padding">
+                        <span ng-bind="point.xid"></span>
+                        <span md-colors="{color: 'warn'}" ng-repeat="message in point.result.messages track by $index" ng-bind="message.contextualMessage"></span>
+                        <span ma-tr="ui.app.pointValueImport.result" ma-tr-args="[point.totalQueued, point.totalSkipped]">
+                    </div>
+                </div>
+                <div ng-if="$ctrl.error" ng-bind="$ctrl.error" class="ma-error-text"></div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-raised" ng-click="$dialog.cancel()">
+                <md-icon>close</md-icon>
+                <span ma-tr="common.close"></span>
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</ma-dialog>

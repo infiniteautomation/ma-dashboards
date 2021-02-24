@@ -1033,6 +1033,35 @@ export default [
                 });
             }]
         }
+    },    
+    {
+        name: 'ui.settings.pointValueImport',
+        url: '/point-value-import',
+        template: '<ma-ui-point-value-import-page><ma-ui-point-value-import-page>',
+        menuTr: 'ui.app.pointValueImport',
+        menuIcon: 'file_upload',
+        permission: ['superadmin'],
+        menuHidden: true,
+        showInUtilities: true,
+        params: {
+            helpPage: 'ui.help.pointValueImport'
+        },
+        resolve: {
+            loadMyDirectives: ['$injector', function($injector) {
+                return import(/* webpackMode: "lazy", webpackChunkName: "ui.settings" */
+                        './components/pointValueImportPage/pointValueImportPage').then(pointValueImportPage => {
+                    angular.module('maUiPointValueImportState', [])
+                        .component('maUiPointValueImportPage', pointValueImportPage.default);
+                    $injector.loadNewModules(['maUiPointValueImportState']);
+                });
+            }]
+        }
+    },
+    {
+        name: 'ui.help.pointValueImport',
+        url: '/point-value-import/help',
+        templatePromise: helpTemplate('pointValueImport.html'),
+        menuTr: 'ui.app.pointValueImport'
     },
     {
         name: 'ui.settings.modules',

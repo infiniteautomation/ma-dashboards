@@ -68,6 +68,7 @@ import eventBusFactory from './services/eventBus';
 import resourceCacheFactory from './services/ResourceCache';
 import templateHooksProvider from './services/TemplateHooks';
 import dataPointEventCountsFactory from './services/dataPointEventCounts';
+import pointValueModificationFactory from './services/pointValueModification';
 
 import BoundedMap from './classes/BoundedMap';
 import EventTarget from './classes/EventTarget';
@@ -160,6 +161,7 @@ ngMangoServices.factory('maEventBus', eventBusFactory);
 ngMangoServices.factory('maResourceCache', resourceCacheFactory);
 ngMangoServices.provider('maTemplateHooks', templateHooksProvider);
 ngMangoServices.factory('maPointEventCounts', dataPointEventCountsFactory);
+ngMangoServices.factory('maPointValueModification', pointValueModificationFactory);
 
 ngMangoServices.constant('maBoundedMap', BoundedMap);
 ngMangoServices.constant('maEventTarget', EventTarget);
