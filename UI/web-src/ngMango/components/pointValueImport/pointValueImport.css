@@ -1,0 +1,19 @@
+ma-point-value-import .ma-import-dropzone {
+    height: 150px;
+    border: 1px dashed;
+    border-radius: 2px;
+}
+
+ma-point-value-import input[type="file"] {
+    display: none;
+}
+
+.ma-point-value-import-dialog {
+    height: 90%;
+    overflow: hidden;
+}
+
+.ma-point-value-import-messages {
+    margin-top: 16px;
+    overflow-y: scroll;
+}
