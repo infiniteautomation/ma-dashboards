@@ -329,8 +329,12 @@ class TableController {
         }
     }
 
+    newQueryBuilder() {
+        return this.resourceService.buildQuery();
+    }
+
     createQueryBuilder() {
-        const queryBuilder = this.resourceService.buildQuery();
+        const queryBuilder = this.newQueryBuilder();
 
         this.customizeQuery(queryBuilder);
         this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
