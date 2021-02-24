@@ -9,6 +9,7 @@
   <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.eventDetector" key="auditEventAlarmLevel.EVENT_DETECTOR" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
   <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.publisher" key="auditEventAlarmLevel.EVENT_PUBLISHER" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
   <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.watchlist" key="auditEventAlarmLevel.WATCH_LIST" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
+  <ma-system-setting-editor flex="100" flex-gt-md="50" label-tr="event.audit.systemSetting" key="auditEventAlarmLevel.SYSTEM_SETTING" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
   <ma-system-setting-editor ng-repeat="auditAlarmLevelSetting in $ctrl.auditAlarmLevelSettings track by auditAlarmLevelSetting.key" flex="100" flex-gt-md="50"
     label-tr="{{auditAlarmLevelSetting.translation}}" key="{{auditAlarmLevelSetting.key}}" type="INTEGER" input-type="alarmlevel"></ma-system-setting-editor>
 </div>
