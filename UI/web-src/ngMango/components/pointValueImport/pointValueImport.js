@@ -20,11 +20,11 @@ class PointValueImportController {
     }
 
     static get $inject() {
-        return ['$mdColors', 'maPointValueModification', 'maDialogHelper'];
+        return ['$mdColors', 'maPointValues', 'maDialogHelper'];
     }
 
-    constructor($mdColors, PointValueModification, DialogHelper) {
-        this.PointValueModification = PointValueModification;
+    constructor($mdColors, PointValues, DialogHelper) {
+        this.PointValues = PointValues;
         this.DialogHelper = DialogHelper;
 
         this.accentColor = $mdColors.getThemeColor('accent');
@@ -62,7 +62,7 @@ class PointValueImportController {
             fireEvents: this.fireEvents
         };
 
-        this.PointValueModification.import(file, params).then(
+        this.PointValues.importFromCsvFile(file, params).then(
             (data) => {
                 this.infoMessages = data;
                 this.DialogHelper.toastOptions({
@@ -71,7 +71,7 @@ class PointValueImportController {
                 });
             },
             (err) => {
-                this.error = (err.data && err.data.cause) || err.mangoStatusText;
+                this.error = err.mangoStatusText;
             }
         ).then(() => {
             this.progress = 100;
