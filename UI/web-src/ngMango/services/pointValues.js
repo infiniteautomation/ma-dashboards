@@ -321,6 +321,19 @@ function pointValuesProvider() {
                 } catch (error) {
                     return $q.reject(error);
                 }
+            },
+
+            importFromCsvFile(file, params) {
+                return $http({
+                    params,
+                    data: file,
+                    method: 'POST',
+                    url: '/rest/latest/point-value-modification/import',
+                    headers: {
+                        'Content-Type': 'text/csv'
+                    },
+                    timeout: 0
+                }).then((response) => response.data);
             }
         };
         
