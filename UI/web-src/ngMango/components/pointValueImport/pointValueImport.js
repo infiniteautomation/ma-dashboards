@@ -36,7 +36,17 @@ class PointValueImportController {
             const transfer = data.getDataTransfer();
             if (transfer.length) {
                 const file = transfer[0];
-                if (!file.type || file.type === 'application/csv' || file.type.indexOf('text/') === 0) {
+                const csvMimeTypes = [
+                    'application/csv',
+                    'application/x-csv',
+                    'application/vnd.ms-excel',
+                    'text/csv',
+                    'text/x-csv',
+                    'text/comma-separated-values',
+                    'text/x-comma-separated-values'
+                ];
+
+                if (!file.type || csvMimeTypes.includes(file.type)) {
                     this.doImport(file);
                     this.showDialog = {};
                 }
