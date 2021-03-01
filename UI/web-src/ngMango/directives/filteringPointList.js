@@ -81,8 +81,20 @@ class FilteringPointListController {
                         queryBuilder.eq('dataTypeId', queryArg);
                     }
                 }
-                
-                queryBuilder.limit(1).query().then(items => {
+
+                queryBuilder.limit(1);
+
+                if (this.settable) {
+                    queryBuilder.eq('settable', true);
+                }
+
+                let queryString = queryBuilder.toString();
+                if (this.query) {
+                    const userQuery = this.query.replace(/^[?&]/, '');
+                    queryString += `&${userQuery}`;
+                }
+
+                return this.Point.query({ rqlQuery: queryString }).$promise.then((items) => {
                     if (items.length) {
                         this.setViewValue(items[0]);
                     }
