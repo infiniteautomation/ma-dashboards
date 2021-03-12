@@ -89,8 +89,8 @@ function multipleValuesFactory() {
                 return String(this.first());
             }
 
-            //return `<<mutiple values (${this.values.length})>>`;
-            return `<<mutiple values (${this.valuesSet.size})>>`;
+            //return `<<multiple values (${this.values.length})>>`;
+            return `<<multiple values (${this.valuesSet.size})>>`;
         }
         
         toJSON() {
