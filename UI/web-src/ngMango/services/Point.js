@@ -546,6 +546,8 @@ function dataPointProvider() {
             simplifyTypes: MA_SIMPLIFY_TYPES
         });
 
+        const superCopyMethod = Point.prototype.copy;
+
         Object.assign(Point.prototype, {
             forceRead() {
                 const url = `/rest/latest/runtime-manager/force-refresh/${encodeURIComponent(
@@ -897,6 +899,14 @@ function dataPointProvider() {
                     url: `/rest/latest/runtime-manager/reset-cache/${xid}`,
                     method: 'POST'
                 });
+            },
+
+            copy(createWithNewId = false) {
+                const copy = superCopyMethod.apply(this, arguments);
+                if (createWithNewId) {
+                    copy.seriesId = null;
+                }
+                return copy;
             }
         });
 
