@@ -18,6 +18,7 @@ function fileStore($http, maUtil, $q, RestResource) {
         'text/css': 'css',
         'text/html': 'html',
         'text/plain': 'text',
+        'text/csv': 'text',
         'image/svg+xml': 'svg',
         'application/xml': 'xml',
         'text/markdown': 'markdown'
