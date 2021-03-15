@@ -11,3 +11,7 @@ ma-permission-editor md-checkbox {
 ma-permission-editor .ma-permission-editor-label > * {
     vertical-align: middle;
 }
+
+ma-permission-editor .ma-permission-editor-multiple-values {
+    font-size: 1rem;
+}

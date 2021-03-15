@@ -8,13 +8,14 @@ import './permissionEditor.css';
 
 class PermissionEditorController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['$element', 'maPermission', 'maSystemPermission', 'maDialogHelper', '$q']; }
+    static get $inject() { return ['$element', 'maPermission', 'maSystemPermission', 'maDialogHelper', '$q', 'maMultipleValues']; }
     
-    constructor($element, maPermission, maSystemPermission, maDialogHelper, $q) {
+    constructor($element, maPermission, maSystemPermission, maDialogHelper, $q, maMultipleValues) {
         this.maPermission = maPermission;
         this.maSystemPermission = maSystemPermission;
         this.maDialogHelper = maDialogHelper;
         this.$q = $q;
+        this.maMultipleValues = maMultipleValues;
         $element.addClass( 'ma-permission-editor-row');
     }
     
@@ -57,7 +58,13 @@ class PermissionEditorController {
         const viewValue = this.ngModelCtrl && this.ngModelCtrl.$viewValue ||
             this.systemPermission && this.systemPermission.permission || [];
 
-        this.permission = new this.maPermission(viewValue);
+        this.hasMultipleValues = this.maMultipleValues.hasMultipleValues(viewValue);
+        if (this.hasMultipleValues) {
+            const [first] = this.maMultipleValues.toArray(viewValue, 1);
+            this.permission = new this.maPermission(first);
+        } else {
+            this.permission = new this.maPermission(viewValue);
+        }
 
         const minterms = this.containerCtrl.minterms;
         this.columns = minterms.map(minterm => {
@@ -80,6 +87,8 @@ class PermissionEditorController {
     }
     
     columnChanged(column) {
+        this.hasMultipleValues = false;
+
         if (column.checked) {
             this.permission.add(column.minterm);
         } else {

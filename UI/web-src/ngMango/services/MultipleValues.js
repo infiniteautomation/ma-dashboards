@@ -220,6 +220,11 @@ function multipleValuesFactory() {
                 }
             });
         }
+
+        static hasMultipleValues(value) {
+            return value instanceof this || value != null && typeof value === 'object' &&
+                Object.keys(value).some(k => this.hasMultipleValues(value[k]));
+        }
     }
 
     return MultipleValues;

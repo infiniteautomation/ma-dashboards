@@ -1,6 +1,11 @@
 <div class="ma-permission-editor-cell ma-permission-editor-description-column">
-    <span ng-transclude ng-class="{'ma-error-text': $ctrl.ngModelCtrl.$invalid}" class="ma-permission-editor-label">
-        <span md-highlight-text="$ctrl.containerCtrl.filter" md-highlight-flags="ig">{{$ctrl.description || $ctrl.systemPermission.description}}</span>
+    <span ng-class="{'ma-error-text': $ctrl.ngModelCtrl.$invalid}" class="ma-permission-editor-label">
+        <span ng-transclude>
+            <span md-highlight-text="$ctrl.containerCtrl.filter" md-highlight-flags="ig">{{$ctrl.description || $ctrl.systemPermission.description}}</span>
+        </span>
+        <span ng-if="$ctrl.hasMultipleValues" class="ma-permission-editor-multiple-values">
+            (<span ma-tr="ui.permissions.multipleValues"></span>)
+        </span>
         <ma-promise-indicator ng-if="$ctrl.systemPermission" promise="$ctrl.systemPermission.promise"></ma-promise-indicator>
     </span>
     <div ng-messages="$ctrl.ngModelCtrl.$error || $ctrl.systemPermission.errors" class="ma-small-text">
