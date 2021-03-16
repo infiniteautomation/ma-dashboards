@@ -195,7 +195,7 @@ class DataPointDetailsController {
     }
     
     hasEditPermission() {
-        return this.dataPoint && this.dataPoint.hasEditPermission(this.User.current);
+        return this.dataPoint && this.User.current.hasPermission(this.dataPoint.editPermission);
     }
 }
 
