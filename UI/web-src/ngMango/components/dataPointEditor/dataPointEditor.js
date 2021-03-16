@@ -113,7 +113,7 @@ class DataPointEditorController {
     }
     
     updateDisabled() {
-        this.disabled = this.disabledAttr || !(this.dataPoint && this.dataPoint.hasEditPermission(this.User.current));
+        this.disabled = this.disabledAttr || !(this.dataPoint && this.User.current.hasPermission(this.dataPoint.editPermission));
     }
 
     render(confirmDiscard = false) {

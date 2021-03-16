@@ -837,22 +837,6 @@ function dataPointProvider() {
 
                 Object.assign(this, angular.copy(dataTypeDefaults));
             },
-
-            hasEditPermission(user) {
-                // TODO Mango 4.0 dataSourceEditRoles is missing from model
-                return (
-                    user &&
-                    (user.hasSystemPermission('permissionDatasource') ||
-                        user.hasPermission(this.dataSourceEditRoles))
-                );
-            },
-            hasSetPermission(user) {
-                return (
-                    user &&
-                    (this.hasEditPermission(user) ||
-                        user.hasPermission(this.setPermission))
-                );
-            },
             subscribeToEvents($scope) {
                 let activeEventInfo;
                 if (activeEventsMap.has(this.id)) {

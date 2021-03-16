@@ -74,7 +74,7 @@
                     
                     <div layout="row">
                         <div flex layout>
-                            <ma-set-point-value ng-if="$ctrl.dataPoint.pointLocator.dataType !== 'IMAGE' && $ctrl.dataPoint.hasSetPermission($ctrl.User.current)"
+                            <ma-set-point-value ng-if="$ctrl.dataPoint.pointLocator.dataType !== 'IMAGE' && $ctrl.User.current.hasPermission($ctrl.dataPoint.setPermission)"
                                 point="$ctrl.dataPoint" flex></ma-set-point-value>
                         </div>
                         <md-button class="md-accent md-raised" ng-click="$ctrl.openEditDialog($ctrl.dataPoint)" ng-switch="$ctrl.hasEditPermission()">
