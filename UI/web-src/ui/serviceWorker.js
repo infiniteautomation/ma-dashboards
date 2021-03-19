@@ -1,12 +1,10 @@
-/**
- * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
- * @author Jared Wiltshire
+/*
+ * Copyright (C) 2021 Radix IoT LLC. All rights reserved.
  */
 
-/* global self, workbox, caches, Response */
-
-workbox.core.skipWaiting();
-workbox.core.clientsClaim();
+import {precacheAndRoute, createHandlerBoundToURL} from 'workbox-precaching';
+import {registerRoute, NavigationRoute} from 'workbox-routing';
+import {NetworkFirst, CacheFirst} from 'workbox-strategies';
 
 /**
  * Used to delete out-dated versions of resources from the cache whenever a new version is written.
@@ -33,7 +31,7 @@ class DeleteOutdatedVersionsPlugin {
  * Throws an error when the response is not a 2xx status code, causes NetworkFirst strategy to fall back to cache.
  */
 class ThrowOnErrorPlugin {
-    fetchDidSucceed({request, response}) {
+    fetchDidSucceed({response}) {
         if (response.ok) {
             return response;
         }
@@ -45,7 +43,7 @@ class ThrowOnErrorPlugin {
  * Removes the user from the pre-login response before caching.
  */
 class DontCacheUserPlugin {
-    cacheWillUpdate({request, response, event}) {
+    cacheWillUpdate({request, response}) {
         if (/\/rest\/latest\/ui-bootstrap\/pre-login/.test(request.url)) {
             return response.json().then(preLoginData => {
                 preLoginData.user = null;
@@ -63,7 +61,7 @@ class DontCacheUserPlugin {
 const moduleResourcesCacheName = 'module-resources';
 const uiBootstrapCacheName = 'ui-bootstrap';
 
-const moduleResourcesStrategy = new workbox.strategies.CacheFirst({
+const moduleResourcesStrategy = new CacheFirst({
     cacheName: moduleResourcesCacheName,
     matchOptions: {
         ignoreVary: true
@@ -74,9 +72,9 @@ const moduleResourcesStrategy = new workbox.strategies.CacheFirst({
 });
 
 // register a route for any versioned resources under /modules/xxx/web
-workbox.routing.registerRoute(/\/modules\/[\w-]+\/web\/.*\?v=.+/, moduleResourcesStrategy);
+registerRoute(/\/modules\/[\w-]+\/web\/.*\?v=.+/, moduleResourcesStrategy);
 
-workbox.routing.registerRoute(/\/rest\/latest\/ui-bootstrap\//, new workbox.strategies.NetworkFirst({
+registerRoute(/\/rest\/latest\/ui-bootstrap\//, new NetworkFirst({
     cacheName: uiBootstrapCacheName,
     matchOptions: {
         ignoreVary: true
@@ -89,25 +87,25 @@ workbox.routing.registerRoute(/\/rest\/latest\/ui-bootstrap\//, new workbox.stra
 }));
 
 // precache files from webpack manifest
-workbox.precaching.precacheAndRoute(self.__precacheManifest, {
+precacheAndRoute(self.__WB_MANIFEST, {
     directoryIndex: null,
     cleanUrls: false
 });
 
 // reply to navigation requests with our index.html from the precache
-workbox.routing.registerNavigationRoute(
-    workbox.precaching.getCacheKeyForURL('/ui/index.html'),
+registerRoute(new NavigationRoute(
+    createHandlerBoundToURL('/ui/index.html'),
     {
-        whitelist: [/\/[\w-]*(\?|$)/]
+        allowlist: [/\/[\w-]*(\?|$)/]
     }
-);
+));
 
 const moduleForUrl = (url) => {
     const matches = /\/modules\/([\w-]+)\/web\//.exec(url);
     return matches && matches[1];
 };
 
-const cleanUpModules = () => {
+const cleanUpModules = (event) => {
     fetch('/rest/latest/modules/angularjs-modules/public').then(r => r.json()).then(modules => {
         return caches.open(moduleResourcesCacheName).then(cache => {
             const updatedModulesPromise = Promise.all(modules.urls.map(url => {
@@ -136,8 +134,9 @@ const cleanUpModules = () => {
         }).then(() => {
             // warm up the module-resources cache by requesting and caching the files defined in AngularJSModuleDefinitions
             const requests = modules.urls.map(url => {
-                return moduleResourcesStrategy.makeRequest({
-                    request: url
+                return moduleResourcesStrategy.handle({
+                    request: new Request(url),
+                    event
                 });
             });
             return Promise.all(requests);
@@ -146,5 +145,10 @@ const cleanUpModules = () => {
 };
 
 self.addEventListener('install', event => {
-    event.waitUntil(cleanUpModules());
+    self.skipWaiting();
+    event.waitUntil(cleanUpModules(event));
+});
+
+self.addEventListener('activate', event => {
+    event.waitUntil(self.clients.claim());
 });

@@ -312,10 +312,9 @@ module.exports = readPom().then(pom => {
                 from: 'configs/**/*'
             }]),
             new WorkboxPlugin.InjectManifest({
-                swSrc: 'web-src/ui/serviceWorker.js',
+                swSrc: './web-src/ui/serviceWorker.js',
                 swDest: 'serviceWorker.js',
-                importWorkboxFrom: 'local',
-                importsDirectory: 'vendor'
+                maximumFileSizeToCacheInBytes: 10 * 1024 * 1024 // 10 MiB
             })
         ],
         output: {
