@@ -105,6 +105,7 @@ const moduleForUrl = (url) => {
     return matches && matches[1];
 };
 
+// TODO dont delete all caches before activated
 const cleanUpModules = (event) => {
     fetch('/rest/latest/modules/angularjs-modules/public').then(r => r.json()).then(modules => {
         return caches.open(moduleResourcesCacheName).then(cache => {
@@ -145,10 +146,15 @@ const cleanUpModules = (event) => {
 };
 
 self.addEventListener('install', event => {
-    self.skipWaiting();
     event.waitUntil(cleanUpModules(event));
 });
 
 self.addEventListener('activate', event => {
     event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener('message', event => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });

@@ -84,8 +84,14 @@
               </md-button>
             </div>
 
+            <md-button ng-if="maUiServiceWorkerHelper.updateAvailable" class="md-icon-button" ng-click="maUiServiceWorkerHelper.reloadApp()">
+                <md-icon>system_update_alt</md-icon>
+                <md-tooltip md-autohide><span ma-tr="ui.app.updateApp"></span></md-tooltip>
+            </md-button>
+
             <md-button ng-if="developmentConfig.enabled" class="md-icon-button" ng-click="clearTranslations()">
                 <md-icon>restore_page</md-icon>
+                <md-tooltip md-autohide><span ma-tr="ui.app.clearTranslationsCache"></span></md-tooltip>
             </md-button>
 
             <div ma-template-hook="userActions"></div>

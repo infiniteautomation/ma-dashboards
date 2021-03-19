@@ -8,6 +8,7 @@ import '../ngMango/ngMangoMaterial';
 import menuProvider from './services/menu';
 import pagesFactory from './services/pages';
 import dateBarFactory from './services/dateBar';
+import serviceWorkerHelperFactory from './services/serviceWorkerHelper';
 import uiSettingsProvider from './services/uiSettings';
 import loginRedirectorProvider from './services/loginRedirector';
 import serverInfoProvider from './services/serverInfo';
@@ -40,6 +41,7 @@ uiApp.provider('maUiMenu', menuProvider)
     .provider('maUiSettings', uiSettingsProvider)
     .factory('maUiPages', pagesFactory)
     .factory('maUiDateBar', dateBarFactory)
+    .factory('maUiServiceWorkerHelper', serviceWorkerHelperFactory)
     .provider('maUiLoginRedirector', loginRedirectorProvider)
     .provider('maUiServerInfo', serverInfoProvider)
     .directive('maUiPageView', pageView)
@@ -268,11 +270,12 @@ uiApp.run([
     '$q',
     '$resolve',
     'maUiServerInfo',
+    'maUiServiceWorkerHelper',
 function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService,
         $mdToast, User, uiSettings, Translate, $location, $stateParams, maUiDateBar, $document, $mdDialog,
         webAnalytics, $window, maModules, mathjs, $log, $templateCache, $exceptionHandler, maUiLoginRedirector,
         $anchorScroll, installPrompt, developmentConfig, $injector, maEventBus, maDialogHelper, $q, $resolve,
-         maUiServerInfo) {
+         maUiServerInfo, maUiServiceWorkerHelper) {
 
     const document = $document[0];
 
@@ -292,6 +295,7 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
     $rootScope.pageOpts = {};
     $rootScope.$log = $log;
     $rootScope.installPrompt = installPrompt;
+    $rootScope.maUiServiceWorkerHelper = maUiServiceWorkerHelper;
 
     const templateToTemplateUrl = function(state, template) {
         const templateUrl = `${state.name}.tmpl.html`;

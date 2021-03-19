@@ -63,12 +63,15 @@ function DialogHelperFactory($injector, maTranslate, maSystemActions, $q, maUtil
         }
 
         confirm(event, translation) {
-            return maTranslate.trAll({
-                textContent: translation || 'ui.app.areYouSure',
+            const keys = {
+                textContent: typeof translation === 'string' ? translation : 'ui.app.areYouSure',
                 areYouSure: 'ui.app.areYouSure',
                 okText: 'login.ok',
                 cancelText: 'login.cancel'
-            }).then(({textContent, areYouSure, okText, cancelText}) => {
+            };
+            Object.assign(keys, typeof translation === 'object' && translation != null ? translation : null);
+
+            return maTranslate.trAll(keys).then(({textContent, areYouSure, okText, cancelText}) => {
                 const confirm = $mdDialog.confirm()
                     .title(areYouSure)
                     .ariaLabel(areYouSure)

@@ -19,30 +19,6 @@ window.addEventListener('beforeinstallprompt', e => {
     beforeinstallpromptEvent = e;
 });
 
-/**
- * Service worker uses workbox to precache files from the webpack build and also cache module resources
- * on the fly.
- * 
- * Criteria for prompting to install the application -
- * https://developers.google.com/web/fundamentals/app-install-banners/#criteria 
- */
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/ui/serviceWorker.js', {
-            // allow getting imported files from disk cache since our webpack manifest hash will always change
-            // and the workbox version will change too
-            updateViaCache: 'imports'
-        }).then(registration => {
-            // setup an hourly check for a new service worker
-            setInterval(() => {
-                registration.update();
-            }, 60 * 60 * 1000);
-        }, error => {
-            console.error('ServiceWorker registration failed', error);
-        });
-    });
-}
-
 Promise.resolve().then(() => {
     // clear the autologin credentials if the url parameter is set
     util.checkClearAutoLogin();
