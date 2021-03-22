@@ -58,7 +58,7 @@ Promise.resolve().then(() => {
         if (uiSettings.userModule) {
             let url = uiSettings.userModule;
             // load user module from the /file-stores URL outside of REST so it is not rate limited
-            url = url.replace(/^\/rest\/(?:v1|v2|latest)\/file-stores\//, '/file-stores/');
+            url = url.replace(/^\/rest\/(?:v\d+|latest)\/file-stores\//, '/file-stores/');
             amdModuleNames.push(url);
         }
         
