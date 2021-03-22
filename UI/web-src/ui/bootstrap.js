@@ -39,18 +39,9 @@ Promise.resolve().then(() => {
         return angular.merge(uiSettings, customSettings);
     });
 
-//    const bundlePromise = new Promise((resolve, reject) => {
-//        requirejs(['/rest/latest/modules/angularjs-modules/bundle'], result => {
-//            resolve(result);
-//        }, error => {
-//            console.log('Failed to load bundle', arguments);
-//            resolve();
-//        });
-//    });
-
     const modulesPromise = Promise.all([preLoginDataPromise, uiSettingsPromise]).then(([preLoginData, uiSettings]) => {
         const modules = preLoginData.angularJsModules.modules;
-        const amdModuleNames = modules.filter(m => !m.supportsBundling).map(m => {
+        const amdModuleNames = modules.map(m => {
             amdConfiguration.moduleVersions[m.name] = m.version;
             return m.url.replace(/\.js$/, '');
         });
@@ -61,11 +52,6 @@ Promise.resolve().then(() => {
             url = url.replace(/^\/rest\/(?:v\d+|latest)\/file-stores\//, '/file-stores/');
             amdModuleNames.push(url);
         }
-        
-        modules.filter(m => m.supportsBundling).forEach(m => {
-            const amd = m.amdModuleNames;
-            amdModuleNames.push(...amd);
-        });
     
         const modulePromises = amdModuleNames.map(moduleName => {
             return new Promise((resolve, reject) => {
@@ -114,14 +100,6 @@ Promise.resolve().then(() => {
 
     uiSettings.mangoModuleNames = [];
     const angularJsModuleNames = ['maUiApp'];
-    
-    preLoginData.angularJsModules.modules.filter(m => m.supportsBundling).forEach(m => {
-        m.angularJsModuleNames.forEach(n => {
-            try {
-                angularModules.push(angular.module(n));
-            } catch (e) {}
-        });
-    });
     
     angularModules.forEach((angularModule, index, array) => {
         if (angularModule && angularModule.name) {
