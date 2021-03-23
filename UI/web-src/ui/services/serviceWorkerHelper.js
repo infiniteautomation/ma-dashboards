@@ -33,37 +33,48 @@ function serviceWorkerHelperFactory($window, $log, maEventBus, maTranslate, $mdT
                     registration.update();
                 }, 60 * 60 * 1000);
 
+                let hadActiveWorker = !!registration.active;
+
                 registration.addEventListener('updatefound', () => {
                     const newWorker = registration.installing;
+                    maEventBus.publish(`maServiceWorkerHelper/updatefound`, newWorker);
                     newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'installed' && registration.waiting === newWorker) {
-                            maEventBus.publish(`maServiceWorkerHelper/installed`, this, newWorker);
+                        maEventBus.publish(`maServiceWorkerHelper/statechange/${newWorker.state}`, newWorker);
+                        if (newWorker.state === 'installed') {
+                            // only prompt for reload if there was previously an active worker
+                            if (hadActiveWorker && registration.waiting === newWorker) {
+                                maTranslate.trAll({
+                                    text: 'ui.app.uiUpdateAvailable',
+                                    actionText: 'ui.app.reload'
+                                }).then(({text, actionText}) => {
+                                    const toast = $mdToast.simple()
+                                        .textContent(text)
+                                        .action(actionText)
+                                        .position('bottom center')
+                                        .hideDelay(60 * 1000);
 
-                            maTranslate.trAll({
-                                text: 'ui.app.uiUpdateAvailable',
-                                actionText: 'ui.app.reload'
-                            }).then(({text, actionText}) => {
-                                const toast = $mdToast.simple()
-                                    .textContent(text)
-                                    .action(actionText)
-                                    .position('bottom center')
-                                    .hideDelay(60 * 1000);
-
-                                return $mdToast.show(toast).then(accepted => {
-                                    if (accepted) {
-                                        this.reloadApp();
-                                    }
-                                }, () => null);
-                            });
+                                    return $mdToast.show(toast).then(accepted => {
+                                        if (accepted) {
+                                            this.reloadApp();
+                                        }
+                                    }, () => null);
+                                });
+                            }
+                        } else if (newWorker.state === 'activated') {
+                            hadActiveWorker = true;
                         }
                     });
                 });
+
+                $window.navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    maEventBus.publish(`maServiceWorkerHelper/controllerchange`, registration.active);
+                    // only reload if there was previously an active worker
+                    if (hadActiveWorker) {
+                        $window.location.reload();
+                    }
+                });
             }, error => {
                 $log.error('ServiceWorker registration failed', error);
-            });
-
-            $window.navigator.serviceWorker.addEventListener('controllerchange', () => {
-                $window.location.reload();
             });
         }
 
