@@ -220,8 +220,8 @@ class TileMapController {
     
     autoAddTileLayers() {
         if (this.getMapboxAccessToken()) {
-            this.addTileLayer(this.createTileLayer('mapbox.streets'), 'Streets');
-            this.addTileLayer(this.createTileLayer('mapbox.satellite'), 'Satellite');
+            this.addTileLayer(this.createTileLayer('mapbox.streets-v11'), 'Streets');
+            this.addTileLayer(this.createTileLayer('mapbox.satellite-v9'), 'Satellite');
         } else {
             this.addTileLayer(this.createTileLayer('openstreetmap'), 'Streets');
         }
@@ -287,11 +287,16 @@ class TileMapController {
         let defaultOptions;
         
         if (id && id.startsWith('mapbox.')) {
+            const style_id = /^mapbox\.(.*)/.exec(id)[1];
             if (!url) {
-                url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={mapboxAccessToken}';
+                url = 'https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{tilesize}/{z}/{x}/{y}{scale}?access_token={mapboxAccessToken}';
             }
             defaultOptions = {
                 id,
+                style_id,
+                username: 'mapbox',
+                tilesize: 512,
+                scale: '',
                 attribution: `Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors,
                     <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>`,
                 mapboxAccessToken: this.getMapboxAccessToken()
