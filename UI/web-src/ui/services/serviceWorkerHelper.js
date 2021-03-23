@@ -2,12 +2,8 @@
  * Copyright (C) 2021 Radix IoT LLC. All rights reserved.
  */
 
-// check why images aren't being cached and loaded while offline
-// cache oauth providers (network first)
-
-
-serviceWorkerHelperFactory.$inject = ['$window', '$log', 'maEventBus', 'maDialogHelper'];
-function serviceWorkerHelperFactory($window, $log, maEventBus, maDialogHelper) {
+serviceWorkerHelperFactory.$inject = ['$window', '$log', 'maEventBus', 'maTranslate', '$mdToast'];
+function serviceWorkerHelperFactory($window, $log, maEventBus, maTranslate, $mdToast) {
 
     /**
      * Service worker uses workbox to precache files from the webpack build and also cache module resources
@@ -32,13 +28,6 @@ function serviceWorkerHelperFactory($window, $log, maEventBus, maDialogHelper) {
             }).then(registration => {
                 this.registration = registration;
 
-                // TODO listen for restart/update event and update SW registration
-                // TODO dont delete old caches until updated - see what work box does e.g.
-                // workbox During precaching cleanup, 2 cached requests were deleted.
-                // logger.js:48 Deleted Cache Requests
-                // logger.js:48 https://mango.jazdw.net:8443/ui/index.html?__WB_REVISION__=61d120515c22dddb99e8dda3ef6e7969
-                // logger.js:48 https://mango.jazdw.net:8443/ui/mangoUi.js?v=0cadea55ab86a1abe480
-
                 // setup an hourly check for a new service worker
                 setInterval(() => {
                     registration.update();
@@ -50,13 +39,22 @@ function serviceWorkerHelperFactory($window, $log, maEventBus, maDialogHelper) {
                         if (newWorker.state === 'installed' && registration.waiting === newWorker) {
                             maEventBus.publish(`maServiceWorkerHelper/installed`, this, newWorker);
 
-                            maDialogHelper.confirm(null, {
-                                textContent: 'ui.app.updateAppDescription',
-                                areYouSure: 'ui.app.appUpdated',
-                                okText: 'ui.app.reload',
-                            }).then(() => {
-                                this.reloadApp();
-                            }, () => null);
+                            maTranslate.trAll({
+                                text: 'ui.app.uiUpdateAvailable',
+                                actionText: 'ui.app.reload'
+                            }).then(({text, actionText}) => {
+                                const toast = $mdToast.simple()
+                                    .textContent(text)
+                                    .action(actionText)
+                                    .position('bottom center')
+                                    .hideDelay(60 * 1000);
+
+                                return $mdToast.show(toast).then(accepted => {
+                                    if (accepted) {
+                                        this.reloadApp();
+                                    }
+                                }, () => null);
+                            });
                         }
                     });
                 });
