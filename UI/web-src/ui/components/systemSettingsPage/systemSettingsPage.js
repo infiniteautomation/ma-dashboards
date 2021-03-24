@@ -117,7 +117,11 @@ class SystemSettingsPageController {
         this.changedValues[systemSetting.key] = systemSetting.value;
     }
 
-    setSection(section) {
+    get section() {
+        return this.$state.current;
+    }
+
+    set section(section) {
         this.$state.go(section.name);
     }
     
@@ -153,13 +157,13 @@ class SystemSettingsPageController {
     
     currentTime() {
         return Math.floor((new Date()).valueOf() / 1000);
-    };
+    }
     
     getBackupFiles() {
         return this.maServer.getSystemInfo('sqlDatabaseBackupFileList').then((list) => {
             return (this.backupFiles = list);
         });
-    };
+    }
 }
 
 export default {
