@@ -88,31 +88,30 @@ const moduleForUrl = (u) => {
 };
 
 let modules;
-const warmUpModules = async event => {
+const warmUpModules = async () => {
     const modulesRequest = await fetch('/rest/latest/modules/angularjs-modules/public');
     modules = await modulesRequest.json();
 
     // warm up the module-resources cache by requesting and caching the files defined in AngularJSModuleDefinitions
-    return Promise.all(modules.urls.map(url => {
-        // returns two promises, first resolves when request is done, second resolves when handler is done
-        // i.e. the response was successfully cached
-        return moduleResourcesStrategy.handleAll({
-            request: new Request(url),
-            event
-        })[1];
+    const cache = await caches.open(moduleResourcesCacheName);
+    return Promise.all(modules.urls.map(async url => {
+        const response = await cache.match(url, {ignoreVary: true});
+        if (!response) {
+            return cache.add(url);
+        }
     }));
 };
 
-const cleanUpModules = async event => {
-    const cache = await caches.open(moduleResourcesCacheName);
-    const keys = await cache.keys();
+const cleanUpModules = async () => {
     const installedModules = new Map();
     for (const module of modules.modules) {
         installedModules.set(module.name, module);
     }
 
     // delete all cache entries for modules which are not installed or have been updated
-    await Promise.all(keys.map(k => {
+    const cache = await caches.open(moduleResourcesCacheName);
+    const keys = await cache.keys();
+    return Promise.all(keys.map(k => {
         const cachedModule = moduleForUrl(k.url);
         if (cachedModule) {
             const installedModule = installedModules.get(cachedModule.name);
@@ -124,11 +123,11 @@ const cleanUpModules = async event => {
 };
 
 self.addEventListener('install', event => {
-    event.waitUntil(warmUpModules(event));
+    event.waitUntil(warmUpModules());
 });
 
 self.addEventListener('activate', event => {
-    event.waitUntil(cleanUpModules(event));
+    event.waitUntil(cleanUpModules());
     event.waitUntil(self.clients.claim());
 });
 
