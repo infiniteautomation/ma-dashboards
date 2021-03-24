@@ -105,9 +105,8 @@ const moduleForUrl = (url) => {
     return matches && matches[1];
 };
 
-// TODO dont delete all caches before activated
 const cleanUpModules = (event) => {
-    fetch('/rest/latest/modules/angularjs-modules/public').then(r => r.json()).then(modules => {
+    return fetch('/rest/latest/modules/angularjs-modules/public').then(r => r.json()).then(modules => {
         return caches.open(moduleResourcesCacheName).then(cache => {
             const updatedModulesPromise = Promise.all(modules.urls.map(url => {
                 return cache.match(url).then(response => {
