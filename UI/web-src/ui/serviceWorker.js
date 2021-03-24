@@ -16,14 +16,14 @@ class DeleteOutdatedVersionsPlugin {
         this.cacheName = cacheName;
     }
     
-    cacheKeyWillBeUsed({request, mode}) {
+    async cacheKeyWillBeUsed({request, mode}) {
         if (mode === 'write') {
-            return caches.open(this.cacheName).then(cache => {
-                // delete all requests with matching URL from cache, ignoring the ?v= search parameter
-                return cache.delete(request, {ignoreVary: true, ignoreSearch: true});
-            }).then(() => request);
+            const cache = await caches.open(this.cacheName);
+
+            // delete all requests with matching URL from cache, ignoring the ?v= search parameter
+            await cache.delete(request, {ignoreVary: true, ignoreSearch: true});
         }
-        return Promise.resolve(request);
+        return request;
     }
 }
 
@@ -43,15 +43,14 @@ class ThrowOnErrorPlugin {
  * Removes the user from the pre-login response before caching.
  */
 class DontCacheUserPlugin {
-    cacheWillUpdate({request, response}) {
+    async cacheWillUpdate({request, response}) {
         if (/\/rest\/latest\/ui-bootstrap\/pre-login/.test(request.url)) {
-            return response.json().then(preLoginData => {
-                preLoginData.user = null;
-                return new Response(JSON.stringify(preLoginData), {
-                    status: response.status,
-                    statusText: response.statusText,
-                    headers: response.headers
-                });
+            const preLoginData = await response.json();
+            preLoginData.user = null;
+            return new Response(JSON.stringify(preLoginData), {
+                status: response.status,
+                statusText: response.statusText,
+                headers: response.headers
             });
         }
         return response;
@@ -105,45 +104,41 @@ const moduleForUrl = (url) => {
     return matches && matches[1];
 };
 
-const cleanUpModules = (event) => {
-    return fetch('/rest/latest/modules/angularjs-modules/public').then(r => r.json()).then(modules => {
-        return caches.open(moduleResourcesCacheName).then(cache => {
-            const updatedModulesPromise = Promise.all(modules.urls.map(url => {
-                return cache.match(url).then(response => {
-                    if (!response) {
-                        return moduleForUrl(url);
-                    }
-                });
-            }));
-            return Promise.all([cache, cache.keys(), updatedModulesPromise]);
-        }).then(([cache, keys, updated]) => {
-            const moduleNames = new Set(modules.modules.map(m => m.name));
-            const updatedModules = new Set(updated.filter(m => !!m));
+const cleanUpModules = async event => {
+    const modulesPromise = fetch('/rest/latest/modules/angularjs-modules/public').then(r => r.json());
+    const [modules, cache] = await Promise.all([modulesPromise, caches.open(moduleResourcesCacheName)]);
 
-            const deletePromises = keys.map(k => {
-                const moduleName = moduleForUrl(k.url);
-                if (moduleName) {
-                    // remove all entries for modules which have been updated or deleted
-                    if (!moduleNames.has(moduleName) || updatedModules.has(moduleName)) {
-                        return cache.delete(k);
-                    }
-                }
-            }).filter(p => !!p);
+    const updated = await Promise.all(modules.urls.map(async url => {
+        const response = await cache.match(url);
+        if (!response) {
+            return moduleForUrl(url);
+        }
+    }));
 
-            return Promise.all(deletePromises);
-        }).then(() => {
-            // warm up the module-resources cache by requesting and caching the files defined in AngularJSModuleDefinitions
-            const requests = modules.urls.map(url => {
-                // returns two promises, first resolves when request is done, second resolves when handler is done
-                // i.e. the response was successfully cached
-                return moduleResourcesStrategy.handleAll({
-                    request: new Request(url),
-                    event
-                })[1];
-            });
-            return Promise.all(requests);
-        });
-    });
+    const keys = await cache.keys();
+
+    const moduleNames = new Set(modules.modules.map(m => m.name));
+    const updatedModules = new Set(updated.filter(m => !!m));
+
+    await Promise.all(keys.map(k => {
+        const moduleName = moduleForUrl(k.url);
+        if (moduleName) {
+            // remove all entries for modules which have been updated or deleted
+            if (!moduleNames.has(moduleName) || updatedModules.has(moduleName)) {
+                return cache.delete(k);
+            }
+        }
+    }).filter(p => !!p));
+
+    // warm up the module-resources cache by requesting and caching the files defined in AngularJSModuleDefinitions
+    return Promise.all(modules.urls.map(url => {
+        // returns two promises, first resolves when request is done, second resolves when handler is done
+        // i.e. the response was successfully cached
+        return moduleResourcesStrategy.handleAll({
+            request: new Request(url),
+            event
+        })[1];
+    }));
 };
 
 self.addEventListener('install', event => {
