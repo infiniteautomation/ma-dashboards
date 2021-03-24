@@ -578,7 +578,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 }
             },
 
-            getOAuth2Clients(fromCache = false) {
+            getOAuth2Clients(fromCache = true) {
                 if (fromCache && oauth2Clients != null) {
                     return $q.resolve(oauth2Clients);
                 }
