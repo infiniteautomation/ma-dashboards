@@ -44,8 +44,8 @@ function serviceWorkerHelperFactory($window, $log, maEventBus, maTranslate, $mdT
                             // only prompt for reload if there was previously an active worker
                             if (hadActiveWorker && registration.waiting === newWorker) {
                                 maTranslate.trAll({
-                                    text: 'ui.app.uiUpdateAvailable',
-                                    actionText: 'ui.app.reload'
+                                    text: 'login.ui.uiUpdateAvailable',
+                                    actionText: 'login.ui.reload'
                                 }).then(({text, actionText}) => {
                                     const toast = $mdToast.simple()
                                         .textContent(text)
