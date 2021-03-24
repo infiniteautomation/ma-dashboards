@@ -105,30 +105,31 @@ const moduleForUrl = (url) => {
 };
 
 const cleanUpModules = async event => {
-    const modulesPromise = fetch('/rest/latest/modules/angularjs-modules/public').then(r => r.json());
-    const [modules, cache] = await Promise.all([modulesPromise, caches.open(moduleResourcesCacheName)]);
+    const modulesRequest = await fetch('/rest/latest/modules/angularjs-modules/public');
+    const modules = await modulesRequest.json();
+    const cache = await caches.open(moduleResourcesCacheName);
 
+    // find all urls which do not match an existing cache entry, these are newly installed or updated modules
     const updated = await Promise.all(modules.urls.map(async url => {
-        const response = await cache.match(url);
+        const response = await cache.match(url, {ignoreVary: true});
         if (!response) {
             return moduleForUrl(url);
         }
     }));
 
     const keys = await cache.keys();
-
-    const moduleNames = new Set(modules.modules.map(m => m.name));
+    const installedModules = new Set(modules.modules.map(m => m.name));
     const updatedModules = new Set(updated.filter(m => !!m));
 
+    // delete all cache entries for modules which are not installed or have been updated
     await Promise.all(keys.map(k => {
-        const moduleName = moduleForUrl(k.url);
-        if (moduleName) {
-            // remove all entries for modules which have been updated or deleted
-            if (!moduleNames.has(moduleName) || updatedModules.has(moduleName)) {
+        const cachedModule = moduleForUrl(k.url);
+        if (cachedModule) {
+            if (!installedModules.has(cachedModule) || updatedModules.has(cachedModule)) {
                 return cache.delete(k);
             }
         }
-    }).filter(p => !!p));
+    }));
 
     // warm up the module-resources cache by requesting and caching the files defined in AngularJSModuleDefinitions
     return Promise.all(modules.urls.map(url => {
