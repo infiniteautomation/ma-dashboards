@@ -123,7 +123,7 @@ function mangoWatchdog(MA_TIMEOUTS, $http, $timeout, window, maEventBus, $inject
          * @returns {boolean} true if the browser thinks it has no internet connectivity
          */
         isOffline() {
-            return window.navigator.hasOwnProperty('onLine') && !window.navigator.onLine;
+            return 'onLine' in window.navigator && !window.navigator.onLine;
         }
 
         /**
