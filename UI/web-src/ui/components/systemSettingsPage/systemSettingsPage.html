@@ -2,9 +2,9 @@
     <md-card-content class="ma-ui-system-settings-dropdown" layout>
         <md-input-container flex>
             <label ma-tr="ui.app.chooseASection"></label>
-            <md-select ng-init="section = $ctrl.$state.current" ng-model="section" ng-change="" ng-model-options="{trackBy: '$value.name'}">
+            <md-select ng-model="$ctrl.section" ng-model-options="{trackBy: '$value.name'}">
                 <md-option ng-repeat="child in $ctrl.menu.menuItemsByName['ui.settings.system'].children | orderBy:['weight', 'name'] track by child.name"
-                    ng-value="child" ui-sref="{{child.name}}"><span ma-tr="{{child.menuTr}}"></span></md-option>
+                    ng-value="child"><span ma-tr="{{child.menuTr}}"></span></md-option>
             </md-select>
         </md-input-container>
     </md-card-content>
