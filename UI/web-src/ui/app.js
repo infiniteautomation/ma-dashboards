@@ -629,6 +629,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
                 if (prevState && prevState !== 'LOGGED_IN') {
                     message = Translate.trSync('login.ui.app.connectivityRestored');
                     hideDelay = 5000;
+                    // check for service worker updates when Mango comes back up
+                    maUiServiceWorkerHelper.update();
                 }
 
                 // $timeout required to get state on initial page load / bootstrap
@@ -654,6 +656,8 @@ function($rootScope, $state, $timeout, $mdSidenav, $mdMedia, localStorageService
                 if (prevState && prevState !== 'API_UP') {
                     message = Translate.trSync('login.ui.app.connectivityRestored');
                     hideDelay = 5000;
+                    // check for service worker updates when Mango comes back up
+                    maUiServiceWorkerHelper.update();
                 }
                 break;
         }
