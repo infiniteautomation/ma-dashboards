@@ -7,27 +7,6 @@ import {registerRoute, NavigationRoute} from 'workbox-routing';
 import {NetworkFirst, CacheFirst} from 'workbox-strategies';
 
 /**
- * Used to delete out-dated versions of resources from the cache whenever a new version is written.
- * The cleanUpModules() function will only run when the service worker is installed, and this will not occur unless
- * the UI module has been updated. We still want to clean up the cache if we get a new version of a resource belonging to any other Mango module.
- */
-class DeleteOutdatedVersionsPlugin {
-    constructor(cacheName) {
-        this.cacheName = cacheName;
-    }
-    
-    async cacheKeyWillBeUsed({request, mode}) {
-        if (mode === 'write') {
-            const cache = await caches.open(this.cacheName);
-
-            // delete all requests with matching URL from cache, ignoring the ?v= search parameter
-            await cache.delete(request, {ignoreVary: true, ignoreSearch: true});
-        }
-        return request;
-    }
-}
-
-/**
  * Throws an error when the response is not a 2xx status code, causes NetworkFirst strategy to fall back to cache.
  */
 class ThrowOnErrorPlugin {
@@ -64,10 +43,7 @@ const moduleResourcesStrategy = new CacheFirst({
     cacheName: moduleResourcesCacheName,
     matchOptions: {
         ignoreVary: true
-    },
-    plugins: [
-        new DeleteOutdatedVersionsPlugin(moduleResourcesCacheName)
-    ]
+    }
 });
 
 // register a route for any versioned resources under /modules/xxx/web
@@ -99,37 +75,22 @@ registerRoute(new NavigationRoute(
     }
 ));
 
-const moduleForUrl = (url) => {
-    const matches = /\/modules\/([\w-]+)\/web\//.exec(url);
-    return matches && matches[1];
+const moduleForUrl = (u) => {
+    const url = new URL(u);
+    const matches = /\/modules\/([\w-]+)\/web\//.exec(url.pathname);
+    const moduleName = matches && matches[1];
+    if (moduleName) {
+        return {
+            name: moduleName,
+            version: url.searchParams.get('v')
+        };
+    }
 };
 
-const cleanUpModules = async event => {
+let modules;
+const warmUpModules = async event => {
     const modulesRequest = await fetch('/rest/latest/modules/angularjs-modules/public');
-    const modules = await modulesRequest.json();
-    const cache = await caches.open(moduleResourcesCacheName);
-
-    // find all urls which do not match an existing cache entry, these are newly installed or updated modules
-    const updated = await Promise.all(modules.urls.map(async url => {
-        const response = await cache.match(url, {ignoreVary: true});
-        if (!response) {
-            return moduleForUrl(url);
-        }
-    }));
-
-    const keys = await cache.keys();
-    const installedModules = new Set(modules.modules.map(m => m.name));
-    const updatedModules = new Set(updated.filter(m => !!m));
-
-    // delete all cache entries for modules which are not installed or have been updated
-    await Promise.all(keys.map(k => {
-        const cachedModule = moduleForUrl(k.url);
-        if (cachedModule) {
-            if (!installedModules.has(cachedModule) || updatedModules.has(cachedModule)) {
-                return cache.delete(k);
-            }
-        }
-    }));
+    modules = await modulesRequest.json();
 
     // warm up the module-resources cache by requesting and caching the files defined in AngularJSModuleDefinitions
     return Promise.all(modules.urls.map(url => {
@@ -142,11 +103,32 @@ const cleanUpModules = async event => {
     }));
 };
 
+const cleanUpModules = async event => {
+    const cache = await caches.open(moduleResourcesCacheName);
+    const keys = await cache.keys();
+    const installedModules = new Map();
+    for (const module of modules.modules) {
+        installedModules.set(module.name, module);
+    }
+
+    // delete all cache entries for modules which are not installed or have been updated
+    await Promise.all(keys.map(k => {
+        const cachedModule = moduleForUrl(k.url);
+        if (cachedModule) {
+            const installedModule = installedModules.get(cachedModule.name);
+            if (!installedModule || installedModule.version !== cachedModule.version) {
+                return cache.delete(k);
+            }
+        }
+    }));
+};
+
 self.addEventListener('install', event => {
-    event.waitUntil(cleanUpModules(event));
+    event.waitUntil(warmUpModules(event));
 });
 
 self.addEventListener('activate', event => {
+    event.waitUntil(cleanUpModules(event));
     event.waitUntil(self.clients.claim());
 });
 
