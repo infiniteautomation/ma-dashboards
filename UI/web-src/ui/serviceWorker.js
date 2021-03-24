@@ -135,10 +135,12 @@ const cleanUpModules = (event) => {
         }).then(() => {
             // warm up the module-resources cache by requesting and caching the files defined in AngularJSModuleDefinitions
             const requests = modules.urls.map(url => {
-                return moduleResourcesStrategy.handle({
+                // returns two promises, first resolves when request is done, second resolves when handler is done
+                // i.e. the response was successfully cached
+                return moduleResourcesStrategy.handleAll({
                     request: new Request(url),
                     event
-                });
+                })[1];
             });
             return Promise.all(requests);
         });
