@@ -51,7 +51,7 @@ function serviceWorkerHelperFactory($window, $log, maEventBus, maTranslate, $mdT
                                         .textContent(text)
                                         .action(actionText)
                                         .position('bottom center')
-                                        .hideDelay(60 * 1000);
+                                        .hideDelay(false);
 
                                     return $mdToast.show(toast).then(accepted => {
                                         if (accepted) {
