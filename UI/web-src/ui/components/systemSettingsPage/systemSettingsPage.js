@@ -118,10 +118,7 @@ class SystemSettingsPageController {
     }
 
     setSection(section) {
-        this.$state.go(section.name, {
-            location: 'replace',
-            notify: false
-        });
+        this.$state.go(section.name);
     }
     
     saveSection() {
