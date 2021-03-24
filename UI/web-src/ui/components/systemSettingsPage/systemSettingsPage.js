@@ -116,6 +116,13 @@ class SystemSettingsPageController {
     valueChanged(systemSetting) {
         this.changedValues[systemSetting.key] = systemSetting.value;
     }
+
+    setSection(section) {
+        this.$state.go(section.name, {
+            location: 'replace',
+            notify: false
+        });
+    }
     
     saveSection() {
         if (this.savePromise) return;
