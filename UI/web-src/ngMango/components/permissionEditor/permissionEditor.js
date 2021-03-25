@@ -78,6 +78,9 @@ class PermissionEditorController {
         });
 
         this.additionalMinterms = this.permission.minterms.filter(a => !minterms.some(b => a.equals(b)));
+
+        const mintermRoles = this.additionalMinterms.map(t => t.roles);
+        this.containerCtrl.roleCache.loadItems([].concat(...mintermRoles));
     }
 
     clearColumns() {
