@@ -48,6 +48,10 @@
 	          <span flex="30" ma-tr="modules.buildNumber"></span>
 	          <span flex="70" ng-bind="$ctrl.coreModule.buildNumber"></span>
 	        </div>
+              <div layout="row">
+                  <span flex="30" ma-tr="modules.upgradedDate"></span>
+                  <span flex="70" ng-bind="$ctrl.coreModule.upgradedDate | maDate:'dateTime'"></span>
+              </div>
 	        <div layout="row">
 	          <span flex="30" ma-tr="ui.app.license"></span>
 	          <span ng-if="$ctrl.coreModule.licenseType" flex="70" class="green-color"><md-icon class="green-color">done</md-icon> <span ng-bind="$ctrl.coreModule.licenseType"></span></span>
@@ -98,6 +102,10 @@
             <span flex="30" ma-tr="modules.buildNumber"></span>
             <span flex="70" ng-bind="module.buildNumber"></span>
           </div>
+            <div layout="row">
+                <span flex="30" ma-tr="modules.upgradedDate"></span>
+                <span flex="70" ng-bind="module.upgradedDate | maDate:'dateTime'"></span>
+            </div>
           <div layout="row">
             <span flex="30" ma-tr="ui.app.license"></span>
             <span ng-if="module.licenseType" flex="70" class="green-color"><md-icon class="green-color">done</md-icon> <span ng-bind="module.licenseType"></span></span>
