@@ -66,10 +66,13 @@ function serviceWorkerHelperFactory($window, $log, maEventBus, maTranslate, $mdT
                     });
                 });
 
+                // prevents infinite reloads when Chrome's "Update on reload" feature is enabled
+                let reloading = false;
                 $window.navigator.serviceWorker.addEventListener('controllerchange', () => {
                     maEventBus.publish(`maServiceWorkerHelper/controllerchange`, registration.active);
                     // only reload if there was previously an active worker
-                    if (hadActiveWorker) {
+                    if (hadActiveWorker && !reloading) {
+                        reloading = true;
                         $window.location.reload();
                     }
                 });
