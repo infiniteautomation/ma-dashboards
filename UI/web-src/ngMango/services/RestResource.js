@@ -401,7 +401,11 @@ function restResourceFactory($http, $q, $timeout, maUtil, NotificationManager, R
             if (this[cacheProperty]) {
                 return this[cacheProperty];
             }
-            return (this[cacheProperty] = new ResourceCache(this));
+            return (this[cacheProperty] = this.createCache());
+        }
+
+        static createCache() {
+            return new ResourceCache(this);
         }
     }
 

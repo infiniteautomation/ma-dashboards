@@ -47,10 +47,18 @@ class PermissionEditorContainerController {
             advancedMode: false
         };
 
-        // fetch all the roles for the selected columns so we can display their names
-        this.roleCache.loadItems([].concat(...this.settings.minterms));
-
         this.minterms = this.settings.minterms.map(t => new this.Minterm(t));
+
+        // fetch all the roles for the selected columns so we can display their names
+        this.roleCache.loadItems([].concat(...this.settings.minterms)).then(() => {
+            // remove columns for minterms with deleted roles
+            this.minterms.filter(t => {
+                return !t.roles.every(r => this.roleCache.has(r));
+            }).forEach(t => {
+                this.removeColumn(t);
+            });
+        });
+
         this.updateDisabledOptions();
     }
 

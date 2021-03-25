@@ -3,8 +3,8 @@
  * @author Jared Wiltshire
  */
 
-roleFactory.$inject = ['maRestResource', 'maRqlBuilder'];
-function roleFactory(RestResource, RqlBuilder) {
+roleFactory.$inject = ['maRestResource'];
+function roleFactory(RestResource) {
     
     const baseUrl = '/rest/latest/roles';
     const webSocketUrl = '/rest/latest/websocket/roles';
@@ -21,6 +21,12 @@ function roleFactory(RestResource, RqlBuilder) {
 
         static get xidPrefix() {
             return xidPrefix;
+        }
+
+        static createCache() {
+            const cache = super.createCache();
+            cache.maxSize = 256;
+            return cache;
         }
     }
 
