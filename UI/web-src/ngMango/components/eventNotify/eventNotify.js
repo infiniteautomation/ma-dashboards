@@ -21,12 +21,13 @@ import eventNotifyTemplate from './eventNotify.html';
 
 class EventNotifyController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return ['maEvents', '$scope', '$mdToast', '$injector', 'maEvents']; }
+    static get $inject() { return ['maEvents', '$scope', '$mdToast', '$injector', 'maEvents', 'maUiServiceWorkerHelper']; }
     
-    constructor(maEvents, $scope, $mdToast, $injector, Events) {
+    constructor(maEvents, $scope, $mdToast, $injector, Events, serviceWorkerHelper) {
         this.maEvents = maEvents;
         this.$scope = $scope;
         this.$mdToast = $mdToast;
+        this.serviceWorkerHelper = serviceWorkerHelper;
         
         this.levelInfo = Events.levels.reduce((map, item) => (map[item.key] = item, map), {});
         
@@ -72,6 +73,21 @@ class EventNotifyController {
             position: 'bottom center',
             hideDelay: 0,
             scope
+        });
+
+        this.serviceWorkerHelper.showNotification(mangoEvent.alarmLevel, {
+            badge: '/ui/img/icon192.png',
+            body: mangoEvent.message,
+            icon: '/images/flag_yellow.png',
+            tag: `event_${mangoEvent.id}`,
+            actions: [
+                { action: 'view', title: 'View event', icon: '/images/item.png' },
+                { action: 'acknowledge', title: 'Acknowledge', icon: '/images/tick.png' }
+            ],
+            data: {
+                type: 'event',
+                eventId: mangoEvent.id
+            }
         });
     }
     

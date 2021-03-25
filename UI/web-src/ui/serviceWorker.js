@@ -122,6 +122,15 @@ const cleanUpModules = async () => {
     }));
 };
 
+const openWindow = async url => {
+    const clientList = await self.clients.matchAll({type: 'window'});
+    if (clientList.length) {
+        clientList[0].navigate(url);
+    } else {
+        self.clients.openWindow(url);
+    }
+};
+
 self.addEventListener('install', event => {
     event.waitUntil(warmUpModules());
 });
@@ -134,5 +143,24 @@ self.addEventListener('activate', event => {
 self.addEventListener('message', event => {
     if (event.data && event.data.type === 'SKIP_WAITING') {
         self.skipWaiting();
+    }
+});
+
+self.addEventListener('notificationclick', event => {
+    event.notification.close();
+
+    const data = event.notification.data;
+    if (data.type === 'event') {
+        if (event.action === 'acknowledge') {
+            event.waitUntil(fetch(`/rest/latest/events/acknowledge/${data.eventId}`, {
+                headers: {
+                    'x-requested-with': 'XMLHttpRequest'
+                },
+                method: 'PUT',
+                credentials: 'include'
+            }).then(r => r.json()).then(r => console.log(r), e => console.error(e)));
+        } else if (event.action === 'view') {
+            event.waitUntil(openWindow(`/ui/events`));
+        }
     }
 });

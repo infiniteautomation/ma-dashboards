@@ -2,8 +2,8 @@
  * Copyright (C) 2021 Radix IoT LLC. All rights reserved.
  */
 
-serviceWorkerHelperFactory.$inject = ['$window', '$log', 'maEventBus', 'maTranslate', '$mdToast'];
-function serviceWorkerHelperFactory($window, $log, maEventBus, maTranslate, $mdToast) {
+serviceWorkerHelperFactory.$inject = ['$window', '$log', 'maEventBus', 'maTranslate', '$mdToast', '$q'];
+function serviceWorkerHelperFactory($window, $log, maEventBus, maTranslate, $mdToast, $q) {
 
     /**
      * Service worker uses workbox to precache files from the webpack build and also cache module resources
@@ -91,6 +91,16 @@ function serviceWorkerHelperFactory($window, $log, maEventBus, maTranslate, $mdT
         reloadApp() {
             if (this.registration && this.registration.waiting) {
                 this.registration.waiting.postMessage({type: 'SKIP_WAITING'});
+            }
+        }
+
+        showNotification(title, options) {
+            if (this.registration) {
+                return Notification.requestPermission().then(() => {
+                    return this.registration.showNotification(title, options);
+                });
+            } else {
+                return $q.reject('unsupported');
             }
         }
     }
