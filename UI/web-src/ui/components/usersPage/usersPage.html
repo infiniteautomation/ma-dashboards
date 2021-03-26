@@ -4,11 +4,11 @@
             <div class="md-toolbar-tools">
                 <h2 ma-tr="header.roles"></h2>
                 <div flex></div>
-                <md-button class="md-icon-button" ng-click="$ctrl.addRole($event)">
+                <md-button class="md-icon-button" ng-click="$ctrl.addRole($event)" ng-if="$ctrl.User.current.hasRole('superadmin')">
                     <md-icon>group_add</md-icon>
                     <md-tooltip><span ma-tr="roles.add"></span></md-tooltip>
                 </md-button>
-                <md-button class="md-icon-button" ng-click="$ctrl.editRole($ctrl.selectedRole, $event)" ng-disabled="!$ctrl.selectedRole">
+                <md-button class="md-icon-button" ng-click="$ctrl.editRole($ctrl.selectedRole, $event)" ng-disabled="!$ctrl.selectedRole" ng-if="$ctrl.User.current.hasRole('superadmin')">
                     <md-icon>edit</md-icon>
                     <md-tooltip><span ma-tr="roles.edit"></span></md-tooltip>
                 </md-button>
