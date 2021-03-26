@@ -21,7 +21,7 @@
             <div class="md-toolbar-tools">
                 <h2 ma-tr="users.usersInRole" ma-tr-args="[$ctrl.selectedRole.name]"></h2>
                 <div flex></div>
-                <md-button class="md-icon-button" ng-click="$ctrl.addUser($event)">
+                <md-button class="md-icon-button" ng-click="$ctrl.addUser($event)" ng-if="$ctrl.User.current.hasSystemPermission('users.create')">
                     <md-icon>person_add</md-icon>
                     <md-tooltip><span ma-tr="users.add"></span></md-tooltip>
                 </md-button>
