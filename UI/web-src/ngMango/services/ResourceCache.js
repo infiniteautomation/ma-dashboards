@@ -8,6 +8,13 @@ import BoundedMap from '../classes/BoundedMap';
 resourceCacheFactory.$inject = ['$q', '$timeout', '$rootScope'];
 function resourceCacheFactory($q, $timeout, $rootScope) {
 
+    class LoadingValue {
+        constructor(key, promise) {
+            this.key = key;
+            this.promise = promise;
+        }
+    }
+
     class ResourceCache extends BoundedMap {
         constructor(resourceService) {
             super(100);
@@ -55,16 +62,31 @@ function resourceCacheFactory($q, $timeout, $rootScope) {
             }
         }
 
+        get(id) {
+            const result = super.get(id);
+            if (!(result instanceof LoadingValue)) {
+                return result;
+            }
+        }
+
         loadItems(ids) {
             const missingIds = new Set(ids.filter(x => !this.has(x)));
             if (!missingIds.size) {
                 return $q.resolve();
             }
-            return this.resourceService.buildQuery()
-                .in(this.resourceService.idProperty, Array.from(missingIds))
+
+            const idsToLoad = Array.from(missingIds);
+            const promise = this.resourceService.buildQuery()
+                .in(this.resourceService.idProperty, idsToLoad)
                 .query().then(items => {
                     items.forEach(item => this.set(item.getOriginalId(), item));
+                }, () => {
+                    // clear promises on error
+                    idsToLoad.forEach(id => this.delete(id));
                 });
+
+            idsToLoad.forEach(id => this.set(id, new LoadingValue(id, promise)));
+            return promise;
         }
     }
 

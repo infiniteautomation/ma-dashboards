@@ -192,9 +192,9 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
      * Provides service for getting list of users and create, update, delete
      */
     UserFactory.$inject = ['$resource', '$cacheFactory', 'localStorageService', '$q', 'maUtil', '$http', 'maServer',
-        '$injector', '$cookies', 'maTemporaryRestResource', 'maEventBus'];
+        '$injector', '$cookies', 'maTemporaryRestResource', 'maEventBus', 'maRole'];
     function UserFactory($resource, $cacheFactory, localStorageService, $q, Util, $http, maServer,
-                         $injector, $cookies, TemporaryRestResource, maEventBus) {
+                         $injector, $cookies, TemporaryRestResource, maEventBus, maRole) {
 
         class BulkUserTemporaryResource extends TemporaryRestResource {
             static get baseUrl() {
@@ -694,6 +694,15 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                     username: this.username,
                     emailAddress
                 });
+            },
+
+            formatRoles() {
+                const roleCache = maRole.getCache();
+                roleCache.loadItems(this.roles);
+                return this.roles.map(xid => {
+                    const role = roleCache.get(xid);
+                    return role ? role.name : xid;
+                }).join(', ');
             }
         });
 
