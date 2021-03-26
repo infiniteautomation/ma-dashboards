@@ -188,9 +188,9 @@
                                     <md-button class="md-icon-button ma-small-button" ng-click="$ctrl.removePoint($index)"><md-icon>delete</md-icon></md-button>
                                 </div>
                                 <div ng-bind="publisherPoint.dataPointXid"></div>
-                                <div ng-bind="$ctrl.points.get(publisherPoint).deviceName"></div>
-                                <div ng-bind="$ctrl.points.get(publisherPoint).name"></div>
-                                <div ng-bind="$ctrl.points.get(publisherPoint).formatTags()"></div>
+                                <div ng-bind="$ctrl.getPoint(publisherPoint).deviceName"></div>
+                                <div ng-bind="$ctrl.getPoint(publisherPoint).name"></div>
+                                <div ng-bind="$ctrl.getPoint(publisherPoint).formatTags()"></div>
                                 <div ng-repeat="pointProperty in $ctrl.publisherType.pointProperties track by pointProperty.name" layout
                                     ng-class="'ma-publisher-point-' + pointProperty.name" ng-include="pointProperty.editorTemplateUrl"></div>
                             </div>

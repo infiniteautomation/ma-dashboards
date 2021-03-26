@@ -237,6 +237,17 @@ class PublisherEditorController {
             this.points.set(publisherPoint, point);
         }
     }
+
+    /**
+     * Retrieves the DataPoint from the published point
+     * Note: used from Publisher modules, do not remove.
+     *
+     * @param publisherPoint
+     * @returns {maPoint}
+     */
+    getPoint(publisherPoint) {
+        return this.points.get(publisherPoint);
+    }
 }
 
 export default {
