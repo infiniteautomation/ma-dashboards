@@ -701,8 +701,8 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
                 roleCache.loadItems(this.roles);
                 return this.roles.map(xid => {
                     const role = roleCache.get(xid);
-                    return role ? role.name : xid;
-                }).join(', ');
+                    return role && role.name;
+                }).filter(r => !!r).join(', ');
             }
         });
 
