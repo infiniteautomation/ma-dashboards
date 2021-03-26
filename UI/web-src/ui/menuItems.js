@@ -645,7 +645,7 @@ export default [
         template: '<ma-ui-users-page flex="noshrink" layout="column"><ma-ui-users-page>',
         menuTr: 'header.users',
         menuIcon: 'people',
-        permission: ['superadmin'],
+        systemPermission: ['users.view'],
         params: {
             helpPage: 'ui.help.users'
         },
@@ -907,7 +907,8 @@ export default [
                     $injector.loadNewModules(['maUiPermissionsPage']);
                 });
             }]
-        }
+        },
+        permission: ['superadmin']
     },
     {
         url: '/permissions',
