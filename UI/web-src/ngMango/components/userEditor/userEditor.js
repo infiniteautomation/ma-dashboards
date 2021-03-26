@@ -90,7 +90,8 @@ class UserEditorController {
                 this.validationMessages = error.data.result.messages;
             }
     
-            this.maDialogHelper.errorToast(['ui.components.errorSavingUser', this.user.originalId, error.mangoStatusText]);
+            this.maDialogHelper.errorToast(['ui.components.errorSavingUser', this.user.originalId || '-',
+                error.mangoStatusText]);
         }).finally(() => delete this.saving);
     }
     
