@@ -62,7 +62,7 @@ class TreeViewItemController {
 
         this.deferred = this.$q.defer();
         const childrenPromise = this.treeViewCtrl.children(this.item, this.depth, this.children, loadMore);
-        this.$q.when(childrenPromise).then(this.deferred.resolve, this.deferred.reject);
+        this.$q.when(childrenPromise).then(this.deferred.resolve, this.deferred.reject, this.deferred.notify);
 
         this.deferred.promise.then(children => {
             if (Array.isArray(children)) {
