@@ -1,18 +1,18 @@
 <ma-permission-editor-container show-filter="::true" ng-form="$ctrl.form" on-filter-changed="$ctrl.filterPermissions($filter)">
-    <div ng-repeat="module in $ctrl.modules track by module.name" class="ma-permission-editor-group">
+    <div ng-repeat="group in $ctrl.groups track by group.name" class="ma-permission-editor-group">
         <div class="ma-permission-editor-row ma-module-header"
-             ng-click="$ctrl.expanded[module.name] = !$ctrl.expanded[module.name]"
-             ng-class="{'ma-toggle-open': $ctrl.expanded[module.name]}">
+             ng-click="$ctrl.expanded[group.name] = !$ctrl.expanded[group.name]"
+             ng-class="{'ma-toggle-open': $ctrl.expanded[group.name]}">
             <div class="ma-permission-editor-cell" layout="row" layout-align="start center">
                 <div flex>
-                    <div class="ma-ellipsis ma-module-name" md-highlight-text="$filter" md-highlight-flags="ig">{{module.name}}</div>
-                    <div class="ma-ellipsis ma-module-description" md-highlight-text="$filter" md-highlight-flags="ig">{{module.description}}</div>
+                    <div class="ma-ellipsis ma-module-name" md-highlight-text="$filter" md-highlight-flags="ig">{{group.title}}</div>
+                    <div class="ma-ellipsis ma-module-description" md-highlight-text="$filter" md-highlight-flags="ig">{{group.description}}</div>
                 </div>
                 <md-icon class="ma-toggle-icon">arrow_drop_down</md-icon>
             </div>
         </div>
 
-        <div class="ma-permission-editor-row ma-permission-editor-subheader" ng-if="$ctrl.expanded[module.name]">
+        <div class="ma-permission-editor-row ma-permission-editor-subheader" ng-if="$ctrl.expanded[group.name]">
             <div class="ma-permission-editor-cell ma-permission-editor-description-column"></div>
             <div class="ma-permission-editor-cell ma-permission-editor-checkbox-column"
                  ng-repeat="minterm in $minterms track by minterm.id">
@@ -26,7 +26,7 @@
         </div>
 
         <ma-permission-editor
-                ng-repeat="permission in ($ctrl.expanded[module.name] && module.permissions) track by permission.name"
+                ng-repeat="permission in ($ctrl.expanded[group.name] && group.permissions) track by permission.name"
                 name="{{permission.name}}"
                 ng-model="permission.permission"
                 ng-change="$ctrl.savePermission(permission)">

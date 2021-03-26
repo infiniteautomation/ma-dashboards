@@ -6,7 +6,7 @@
 import permissionsPageTemplate from './permissionsPage.html';
 import './permissionsPage.css';
 
-const filterSearchKeys = ['moduleName', 'moduleDescription', 'description', 'name'];
+const filterSearchKeys = ['groupTitle', 'groupDescription', 'description', 'name'];
 
 const sortByDescription = (a, b) => {
     if (a.description < b.description) return -1;
@@ -32,7 +32,7 @@ class PermissionsPageController {
     getPermissions(refresh = false) {
         if (!this.queryPromise || refresh) {
             this.queryPromise = this.maSystemPermission.buildQuery()
-                .sort('moduleName', 'name')
+                .sort('groupName', 'name')
                 .query();
         }
         return this.queryPromise;
@@ -40,29 +40,30 @@ class PermissionsPageController {
     
     filterPermissions(filter) {
         return this.getPermissions().then((permissions) => {
-            const modules = {};
+            const groups = {};
 
             permissions.filter(permission => {
                 return !filter || filterSearchKeys.some(k => permission[k].toLowerCase().includes(filter.toLowerCase()));
             }).forEach(permission => {
-                let module = modules[permission.moduleName];
-                if (!module) {
-                    module = modules[permission.moduleName] = {
-                        name: permission.moduleName,
-                        description: permission.moduleDescription,
+                let group = groups[permission.groupName];
+                if (!group) {
+                    group = groups[permission.groupName] = {
+                        name: permission.groupName,
+                        title: permission.groupTitle,
+                        description: permission.groupDescription,
                         permissions: []
                     };
                 }
-                module.permissions.push(permission);
+                group.permissions.push(permission);
             });
 
-            this.modules = Object.values(modules);
+            this.groups = Object.values(groups);
 
             // sort the modules by description
-            // this.modules.sort(sortByDescription);
+            // this.groups.sort(sortByDescription);
 
             // sort each module's permissions by description
-            this.modules.forEach(module => {
+            this.groups.forEach(module => {
                 module.permissions.sort(sortByDescription);
             });
 
@@ -70,13 +71,13 @@ class PermissionsPageController {
             this.expanded = {};
             const noneExpanded = Object.values(this.expanded).every(v => !v);
             if (noneExpanded) {
-                const module = this.modules.find(m => m.name === 'core') || this.modules[0];
+                const module = this.groups.find(m => m.name === 'core') || this.groups[0];
                 if (module) {
                     this.expanded[module.name] = true;
                 }
             }
 
-            return this.modules
+            return this.groups;
         });
     }
     
