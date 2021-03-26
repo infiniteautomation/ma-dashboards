@@ -57,6 +57,9 @@ class UserEditorController {
         } else {
             this.user = viewValue instanceof this.User ? viewValue.copy() : null;
         }
+
+        // easy to use reference to the original user so we can access its permissions
+        this.original = viewValue;
     }
 
     resetForm() {

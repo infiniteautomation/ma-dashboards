@@ -85,7 +85,7 @@
         <md-input-container flex="100" flex-gt-md="50" ng-if="!$ctrl.registerMode" class="ma-has-hint">
             <md-icon>group</md-icon>
             <label ma-tr="users.roles"></label>
-            <ma-drop-down-button ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasRole('superadmin')">
+            <ma-drop-down-button ng-disabled="$ctrl.disabled || !$ctrl.User.current.hasPermission($ctrl.original.editPermission)">
                 <span ng-bind="$ctrl.user.formatRoles()"></span>
                 <ma-drop-down class="ma-user-editor-role-selector ma-full-screen-centered">
                     <ma-role-selector name="roles" ma-format-array="{xid: $item}" ma-parse-array="$item.xid"
@@ -174,7 +174,7 @@
             </div>
         </md-input-container>
         
-        <ma-duration-editor ng-if="$ctrl.User.current.hasRole('superadmin') && $ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled"
+        <ma-duration-editor ng-if="$ctrl.User.current.hasPermission($ctrl.original.editPermission) && $ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled"
                 flex="100" flex-gt-md="50" name="sessionExpirationPeriod" ng-model="$ctrl.user.sessionExpirationPeriod"
                 allowed-types="::['MINUTES', 'HOURS', 'DAYS', 'MONTHS', 'YEARS']" required>
             <ma-periods-label ma-tr="users.sessionExpirationPeriod"></ma-periods-label>
@@ -182,11 +182,11 @@
         </ma-duration-editor>
     </div>
 
-    <ma-permission-editor-container>
-        <ma-permission-editor name="readPermission" ng-model="$ctrl.user.readPermission">
+    <ma-permission-editor-container ng-if="$ctrl.User.current.hasPermission($ctrl.original.editPermission)">
+        <ma-permission-editor name="readPermission" ng-model="$ctrl.user.readPermission" ng-disabled="$ctrl.disabled">
             <span ma-tr="users.readPermission"></span>
         </ma-permission-editor>
-        <ma-permission-editor name="editPermission" ng-model="$ctrl.user.editPermission">
+        <ma-permission-editor name="editPermission" ng-model="$ctrl.user.editPermission" ng-disabled="$ctrl.disabled">
             <span ma-tr="users.editPermission"></span>
         </ma-permission-editor>
     </ma-permission-editor-container>
@@ -201,7 +201,7 @@
         <md-checkbox name="receiveOwnAuditEvents" ng-model="$ctrl.user.receiveOwnAuditEvents" ng-disabled="$ctrl.disabled">
             <span ma-tr="users.receiveOwnAuditEvents"></span>
         </md-checkbox>
-        <md-checkbox ng-if="$ctrl.User.current.hasRole('superadmin')" name="sessionExpirationOverride" ng-model="$ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled">
+        <md-checkbox ng-if="$ctrl.User.current.hasPermission($ctrl.original.editPermission)" name="sessionExpirationOverride" ng-model="$ctrl.user.sessionExpirationOverride" ng-disabled="$ctrl.disabled">
             <span ma-tr="users.sessionExpirationOverride"></span>
         </md-checkbox>
     </div>
