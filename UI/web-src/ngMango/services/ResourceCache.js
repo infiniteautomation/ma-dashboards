@@ -79,7 +79,16 @@ function resourceCacheFactory($q, $timeout, $rootScope) {
             const promise = this.resourceService.buildQuery()
                 .in(this.resourceService.idProperty, idsToLoad)
                 .query().then(items => {
-                    items.forEach(item => this.set(item.getOriginalId(), item));
+                    const loaded = new Map(items.map(item => [item.getOriginalId(), item]));
+                    idsToLoad.forEach(id => {
+                        const item = loaded.get(id);
+                        if (item) {
+                            this.set(id, item);
+                        } else {
+                            // item must not exist, remove promise
+                            this.delete(id);
+                        }
+                    });
                 }, () => {
                     // clear promises on error
                     idsToLoad.forEach(id => this.delete(id));
