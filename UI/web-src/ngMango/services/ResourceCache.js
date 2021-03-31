@@ -36,7 +36,7 @@ function resourceCacheFactory($q, $timeout, $rootScope) {
                 if (subscriber instanceof $rootScope.constructor) {
                     subscriber.$on('$destroy', () => {
                         // adding a timeout gives other pages a chance to subscribe before the websocket is closed
-                        $timeout(unsubscribe, 0);
+                        $timeout(unsubscribe, 5000);
                     });
                 }
                 return () => this.unsubscribe(subscriber);
@@ -69,33 +69,49 @@ function resourceCacheFactory($q, $timeout, $rootScope) {
             }
         }
 
+        has(id) {
+            return super.has(id) && !(this.get(id) instanceof LoadingValue);
+        }
+
         loadItems(ids) {
-            const missingIds = new Set(ids.filter(x => !this.has(x)));
-            if (!missingIds.size) {
-                return $q.resolve();
+            const promises = new Set();
+
+            const missingIds = new Set(ids.filter(id => {
+                if (super.has(id)) {
+                    const value = super.get(id);
+                    if (value instanceof LoadingValue) {
+                        promises.add(value.promise);
+                    }
+                    return false;
+                }
+                return true;
+            }));
+
+            if (missingIds.size) {
+                const idsToLoad = Array.from(missingIds);
+                const promise = this.resourceService.buildQuery()
+                    .in(this.resourceService.idProperty, idsToLoad)
+                    .query().then(items => {
+                        const loaded = new Map(items.map(item => [item.getOriginalId(), item]));
+                        idsToLoad.forEach(id => {
+                            const item = loaded.get(id);
+                            if (item) {
+                                this.set(id, item);
+                            } else {
+                                // item must not exist, remove promise
+                                this.delete(id);
+                            }
+                        });
+                    }, () => {
+                        // clear promises on error
+                        idsToLoad.forEach(id => this.delete(id));
+                    });
+
+                idsToLoad.forEach(id => this.set(id, new LoadingValue(id, promise)));
+                promises.add(promise);
             }
 
-            const idsToLoad = Array.from(missingIds);
-            const promise = this.resourceService.buildQuery()
-                .in(this.resourceService.idProperty, idsToLoad)
-                .query().then(items => {
-                    const loaded = new Map(items.map(item => [item.getOriginalId(), item]));
-                    idsToLoad.forEach(id => {
-                        const item = loaded.get(id);
-                        if (item) {
-                            this.set(id, item);
-                        } else {
-                            // item must not exist, remove promise
-                            this.delete(id);
-                        }
-                    });
-                }, () => {
-                    // clear promises on error
-                    idsToLoad.forEach(id => this.delete(id));
-                });
-
-            idsToLoad.forEach(id => this.set(id, new LoadingValue(id, promise)));
-            return promise;
+            return $q.all(Array.from(promises));
         }
     }
 
