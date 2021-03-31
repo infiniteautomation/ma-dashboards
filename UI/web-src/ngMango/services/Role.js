@@ -28,6 +28,19 @@ function roleFactory(RestResource) {
             cache.maxSize = 256;
             return cache;
         }
+
+        static formatRoles(roleXids) {
+            const roleCache = this.getCache();
+            roleCache.loadItems(roleXids);
+            return roleXids.map(xid => {
+                const role = roleCache.get(xid);
+                return role && role.name;
+            }).filter(r => !!r).join(', ');
+        }
+
+        formatInheritedRoles() {
+            return this.constructor.formatRoles(this.inherited);
+        }
     }
 
     Object.assign(Role.notificationManager, {

@@ -697,12 +697,7 @@ function UserProvider(MA_DEFAULT_TIMEZONE, MA_DEFAULT_LOCALE) {
             },
 
             formatRoles() {
-                const roleCache = maRole.getCache();
-                roleCache.loadItems(this.roles);
-                return this.roles.map(xid => {
-                    const role = roleCache.get(xid);
-                    return role && role.name;
-                }).filter(r => !!r).join(', ');
+                return maRole.formatRoles(this.roles);
             }
         });
 

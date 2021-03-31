@@ -24,7 +24,7 @@
             <md-icon>group</md-icon>
             <label ma-tr="roles.inheritedRoles"></label>
             <ma-drop-down-button ng-disabled="$ctrl.disabled">
-                <span ng-bind="$ctrl.role.inherited.join(', ')"></span>
+                <span ng-bind="$ctrl.role.formatInheritedRoles()"></span>
                 <ma-drop-down class="ma-role-editor-role-selector ma-full-screen-centered">
                     <ma-role-selector name="inherited" ma-format-array="{xid: $item}" ma-parse-array="$item.xid"
                                       ng-model="$ctrl.role.inherited"
