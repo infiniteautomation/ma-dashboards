@@ -87,10 +87,9 @@ const moduleForUrl = (u) => {
     }
 };
 
-let modules;
 const warmUpModules = async () => {
     const modulesRequest = await fetch('/rest/latest/modules/angularjs-modules/public');
-    modules = await modulesRequest.json();
+    const modules = await modulesRequest.json();
 
     // warm up the module-resources cache by requesting and caching the files defined in AngularJSModuleDefinitions
     const cache = await caches.open(moduleResourcesCacheName);
@@ -103,6 +102,9 @@ const warmUpModules = async () => {
 };
 
 const cleanUpModules = async () => {
+    const modulesRequest = await fetch('/rest/latest/modules/angularjs-modules/public');
+    const modules = await modulesRequest.json();
+
     const installedModules = new Map();
     for (const module of modules.modules) {
         installedModules.set(module.name, module);
