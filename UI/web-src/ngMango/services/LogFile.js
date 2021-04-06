@@ -23,7 +23,7 @@ function logFileFactory($resource, maUtil, $http) {
     
     Object.assign(LogFile.prototype, {
         getDownloadUrl() {
-            return `/rest/latest/logging/view/${encodeURIComponent(this.filename)}?download=true`;
+            return `/rest/latest/logging/download?filename=${encodeURIComponent(this.filename)}`;
         },
         
         getContents() {
