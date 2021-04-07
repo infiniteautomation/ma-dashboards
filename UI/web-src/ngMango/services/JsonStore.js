@@ -132,12 +132,13 @@ function JsonStoreFactory($resource) {
         return data.resource;
     }
 
+    const serializePermission = permission => {
+        return permission.map(t => Array.isArray(t) ? t.join(',') : t);
+    };
+
     const JsonStore = $resource(jsonStoreUrl + ':xid/:dataPathStr', {
         xid: data => data && (data.originalId || data.xid),
-        dataPathStr: '@dataPathStr',
-        name: '@name',
-        readPermission: '@readPermission',
-        editPermission: '@editPermission'
+        dataPathStr: '@dataPathStr'
     }, {
         query: {
             method: 'GET',
@@ -153,11 +154,6 @@ function JsonStoreFactory($resource) {
         get: {
             interceptor: {
                 response: setDataPathInterceptor
-            },
-            params: {
-                name: null,
-                readPermission: null,
-                editPermission: null
             }
         },
         save: {
@@ -167,6 +163,11 @@ function JsonStoreFactory($resource) {
             },
             transformRequest: function(data, headersGetter) {
                 return angular.toJson(data.jsonData);
+            },
+            params: {
+                name: '@name',
+                readPermission: item => serializePermission(item.readPermission),
+                editPermission: item => serializePermission(item.editPermission)
             }
         },
         update: {
@@ -176,6 +177,11 @@ function JsonStoreFactory($resource) {
             },
             transformRequest: function(data, headersGetter) {
                 return angular.toJson(data.jsonData);
+            },
+            params: {
+                name: '@name',
+                readPermission: item => serializePermission(item.readPermission),
+                editPermission: item => serializePermission(item.editPermission)
             }
         },
         'delete': {
@@ -189,11 +195,6 @@ function JsonStoreFactory($resource) {
                     item.jsonData = null;
                     return item;
                 }
-            },
-            params: {
-                name: null,
-                readPermission: null,
-                editPermission: null
             }
         },
         getPublic: {
