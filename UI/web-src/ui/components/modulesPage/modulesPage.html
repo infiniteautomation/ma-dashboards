@@ -49,6 +49,10 @@
 	          <span flex="70" ng-bind="$ctrl.coreModule.buildNumber"></span>
 	        </div>
               <div layout="row">
+                  <span flex="30" ma-tr="modules.buildDate"></span>
+                  <span flex="70" ng-bind="$ctrl.coreModule.buildDate | maDate:'dateTime'" ng-if="$ctrl.coreModule.buildDate"></span>
+              </div>
+              <div layout="row">
                   <span flex="30" ma-tr="modules.upgradedDate"></span>
                   <span flex="70" ng-bind="$ctrl.coreModule.upgradedDate | maDate:'dateTime'"></span>
               </div>
@@ -102,6 +106,10 @@
             <span flex="30" ma-tr="modules.buildNumber"></span>
             <span flex="70" ng-bind="module.buildNumber"></span>
           </div>
+            <div layout="row">
+                <span flex="30" ma-tr="modules.buildDate"></span>
+                <span flex="70" ng-bind="module.buildDate | maDate:'dateTime'" ng-if="module.buildDate"></span>
+            </div>
             <div layout="row">
                 <span flex="30" ma-tr="modules.upgradedDate"></span>
                 <span flex="70" ng-bind="module.upgradedDate | maDate:'dateTime'"></span>
