@@ -1231,6 +1231,14 @@ function UtilFactory(mangoBaseUrl, mangoDateFormats, $q, $timeout, MA_TIMEOUTS, 
         
         blobToJson(blob) {
             return this.blobToText(blob).then(text => JSON.parse(text));
+        },
+
+        /**
+         * Use /file-stores URL outside of REST so it is not rate limited, and is accessible anonymously (if public)
+         * @param url
+         */
+        fileStoreUrl(url) {
+            return url.replace(/^\/rest\/(?:v\d+|latest)\/file-stores\//, '/file-stores/');
         }
     };
 

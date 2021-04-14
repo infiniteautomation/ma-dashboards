@@ -141,8 +141,10 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 Object.assign(MA_DATE_FORMATS, this.dateFormats);
                 this.setPointValuesLimit();
 
+                const userCssUrl = maUtil.fileStoreUrl(this.userCss || '');
+
                 // inject after <meta name="user-styles-after-here">
-                maCssInjector.injectLink(this.userCss, 'userCss', 'head > meta[name="user-styles-after-here"]');
+                maCssInjector.injectLink(userCssUrl, 'userCss', 'head > meta[name="user-styles-after-here"]');
             }
             
             setPointValuesLimit() {
@@ -211,12 +213,14 @@ function uiSettingsProvider($mdThemingProvider, pointValuesProvider, MA_TIMEOUTS
                 // activate our new theme
                 $mdThemingProvider.setDefaultTheme(this.activeTheme);
                 this.addThemeColorMetaTags();
-                
+
+                let themeLogo;
                 if (!!this.themes[this.activeTheme].dark === !!this.themes[this.defaultTheme].dark) {
-                    this.themeLogo = this.logoSrc;
+                    themeLogo = this.logoSrc;
                 } else {
-                    this.themeLogo = this.alternateLogo;
+                    themeLogo = this.alternateLogo;
                 }
+                this.themeLogo = maUtil.fileStoreUrl(themeLogo || '');
             }
             
             registerTheme(themeName, themeSettings) {
