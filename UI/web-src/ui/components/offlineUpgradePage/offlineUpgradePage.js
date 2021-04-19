@@ -58,9 +58,11 @@ class OfflineUpgradePageController {
     }
 
     uploadFilesButtonClicked(event) {
-        this.$element.maFind('input[type=file]')
-            .val(null)
-            .trigger('click');
+        const inputs = this.$element.maFind('input[type=file]');
+        if (inputs.length) {
+            inputs[0].value = null;
+            inputs[0].click();
+        }
     }
 
     uploadFilesChanged(event) {
