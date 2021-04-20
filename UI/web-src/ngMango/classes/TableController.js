@@ -339,18 +339,23 @@ class TableController {
         this.customizeQuery(queryBuilder);
         this.selectedColumns.forEach(col => col.applyFilter(queryBuilder));
 
-        const sortArray = this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName);
+        const sortArray = this.customizeSort(
+            this.sort.map(item => item.descending ? `-${item.columnName}` : item.columnName));
+        if (sortArray.length) {
+            queryBuilder.sort(...sortArray);
+        }
+
+        return queryBuilder;
+    }
+
+    customizeSort(sortArray) {
         if (!this.disableSortById) {
             // ensure the order of the results are deterministic by adding sort on id
             if (!this.sort.find(s => s.columnName === 'id')) {
                 sortArray.push('id');
             }
         }
-        if (sortArray.length) {
-            queryBuilder.sort(...sortArray);
-        }
-
-        return queryBuilder;
+        return sortArray;
     }
 
     /**
