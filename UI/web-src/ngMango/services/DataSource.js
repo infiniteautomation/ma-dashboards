@@ -174,7 +174,7 @@ function dataSourceProvider() {
                 periods: 1,
                 type: 'MINUTES'
             },
-            editPermission: ['superadmin'],
+            editPermission: [],
             purgeSettings: {
                 override: false,
                 frequency: {
@@ -274,28 +274,65 @@ function dataSourceProvider() {
             }
             
             createDataSource() {
-                return new DataSource(this.defaultDataSource && angular.copy(this.defaultDataSource) || {
-                    modelType: this.type
-                });
+                const properties = {
+                    modelType: this.type,
+                    name: '',
+                    enabled: false,
+                    readPermission: [],
+                    editPermission: [],
+                    purgeSettings: {
+                        override: false,
+                        frequency: {
+                            periods: 1,
+                            type: 'YEARS'
+                        }
+                    },
+                    eventAlarmLevels: []
+                };
+
+                // can be a function (e.g. virtual DS), but doesn't matter for setting defaults
+                if (this.polling) {
+                    Object.assign(properties, {
+                        pollPeriod: {
+                            periods: 1,
+                            type: 'MINUTES'
+                        },
+                        quantize: false,
+                        useCron: false
+                    });
+                }
+
+                if (this.defaultDataSource) {
+                    Object.assign(properties, angular.copy(this.defaultDataSource));
+                }
+
+                return new DataSource(properties);
             }
             
             createDataPoint() {
-                const defaults = this.defaultDataPoint && angular.copy(this.defaultDataPoint) || {
+                const properties = {
                     dataSourceTypeName: this.type,
                     pointLocator: {
-                        modelType: `PL.${this.type}`
-                    }
+                        modelType: `PL.${this.type}`,
+                        dataType: 'NUMERIC'
+                    },
+                    settable: false
                 };
-                const dataType = defaults.pointLocator && defaults.pointLocator.dataType || 'NUMERIC';
-                
+
+                if (this.defaultDataPoint) {
+                    const defaultDataPoint = angular.copy(this.defaultDataPoint);
+                    defaultDataPoint.pointLocator = Object.assign(properties.pointLocator, defaultDataPoint.pointLocator);
+                    Object.assign(properties, defaultDataPoint);
+                }
+
                 // create a new data point with default properties
                 const newPoint = new Point();
                 
                 // set the data type so it gets default properties for that data type
-                newPoint.dataType = dataType;
+                newPoint.dataType = properties.pointLocator.dataType;
                 
                 // assign default properties defined by data source type
-                Object.assign(newPoint, defaults);
+                Object.assign(newPoint, properties);
                 
                 return newPoint;
             }
