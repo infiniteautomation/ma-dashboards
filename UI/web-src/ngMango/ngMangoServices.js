@@ -257,6 +257,14 @@ ngMangoServices.constant('MA_SIMPLIFY_TYPES', [
     {type: 'TOLERANCE', translation: 'pointEdit.simplify.tolerance', dataTypes: new Set(['NUMERIC', 'MULTISTATE', 'BINARY'])}
 ]);
 
+ngMangoServices.constant('MA_LIFECYCLE_STATES', {
+    PRE_INITIALIZE: { translation: 'common.lifecycle.state.preInitialize', class: 'md-secondary' },
+    INITIALIZING: { translation: 'common.lifecycle.state.initializing', class: 'md-secondary' },
+    RUNNING: { translation: 'common.lifecycle.state.running', class: 'md-secondary' },
+    TERMINATING: { translation: 'common.lifecycle.state.terminating', class: 'md-warn' },
+    TERMINATED: { translation: 'common.lifecycle.state.terminated', class: 'md-warn' }
+});
+
 // properties are added/defined in UI module
 ngMangoServices.constant('MA_EVENT_LINK_INFO', {});
 

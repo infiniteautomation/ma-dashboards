@@ -35,10 +35,10 @@ class BulkDataPointEditorController {
     static get $$ngIsClass() { return true; }
 
     static get $inject() { return ['maPoint', 'maDataSource', 'maDataPointTags', 'maDialogHelper', 'maTranslate', '$timeout',
-            'localStorageService', 'maUtil', '$q', '$scope', '$element', '$filter', '$interval', 'maEventDetector']; }
+            'localStorageService', 'maUtil', '$q', '$scope', '$element', '$filter', '$interval', 'maEventDetector', 'MA_LIFECYCLE_STATES']; }
 
     constructor(maPoint, maDataSource, maDataPointTags, maDialogHelper, maTranslate, $timeout,
-            localStorageService, maUtil, $q, $scope, $element, $filter, $interval, EventDetector) {
+            localStorageService, maUtil, $q, $scope, $element, $filter, $interval, EventDetector, MA_LIFECYCLE_STATES) {
 
         this.maPoint = maPoint;
         this.maDataSource = maDataSource;
@@ -53,6 +53,7 @@ class BulkDataPointEditorController {
         this.$element = $element;
         this.$interval = $interval;
         this.EventDetector = EventDetector;
+        this.MA_LIFECYCLE_STATES = MA_LIFECYCLE_STATES;
 
         this.sortFilter = $filter('orderBy');
         this.filterFilter = $filter('filter');
@@ -99,7 +100,7 @@ class BulkDataPointEditorController {
                 while ((update = this.updateQueue.shift()) != null) {
                     if (update.eventName === 'create') {
                         changeMade |= this.pointAdded(update.point);
-                    } else if (update.eventName === 'update') {
+                    } else if (update.eventName === 'update' || update.eventName === 'stateChange') {
                         changeMade |= this.pointUpdated(update.point);
                     } else if (update.eventName === 'delete') {
                         changeMade |= this.pointDeleted(update.pointId);

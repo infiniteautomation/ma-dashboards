@@ -29,8 +29,12 @@
                         </md-input-container>
 
                         <div flex="100" flex-gt-md="50">
-                            <md-switch name="enabled" ng-model="$ctrl.dataPoint.enabled">
+                            <md-switch name="enabled" ng-model="$ctrl.dataPoint.enabled"
+                                ng-class="$ctrl.MA_LIFECYCLE_STATES[$ctrl.dataPoint.dataPointLifecycleState].class">
                                 <span ma-tr="common.enabled"></span>
+                                <span ng-if="$ctrl.dataPoint.id">
+                                    (<span ma-tr="{{$ctrl.MA_LIFECYCLE_STATES[$ctrl.dataPoint.dataPointLifecycleState].translation}}"></span>)
+                                </span>
                                 <em class="ma-small-text">(<span ma-tr="ui.app.doesNotTakeEffectUntilSaved"></span>)</em>
                             </md-switch>
                         </div>
