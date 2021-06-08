@@ -14,6 +14,7 @@
     
     <div layout layout-align="center center" layout-align-gt-md="end center">
         <div class="ma-guid-and-release-channel">
+            <div><span ma-tr="modules.storeUrl"></span>:&nbsp;<strong ng-bind="$ctrl.coreModule.storeUrl"></strong></div>
             <div><span ma-tr="modules.guid"></span>:&nbsp;<strong ng-bind="$ctrl.coreModule.guid"></strong></div>
             <div ng-switch="$ctrl.coreModule.upgradeVersionState">
                 <span ma-tr="systemSettings.upgradeVersionState"></span>:&nbsp;
