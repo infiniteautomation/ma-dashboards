@@ -142,7 +142,10 @@
                     
                     <td md-cell class="ma-point-actions">
                         <div layout layout-align="end center">
-                            <md-switch ng-model="point.isEnabled" ng-class="{'ma-throb-opacity': point.$enableToggling}" ng-disabled="point.$enableToggling"></md-switch>
+                            <md-switch ng-model="point.isEnabled" 
+                                ng-disabled="point.$enableToggling"
+                                ng-class="[{'ma-throb-opacity': point.$enableToggling}, $ctrl.MA_LIFECYCLE_STATES[point.dataPointLifecycleState].class]">
+                            </md-switch>
 
                             <md-menu md-position-mode="target-right bottom" md-offset="0 4">
                                 <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">

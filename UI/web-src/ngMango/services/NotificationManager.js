@@ -48,11 +48,11 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
                 if (!filterMatches || eventType === 'delete') {
                     array.splice(index, 1);
                     return true;
-                } else if (eventType === 'update' || eventType === 'create') {
+                } else if (eventType === 'update' || eventType === 'create' || eventType === 'stateChange') {
                     Object.assign(array[index], item);
                     return true;
                 }
-            } else if (filterMatches && (eventType === 'update' || eventType === 'create')) {
+            } else if (filterMatches && (eventType === 'update' || eventType === 'create' || eventType === 'stateChange')) {
                 array.push(item);
                 return true;
             }
@@ -256,7 +256,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             return this.socket && this.socket.readyState === READY_STATE_OPEN;
         }
 
-        sendSubscription(eventTypes = ['create', 'update', 'delete']) {
+        sendSubscription(eventTypes = ['create', 'update', 'delete', 'stateChange']) {
             if (!this.supportsSubscribe) return;
 
             const xids = this.subscribedToAllXidsCount > 0 ? null : Object.keys(this.subscribedXids);
@@ -296,12 +296,12 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
             }
         }
 
-        subscribe(handler, $scope, eventTypes = ['create', 'update', 'delete'], xids = null, localOnly = false) {
+        subscribe(handler, $scope, eventTypes = ['create', 'update', 'delete', 'stateChange'], xids = null, localOnly = false) {
             if (typeof handler === 'object') {
                 const options = handler;
                 handler = options.handler;
                 $scope = options.scope;
-                eventTypes = options.eventTypes || ['create', 'update', 'delete'];
+                eventTypes = options.eventTypes || ['create', 'update', 'delete', 'stateChange'];
                 xids = options.xids || null;
                 localOnly = options.localOnly || false;
             }
@@ -403,7 +403,7 @@ function NotificationManagerFactory(MA_BASE_URL, $rootScope, MA_TIMEOUTS, $q, $t
         }
 
         // TODO remove
-        subscribeToXids(xids, handler, $scope, eventTypes = ['create', 'update', 'delete']) {
+        subscribeToXids(xids, handler, $scope, eventTypes = ['create', 'update', 'delete', 'stateChange']) {
             return this.subscribe((...args) => {
                 const item = args[1];
                 if (xids.includes(item.xid)) {

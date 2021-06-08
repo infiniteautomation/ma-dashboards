@@ -13,13 +13,14 @@ function dataSourceScrollList($injector) {
 
     class DataSourceScrollListController {
         static get $$ngIsClass() { return true; }
-        static get $inject() { return ['$scope', 'maDataSource', '$filter', 'maUser']; }
+        static get $inject() { return ['$scope', 'maDataSource', '$filter', 'maUser', 'MA_LIFECYCLE_STATES']; }
         
-        constructor($scope, DataSource, $filter, User) {
+        constructor($scope, DataSource, $filter, User, MA_LIFECYCLE_STATES) {
             this.$scope = $scope;
             this.DataSource = DataSource;
             this.$filter = $filter;
             this.User = User;
+            this.MA_LIFECYCLE_STATES = MA_LIFECYCLE_STATES;
         }
         
         $onInit() {
