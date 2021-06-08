@@ -14,9 +14,10 @@ import dataSourceStatusTemplate from './dataSourceStatus.html';
 
 class DataSourceStatusController {
     static get $$ngIsClass() { return true; }
-    static get $inject() { return []; }
+    static get $inject() { return ['MA_LIFECYCLE_STATES']; }
     
-    constructor() {
+    constructor(MA_LIFECYCLE_STATES) {
+        this.MA_LIFECYCLE_STATES = MA_LIFECYCLE_STATES;
         this.order = '-startTime';
     }
 

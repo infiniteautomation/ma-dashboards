@@ -15,14 +15,14 @@ import './dataSourceEditor.css';
  */
 
 const $inject = Object.freeze(['maDataSource', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs', '$parse',
-    'maPoint', 'maEvents', 'maUtil', 'MA_LIFECYCLE_STATES']);
+    'maPoint', 'maEvents', 'maUtil']);
 
 class DataSourceEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return $inject; }
 
     constructor(maDataSource, $q, maDialogHelper, $scope, $window, Translate, $attrs, $parse,
-            Point, Events, Util, MA_LIFECYCLE_STATES) {
+            Point, Events, Util) {
         this.maDataSource = maDataSource;
         this.$q = $q;
         this.maDialogHelper = maDialogHelper;
@@ -30,7 +30,6 @@ class DataSourceEditorController {
         this.$window = $window;
         this.Translate = Translate;
         this.Point = Point;
-        this.MA_LIFECYCLE_STATES = MA_LIFECYCLE_STATES;
 
         this.eventLevels = Events.levels;
 

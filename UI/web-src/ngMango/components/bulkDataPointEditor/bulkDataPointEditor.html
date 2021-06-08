@@ -144,7 +144,7 @@
                         <div layout layout-align="end center">
                             <md-switch ng-model="point.isEnabled" 
                                 ng-disabled="point.$enableToggling"
-                                ng-class="[{'ma-throb-opacity': point.$enableToggling}, $ctrl.MA_LIFECYCLE_STATES[point.dataPointLifecycleState].class]">
+                                ng-class="[{'ma-throb-opacity': point.$enableToggling}, $ctrl.MA_LIFECYCLE_STATES[point.lifecycleState].class]">
                             </md-switch>
 
                             <md-menu md-position-mode="target-right bottom" md-offset="0 4">
