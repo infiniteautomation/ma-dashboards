@@ -35,13 +35,8 @@
                         </md-input-container>
 
                         <div flex="100" flex-gt-md="50">
-                            <md-checkbox class="ma-input-container-height" name="enabled"
-                                ng-class="$ctrl.MA_LIFECYCLE_STATES[$ctrl.dataSource.dataSourceLifecycleState].class"
-                                ng-model="$ctrl.dataSource.enabled">
+                            <md-checkbox class="ma-input-container-height" name="enabled" ng-model="$ctrl.dataSource.enabled">
                                 <span ma-tr="common.enabled"></span>
-                                <span ng-if="$ctrl.dataSource.id">
-                                    (<span ma-tr="{{$ctrl.MA_LIFECYCLE_STATES[$ctrl.dataSource.dataSourceLifecycleState].translation}}"></span>)
-                                </span>
                                 <em class="ma-small-text">(<span
                                         ma-tr="ui.app.doesNotTakeEffectUntilSaved"></span>)</em>
                             </md-checkbox>

@@ -32,10 +32,10 @@ const validationMessagePropertyMap = {
 class DataPointEditorController {
     static get $$ngIsClass() { return true; }
     static get $inject() { return ['maPoint', '$q', 'maDialogHelper', '$scope', '$window', 'maTranslate', '$attrs',
-        '$parse', 'maMultipleValues', '$templateCache', '$filter', 'maUser', 'maUtil', 'MA_LIFECYCLE_STATES']; }
+        '$parse', 'maMultipleValues', '$templateCache', '$filter', 'maUser', 'maUtil']; }
     
     constructor(Point, $q, DialogHelper, $scope, $window, Translate, $attrs,
-                $parse, MultipleValues, $templateCache, $filter, User, Util, MA_LIFECYCLE_STATES) {
+                $parse, MultipleValues, $templateCache, $filter, User, Util) {
 
         Object.keys(templates).forEach(key => {
             const name = `maDataPointEditor.${key}.html`;
@@ -53,7 +53,6 @@ class DataPointEditorController {
         this.MultipleValues = MultipleValues;
         this.orderBy = $filter('orderBy');
         this.User = User;
-        this.MA_LIFECYCLE_STATES = MA_LIFECYCLE_STATES;
         this.rollupTypes = Point.rollupTypes.filter(t => !t.nonAssignable);
         this.plotTypes = Point.chartTypes;
         this.simplifyTypes = Point.simplifyTypes;
