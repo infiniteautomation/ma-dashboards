@@ -32,7 +32,7 @@ class DataSourceStatusController {
     $onInit() {
         this.maDataSource.notificationManager.subscribe((event, item, attributes) => {
             if (event.name === 'stateChange') {
-                this.getStatus();
+                this.state = item.lifecycleState;
             }
         }, this.$scope);
     }
@@ -53,6 +53,7 @@ class DataSourceStatusController {
 
         this.promise = this.dataSource.getStatus().then((status) => {
             this.status = status;
+            this.state = status.state;
         });
     }
 }

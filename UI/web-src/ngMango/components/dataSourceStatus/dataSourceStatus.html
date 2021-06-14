@@ -6,10 +6,11 @@
     </md-button>
 </div>
 <div class="ma-data-source-state md-whiteframe-1dp"
-    md-colors="{background: 'background-hue-2', color: $ctrl.status.state === 'RUNNING' ? 'primary' : 'warn'}">
-    <md-icon>{{$ctrl.status.state === 'RUNNING' ? 'check' : 'warning'}}</md-icon>
+    md-colors="{background: 'background-hue-2', color: $ctrl.state === 'RUNNING' ? 'primary' : 'warn'}">
+    <md-icon>{{$ctrl.state === 'RUNNING' || $ctrl.state.includes('INITIAL') ? 'check' : 'warning'}}
+    </md-icon>
 
-    <div ma-tr="{{$ctrl.MA_LIFECYCLE_STATES[$ctrl.status.state].translation}}"></div>
+    <div ma-tr="{{$ctrl.MA_LIFECYCLE_STATES[$ctrl.state].translation}}"></div>
 </div>
 <h3 ma-tr="dsEdit.latestPollTimes"></h3>
 <md-table-container>
