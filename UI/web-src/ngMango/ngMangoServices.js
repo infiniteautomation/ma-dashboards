@@ -258,11 +258,11 @@ ngMangoServices.constant('MA_SIMPLIFY_TYPES', [
 ]);
 
 ngMangoServices.constant('MA_LIFECYCLE_STATES', {
-    PRE_INITIALIZE: { translation: 'common.lifecycle.state.preInitialize', class: 'md-secondary' },
-    INITIALIZING: { translation: 'common.lifecycle.state.initializing', class: 'md-secondary' },
-    RUNNING: { translation: 'common.lifecycle.state.running', class: 'md-secondary' },
-    TERMINATING: { translation: 'common.lifecycle.state.terminating', class: 'md-warn' },
-    TERMINATED: { translation: 'common.lifecycle.state.terminated', class: 'md-warn' }
+    PRE_INITIALIZE: { translation: 'common.lifecycle.state.PRE_INITIALIZE', class: 'md-secondary' },
+    INITIALIZING: { translation: 'common.lifecycle.state.INITIALIZING', class: 'md-secondary' },
+    RUNNING: { translation: 'common.lifecycle.state.RUNNING', class: 'md-secondary' },
+    TERMINATING: { translation: 'common.lifecycle.state.TERMINATING', class: 'md-warn' },
+    TERMINATED: { translation: 'common.lifecycle.state.TERMINATED', class: 'md-warn' }
 });
 
 // properties are added/defined in UI module
