@@ -4,6 +4,7 @@
  */
 
 import dataSourceStatusTemplate from './dataSourceStatus.html';
+import './dataSourceStatus.css';
 
 /**
  * @ngdoc directive
@@ -13,12 +14,27 @@ import dataSourceStatusTemplate from './dataSourceStatus.html';
  */
 
 class DataSourceStatusController {
-    static get $$ngIsClass() { return true; }
-    static get $inject() { return ['MA_LIFECYCLE_STATES']; }
-    
-    constructor(MA_LIFECYCLE_STATES) {
+    static get $$ngIsClass() {
+        return true;
+    }
+
+    static get $inject() {
+        return ['$scope', 'maDataSource', 'MA_LIFECYCLE_STATES'];
+    }
+
+    constructor($scope, maDataSource, MA_LIFECYCLE_STATES) {
+        this.$scope = $scope;
+        this.maDataSource = maDataSource;
         this.MA_LIFECYCLE_STATES = MA_LIFECYCLE_STATES;
         this.order = '-startTime';
+    }
+
+    $onInit() {
+        this.maDataSource.notificationManager.subscribe((event, item, attributes) => {
+            if (event.name === 'stateChange') {
+                this.getStatus();
+            }
+        }, this.$scope);
     }
 
     $onChanges(changes) {
@@ -29,13 +45,13 @@ class DataSourceStatusController {
 
     getStatus() {
         delete this.promise;
-        
+
         if (!this.dataSource || this.dataSource.isNew()) {
             this.status = {};
             return;
         }
 
-        this.promise = this.dataSource.getStatus().then(status => {
+        this.promise = this.dataSource.getStatus().then((status) => {
             this.status = status;
         });
     }
