@@ -1,0 +1,24 @@
+ma-data-source-status .ma-data-source-state {
+    padding: 10px 15px;
+    border-radius: 30px;
+    margin-bottom: 15px;
+    height: 40px;
+    margin-right: 10px;
+    
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+ma-data-source-status .ma-data-source-state > md-icon {
+    margin-right: 10px;
+    color: currentColor;
+}
+
+ma-data-source-status .ma-data-source-state > div {
+    text-transform: uppercase;
+}

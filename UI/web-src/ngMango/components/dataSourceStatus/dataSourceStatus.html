@@ -1,4 +1,17 @@
-<h3 ma-tr="{{$ctrl.MA_LIFECYCLE_STATES[$ctrl.dataSource.lifecycleState].translation}}"></h3>
+<div layout="row" layout-align="start center">
+    <h3 ma-tr="dsEdit.currentState"></h3>
+    <md-button class="md-icon-button test-tooltip" aria-label="Refresh" ng-click="$ctrl.getStatus()">
+        <md-tooltip md-direction="right" ma-tr="common.refresh"></md-tooltip>
+        <md-icon>refresh</md-icon>
+    </md-button>
+</div>
+<div class="ma-data-source-state md-whiteframe-1dp"
+    md-colors="{background: 'background-hue-2', color: $ctrl.state === 'RUNNING' ? 'primary' : 'warn'}">
+    <md-icon>{{$ctrl.state === 'RUNNING' || $ctrl.state.includes('INITIAL') ? 'check' : 'warning'}}
+    </md-icon>
+
+    <div ma-tr="{{$ctrl.MA_LIFECYCLE_STATES[$ctrl.state].translation}}"></div>
+</div>
 <h3 ma-tr="dsEdit.latestPollTimes"></h3>
 <md-table-container>
     <table md-table md-progress="$ctrl.promise">

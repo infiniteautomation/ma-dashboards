@@ -13,16 +13,17 @@
                             <md-icon>settings</md-icon>
                             <label ma-tr="dsEdit.dataSourceType"></label>
                             <ma-drop-down-button ng-disabled="!$ctrl.dataSource.isNew()">
-                                <span ng-bind="$ctrl.typesByName[$ctrl.dataSource.modelType].descriptionTranslated"></span>
+                                <span
+                                    ng-bind="$ctrl.typesByName[$ctrl.dataSource.modelType].descriptionTranslated"></span>
                                 <ma-drop-down class="ma-model-type-select ma-full-screen-centered" auto-focus="::false">
-                                    <ma-option-list name="modelType"
-                                                    ng-model="$ctrl.dataSource.modelType"
-                                                    ng-change="$ctrl.typeChanged()"
-                                                    ng-disabled="!$ctrl.dataSource.isNew()"
-                                                    items="$ctrl.types | maFilter:$filter"
-                                                    ma-configure-input-container>
-                                        <ma-option ng-repeat="type in $items | orderBy:'descriptionTranslated' track by type.type" ng-value="type.type" md-no-ink>
-                                            <span md-highlight-text="$filter" md-highlight-flags="ig">{{type.descriptionTranslated}}</span>
+                                    <ma-option-list name="modelType" ng-model="$ctrl.dataSource.modelType"
+                                        ng-change="$ctrl.typeChanged()" ng-disabled="!$ctrl.dataSource.isNew()"
+                                        items="$ctrl.types | maFilter:$filter" ma-configure-input-container>
+                                        <ma-option
+                                            ng-repeat="type in $items | orderBy:'descriptionTranslated' track by type.type"
+                                            ng-value="type.type" md-no-ink>
+                                            <span md-highlight-text="$filter"
+                                                md-highlight-flags="ig">{{type.descriptionTranslated}}</span>
                                         </ma-option>
                                     </ma-option-list>
                                 </ma-drop-down>
@@ -35,7 +36,8 @@
                         </md-input-container>
 
                         <div flex="100" flex-gt-md="50">
-                            <md-checkbox class="ma-input-container-height" name="enabled" ng-model="$ctrl.dataSource.enabled">
+                            <md-checkbox class="ma-input-container-height" name="enabled"
+                                ng-model="$ctrl.dataSource.enabled">
                                 <span ma-tr="common.enabled"></span>
                                 <em class="ma-small-text">(<span
                                         ma-tr="ui.app.doesNotTakeEffectUntilSaved"></span>)</em>
@@ -162,7 +164,8 @@
                     </h3>
                     <div>
                         <md-checkbox name="purgeSettings.override" ng-model="$ctrl.dataSource.purgeSettings.override">
-                            <span ma-tr="dsEdit.logging.purgeOverride"></span></md-checkbox>
+                            <span ma-tr="dsEdit.logging.purgeOverride"></span>
+                        </md-checkbox>
                     </div>
 
                     <div layout layout-wrap layout-align="start start" ng-if="$ctrl.dataSource.purgeSettings.override">
@@ -212,9 +215,6 @@
             </md-tab-label>
             <md-tab-body>
                 <div class="md-padding">
-                    <md-button ng-click="$ctrl.refreshStatus = {}">
-                        <md-icon>refresh</md-icon>&nbsp;<span ma-tr="common.refresh"></span>
-                    </md-button>
                     <ma-data-source-status ng-if="!!$ctrl.refreshStatus" data-source="$ctrl.dataSource"
                         refresh="$ctrl.refreshStatus"></ma-data-source-status>
                 </div>
