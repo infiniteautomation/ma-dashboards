@@ -22,6 +22,7 @@ const defaultColumns = [
     {name: 'setPermission', label: 'pointEdit.props.permission.set', selectedByDefault: false},
     {name: 'unit', label: 'pointEdit.props.unit', selectedByDefault: false},
     {name: 'chartColour', label: 'pointEdit.props.chartColour', selectedByDefault: false},
+    {name: 'lifecycleState', label: 'pointEdit.props.lifecycleState', selectedByDefault: false},
     {name: 'plotType', label: 'pointEdit.plotType', selectedByDefault: false},
     {name: 'rollup', label: 'common.rollup', selectedByDefault: false},
     {name: 'integralUnit', label: 'pointEdit.props.integralUnit', selectedByDefault: false},
