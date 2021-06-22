@@ -238,11 +238,16 @@ class PointBrowserController {
                 delete this.tags[key];
             }
         });
-        this.itemSelected('tags');
+
+        if (Object.keys(this.tags).length) {
+            this.itemSelected('tags');
+        }
     }
 
     tagsChanged() {
-        this.itemSelected('tags');
+        if (Object.keys(this.tags).length) {
+            this.itemSelected('tags');
+        }
     }
 }
 
