@@ -94,7 +94,7 @@ class FilteringPointListController {
                     queryString += `&${userQuery}`;
                 }
 
-                return this.Point.query({ rqlQuery: queryString }).$promise.then((items) => {
+                this.Point.query({ rqlQuery: queryString }).$promise.then((items) => {
                     if (items.length) {
                         this.setViewValue(items[0]);
                     }
