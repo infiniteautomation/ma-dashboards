@@ -149,6 +149,17 @@ export default [
         menuHidden: true
     },
     {
+        name: 'systemSetup',
+        url: '/system-setup',
+        menuHidden: true,
+        menuTr: 'header.systemSetup',
+        permission: ['superadmin'],
+        templatePromise() {
+            return import(/* webpackMode: "eager" */
+                    './views/systemSetup.html');
+        }
+    },
+    {
         name: 'ui',
         url: '?helpOpen',
         'abstract': true,
