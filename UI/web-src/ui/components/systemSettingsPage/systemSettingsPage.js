@@ -66,6 +66,7 @@ class SystemSettingsPageController {
                 locale.id = locale.id.replace('-', '_');
             });
             this.locales = locales;
+            this.locales.unshift({ id: null });
         });
         
         this.systemAlarmLevelSettings = SystemSettings.getSystemAlarmLevelSettings();
