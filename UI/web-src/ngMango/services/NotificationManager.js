@@ -1,7 +1,5 @@
-/**
- * Copyright (C) 2017 Infinite Automation Systems, Inc. All rights reserved.
- * http://infiniteautomation.com/
- * @author Jared Wiltshire
+/*
+ * Copyright (C) 2021 Radix IoT LLC. All rights reserved.
  */
 
 import angular from 'angular';

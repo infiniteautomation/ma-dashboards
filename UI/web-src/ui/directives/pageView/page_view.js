@@ -1,6 +1,5 @@
-/**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
- * @author Jared Wiltshire / Will Geller
+/*
+ * Copyright (C) 2021 Radix IoT LLC. All rights reserved.
  */
 
 import pageViewTemplate from './pageView.html';

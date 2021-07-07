@@ -1,6 +1,5 @@
-/**
- * @copyright 2018 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
- * @author Jared Wiltshire
+/*
+ * Copyright (C) 2021 Radix IoT LLC. All rights reserved.
  */
 
 //you can't use this directive as is, you must bind eventName and directiveName to the function

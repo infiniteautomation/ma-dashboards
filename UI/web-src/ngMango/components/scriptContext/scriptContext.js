@@ -1,7 +1,5 @@
-/**
- * @copyright 2019 {@link http://infiniteautomation.com|Infinite Automation Systems, Inc.} All rights reserved.
- * @author Luis Güette
- * @author Jared Wiltshire
+/*
+ * Copyright (C) 2021 Radix IoT LLC. All rights reserved.
  */
 
 import componentTemplate from './scriptContext.html';
