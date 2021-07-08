@@ -107,7 +107,7 @@ function JsonStoreFactory($resource) {
     
     const defaultProperties = {
         name: '',
-        readPermission: ['user'],
+        readPermission: [],
         editPermission: [],
         jsonData: {},
         dataPath: []

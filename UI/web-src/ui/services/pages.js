@@ -52,8 +52,8 @@ function PageFactory(JsonStore, MA_UI_PAGES_XID, Util, $q, maDialogHelper, maUse
             storeObject.jsonData = {
                 markup: ''
             };
-            storeObject.editPermission = []; // TODO Mango 4.0 get roles for ui.pages.edit and use it here
-            storeObject.readPermission = ['user'];
+            storeObject.editPermission = [];
+            storeObject.readPermission = [];
             return storeObject;
         }
     }

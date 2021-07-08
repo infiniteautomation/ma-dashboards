@@ -30,7 +30,7 @@ function MenuEditorFactory(Menu, $mdDialog, Translate, maUiPages, $q, Util, maSy
                         isNew: true,
                         pageXid: pageXid,
                         linkToPage: true,
-                        permission: ['user'],
+                        permission: [],
                         name: '',
                         url: '',
                         params: {

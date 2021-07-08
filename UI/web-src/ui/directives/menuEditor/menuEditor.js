@@ -93,7 +93,7 @@ function menuEditorDirective(Menu, $mdDialog, Translate, $mdMedia, maUiMenuEdito
                 url: '/',
                 parent: this.currentItem,
                 linkToPage: true,
-                permission: ['user']
+                permission: []
             };
         }
 
