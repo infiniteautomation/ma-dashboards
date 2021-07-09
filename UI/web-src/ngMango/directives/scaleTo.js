@@ -59,7 +59,16 @@ class ScaleToController {
     }
     
     findScaleToElement() {
-        this.$scaleToElement = angular.element(this.scaleTo === 'window' ? this.$window.document.body : this.scaleTo);
+        let elements;
+        if (this.scaleTo === 'window') {
+            elements = [this.$window.document.body];
+        } else if (this.scaleTo) {
+            elements = this.$window.document.querySelectorAll(this.scaleTo);
+        } else {
+            elements = [];
+        }
+
+        this.$scaleToElement = angular.element(elements);
     }
 
     bindHandler() {
